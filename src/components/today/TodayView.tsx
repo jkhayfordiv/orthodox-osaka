@@ -326,7 +326,7 @@ export function TodayView() {
                         : locale === 'ja' ? '聖福音経' : locale === 'ru' ? 'Евангелие' : 'The Gospel'}
                     </span>
                     <h4 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">
-                      {reading.book[locale]} {reading.reference}
+                      {reading.book[locale]} {reading.reference.replace(/^[A-Za-z0-9\s]+(\d+:\d+.*)$/, '$1')}
                       {reading.pericopeTan && (
                         <span className="text-xs font-normal text-slate-500 ml-1.5">
                           （{locale === 'ja' ? `端${reading.pericopeTan}` : locale === 'ru' ? `Зач. ${reading.pericopeTan}` : `Pericope ${reading.pericopeTan}`}）
@@ -447,15 +447,15 @@ export function TodayView() {
             </h4>
 
             {nextService.dutyGroup && (
-              <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+              <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 flex items-center flex-wrap gap-1.5 pt-0.5">
                 <span className="font-semibold text-orthodox-navy dark:text-orthodox-gold-light">
-                  {locale === 'ja' ? '当番グループ: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty Group: '}
+                  {locale === 'ja' ? '当番: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty: '}
                 </span>
-                <span className="font-medium text-orthodox-burgundy dark:text-orthodox-gold">
-                  &lt;{nextService.dutyGroup}&gt;
+                <span className="font-semibold text-orthodox-burgundy dark:text-orthodox-gold bg-orthodox-gold/15 dark:bg-orthodox-gold/20 px-2 py-0.5 rounded-md text-xs">
+                  {nextService.dutyGroup.replace(/^<|>$/g, '')}
                 </span>
                 {nextService.dutyPeople && nextService.dutyPeople.length > 0 && (
-                  <span> ({nextService.dutyPeople.join(', ')})</span>
+                  <span className="text-xs text-slate-500"> ({nextService.dutyPeople.join(', ')})</span>
                 )}
               </div>
             )}
@@ -489,13 +489,13 @@ export function TodayView() {
         <ul className="space-y-3.5">
           {dayInfo.saints.map((saint, idx) => (
             <li key={idx} className="space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0"></span>
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0 self-center"></span>
                 <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100">
                   {saint.name[locale]}
                 </span>
                 {saint.title && (
-                  <span className="text-[11px] text-slate-500 font-medium">
+                  <span className="text-xs text-slate-500 font-medium">
                     ({saint.title[locale]})
                   </span>
                 )}
