@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { COMMON_NAME_DAYS } from '../../data/nameDays';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useApp } from '../../context/AppContext';
 import { NameDayEntry, Locale } from '../../lib/types';
-import { Search, X, Check, Award, Calendar } from 'lucide-react';
+import { Search, X, Check, Award, Calendar, Plus, Sparkles } from 'lucide-react';
+import { convertCivilToJulian, convertJulianToCivil } from '../../lib/notifications';
 
 interface SaintSearchComboboxProps {
   selectedSaintId: string | null;
@@ -20,11 +21,19 @@ export function SaintSearchCombobox({
   label,
   placeholder,
 }: SaintSearchComboboxProps) {
+  const { allSaints, addCustomSaint } = useApp();
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const selectedSaint = COMMON_NAME_DAYS.find((s) => s.id === selectedSaintId) || null;
+  // Modal state for adding a custom unlisted saint
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [customName, setCustomName] = useState('');
+  const [customCalendarType, setCustomCalendarType] = useState<'julian' | 'civil'>('julian');
+  const [customMonth, setCustomMonth] = useState<number>(new Date().getMonth() + 1);
+  const [customDay, setCustomDay] = useState<number>(new Date().getDate());
+
+  const selectedSaint = allSaints.find((s) => s.id === selectedSaintId) || null;
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -45,11 +54,58 @@ export function SaintSearchCombobox({
     }
   }, [selectedSaintId]);
 
+  // Compute preview dates for the custom saint modal
+  const customDatePreview = useMemo(() => {
+    if (customCalendarType === 'julian') {
+      const julianStr = `${String(customMonth).padStart(2, '0')}-${String(customDay).padStart(2, '0')}`;
+      const civil = convertJulianToCivil(customMonth, customDay);
+      return {
+        julian: julianStr,
+        civil: civil.formatted,
+      };
+    } else {
+      const civilStr = `${String(customMonth).padStart(2, '0')}-${String(customDay).padStart(2, '0')}`;
+      const julian = convertCivilToJulian(customMonth, customDay);
+      return {
+        julian: julian.formatted,
+        civil: civilStr,
+      };
+    }
+  }, [customCalendarType, customMonth, customDay]);
+
+  const handleCreateCustomSaint = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customName.trim()) return;
+
+    const newId = addCustomSaint({
+      name: {
+        ja: customName.trim(),
+        en: customName.trim(),
+        ru: customName.trim(),
+      },
+      saint: {
+        ja: customName.trim(),
+        en: customName.trim(),
+        ru: customName.trim(),
+      },
+      feastDateCivil: customDatePreview.civil,
+      feastDateJulian: customDatePreview.julian,
+      aliases: [customName.trim().toLowerCase()],
+      isCustom: true,
+    });
+
+    onSelect(newId);
+    setShowAddModal(false);
+    setIsOpen(false);
+    setQuery('');
+    setCustomName('');
+  };
+
   // Filter saints with multilingual fuzzy matching
-  const filteredSaints = React.useMemo(() => {
+  const filteredSaints = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) {
-      return COMMON_NAME_DAYS.slice(0, 20); // Show first 20 if empty
+      return allSaints.slice(0, 20); // Show first 20 if empty
     }
 
     // Bidirectional multilingual aliases for cross-language matching and nicknames
@@ -121,7 +177,7 @@ export function SaintSearchCombobox({
       ['cyril', 'kirill', 'キリル', 'кирилл'],
       ['methodius', 'mefody', 'メフォディ', 'мефодий'],
       ['boris', 'ボリス', 'борис', 'боря'],
-      ['gleb', 'グレブ', 'глеб'],
+      ['gleb', 'グレブ', 'gleb', 'глеб'],
       ['igor', 'イゴール', 'игорь'],
       ['spyridon', 'spiridon', 'スピリドン', 'спиридон'],
       ['philip', 'filipp', 'フィリポ', 'филипп', 'филя'],
@@ -158,7 +214,7 @@ export function SaintSearchCombobox({
       ['inna', 'インナ', 'инна'],
       ['rimma', 'リンマ', 'римма'],
       ['nonna', 'ノンナ', 'нонна'],
-      ['monica', 'モニカ', 'モника'],
+      ['monica', 'モニカ', 'моника'],
       ['victoria', 'viktoriya', 'ヴィクトリヤ', 'виктория', 'вика'],
       ['lucy', 'lucia', 'ルキヤ', 'лукия'],
       ['patrick', 'patrik', 'patricius', 'パトリック', 'патрикий'],
@@ -236,6 +292,33 @@ export function SaintSearchCombobox({
       ['andrei rublev', 'rublev', 'ルブリョフ', 'рублёв'],
       ['nestor', 'ネストル', 'нестор'],
       ['fevronia', 'fevroniya', 'フェヴロニヤ', 'феврония'],
+      ['kevin', 'ケヴィン', 'кевин'],
+      ['brendan', 'ブレンダン', 'брендан'],
+      ['alban', 'アルバノ', 'албан'],
+      ['chad', 'チャド', 'чед'],
+      ['hilda', 'ヒルダ', 'хильда'],
+      ['audrey', 'オードリー', 'этельдреда'],
+      ['mildred', 'ミルドレッド', 'мильдреда'],
+      ['dunstan', 'ダンスタン', 'дунстан'],
+      ['swithun', 'スウィザン', 'свитун'],
+      ['ursula', 'ウルズラ', 'урсула'],
+      ['boniface', 'ボニファス', 'бонифаций'],
+      ['fanourios', 'ファヌリオス', 'фанурий'],
+      ['stylianos', 'スティリアノス', 'стилиан'],
+      ['gerasimos', 'ゲラシモス', 'герасим'],
+      ['dionysios', 'ディオニシオス', 'дионисий'],
+      ['philothei', 'フィロテイ', 'филофея'],
+      ['sophrony', 'ソフロニイ', 'софроний'],
+      ['markella', 'マルケラ', 'маркелла'],
+      ['kyriaki', 'キリアキ', 'кириакия'],
+      ['tabitha', 'タビタ', 'тавифа'],
+      ['priscilla', 'プリスキラ', 'прискилла'],
+      ['aquila', 'アキラ', 'акила'],
+      ['sarah', 'サラ', 'сарра'],
+      ['rebecca', 'レベッカ', 'ревекка'],
+      ['rachel', 'ラケル', 'рахиль'],
+      ['ruth', 'ルツ', 'руфь'],
+      ['noah', 'ノア', 'ной'],
     ];
 
     // Find any expanded search terms from ALIAS_GROUPS
@@ -246,7 +329,7 @@ export function SaintSearchCombobox({
       }
     }
 
-    return COMMON_NAME_DAYS.filter((entry) => {
+    return allSaints.filter((entry) => {
       const matchJa = `${entry.name.ja} ${entry.saint.ja}`.toLowerCase();
       const matchEn = `${entry.name.en} ${entry.saint.en}`.toLowerCase();
       const matchRu = `${entry.name.ru} ${entry.saint.ru}`.toLowerCase();
@@ -262,7 +345,7 @@ export function SaintSearchCombobox({
           entry.feastDateJulian.includes(term)
       );
     });
-  }, [query]);
+  }, [query, allSaints]);
 
   const defaultPlaceholder =
     locale === 'ja'
@@ -285,8 +368,13 @@ export function SaintSearchCombobox({
           <div className="flex items-center space-x-2.5 overflow-hidden">
             <Award className="w-5 h-5 text-orthodox-gold flex-shrink-0" />
             <div className="truncate">
-              <div className="font-bold text-sm text-orthodox-navy dark:text-orthodox-gold-light truncate">
-                {selectedSaint.name[locale]} — {selectedSaint.saint[locale]}
+              <div className="font-bold text-sm text-orthodox-navy dark:text-orthodox-gold-light truncate flex items-center space-x-1.5">
+                <span>{selectedSaint.name[locale]} — {selectedSaint.saint[locale]}</span>
+                {selectedSaint.isCustom && (
+                  <span className="text-[10px] py-0.5 px-1.5 rounded bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-semibold">
+                    {locale === 'ja' ? '手動登録' : locale === 'ru' ? 'Свой' : 'Custom'}
+                  </span>
+                )}
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-2 mt-0.5">
                 <span className="flex items-center space-x-1">
@@ -357,7 +445,7 @@ export function SaintSearchCombobox({
 
       {/* Floating / Inline Dropdown List */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 z-40 mt-1 bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-xl shadow-2xl overflow-hidden max-h-72 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute top-full left-0 right-0 z-40 mt-1 bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-xl shadow-2xl overflow-hidden max-h-80 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
           <div className="p-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between text-[11px] text-slate-500 font-semibold px-3">
             <span>
               {query
@@ -380,10 +468,12 @@ export function SaintSearchCombobox({
           </div>
 
           {filteredSaints.length === 0 ? (
-            <div className="p-4 text-center text-xs text-slate-500">
-              {locale === 'ja'
-                ? '該当する聖人が見つかりませんでした。別の読みや英語・ロシア語表記をお試しください。'
-                : 'No matching saints found. Try typing another spelling or language.'}
+            <div className="p-4 text-center space-y-2">
+              <p className="text-xs text-slate-500">
+                {locale === 'ja'
+                  ? '該当する聖人が見つかりませんでした。別の読みや表記をお試しいただくか、下記より手動で追加してください。'
+                  : 'No matching saints found in database. You can manually register any saint below:'}
+              </p>
             </div>
           ) : (
             <div className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -410,6 +500,11 @@ export function SaintSearchCombobox({
                         <span className="text-xs text-slate-400 font-normal truncate">
                           ({entry.name.en !== entry.name[locale] ? entry.name.en : entry.name.ja})
                         </span>
+                        {entry.isCustom && (
+                          <span className="text-[9px] py-0.2 px-1.5 rounded bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-semibold">
+                            {locale === 'ja' ? '手動登録' : 'Custom'}
+                          </span>
+                        )}
                       </div>
                       <p className="text-xs text-slate-600 dark:text-slate-300 font-serif leading-snug mt-0.5 line-clamp-1">
                         {entry.saint[locale]}
@@ -443,6 +538,201 @@ export function SaintSearchCombobox({
               })}
             </div>
           )}
+
+          {/* Button to Add Saint Not Listed */}
+          <div className="p-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80">
+            <button
+              type="button"
+              onClick={() => {
+                setShowAddModal(true);
+                setIsOpen(false);
+              }}
+              className="w-full py-2 px-3 rounded-lg border border-dashed border-orthodox-gold hover:border-orthodox-gold-dark text-orthodox-gold-dark dark:text-orthodox-gold font-bold text-xs flex items-center justify-center space-x-1.5 hover:bg-orthodox-gold/10 transition-colors"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>
+                {locale === 'ja'
+                  ? '＋ 一覧にない聖人を手動登録する'
+                  : locale === 'ru'
+                  ? '+ Добавить святого, которого нет в списке'
+                  : '+ Add saint not listed (Custom Saint)'}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Adding Custom Saint */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-orthodox-gold/30 pb-3">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="w-5 h-5 text-orthodox-gold" />
+                <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                  {locale === 'ja'
+                    ? '一覧にない聖人の手動登録'
+                    : locale === 'ru'
+                    ? 'Добавить святого вручную'
+                    : 'Add Saint Not Listed'}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAddModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              {locale === 'ja'
+                ? '聖人のお名前と記憶日（祝日）を入力してください。旧暦（教会暦）または新暦（現行暦）のいずれかを指定でき、13日間の暦差は自動計算されます。'
+                : locale === 'ru'
+                ? 'Введите имя святого и день памяти. Вы можете указать дату по старому (юлианскому) или новому стилю — 13 дней разницы рассчитаются автоматически.'
+                : 'Enter the saint’s name and feast day. You can specify either Old Calendar (Julian) or Civil (New Calendar) date — the 13-day calendar difference will be auto-calculated.'}
+            </p>
+
+            <form onSubmit={handleCreateCustomSaint} className="space-y-4">
+              {/* Saint Name */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                  {locale === 'ja' ? '聖人名 / 洗礼名' : locale === 'ru' ? 'Имя святого' : 'Saint / Baptismal Name'} *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder={
+                    locale === 'ja'
+                      ? '例: 聖ケヴィン（グレンダーロッホの）、アイルランドの諸聖人'
+                      : locale === 'ru'
+                      ? 'Напр. Кевин Глендалохский'
+                      : 'e.g. St. Kevin of Glendalough'
+                  }
+                  value={customName}
+                  onChange={(e) => setCustomName(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:border-orthodox-gold"
+                />
+              </div>
+
+              {/* Calendar Style Toggle */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                  {locale === 'ja' ? '日付の指定基準' : locale === 'ru' ? 'Стиль календаря' : 'Calendar Style of Feast Date'}
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setCustomCalendarType('julian')}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                      customCalendarType === 'julian'
+                        ? 'bg-orthodox-gold text-orthodox-navy border-orthodox-gold shadow'
+                        : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                    }`}
+                  >
+                    📜 {locale === 'ja' ? '旧暦（ユリウス暦）' : locale === 'ru' ? 'Старый стиль' : 'Old Calendar (Julian)'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCustomCalendarType('civil')}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                      customCalendarType === 'civil'
+                        ? 'bg-orthodox-gold text-orthodox-navy border-orthodox-gold shadow'
+                        : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                    }`}
+                  >
+                    🔔 {locale === 'ja' ? '新暦（グレゴリオ暦）' : locale === 'ru' ? 'Новый стиль' : 'Civil (New Calendar)'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Month and Day Selectors */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                    {locale === 'ja' ? '月 (Month)' : 'Month'}
+                  </label>
+                  <select
+                    value={customMonth}
+                    onChange={(e) => setCustomMonth(Number(e.target.value))}
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:border-orthodox-gold"
+                  >
+                    {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                      <option key={m} value={m}>
+                        {locale === 'ja' ? `${m}月` : `Month ${m}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                    {locale === 'ja' ? '日 (Day)' : 'Day'}
+                  </label>
+                  <select
+                    value={customDay}
+                    onChange={(e) => setCustomDay(Number(e.target.value))}
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:border-orthodox-gold"
+                  >
+                    {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                      <option key={d} value={d}>
+                        {locale === 'ja' ? `${d}日` : `Day ${d}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Conversion Preview Box */}
+              <div className="p-3 rounded-xl bg-orthodox-candle/20 dark:bg-slate-800/90 border border-orthodox-gold/50 text-xs space-y-1.5">
+                <div className="font-bold text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-1">
+                  <Calendar className="w-3.5 h-3.5 text-orthodox-gold" />
+                  <span>{locale === 'ja' ? 'カレンダー変換プレビュー' : 'Calendar Conversion Preview'}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-slate-700 dark:text-slate-300 pt-1">
+                  <div>
+                    <span className="text-[10px] text-slate-500 block">
+                      {locale === 'ja' ? '旧暦（教会暦）' : 'Old Calendar (Julian)'}
+                    </span>
+                    <span className="font-bold text-sm text-orthodox-burgundy dark:text-orthodox-gold">
+                      {customDatePreview.julian}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 block">
+                      {locale === 'ja' ? '新暦（現行市民暦）' : 'Civil (New Calendar)'}
+                    </span>
+                    <span className="font-bold text-sm text-orthodox-navy dark:text-slate-100">
+                      {customDatePreview.civil}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center space-x-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="w-1/2 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  {locale === 'ja' ? 'キャンセル' : 'Cancel'}
+                </button>
+                <button
+                  type="submit"
+                  disabled={!customName.trim()}
+                  className={`w-1/2 py-2.5 rounded-xl font-bold text-xs transition-all shadow ${
+                    customName.trim()
+                      ? 'bg-orthodox-gold text-orthodox-navy hover:bg-orthodox-gold-dark'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
+                  }`}
+                >
+                  {locale === 'ja' ? '登録して選択' : 'Save & Select'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

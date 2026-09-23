@@ -20,7 +20,15 @@ import { formatJulianDate } from '../../lib/paschalion';
 import { TONE_NAMES } from '../../data/terminology';
 
 export function CalendarView() {
-  const { locale, selectedDate, setSelectedDate, setActiveTab } = useApp();
+  const {
+    locale,
+    selectedDate,
+    setSelectedDate,
+    setActiveTab,
+    patronSaintId,
+    familyMembers,
+    allSaints,
+  } = useApp();
   const [currentYear, setCurrentYear] = useState<number>(selectedDate.getFullYear());
   const [currentMonth, setCurrentMonth] = useState<number>(selectedDate.getMonth()); // 0-indexed
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -97,6 +105,31 @@ export function CalendarView() {
   // Fasting seasons data
   const fastingSeasons = getFastingSeasons(currentYear, selectedDate);
   const inspectDayInfo = getDayInfo(inspectDate);
+
+  const userPatronSaint = patronSaintId ? allSaints.find((s) => s.id === patronSaintId) : null;
+
+  // Helper to get name day info for any UTC Date (comparing MM-DD civil format)
+  const getNameDaysForDate = (date: Date) => {
+    const monthDay = `${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(
+      date.getUTCDate()
+    ).padStart(2, '0')}`;
+
+    const isUserPatron = userPatronSaint?.feastDateCivil === monthDay;
+    const celebratingFamily = familyMembers
+      .map((m) => ({
+        member: m,
+        saint: allSaints.find((s) => s.id === m.saintId),
+      }))
+      .filter(
+        (x): x is { member: typeof familyMembers[0]; saint: (typeof allSaints)[0] } =>
+          Boolean(x.saint && x.saint.feastDateCivil === monthDay)
+      );
+
+    return {
+      isUserPatron,
+      celebratingFamily,
+    };
+  };
 
   return (
     <div className="space-y-4 pb-24 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
@@ -298,6 +331,7 @@ export function CalendarView() {
 
               const hasFeast = info.feasts.length > 0;
               const hasService = info.parishServices.length > 0;
+              const nameDayStatus = getNameDaysForDate(d);
 
               return (
                 <button
@@ -306,6 +340,8 @@ export function CalendarView() {
                   className={`min-h-[56px] sm:min-h-[66px] p-1 rounded-xl flex flex-col justify-between items-center border transition-all text-left relative ${
                     isSelected
                       ? 'border-2 border-orthodox-gold bg-orthodox-candle/70 dark:bg-orthodox-gold/20 shadow-md ring-2 ring-orthodox-gold/40'
+                      : nameDayStatus.isUserPatron
+                      ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-400/50'
                       : isActualToday
                       ? 'border-orthodox-burgundy bg-red-50/50 dark:bg-red-950/20'
                       : 'border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
@@ -328,8 +364,32 @@ export function CalendarView() {
                     </span>
                   </div>
 
-                  {/* Badges for Feast & Osaka Services */}
+                  {/* Badges for Feast, Osaka Services & Name Days */}
                   <div className="w-full flex flex-wrap gap-0.5 justify-center my-0.5">
+                    {nameDayStatus.isUserPatron && (
+                      <span
+                        className="text-[9px] px-1 py-0.2 rounded bg-amber-500 text-white font-bold flex items-center space-x-0.5 shadow-sm"
+                        title={
+                          userPatronSaint
+                            ? `${userPatronSaint.name[locale]} (${userPatronSaint.saint[locale]})`
+                            : 'Patron Saint'
+                        }
+                      >
+                        <span>👑</span>
+                        <span className="hidden sm:inline">{locale === 'ja' ? '聖名' : 'Name'}</span>
+                      </span>
+                    )}
+                    {nameDayStatus.celebratingFamily.length > 0 && (
+                      <span
+                        className="text-[9px] px-1 py-0.2 rounded bg-indigo-500 text-white font-bold flex items-center space-x-0.5 shadow-sm"
+                        title={nameDayStatus.celebratingFamily
+                          .map((f) => `${f.member.name}: ${f.saint.saint[locale]}`)
+                          .join(', ')}
+                      >
+                        <span>🎂</span>
+                        <span className="hidden sm:inline">{locale === 'ja' ? '家族' : 'Fam'}</span>
+                      </span>
+                    )}
                     {hasFeast && (
                       <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-gold text-orthodox-navy font-bold line-clamp-1">
                         大祭
@@ -359,6 +419,7 @@ export function CalendarView() {
             .filter((d): d is Date => d !== null)
             .map((d) => {
               const info = getDayInfo(d);
+              const nameDayStatus = getNameDaysForDate(d);
               const isSelected =
                 inspectDate &&
                 inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
@@ -372,6 +433,8 @@ export function CalendarView() {
                   className={`w-full p-3 rounded-2xl border text-left flex items-start space-x-3 transition-all ${
                     isSelected
                       ? 'border-2 border-orthodox-gold bg-orthodox-candle/50 dark:bg-slate-800'
+                      : nameDayStatus.isUserPatron
+                      ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/20'
                       : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50'
                   }`}
                 >
@@ -394,6 +457,28 @@ export function CalendarView() {
                         ({formatJulianDate(d, locale)})
                       </span>
                     </div>
+
+                    {nameDayStatus.isUserPatron && (
+                      <div className="text-xs font-bold text-amber-600 dark:text-amber-400 mt-1 flex items-center space-x-1">
+                        <span>👑</span>
+                        <span>
+                          {locale === 'ja'
+                            ? `聖名日（あなたの守護聖人: ${userPatronSaint?.name[locale]}）`
+                            : `Your Name Day: ${userPatronSaint?.name[locale]}`}
+                        </span>
+                      </div>
+                    )}
+
+                    {nameDayStatus.celebratingFamily.length > 0 && (
+                      <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mt-0.5 flex items-center space-x-1">
+                        <span>🎂</span>
+                        <span>
+                          {nameDayStatus.celebratingFamily
+                            .map((f) => `${f.member.name} (${f.saint.saint[locale]})`)
+                            .join(', ')}
+                        </span>
+                      </div>
+                    )}
 
                     {info.feasts.length > 0 && (
                       <div className="font-bold text-sm text-orthodox-burgundy dark:text-orthodox-gold mt-1">
@@ -447,6 +532,59 @@ export function CalendarView() {
               {locale === 'ja' ? '「今日」画面で開く →' : locale === 'ru' ? 'В «Сегодня» →' : 'Open in Today →'}
             </button>
           </div>
+
+          {/* Name Day Celebration Card in Inspect Drawer */}
+          {(() => {
+            const inspectNameDays = getNameDaysForDate(inspectDate);
+            if (!inspectNameDays.isUserPatron && inspectNameDays.celebratingFamily.length === 0) return null;
+            return (
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orthodox-gold/20 to-amber-500/10 dark:from-amber-950/40 dark:via-orthodox-gold/10 dark:to-amber-950/30 border-2 border-amber-400 dark:border-amber-600 shadow-sm space-y-2 animate-in fade-in">
+                <div className="flex items-center space-x-2">
+                  <span className="text-2xl">{inspectNameDays.isUserPatron ? '👑' : '🎂'}</span>
+                  <h4 className="font-serif font-bold text-sm sm:text-base text-amber-950 dark:text-amber-100">
+                    {inspectNameDays.isUserPatron
+                      ? locale === 'ja'
+                        ? '聖名日のお祝い！あなたの守護聖人の日です！'
+                        : locale === 'ru'
+                        ? 'С Днём Ангела! День вашего святого покровителя!'
+                        : 'Happy Name Day! Your Patron Saint Day!'
+                      : locale === 'ja'
+                      ? 'ご家族・代子の聖名日です！'
+                      : locale === 'ru'
+                      ? 'Именины в вашей семье!'
+                      : 'Family Name Day Celebration!'}
+                  </h4>
+                </div>
+
+                <div className="text-xs text-amber-900 dark:text-amber-200 space-y-1 pl-1">
+                  {inspectNameDays.isUserPatron && userPatronSaint && (
+                    <div className="font-bold flex items-center space-x-1.5">
+                      <span>☦</span>
+                      <span>
+                        {userPatronSaint.name[locale]} — {userPatronSaint.saint[locale]}
+                      </span>
+                    </div>
+                  )}
+                  {inspectNameDays.celebratingFamily.map((f) => (
+                    <div key={f.member.id} className="font-medium flex items-center space-x-1.5">
+                      <span>🎉</span>
+                      <span>
+                        {f.member.name}: {f.saint.saint[locale]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-[11px] text-amber-800 dark:text-amber-300 font-serif italic pt-1 border-t border-amber-300/40 dark:border-amber-700/40">
+                  {locale === 'ja'
+                    ? '「多くの歳月を！（ムノガヤ・レタ）」神の豊かな恵みと加護がありますように。'
+                    : locale === 'ru'
+                    ? 'Многая лета! Молитвами святых ваших да хранит вас Господь!'
+                    : 'Many Years! (Mnogaya Leta!) May God grant you health and salvation through the prayers of your patron!'}
+                </p>
+              </div>
+            );
+          })()}
 
           {/* Fasting Details */}
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-start space-x-3">

@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { getDayInfo } from '../../lib/calendarEngine';
-import { COMMON_NAME_DAYS } from '../../data/nameDays';
 import { PARISH_SCHEDULE_2026 } from '../../data/parishSchedule2026';
 import { SCRIPTURE_DATABASE } from '../../data/scripturePassages';
 import {
@@ -21,9 +20,19 @@ import {
 import { formatJulianDate } from '../../lib/paschalion';
 import { Locale } from '../../lib/types';
 import { TONE_NAMES } from '../../data/terminology';
+import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifications';
 
 export function TodayView() {
-  const { locale, selectedDate, setSelectedDate, patronSaintId, familyMembers, showTooltips } = useApp();
+  const {
+    locale,
+    selectedDate,
+    setSelectedDate,
+    patronSaintId,
+    familyMembers,
+    showTooltips,
+    allSaints,
+    notificationPrefs,
+  } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>('epistle'); // open by default for rich immersion!
   const [copiedShare, setCopiedShare] = useState(false);
 
@@ -76,13 +85,40 @@ export function TodayView() {
     selectedDate.getDate()
   ).padStart(2, '0')}`;
 
-  const userPatronSaint = patronSaintId ? COMMON_NAME_DAYS.find((s) => s.id === patronSaintId) : null;
+  const userPatronSaint = (patronSaintId ? allSaints.find((s) => s.id === patronSaintId) : null) || null;
   const isUserPatronSaintToday = userPatronSaint ? userPatronSaint.feastDateCivil === currentMonthDay : false;
 
-  const celebratingFamilyMembers = familyMembers.filter((m) => {
-    const saint = COMMON_NAME_DAYS.find((s) => s.id === m.saintId);
-    return saint && saint.feastDateCivil === currentMonthDay;
-  });
+  const celebratingFamilyMembers = familyMembers
+    .map((m) => ({
+      member: m,
+      saint: allSaints.find((s) => s.id === m.saintId),
+    }))
+    .filter(
+      (x): x is { member: typeof familyMembers[0]; saint: (typeof allSaints)[0] } =>
+        Boolean(x.saint && x.saint.feastDateCivil === currentMonthDay)
+    );
+
+  // Trigger web notification if today is user's or family member's name day or daily readings are due
+  useEffect(() => {
+    if (notificationPrefs.nameDaysEnabled) {
+      const familyPayload = celebratingFamilyMembers.map((x) => ({
+        name: x.member.name,
+        saint: x.saint,
+      }));
+      notifyNameDaysIfDue(isUserPatronSaintToday, userPatronSaint, familyPayload, locale);
+    }
+    if (notificationPrefs.dailyReadingsEnabled && dayInfo.readings && dayInfo.readings.length > 0) {
+      notifyDailyReadingIfDue(dayInfo.readings, locale);
+    }
+  }, [
+    selectedDate,
+    isUserPatronSaintToday,
+    userPatronSaint,
+    celebratingFamilyMembers,
+    notificationPrefs,
+    locale,
+    dayInfo.readings,
+  ]);
 
   // Formatting date string
   const formatCivilDate = (date: Date) => {
@@ -176,7 +212,48 @@ export function TodayView() {
         )}
       </div>
 
-      {/* 2. Feast Day Celebratory Banner (if Major Feast) */}
+      {/* 2. TOP PRIORITY: Name Day Celebration Card */}
+      {(isUserPatronSaintToday || celebratingFamilyMembers.length > 0) && (
+        <div className="bg-gradient-to-r from-amber-500/20 via-orthodox-gold/30 to-amber-500/15 dark:from-amber-950/60 dark:via-orthodox-gold/20 dark:to-amber-950/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl p-4 shadow-md flex items-start space-x-3.5 animate-in fade-in">
+          <Award className="w-8 h-8 text-orthodox-gold flex-shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h4 className="font-serif font-bold text-sm sm:text-base text-amber-950 dark:text-amber-100">
+              {isUserPatronSaintToday
+                ? locale === 'ja'
+                  ? '👑 聖名日のお祝い！本日はあなたの守護聖人の記念日です！'
+                  : locale === 'ru'
+                  ? '👑 С Днём Ангела! Сегодня день памяти вашего святого покровителя!'
+                  : '👑 Happy Name Day! Today is your Patron Saint celebration!'
+                : locale === 'ja'
+                ? '🎂 ご家族の聖名日のお祝い！'
+                : locale === 'ru'
+                ? '🎂 Именины в вашей семье!'
+                : '🎂 Family Name Day Celebration!'}
+            </h4>
+            <div className="text-xs text-amber-900 dark:text-amber-200 space-y-0.5">
+              {isUserPatronSaintToday && userPatronSaint && (
+                <p className="font-semibold">
+                  ☦ {userPatronSaint.name[locale]} — {userPatronSaint.saint[locale]}
+                </p>
+              )}
+              {celebratingFamilyMembers.map((item) => (
+                <p key={item.member.id} className="font-medium">
+                  🎉 {item.member.name}: {item.saint.saint[locale]}
+                </p>
+              ))}
+            </div>
+            <p className="text-[11px] text-amber-800 dark:text-amber-300 font-serif italic pt-0.5 border-t border-amber-300/40 dark:border-amber-700/40">
+              {locale === 'ja'
+                ? '「多くの歳月を！（ムノガヤ・レタ）」聖人の執り成しにより主の恵みが豊かにありますように。'
+                : locale === 'ru'
+                ? 'Многая и благая лета! Молитвами святых ваших да укрепит вас Господь!'
+                : 'Many Years! (Mnogaya Leta!) May your holy patrons intercede for you before God!'}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 3. Feast Day Celebratory Banner (if Major Feast) */}
       {dayInfo.feasts.length > 0 && (
         <div className="bg-gradient-to-r from-orthodox-burgundy via-orthodox-burgundy-light to-orthodox-burgundy text-white p-4 rounded-2xl shadow-md border-2 border-orthodox-gold flex items-center space-x-3.5">
           <div className="w-12 h-12 rounded-full bg-orthodox-gold flex items-center justify-center text-orthodox-navy font-bold text-2xl flex-shrink-0 shadow">
@@ -193,7 +270,7 @@ export function TodayView() {
         </div>
       )}
 
-      {/* 3. Fasting Rule Card */}
+      {/* 4. Fasting Rule Card */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
@@ -231,50 +308,6 @@ export function TodayView() {
           </div>
         )}
       </div>
-
-      {/* 4. Name Day Celebration Card */}
-      {(isUserPatronSaintToday || celebratingFamilyMembers.length > 0) && (
-        <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-orthodox-gold rounded-2xl p-4 shadow-sm flex items-start space-x-3.5 animate-in fade-in">
-          <Award className="w-8 h-8 text-orthodox-gold flex-shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <h4 className="font-serif font-bold text-sm sm:text-base text-amber-950 dark:text-amber-100">
-              {isUserPatronSaintToday
-                ? locale === 'ja'
-                  ? '聖名日のお祝い！本日はあなたの守護聖人の記念日です！'
-                  : locale === 'ru'
-                  ? 'С Днём Ангела! Сегодня день памяти вашего святого покровителя!'
-                  : 'Happy Name Day! Today is your Patron Saint celebration!'
-                : locale === 'ja'
-                ? 'ご家族の聖名日のお祝い！'
-                : locale === 'ru'
-                ? 'Именины в вашей семье!'
-                : 'Family Name Day Celebration!'}
-            </h4>
-            <div className="text-xs text-amber-900 dark:text-amber-200 space-y-0.5">
-              {isUserPatronSaintToday && userPatronSaint && (
-                <p className="font-semibold">
-                  ☦ {userPatronSaint.name[locale]} — {userPatronSaint.saint[locale]}
-                </p>
-              )}
-              {celebratingFamilyMembers.map((m) => {
-                const saint = COMMON_NAME_DAYS.find((s) => s.id === m.saintId);
-                return (
-                  <p key={m.id} className="font-medium">
-                    🎉 {m.name}: {saint ? `${saint.saint[locale]}` : ''}
-                  </p>
-                );
-              })}
-            </div>
-            <p className="text-[11px] text-amber-800 dark:text-amber-300 font-serif italic pt-0.5">
-              {locale === 'ja'
-                ? '「多くの歳月を！（ムノガヤ・レタ）」聖人の執り成しにより主の恵みが豊かにありますように。'
-                : locale === 'ru'
-                ? 'Многая и благая лета! Молитвами святых ваших да укрепит вас Господь!'
-                : 'Many Years! (Mnogaya Leta!) May your holy patrons intercede for you before God!'}
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* 5. Saints Commemorated Card with Real Biographies */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">

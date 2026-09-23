@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import { useApp, FontSize } from '../../context/AppContext';
-import { COMMON_NAME_DAYS } from '../../data/nameDays';
-import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle } from 'lucide-react';
+import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell } from 'lucide-react';
 import { Locale } from '../../lib/types';
 import { SaintSearchCombobox } from './SaintSearchCombobox';
+import { isNotificationSupported, getNotificationPermission } from '../../lib/notifications';
 
 export function SettingsModal() {
   const {
@@ -24,6 +24,10 @@ export function SettingsModal() {
     removeFamilyMember,
     showTooltips,
     setShowTooltips,
+    allSaints,
+    notificationPrefs,
+    setNotificationPrefs,
+    requestNotificationPermission,
   } = useApp();
 
   const [newMemberName, setNewMemberName] = useState('');
@@ -190,7 +194,7 @@ export function SettingsModal() {
             {familyMembers.length > 0 && (
               <ul className="space-y-1.5 mb-2">
                 {familyMembers.map((m) => {
-                  const saint = COMMON_NAME_DAYS.find((s) => s.id === m.saintId);
+                  const saint = allSaints.find((s) => s.id === m.saintId);
                   return (
                     <li
                       key={m.id}
@@ -203,6 +207,11 @@ export function SettingsModal() {
                         <span className="text-slate-500 block sm:inline text-xs">
                           {saint ? `${saint.saint[locale]} (${saint.feastDateCivil})` : ''}
                         </span>
+                        {saint?.isCustom && (
+                          <span className="ml-1.5 text-[9px] py-0.2 px-1 rounded bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-semibold">
+                            {locale === 'ja' ? '手動登録' : 'Custom'}
+                          </span>
+                        )}
                       </div>
                       <button
                         onClick={() => removeFamilyMember(m.id)}
@@ -259,7 +268,97 @@ export function SettingsModal() {
             </form>
           </section>
 
-          {/* 6. Contextual Help Tooltips Toggle */}
+          {/* 6. Notifications Preferences */}
+          <section className="space-y-3 p-3.5 bg-white dark:bg-slate-800 rounded-xl border border-orthodox-gold/30">
+            <div className="flex items-center space-x-2">
+              <Bell className="w-4 h-4 text-orthodox-gold" />
+              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                {locale === 'ja' ? '通知設定（Webプッシュ通知）' : locale === 'ru' ? 'Уведомления' : 'Notifications'}
+              </h3>
+            </div>
+
+            {/* Permission status request banner if needed */}
+            {isNotificationSupported() && getNotificationPermission() !== 'granted' && (
+              <div className="p-2.5 rounded-lg bg-orthodox-candle/40 dark:bg-slate-700/60 border border-orthodox-gold/40 flex items-center justify-between">
+                <span className="text-xs text-slate-600 dark:text-slate-300">
+                  {locale === 'ja' ? '通知を受け取るにはブラウザの許可が必要です' : 'Browser permission needed for notifications'}
+                </span>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const granted = await requestNotificationPermission();
+                    if (granted) {
+                      setNotificationPrefs({
+                        dailyReadingsEnabled: true,
+                        nameDaysEnabled: true,
+                      });
+                    }
+                  }}
+                  className="py-1 px-2.5 rounded-md bg-orthodox-gold text-orthodox-navy font-bold text-xs hover:bg-orthodox-gold-dark transition-all flex-shrink-0 ml-2"
+                >
+                  {locale === 'ja' ? '通知を許可' : 'Allow'}
+                </button>
+              </div>
+            )}
+
+            {/* Daily Readings Toggle */}
+            <div className="flex items-start justify-between space-x-3 pt-1">
+              <div className="space-y-0.5">
+                <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 block">
+                  {locale === 'ja' ? '日課聖書朗読のリマインダー' : locale === 'ru' ? 'Напоминание о чтениях дня' : 'Daily Scripture Reading Reminders'}
+                </span>
+                <p className="text-[11px] text-slate-500 leading-tight">
+                  {locale === 'ja'
+                    ? '毎日の使徒経と福音経の朗読箇所をお知らせします。'
+                    : locale === 'ru'
+                    ? 'Ежедневное напоминание о зачалах Апостола и Евангелия.'
+                    : 'Reminders for the daily Epistle and Gospel readings.'}
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                checked={notificationPrefs.dailyReadingsEnabled}
+                onChange={async (e) => {
+                  if (e.target.checked && getNotificationPermission() !== 'granted') {
+                    const granted = await requestNotificationPermission();
+                    if (!granted) return;
+                  }
+                  setNotificationPrefs({ dailyReadingsEnabled: e.target.checked });
+                }}
+                className="w-5 h-5 accent-orthodox-gold rounded cursor-pointer mt-0.5"
+              />
+            </div>
+
+            {/* Name Day Reminders Toggle */}
+            <div className="flex items-start justify-between space-x-3 pt-2 border-t border-slate-100 dark:border-slate-700/60">
+              <div className="space-y-0.5">
+                <span className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 block">
+                  {locale === 'ja' ? '聖名祝日（名前の日）の通知' : locale === 'ru' ? 'Напоминания об именинах' : 'Name Day Reminders'}
+                </span>
+                <p className="text-[11px] text-slate-500 leading-tight">
+                  {locale === 'ja'
+                    ? 'あなたの守護聖人、および登録したご家族・代子の聖名日の朝にお祝い通知を届けます。'
+                    : locale === 'ru'
+                    ? 'Поздравление и напоминание в день именин вас и членов вашей семьи.'
+                    : 'Morning blessing notification on your or family members’ holy name days.'}
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                checked={notificationPrefs.nameDaysEnabled}
+                onChange={async (e) => {
+                  if (e.target.checked && getNotificationPermission() !== 'granted') {
+                    const granted = await requestNotificationPermission();
+                    if (!granted) return;
+                  }
+                  setNotificationPrefs({ nameDaysEnabled: e.target.checked });
+                }}
+                className="w-5 h-5 accent-orthodox-gold rounded cursor-pointer mt-0.5"
+              />
+            </div>
+          </section>
+
+          {/* 7. Contextual Help Tooltips Toggle */}
           <section className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-orthodox-gold/30">
             <div className="flex items-center space-x-2">
               <HelpCircle className="w-4 h-4 text-orthodox-gold" />

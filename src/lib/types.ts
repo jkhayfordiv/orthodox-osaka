@@ -83,6 +83,14 @@ export interface NameDayEntry {
   feastDateCivil: string; // MM-DD
   feastDateJulian: string; // MM-DD
   aliases?: string[];
+  isCustom?: boolean;
+}
+
+export interface NotificationPreferences {
+  dailyReadingsEnabled: boolean;
+  dailyReadingsTime: string; // e.g. "08:00"
+  nameDaysEnabled: boolean;
+  nameDaysTime: string; // e.g. "08:00"
 }
 
 export interface DayInfo {

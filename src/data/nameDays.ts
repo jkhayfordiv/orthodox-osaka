@@ -5365,5 +5365,874 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "богдан",
       "феодот"
     ]
+  },
+  {
+    "id": "nd-kevin-glendalough",
+    "name": {
+      "ja": "ケヴィン",
+      "en": "Kevin of Glendalough",
+      "ru": "Кевин Глендалохский"
+    },
+    "saint": {
+      "ja": "グレンダロッホの修道院頭克肖者聖ケヴィン（アイルランドの隠修士）",
+      "en": "Venerable Kevin, Abbot of Glendalough (Ireland)",
+      "ru": "Преподобный Кевин, игумен Глендалохский"
+    },
+    "feastDateCivil": "06-16",
+    "feastDateJulian": "06-03",
+    "aliases": [
+      "kevin",
+      "кевин",
+      "ireland"
+    ]
+  },
+  {
+    "id": "nd-brendan-navigator",
+    "name": {
+      "ja": "ブレンダン",
+      "en": "Brendan the Navigator",
+      "ru": "Брендан Мореплаватель"
+    },
+    "saint": {
+      "ja": "クロンファートの修道院頭克肖者聖航海者ブレンダン",
+      "en": "Venerable Brendan the Navigator, Abbot of Clonfert",
+      "ru": "Преподобный Брендан Мореплаватель, игумен Клонфертский"
+    },
+    "feastDateCivil": "05-29",
+    "feastDateJulian": "05-16",
+    "aliases": [
+      "brendan",
+      "navigator",
+      "брендан"
+    ]
+  },
+  {
+    "id": "nd-alban-britain",
+    "name": {
+      "ja": "アルバン",
+      "en": "Alban of Britain",
+      "ru": "Албан Британский"
+    },
+    "saint": {
+      "ja": "ブリテンの初致命者聖アルバン",
+      "en": "Holy Protomartyr Alban of Britain (Verulamium)",
+      "ru": "Святой первомученик Албан Британский"
+    },
+    "feastDateCivil": "07-05",
+    "feastDateJulian": "06-22",
+    "aliases": [
+      "alban",
+      "албан"
+    ]
+  },
+  {
+    "id": "nd-chad-lichfield",
+    "name": {
+      "ja": "チャド",
+      "en": "Chad of Lichfield",
+      "ru": "Чед Личфилдский"
+    },
+    "saint": {
+      "ja": "リッチフィールドの主教聖チャド",
+      "en": "St. Chad, Bishop of Lichfield",
+      "ru": "Святитель Чед, епископ Личфилдский"
+    },
+    "feastDateCivil": "03-15",
+    "feastDateJulian": "03-02",
+    "aliases": [
+      "chad",
+      "чед"
+    ]
+  },
+  {
+    "id": "nd-hilda-whitby",
+    "name": {
+      "ja": "ヒルダ",
+      "en": "Hilda of Whitby",
+      "ru": "Хильда Уитбийская"
+    },
+    "saint": {
+      "ja": "ウィットビーの修道院長克肖女聖ヒルダ",
+      "en": "Venerable Hilda, Abbess of Whitby",
+      "ru": "Преподобная Хильда, игумения Уитбийская"
+    },
+    "feastDateCivil": "11-30",
+    "feastDateJulian": "11-17",
+    "aliases": [
+      "hilda",
+      "хильда"
+    ]
+  },
+  {
+    "id": "nd-audrey-ely",
+    "name": {
+      "ja": "オードリー",
+      "en": "Audrey / Etheldreda of Ely",
+      "ru": "Этельдреда (Одри)"
+    },
+    "saint": {
+      "ja": "イーリーの修道院長王妃克肖女聖オードリー（エセルドレダ）",
+      "en": "Venerable Etheldreda (Audrey), Queen and Abbess of Ely",
+      "ru": "Преподобная Этельдреда (Одри), игумения Илийская"
+    },
+    "feastDateCivil": "07-06",
+    "feastDateJulian": "06-23",
+    "aliases": [
+      "audrey",
+      "etheldreda",
+      "этельдреда",
+      "одри"
+    ]
+  },
+  {
+    "id": "nd-mildred-thanet",
+    "name": {
+      "ja": "ミルドレッド",
+      "en": "Mildred of Thanet",
+      "ru": "Милдред Танетская"
+    },
+    "saint": {
+      "ja": "サネットの修道院長克肖女聖ミルドレッド",
+      "en": "Venerable Mildred (Mildgytha), Abbess of Minster-in-Thanet",
+      "ru": "Преподобная Милдред, игумения Танетская"
+    },
+    "feastDateCivil": "07-26",
+    "feastDateJulian": "07-13",
+    "aliases": [
+      "mildred",
+      "милдред"
+    ]
+  },
+  {
+    "id": "nd-dunstan-canterbury",
+    "name": {
+      "ja": "ダンスタン",
+      "en": "Dunstan of Canterbury",
+      "ru": "Дунстан Кентерберийский"
+    },
+    "saint": {
+      "ja": "カンタベリーの大主教聖ダンスタン",
+      "en": "St. Dunstan, Archbishop of Canterbury",
+      "ru": "Святитель Дунстан, архиепископ Кентерберийский"
+    },
+    "feastDateCivil": "06-01",
+    "feastDateJulian": "05-19",
+    "aliases": [
+      "dunstan",
+      "дунстан"
+    ]
+  },
+  {
+    "id": "nd-felix-dunwich",
+    "name": {
+      "ja": "フェリックス",
+      "en": "Felix of Dunwich",
+      "ru": "Феликс Данвичский"
+    },
+    "saint": {
+      "ja": "ダンウィッチの主教聖フェリックス（東アングリアの使徒）",
+      "en": "St. Felix, Bishop of Dunwich, Apostle to East Anglia",
+      "ru": "Святитель Феликс, епископ Данвичский"
+    },
+    "feastDateCivil": "03-21",
+    "feastDateJulian": "03-08",
+    "aliases": [
+      "felix",
+      "феликс"
+    ]
+  },
+  {
+    "id": "nd-swithun-winchester",
+    "name": {
+      "ja": "スウィジン",
+      "en": "Swithun of Winchester",
+      "ru": "Свитун Винчестерский"
+    },
+    "saint": {
+      "ja": "ウィンチェスターの主教聖スウィジン",
+      "en": "St. Swithun, Bishop of Winchester",
+      "ru": "Святитель Свитун, епископ Винчестерский"
+    },
+    "feastDateCivil": "07-15",
+    "feastDateJulian": "07-02",
+    "aliases": [
+      "swithun",
+      "swithen",
+      "свитун"
+    ]
+  },
+  {
+    "id": "nd-ursula-cologne",
+    "name": {
+      "ja": "ウルズラ",
+      "en": "Ursula of Cologne",
+      "ru": "Урсула Кёльнская"
+    },
+    "saint": {
+      "ja": "ケルンの聖童女致命女ウルズラ",
+      "en": "Holy Virgin-Martyr Ursula of Cologne",
+      "ru": "Святая мученица Урсула Кёльнская"
+    },
+    "feastDateCivil": "11-03",
+    "feastDateJulian": "10-21",
+    "aliases": [
+      "ursula",
+      "урсула"
+    ]
+  },
+  {
+    "id": "nd-boniface-germany",
+    "name": {
+      "ja": "ボニファティウス",
+      "en": "Boniface Apostle to Germany",
+      "ru": "Бонифаций (Винфрид)"
+    },
+    "saint": {
+      "ja": "ドイツの光照者大主教神品致命者聖ボニファティウス（ヴィンフリト）",
+      "en": "Hieromartyr Boniface (Winfrid), Apostle of Germany",
+      "ru": "Священномученик Бонифаций (Винфрид), просветитель Германии"
+    },
+    "feastDateCivil": "06-18",
+    "feastDateJulian": "06-05",
+    "aliases": [
+      "boniface",
+      "winfrid",
+      "бонифаций"
+    ]
+  },
+  {
+    "id": "nd-basil-ostrog",
+    "name": {
+      "ja": "ワシリイ",
+      "en": "Basil of Ostrog",
+      "ru": "Василий Острожский"
+    },
+    "saint": {
+      "ja": "オストログの奇蹟者主教聖ワシリイ（セルビア・モンテネグロ）",
+      "en": "St. Basil of Ostrog the Wonderworker (Serbia & Montenegro)",
+      "ru": "Святитель Василий Острожский, чудотворец"
+    },
+    "feastDateCivil": "05-12",
+    "feastDateJulian": "04-29",
+    "aliases": [
+      "ostrog",
+      "острожский",
+      "basil"
+    ]
+  },
+  {
+    "id": "nd-stephen-decani",
+    "name": {
+      "ja": "ステファン",
+      "en": "Stephen of Decani",
+      "ru": "Стефан Дечанский"
+    },
+    "saint": {
+      "ja": "デチャニの聖王大致命者ステファン（セルビアの盲目王）",
+      "en": "Holy Great-Martyr King Stephen of Decani (Serbia)",
+      "ru": "Святой благоверный великомученик Стефан Дечанский, царь Сербский"
+    },
+    "feastDateCivil": "11-24",
+    "feastDateJulian": "11-11",
+    "aliases": [
+      "decani",
+      "дечанский",
+      "stephen",
+      "stepan"
+    ]
+  },
+  {
+    "id": "nd-peter-cetinje",
+    "name": {
+      "ja": "ペトル",
+      "en": "Peter of Cetinje",
+      "ru": "Пётр Цетинский"
+    },
+    "saint": {
+      "ja": "ツェティニェの奇蹟者大主教聖ペトル（モンテネグロ）",
+      "en": "St. Peter of Cetinje, Metropolitan and Wonderworker of Montenegro",
+      "ru": "Святитель Пётр Цетинский, митрополит Черногорский, чудотворец"
+    },
+    "feastDateCivil": "10-31",
+    "feastDateJulian": "10-18",
+    "aliases": [
+      "cetinje",
+      "цетинский",
+      "peter"
+    ]
+  },
+  {
+    "id": "nd-john-vladimir",
+    "name": {
+      "ja": "イオアン・ウラジーミル",
+      "en": "John Vladimir of Serbia",
+      "ru": "Иоанн Владимир Сербский"
+    },
+    "saint": {
+      "ja": "セルビアの聖王致命者イオアン・ウラジーミル",
+      "en": "Holy Martyr-King John Vladimir of Serbia",
+      "ru": "Святой благоверный князь Иоанн Владимир, чудотворец Сербский"
+    },
+    "feastDateCivil": "06-04",
+    "feastDateJulian": "05-22",
+    "aliases": [
+      "vladimir",
+      "serbia",
+      "иоанн владимир"
+    ]
+  },
+  {
+    "id": "nd-ephraim-nea-makri",
+    "name": {
+      "ja": "エフレム",
+      "en": "Ephraim of Nea Makri",
+      "ru": "Ефрем Новый (Неа-Макри)"
+    },
+    "saint": {
+      "ja": "新マクリの大聖致命者奇蹟者聖エフレム（ギリシャ）",
+      "en": "Holy Great-Martyr and Wonderworker Ephraim of Nea Makri (Greece)",
+      "ru": "Святой преподобномученик Ефрем Новый, Неа-Макрийский чудотворец"
+    },
+    "feastDateCivil": "05-18",
+    "feastDateJulian": "05-05",
+    "aliases": [
+      "ephraim",
+      "nea makri",
+      "ефрем новый"
+    ]
+  },
+  {
+    "id": "nd-fanourios-rhodes",
+    "name": {
+      "ja": "ファヌリオス",
+      "en": "Fanourios of Rhodes",
+      "ru": "Фанурий Родосский"
+    },
+    "saint": {
+      "ja": "ロードス島の新顕聖致命者ファヌリオス（失せ物発見の祈祷者）",
+      "en": "Holy Great-Martyr Fanourios the Newly-Appeared of Rhodes",
+      "ru": "Святой великомученик Фанурий Родосский"
+    },
+    "feastDateCivil": "09-09",
+    "feastDateJulian": "08-27",
+    "aliases": [
+      "fanourios",
+      "phanourios",
+      "фанурий"
+    ]
+  },
+  {
+    "id": "nd-stylianos-paphlagonia",
+    "name": {
+      "ja": "スティリアノス",
+      "en": "Stylianos of Paphlagonia",
+      "ru": "Стилиан Пафлагонский"
+    },
+    "saint": {
+      "ja": "パフラゴニアの克肖者聖スティリアノス（幼児と子どもの守護聖人）",
+      "en": "Venerable Stylianos of Paphlagonia, Protector of Children",
+      "ru": "Преподобный Стилиан Пафлагонский, покровитель детей"
+    },
+    "feastDateCivil": "12-09",
+    "feastDateJulian": "11-26",
+    "aliases": [
+      "stylianos",
+      "stilian",
+      "стилиан"
+    ]
+  },
+  {
+    "id": "nd-gerasimos-cephalonia",
+    "name": {
+      "ja": "ゲラシモス",
+      "en": "Gerasimos of Cephalonia",
+      "ru": "Герасим Кефалонийский"
+    },
+    "saint": {
+      "ja": "ケファロニア島の克肖者奇蹟者聖ゲラシモス",
+      "en": "Venerable Gerasimos of Cephalonia the Wonderworker",
+      "ru": "Преподобный Герасим Кефалонийский, чудотворец"
+    },
+    "feastDateCivil": "10-29",
+    "feastDateJulian": "10-16",
+    "aliases": [
+      "gerasimos",
+      "герасим",
+      "кефалонийский"
+    ]
+  },
+  {
+    "id": "nd-dionysios-zakynthos",
+    "name": {
+      "ja": "ディオニシオス",
+      "en": "Dionysios of Zakynthos",
+      "ru": "Дионисий Закинфский"
+    },
+    "saint": {
+      "ja": "ザキントス島のエギナの大主教聖ディオニシオス（赦しの聖人）",
+      "en": "St. Dionysios of Zakynthos, Archbishop of Aegina (Saint of Forgiveness)",
+      "ru": "Святитель Дионисий Закинфский, архиепископ Эгинский"
+    },
+    "feastDateCivil": "12-30",
+    "feastDateJulian": "12-17",
+    "aliases": [
+      "dionysios",
+      "zakynthos",
+      "дионисий закинфский"
+    ]
+  },
+  {
+    "id": "nd-philothei-athens",
+    "name": {
+      "ja": "フィロフェイ",
+      "en": "Philothei of Athens",
+      "ru": "Филофея Афинская"
+    },
+    "saint": {
+      "ja": "アテネの克肖致命女聖フィロフェイ（アテネの貴婦人守護女）",
+      "en": "Venerable-Martyr Philothei of Athens",
+      "ru": "Преподобномученица Филофея Афинская"
+    },
+    "feastDateCivil": "03-02",
+    "feastDateJulian": "02-17",
+    "aliases": [
+      "philothei",
+      "филофея"
+    ]
+  },
+  {
+    "id": "nd-iakovos-evia",
+    "name": {
+      "ja": "イアコフ",
+      "en": "Iakovos of Evia",
+      "ru": "Иаков Эвбейский (Цаликис)"
+    },
+    "saint": {
+      "ja": "エヴィア島の克肖者長老聖イアコフ（ツァリキス）",
+      "en": "Venerable Iakovos (Tsalikis) of Evia",
+      "ru": "Преподобный Иаков (Цаликис) Эвбейский"
+    },
+    "feastDateCivil": "11-22",
+    "feastDateJulian": "11-09",
+    "aliases": [
+      "iakovos",
+      "tsalikis",
+      "иаков"
+    ]
+  },
+  {
+    "id": "nd-amphilochios-patmos",
+    "name": {
+      "ja": "アンフィロヒオス",
+      "en": "Amphilochios of Patmos",
+      "ru": "Амфилохий Патмосский"
+    },
+    "saint": {
+      "ja": "パトモス島の克肖者長老聖アンフィロヒオス（マクリス）",
+      "en": "Venerable Amphilochios (Makris) of Patmos",
+      "ru": "Преподобный Амфилохий (Макрис) Патмосский"
+    },
+    "feastDateCivil": "04-16",
+    "feastDateJulian": "04-03",
+    "aliases": [
+      "amphilochios",
+      "amfilokhy",
+      "амфилохий"
+    ]
+  },
+  {
+    "id": "nd-sophrony-essex",
+    "name": {
+      "ja": "ソフロニイ",
+      "en": "Sophrony of Essex",
+      "ru": "Софроний (Сахаров) Эссекский"
+    },
+    "saint": {
+      "ja": "エセックスの克肖者聖ソフロニイ（サハロフ / アトス長老シルアンの弟子）",
+      "en": "Venerable Sophrony (Sakharov) of Essex",
+      "ru": "Преподобный Софроний (Сахаров) Эссекский"
+    },
+    "feastDateCivil": "07-11",
+    "feastDateJulian": "06-28",
+    "aliases": [
+      "sophrony",
+      "sakharov",
+      "софроний"
+    ]
+  },
+  {
+    "id": "nd-markella-chios",
+    "name": {
+      "ja": "マルケラ",
+      "en": "Markella of Chios",
+      "ru": "Маркелла Хиосская"
+    },
+    "saint": {
+      "ja": "ヒオス島の聖童女致命女マルケラ",
+      "en": "Holy Virgin-Martyr Markella of Chios",
+      "ru": "Святая дева-мученица Маркелла Хиосская"
+    },
+    "feastDateCivil": "08-04",
+    "feastDateJulian": "07-22",
+    "aliases": [
+      "markella",
+      "маркелла"
+    ]
+  },
+  {
+    "id": "nd-kyriaki-greatmartyr",
+    "name": {
+      "ja": "キリアキ",
+      "en": "Kyriaki the Great-Martyr",
+      "ru": "Кириакия Никомидийская"
+    },
+    "saint": {
+      "ja": "ニコメディアの大聖童女致命女キリアキ（主日生まれ）",
+      "en": "Holy Great-Martyr Kyriaki (Sunday)",
+      "ru": "Святая великомученица Кириакия Никомидийская"
+    },
+    "feastDateCivil": "07-20",
+    "feastDateJulian": "07-07",
+    "aliases": [
+      "kyriaki",
+      "кириакия"
+    ]
+  },
+  {
+    "id": "nd-glykeria-martyr",
+    "name": {
+      "ja": "グリケリヤ",
+      "en": "Glykeria the Martyr",
+      "ru": "Гликерия Гераклейская"
+    },
+    "saint": {
+      "ja": "ヘラクレアの聖童女致命女グリケリヤ",
+      "en": "Holy Virgin-Martyr Glykeria of Heraclea",
+      "ru": "Святая мученица Гликерия Гераклейская"
+    },
+    "feastDateCivil": "05-26",
+    "feastDateJulian": "05-13",
+    "aliases": [
+      "glykeria",
+      "гликерия"
+    ]
+  },
+  {
+    "id": "nd-tabitha-joppa",
+    "name": {
+      "ja": "タヴィファ",
+      "en": "Tabitha / Dorcas of Joppa",
+      "ru": "Тавифа Иоппийская"
+    },
+    "saint": {
+      "ja": "ヤッファの義人慈善女聖タヴィファ（ドルカス / ペトル使徒により甦りし者）",
+      "en": "Righteous Tabitha (Dorcas) of Joppa, raised by Apostle Peter",
+      "ru": "Праведная Тавифа Иоппийская"
+    },
+    "feastDateCivil": "11-07",
+    "feastDateJulian": "10-25",
+    "aliases": [
+      "tabitha",
+      "dorcas",
+      "тавифа"
+    ]
+  },
+  {
+    "id": "nd-priscilla-aquila",
+    "name": {
+      "ja": "プリスキラとアキラ",
+      "en": "Priscilla and Aquila",
+      "ru": "Прискилла и Акила"
+    },
+    "saint": {
+      "ja": "聖使徒パウェルの同志聖プリスキラとアキラ",
+      "en": "Holy Apostles Priscilla and Aquila (Helpers of St. Paul)",
+      "ru": "Святые апостолы Прискилла и Акила"
+    },
+    "feastDateCivil": "02-26",
+    "feastDateJulian": "02-13",
+    "aliases": [
+      "priscilla",
+      "aquila",
+      "прискилла",
+      "акила"
+    ]
+  },
+  {
+    "id": "nd-basil-blessed-moscow",
+    "name": {
+      "ja": "ワシリイ",
+      "en": "Basil the Blessed of Moscow",
+      "ru": "Василий Блаженный"
+    },
+    "saint": {
+      "ja": "モスクワのハリストスのための佯狂者奇蹟者聖福者ワシリイ（赤の広場聖堂）",
+      "en": "Blessed Basil of Moscow, Fool-for-Christ and Wonderworker",
+      "ru": "Святой блаженный Василий, Христа ради юродивый, Московский чудотворец"
+    },
+    "feastDateCivil": "08-15",
+    "feastDateJulian": "08-02",
+    "aliases": [
+      "basil the blessed",
+      "василий блаженный"
+    ]
+  },
+  {
+    "id": "nd-sophia-slutsk",
+    "name": {
+      "ja": "ソフィヤ",
+      "en": "Sophia of Slutsk",
+      "ru": "София Слуцкая"
+    },
+    "saint": {
+      "ja": "スウツクの聖公妃正教の護持者ソフィヤ",
+      "en": "Holy Right-Believing Princess Sophia of Slutsk",
+      "ru": "Святая праведная София, княгиня Слуцкая"
+    },
+    "feastDateCivil": "04-01",
+    "feastDateJulian": "03-19",
+    "aliases": [
+      "slutsk",
+      "слуцкая",
+      "софия"
+    ]
+  },
+  {
+    "id": "nd-paisius-velichkovsky",
+    "name": {
+      "ja": "パイシイ",
+      "en": "Paisius Velichkovsky",
+      "ru": "Паисий Величковский"
+    },
+    "saint": {
+      "ja": "モルダヴィア・ニャメツの克肖者長老聖パイシイ（フィロカリア翻訳者）",
+      "en": "Venerable Paisius (Velichkovsky) of Moldavia (Translator of Philokalia)",
+      "ru": "Преподобный Паисий Величковский"
+    },
+    "feastDateCivil": "11-28",
+    "feastDateJulian": "11-15",
+    "aliases": [
+      "velichkovsky",
+      "величковский",
+      "paisius"
+    ]
+  },
+  {
+    "id": "nd-philaret-moscow",
+    "name": {
+      "ja": "フィラレート",
+      "en": "Philaret of Moscow",
+      "ru": "Филарет Московский"
+    },
+    "saint": {
+      "ja": "モスクワの大主教知恵者聖フィラレート（ドルズドフ）",
+      "en": "St. Philaret (Drozdov), Metropolitan of Moscow",
+      "ru": "Святитель Филарет (Дроздов), митрополит Московский"
+    },
+    "feastDateCivil": "12-02",
+    "feastDateJulian": "11-19",
+    "aliases": [
+      "philaret",
+      "филарет",
+      "московский"
+    ]
+  },
+  {
+    "id": "nd-tikhon-zadonsk",
+    "name": {
+      "ja": "ティホン",
+      "en": "Tikhon of Zadonsk",
+      "ru": "Тихон Задонский"
+    },
+    "saint": {
+      "ja": "ザドンスクの主教奇蹟者聖ティホン（ヴォロネジ）",
+      "en": "St. Tikhon of Zadonsk, Bishop of Voronezh, Wonderworker",
+      "ru": "Святитель Тихон Задонский, епископ Воронежский, чудотворец"
+    },
+    "feastDateCivil": "08-26",
+    "feastDateJulian": "08-13",
+    "aliases": [
+      "zadonsk",
+      "задонский",
+      "tikhon"
+    ]
+  },
+  {
+    "id": "nd-mitrophan-voronezh",
+    "name": {
+      "ja": "ミトロファン",
+      "en": "Mitrophan of Voronezh",
+      "ru": "Митрофан Воронежский"
+    },
+    "saint": {
+      "ja": "ヴォロネジの主教奇蹟者聖ミトロファン",
+      "en": "St. Mitrophan, Bishop of Voronezh, Wonderworker",
+      "ru": "Святитель Митрофан, епископ Воронежский, чудотворец"
+    },
+    "feastDateCivil": "08-20",
+    "feastDateJulian": "08-07",
+    "aliases": [
+      "mitrophan",
+      "митрофан"
+    ]
+  },
+  {
+    "id": "nd-stephen-perm",
+    "name": {
+      "ja": "ステファン",
+      "en": "Stephen of Perm",
+      "ru": "Стефан Пермский"
+    },
+    "saint": {
+      "ja": "ペルミの光照者主教聖ステファン（コミ族の使徒）",
+      "en": "St. Stephen, Bishop and Enlightener of Perm",
+      "ru": "Святитель Стефан, епископ Пермский, просветитель Зырян"
+    },
+    "feastDateCivil": "05-09",
+    "feastDateJulian": "04-26",
+    "aliases": [
+      "perm",
+      "пермский",
+      "stephen",
+      "stepan"
+    ]
+  },
+  {
+    "id": "nd-anna-kashin",
+    "name": {
+      "ja": "アンナ",
+      "en": "Anna of Kashin",
+      "ru": "Анна Кашинская"
+    },
+    "saint": {
+      "ja": "カシンの公妃克肖女聖アンナ",
+      "en": "Holy Right-Believing Princess Anna of Kashin",
+      "ru": "Святая благоверная великая княгиня Анна Кашинская"
+    },
+    "feastDateCivil": "10-15",
+    "feastDateJulian": "10-02",
+    "aliases": [
+      "kashin",
+      "кашинская",
+      "анна"
+    ]
+  },
+  {
+    "id": "nd-job-prophet",
+    "name": {
+      "ja": "イオフ",
+      "en": "Job the Long-Suffering",
+      "ru": "Иов Многострадальный"
+    },
+    "saint": {
+      "ja": "義人多難の聖イオフ（ヨブ記）",
+      "en": "Holy Righteous Job the Long-Suffering",
+      "ru": "Святой праведный Иов Многострадальный"
+    },
+    "feastDateCivil": "05-19",
+    "feastDateJulian": "05-06",
+    "aliases": [
+      "job",
+      "иов",
+      "многострадальный",
+      "ヨブ"
+    ]
+  },
+  {
+    "id": "nd-sarah-matriarch",
+    "name": {
+      "ja": "サラ",
+      "en": "Sarah the Matriarch",
+      "ru": "Сарра Праматерь"
+    },
+    "saint": {
+      "ja": "太祖アヴラアムの妻義人聖サラ（太祖の主日）",
+      "en": "Holy Forebear Sarah, Wife of Abraham",
+      "ru": "Святая праматерь Сарра"
+    },
+    "feastDateCivil": "12-25",
+    "feastDateJulian": "12-12",
+    "aliases": [
+      "sarah",
+      "сарра"
+    ]
+  },
+  {
+    "id": "nd-rebecca-matriarch",
+    "name": {
+      "ja": "レベッカ",
+      "en": "Rebecca the Matriarch",
+      "ru": "Ревекка Праматерь"
+    },
+    "saint": {
+      "ja": "太祖イサアクの妻義人聖レベッカ（太祖の主日）",
+      "en": "Holy Forebear Rebecca, Wife of Isaac",
+      "ru": "Святая праматерь Ревекка"
+    },
+    "feastDateCivil": "12-25",
+    "feastDateJulian": "12-12",
+    "aliases": [
+      "rebecca",
+      "ревекка"
+    ]
+  },
+  {
+    "id": "nd-rachel-matriarch",
+    "name": {
+      "ja": "ラヒリ",
+      "en": "Rachel the Matriarch",
+      "ru": "Рахиль Праматерь"
+    },
+    "saint": {
+      "ja": "太祖イアコフの妻義人聖ラヒリ（太祖の主日）",
+      "en": "Holy Forebear Rachel, Wife of Jacob",
+      "ru": "Святая праматерь Рахиль"
+    },
+    "feastDateCivil": "12-25",
+    "feastDateJulian": "12-12",
+    "aliases": [
+      "rachel",
+      "рахиль"
+    ]
+  },
+  {
+    "id": "nd-ruth-righteous",
+    "name": {
+      "ja": "ルフィ",
+      "en": "Ruth the Righteous",
+      "ru": "Руфь Праведная"
+    },
+    "saint": {
+      "ja": "ダヴィド王の曽祖母義人聖ルフィ（ルツ記・太祖の主日）",
+      "en": "Righteous Ruth (Ancestress of Christ)",
+      "ru": "Святая праведная Руфь"
+    },
+    "feastDateCivil": "12-25",
+    "feastDateJulian": "12-12",
+    "aliases": [
+      "ruth",
+      "руфь",
+      "ルツ"
+    ]
+  },
+  {
+    "id": "nd-noah-forefather",
+    "name": {
+      "ja": "ノエ",
+      "en": "Noah the Patriarch",
+      "ru": "Ной Праотец"
+    },
+    "saint": {
+      "ja": "方舟を築きたる聖太祖ノエ（ノア）",
+      "en": "Holy Forefather Noah (Builder of the Ark)",
+      "ru": "Святой праотец Ной"
+    },
+    "feastDateCivil": "12-25",
+    "feastDateJulian": "12-12",
+    "aliases": [
+      "noah",
+      "ной",
+      "ノア"
+    ]
   }
 ];

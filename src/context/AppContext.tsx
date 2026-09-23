@@ -1,7 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Locale } from '../lib/types';
+import { Locale, NameDayEntry, NotificationPreferences } from '../lib/types';
+import { COMMON_NAME_DAYS } from '../data/nameDays';
+import { requestNotificationPermission as requestPerm } from '../lib/notifications';
 
 export type FontSize = 'sm' | 'base' | 'lg' | 'xl';
 export type AppTab = 'today' | 'calendar' | 'parish' | 'reader';
@@ -30,6 +32,13 @@ interface AppContextType {
   familyMembers: FamilyMember[];
   addFamilyMember: (member: Omit<FamilyMember, 'id'>) => void;
   removeFamilyMember: (id: string) => void;
+  customSaints: NameDayEntry[];
+  addCustomSaint: (saint: Omit<NameDayEntry, 'id'>) => string;
+  deleteCustomSaint: (id: string) => void;
+  allSaints: NameDayEntry[];
+  notificationPrefs: NotificationPreferences;
+  setNotificationPrefs: (prefs: Partial<NotificationPreferences>) => void;
+  requestNotificationPermission: () => Promise<boolean>;
   showTooltips: boolean;
   setShowTooltips: (show: boolean) => void;
   settingsOpen: boolean;
@@ -47,6 +56,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(true); // default true for SSR, checked in useEffect
   const [patronSaintId, setPatronSaintIdState] = useState<string | null>(null);
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
+  const [customSaints, setCustomSaints] = useState<NameDayEntry[]>([]);
+  const [notificationPrefs, setNotificationPrefsState] = useState<NotificationPreferences>({
+    dailyReadingsEnabled: false,
+    dailyReadingsTime: '08:00',
+    nameDaysEnabled: false,
+    nameDaysTime: '08:00',
+  });
   const [showTooltips, setShowTooltipsState] = useState<boolean>(true);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
@@ -90,6 +106,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       const fam = localStorage.getItem('orthodox_family_members');
       if (fam) setFamilyMembers(JSON.parse(fam));
+
+      const custom = localStorage.getItem('orthodox_custom_saints');
+      if (custom) setCustomSaints(JSON.parse(custom));
+
+      const notif = localStorage.getItem('orthodox_notification_prefs');
+      if (notif) setNotificationPrefsState(JSON.parse(notif));
 
       const tooltips = localStorage.getItem('orthodox_tooltips');
       if (tooltips !== null) setShowTooltipsState(tooltips === 'true');
@@ -159,6 +181,41 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   };
 
+  const addCustomSaint = (saint: Omit<NameDayEntry, 'id'>): string => {
+    const newId = 'custom-' + Date.now();
+    const newEntry: NameDayEntry = { ...saint, id: newId, isCustom: true };
+    const updated = [newEntry, ...customSaints];
+    setCustomSaints(updated);
+    try {
+      localStorage.setItem('orthodox_custom_saints', JSON.stringify(updated));
+    } catch {}
+    return newId;
+  };
+
+  const deleteCustomSaint = (id: string) => {
+    const updated = customSaints.filter((s) => s.id !== id);
+    setCustomSaints(updated);
+    try {
+      localStorage.setItem('orthodox_custom_saints', JSON.stringify(updated));
+    } catch {}
+  };
+
+  const allSaints = React.useMemo(() => {
+    return [...customSaints, ...COMMON_NAME_DAYS];
+  }, [customSaints]);
+
+  const setNotificationPrefs = (prefs: Partial<NotificationPreferences>) => {
+    const updated = { ...notificationPrefs, ...prefs };
+    setNotificationPrefsState(updated);
+    try {
+      localStorage.setItem('orthodox_notification_prefs', JSON.stringify(updated));
+    } catch {}
+  };
+
+  const requestNotificationPermission = async () => {
+    return await requestPerm();
+  };
+
   const setShowTooltips = (show: boolean) => {
     setShowTooltipsState(show);
     try {
@@ -186,6 +243,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         familyMembers,
         addFamilyMember,
         removeFamilyMember,
+        customSaints,
+        addCustomSaint,
+        deleteCustomSaint,
+        allSaints,
+        notificationPrefs,
+        setNotificationPrefs,
+        requestNotificationPermission,
         showTooltips,
         setShowTooltips,
         settingsOpen,
