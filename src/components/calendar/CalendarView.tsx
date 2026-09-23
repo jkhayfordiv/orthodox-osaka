@@ -10,7 +10,6 @@ import {
   Calendar as CalendarIcon,
   List,
   Grid,
-  Sparkles,
   BookOpen,
   Church,
   Info,

@@ -8,8 +8,7 @@ import { getDayInfo } from '../../lib/calendarEngine';
 import {
   BookOpen,
   Church,
-  Heart,
-  Sparkles,
+  Shield,
   Sun,
   Moon,
   Wine,
@@ -19,6 +18,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
+import { PrayingHandsIcon } from '../shared/PrayingHandsIcon';
 import { Locale } from '../../lib/types';
 
 export function ReaderView() {
@@ -48,13 +48,13 @@ export function ReaderView() {
     },
     {
       id: 'prayers' as const,
-      icon: <Heart className="w-4 h-4" />,
+      icon: <PrayingHandsIcon className="w-4 h-4" />,
       label: { ja: '祈祷書', en: 'Prayer Book', ru: 'Молитвослов' },
     },
     {
       id: 'patronal' as const,
-      icon: <Sparkles className="w-4 h-4" />,
-      label: { ja: '守護聖歌', en: 'Pokrov', ru: 'Покров' },
+      icon: <Shield className="w-4 h-4" />,
+      label: { ja: '守護聖歌', en: 'Patronal', ru: 'Покров' },
     },
   ];
 
@@ -352,46 +352,91 @@ export function ReaderView() {
       )}
 
       {/* ========================================================
-          D. Pokrov Patronal Hymns Section
+          D. Patronal & Commemorative Hymns (Pokrov & St. Nicholas of Japan)
           ======================================================== */}
       {mainCategory === 'patronal' && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="px-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold block">
-              {locale === 'ja' ? '大阪聖堂守護聖歌' : locale === 'ru' ? 'Тропарь храма в Осаке' : 'Osaka Patronal Hymns'}
+              {locale === 'ja' ? '守護聖歌・記念聖歌' : locale === 'ru' ? 'Тропари храма и святителя' : 'Patronal & Commemorative Hymns'}
             </span>
             <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '生神女庇護祭 祭日讃詞及び小讃詞' : locale === 'ru' ? 'Тропарь и Кондак Покрова Богородицы' : 'Troparion & Kontakion of Pokrov'}
+              {locale === 'ja'
+                ? '聖生神女庇護祭 & 亜使徒日本の大主教聖ニコライ'
+                : locale === 'ru'
+                ? 'Покров Пресвятой Богородицы и свт. Николай Японский'
+                : 'Holy Protection (Pokrov) & St. Nicholas of Japan'}
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
               {locale === 'ja'
-                ? '大阪ハリストス正教会 聖生神女庇護聖堂の守護聖歌です。'
+                ? '大阪教会の守護聖堂讃歌、および日本正教会光照者・聖ニコライ大主教の讃詞と小讃詞です。'
                 : locale === 'ru'
-                ? 'Тропарь и кондак престольного праздника Покрова Божией Матери в Осаке.'
-                : 'Patronal hymns for Holy Protection Church in Osaka.'}
+                ? 'Тропари и кондаки престольного праздника в Осаке и просветителя Японии святителя Николая.'
+                : 'Patronal hymns for Holy Protection Church in Osaka and St. Nicholas, Enlightener of Japan.'}
             </p>
           </div>
 
-          {PRAYERS_DATA.filter((p) => p.category === 'patronal').map((prayer) => (
-            <div
-              key={prayer.id}
-              className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl p-5 shadow-sm space-y-2"
-            >
-              <div>
-                <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                  {prayer.title[locale]}
-                </h4>
-                {prayer.subtitle && (
-                  <span className="text-xs text-slate-500 font-medium">
-                    {prayer.subtitle[locale]}
-                  </span>
-                )}
-              </div>
-              <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-2 pl-1">
-                {prayer.text[locale]}
-              </p>
+          {/* 1. Holy Protection (Pokrov / 生神女庇護) */}
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2 border-b border-orthodox-gold/30 pb-2">
+              <Shield className="w-4 h-4 text-orthodox-gold flex-shrink-0" />
+              <h4 className="font-serif font-bold text-sm sm:text-base text-orthodox-navy dark:text-orthodox-gold-light">
+                {locale === 'ja' ? '聖生神女庇護祭（大阪教会 守護）' : locale === 'ru' ? 'Покров Пресвятой Богородицы (Храм в Осаке)' : 'Holy Protection of the Theotokos (Pokrov)'}
+              </h4>
             </div>
-          ))}
+
+            {PRAYERS_DATA.filter((p) => p.category === 'patronal' && p.patronGroup === 'pokrov').map((prayer) => (
+              <div
+                key={prayer.id}
+                className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold/60 rounded-2xl p-4 sm:p-5 shadow-sm space-y-2"
+              >
+                <div>
+                  <h5 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                    {prayer.title[locale]}
+                  </h5>
+                  {prayer.subtitle && (
+                    <span className="text-xs text-slate-500 font-medium">
+                      {prayer.subtitle[locale]}
+                    </span>
+                  )}
+                </div>
+                <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1 pl-1">
+                  {prayer.text[locale]}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* 2. St. Nicholas of Japan, Equal-to-the-Apostles (亜使徒聖ニコライ) */}
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center space-x-2 border-b border-orthodox-gold/30 pb-2">
+              <Church className="w-4 h-4 text-orthodox-gold flex-shrink-0" />
+              <h4 className="font-serif font-bold text-sm sm:text-base text-orthodox-navy dark:text-orthodox-gold-light">
+                {locale === 'ja' ? '亜使徒日本の大主教 聖ニコライ（日本正教会 光照者）' : locale === 'ru' ? 'Святитель Николай Японский, равноапостольный' : 'St. Nicholas of Japan, Equal-to-the-Apostles'}
+              </h4>
+            </div>
+
+            {PRAYERS_DATA.filter((p) => p.category === 'patronal' && p.patronGroup === 'st-nicholas').map((prayer) => (
+              <div
+                key={prayer.id}
+                className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold/60 rounded-2xl p-4 sm:p-5 shadow-sm space-y-2"
+              >
+                <div>
+                  <h5 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                    {prayer.title[locale]}
+                  </h5>
+                  {prayer.subtitle && (
+                    <span className="text-xs text-slate-500 font-medium">
+                      {prayer.subtitle[locale]}
+                    </span>
+                  )}
+                </div>
+                <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1 pl-1">
+                  {prayer.text[locale]}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

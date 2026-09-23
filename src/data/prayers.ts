@@ -3,6 +3,7 @@ import { TrilingualText } from '../lib/types';
 export interface PrayerItem {
   id: string;
   category: 'morning' | 'evening' | 'communion' | 'meals' | 'patronal' | 'occasional';
+  patronGroup?: 'pokrov' | 'st-nicholas';
   title: TrilingualText;
   subtitle?: TrilingualText;
   text: TrilingualText;
@@ -418,18 +419,19 @@ Direct my path according to Thy will, and bring me back safely in peace to glori
   },
 
   // ==========================================
-  // 7. 当教会の守護聖歌 (Pokrov Patronal Hymns)
+  // 7. 守護聖歌 (Patronal Hymns: Pokrov & St. Nicholas of Japan)
   // ==========================================
   {
     id: 'pokrov-troparion',
     category: 'patronal',
+    patronGroup: 'pokrov',
     title: {
       ja: '生神女庇護祭 祭日讃詞（トロパリ）',
       en: 'Troparion of the Holy Protection (Pokrov)',
       ru: 'Тропарь Покрова Пресвятой Богородицы',
     },
     subtitle: {
-      ja: '第4調 — 大阪ハリストス正教会の守護聖歌',
+      ja: '第4調 — 大阪ハリストス正教会 守護の讃歌',
       en: 'Tone 4 — Patronal Hymn of Osaka Church',
       ru: 'Глас 4 — Тропарь престольного праздника в Осаке',
     },
@@ -450,6 +452,7 @@ imploring your Son, Christ our God, that He will save our souls."`,
   {
     id: 'pokrov-kontakion',
     category: 'patronal',
+    patronGroup: 'pokrov',
     title: {
       ja: '生神女庇護祭 祭日小讃詞（コンダク）',
       en: 'Kontakion of the Holy Protection (Pokrov)',
@@ -471,6 +474,95 @@ since for our sake the Theotokos prays to the pre-eternal God.`,
       ru: `Дева днесь предстоит в церкви и с лики святых невидимо за ны молится Богу,
 Ангели со архиереи покланяются, апостоли же со пророки ликовствуют:
 нас бо ради молит Богородица Превечнаго Бога.`,
+    },
+  },
+  {
+    id: 'st-nicholas-troparion',
+    category: 'patronal',
+    patronGroup: 'st-nicholas',
+    title: {
+      ja: '日本の亜使徒大主教聖ニコライ 祭日讃詞（トロパリ）',
+      en: 'Troparion of St. Nicholas of Japan, Equal-to-the-Apostles',
+      ru: 'Тропарь святителю Николаю Японскому, равноапостольному',
+    },
+    subtitle: {
+      ja: '第4調 — 日本の光照者・守護の聖人',
+      en: 'Tone 4 — Enlightener of Japan & Equal-to-the-Apostles',
+      ru: 'Глас 4 — Просветитель Японии',
+    },
+    text: {
+      ja: `使徒と同等にして日本の光照者、
+神の言の種蒔く者、ハリストスの選びたる牧者、我らの父ニコライ主教よ、
+至聖三位に祈りて、その選べる群を守り、我らの霊の救われんことを祈り給え。`,
+      en: `O holy Hierarch and Father Nicholas, equal to the Apostles and enlightener of Japan,
+faithful servant of Christ and divinely-wise shepherd, chosen by lot from God:
+as the sower of true faith in the land of Japan,
+pray unto the All-Holy Trinity for thy flock and for the salvation of our souls.`,
+      ru: `Апостолов единонравне и сопрестольне,
+верный рабе Христов и богомудре пастырю,
+жеребием избранный от Бога,
+сеятелю благочестия в стране Японстей,
+святителю отче Николае,
+моли Пресвятую Троицу о всем твоем стаде и о спасении душ наших.`,
+    },
+  },
+  {
+    id: 'st-nicholas-kontakion',
+    category: 'patronal',
+    patronGroup: 'st-nicholas',
+    title: {
+      ja: '日本の亜使徒大主教聖ニコライ 祭日小讃詞（コンダク）',
+      en: 'Kontakion of St. Nicholas of Japan, Equal-to-the-Apostles',
+      ru: 'Кондак святителю Николаю Японскому',
+    },
+    subtitle: {
+      ja: '第4調',
+      en: 'Tone 4',
+      ru: 'Глас 4',
+    },
+    text: {
+      ja: `流浪者として地の果てなる日本に至り、
+日出づる国に福音の光を照らし、
+神の言を宣べ伝えて多くの民をハリストスに導きたる亜使徒ニコライよ、
+我らのため主イイススに祈り給え。`,
+      en: `As a wanderer and stranger the land of Japan received thee,
+where thou didst call the people from pagan darkness to the light of Christ;
+wherefore as an Apostle we hymn thee, O holy Hierarch Father Nicholas:
+pray unto the Lord to have mercy on our souls.`,
+      ru: `Странника и пришельца прият тя страна Японская,
+в нейже от тьмы языческия к свету Христову люди призвал еси,
+сего ради яко апостолу воспеваем ти:
+святителю Николае, отче наш,
+молися Господеви помиловатися душам нашим.`,
+    },
+  },
+  {
+    id: 'st-nicholas-megalynarion',
+    category: 'patronal',
+    patronGroup: 'st-nicholas',
+    title: {
+      ja: '日本の亜使徒大主教聖ニコライ 讃歌（大小讃美歌）',
+      en: 'Magnification to St. Nicholas of Japan',
+      ru: 'Величание святителю Николаю Японскому',
+    },
+    subtitle: {
+      ja: '記憶祈祷・成聖祝文',
+      en: 'Liturgical Magnification & Intercession',
+      ru: 'Величание',
+    },
+    text: {
+      ja: `我等爾を讃揚す、日本の光照者、亜使徒なる我が父主教ニコライよ、
+また爾の聖なる記憶を尊ぶ、爾は我らの為に神なるハリストスに祈ればなり。
+
+日本の亜使徒大主教聖ニコライよ、神に我らの為に祈り給え！`,
+      en: `We magnify thee, O holy Hierarch Father Nicholas, Equal-to-the-Apostles and Enlightener of Japan,
+and we honor thy holy memory, for thou dost pray for us to Christ our God.
+
+Holy Equal-to-the-Apostles Archbishop Nicholas, pray unto God for us!`,
+      ru: `Величаем тя, святителю отче Николае, равноапостольне просветителю Японии,
+и чтим святую память твою, ты бо молиши за нас Христа Бога нашего.
+
+Святителю отче Николае, моли Бога о нас!`,
     },
   },
 ];

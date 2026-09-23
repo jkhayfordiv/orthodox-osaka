@@ -15,7 +15,7 @@ import {
   Compass,
   Users,
   Clock,
-  Sparkles,
+  Info,
   ExternalLink,
 } from 'lucide-react';
 
@@ -249,7 +249,7 @@ export function ParishView() {
           {/* First-Time Visitor Etiquette Guide */}
           <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-3">
             <h4 className="font-serif font-bold text-base text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
-              <Sparkles className="w-4 h-4 text-orthodox-gold" />
+              <Info className="w-4 h-4 text-orthodox-gold" />
               <span>
                 {locale === 'ja' ? '初めて正教会に来られる方へ（参拝の心得）' : locale === 'ru' ? 'Для тех, кто впервые в храме' : 'First-Time Visitors: Church Etiquette'}
               </span>
