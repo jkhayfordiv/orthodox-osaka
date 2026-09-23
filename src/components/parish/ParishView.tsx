@@ -22,6 +22,9 @@ import {
   Sparkles,
   CalendarDays,
   X,
+  Camera,
+  Maximize2,
+  HeartHandshake,
 } from 'lucide-react';
 
 // Safe date parser to avoid timezone drift across midnight UTC/local
@@ -133,6 +136,66 @@ function getServiceTypeBadge(type: ParishService['serviceType'], locale: Locale)
   }
 }
 
+// Authentic parish gallery photos
+const PARISH_PHOTOS = [
+  {
+    id: 'exterior',
+    src: '/photos/church-exterior.jpg',
+    title: {
+      ja: '聖堂外観（吹田市・青空と鐘楼）',
+      en: 'Holy Protection Temple Facade & Belfry',
+      ru: 'Фасад храма Покрова и колокольня',
+    },
+    desc: {
+      ja: '緑青の屋根と八端十字架が青空に映える大阪ハリストス正教会聖堂。阪急千里線豊津駅より徒歩すぐ。',
+      en: 'Holy Protection Orthodox Church in Suita, Osaka, featuring copper domes and Orthodox three-bar crosses.',
+      ru: 'Храм Покрова Пресвятой Богородицы в городе Суйта (префектура Осака). Недалеко от станции Тоёцу.',
+    },
+  },
+  {
+    id: 'belfry',
+    src: '/photos/church-belfry.jpg',
+    title: {
+      ja: '鐘楼と正教会十字架',
+      en: 'Belfry Spire & Orthodox Cross',
+      ru: 'Шпиль колокольни и крест',
+    },
+    desc: {
+      ja: '礼拝の始まりを告げる青銅の鐘楼と、太陽の光を受け尖塔に影を落とす八端十字架。',
+      en: 'The bronze belfry bell that calls faithful to prayer, beneath the towering spire and cross.',
+      ru: 'Колокольня с бронзовым колоколом, созывающим верующих на молитву, и крест на шпиле.',
+    },
+  },
+  {
+    id: 'interior',
+    src: '/photos/church-interior.jpg',
+    title: {
+      ja: '聖所とイコノスタシス（聖障）',
+      en: 'Holy Sanctuary & Iconostasis',
+      ru: 'Алтарь и иконостас храма',
+    },
+    desc: {
+      ja: '蜜蝋のろうそくと香煙の香り漂う祈りの空間。荘厳な木製イコノスタシスと至聖所。',
+      en: 'The prayerful interior adorned with beeswax candles, the analogion, and the carved iconostasis with Royal Doors.',
+      ru: 'Внутреннее убранство храма: деревянный иконостас, Царские врата, светильники и аналой.',
+    },
+  },
+  {
+    id: 'priest',
+    src: '/photos/priest-liturgy.jpg',
+    title: {
+      ja: '聖体礼儀（祈りと香炉の振り）',
+      en: 'Divine Liturgy & Pastoral Service',
+      ru: 'Божественная Литургия и каждение',
+    },
+    desc: {
+      ja: '祝祭の赤の祭服をまとい、香炉を掲げて聖堂と信徒を祝福する管轄司祭。',
+      en: 'The parish priest censing the holy icons and congregation during the celebratory festive Divine Liturgy.',
+      ru: 'Настоятель храма совершает праздничное каждение святых икон и прихожан в красном облачении.',
+    },
+  },
+];
+
 export function ParishView() {
   const { locale } = useApp();
   const [subTab, setSubTab] = useState<'schedule' | 'bulletin' | 'visit'>('schedule');
@@ -142,8 +205,10 @@ export function ParishView() {
   const [typeFilter, setTypeFilter] = useState<'all' | 'liturgy' | 'vigil' | 'special'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Photo Lightbox modal state
+  const [activePhoto, setActivePhoto] = useState<{ src: string; title: string; desc: string } | null>(null);
+
   const todayStr = useMemo(() => {
-    // Current simulation or civil date YYYY-MM-DD
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   }, []);
@@ -270,7 +335,7 @@ export function ParishView() {
 
           {/* Featured Hero Card: NEXT UPCOMING SERVICE */}
           {nextService && (
-            <div className="no-print bg-gradient-to-br from-amber-50/90 via-white to-orange-50/50 dark:from-slate-900 dark:via-slate-900/90 dark:to-orthodox-navy-dark/40 border-2 border-orthodox-gold/60 rounded-3xl p-5 sm:p-6 shadow-md transition-all">
+            <div className="no-print bg-gradient-to-br from-amber-50/90 via-white to-orange-50/50 dark:from-slate-900 dark:via-slate-900/90 dark:to-orthodox-navy-dark/40 border-2 border-orthodox-gold/60 rounded-3xl p-5 sm:p-6 shadow-md transition-all relative overflow-hidden">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-orthodox-gold/20 pb-3">
                 <div className="flex items-center space-x-2">
                   <span className="flex h-2.5 w-2.5 relative">
@@ -300,7 +365,24 @@ export function ParishView() {
                 return (
                   <div className="mt-4 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
                     {/* Left: Liturgical Date & Time */}
-                    <div className="lg:col-span-4 flex items-center space-x-4">
+                    <div className="lg:col-span-4 flex items-center space-x-3 sm:space-x-4">
+                      {/* Belfry Photo Accent */}
+                      <div className="relative group cursor-pointer" onClick={() => setActivePhoto({
+                        src: '/photos/church-belfry.jpg',
+                        title: PARISH_PHOTOS[1].title[locale],
+                        desc: PARISH_PHOTOS[1].desc[locale]
+                      })}>
+                        <img
+                          src="/photos/church-belfry.jpg"
+                          alt="Osaka Orthodox Church Belfry"
+                          className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-orthodox-gold shadow-sm flex-shrink-0 group-hover:scale-105 transition-transform"
+                        />
+                        <div className="absolute inset-0 bg-black/20 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Maximize2 className="w-4 h-4 text-white drop-shadow" />
+                        </div>
+                      </div>
+
+                      {/* Date Block */}
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-orthodox-candle/70 dark:bg-slate-800 border-2 border-orthodox-gold flex flex-col items-center justify-center shadow-sm flex-shrink-0">
                         <span className="text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                           {formatMonthShort(dateObj, locale)}
@@ -616,14 +698,16 @@ export function ParishView() {
 
       {/* 2. Bulletin & News Sub-tab */}
       {subTab === 'bulletin' && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div className="flex items-center justify-between px-1">
-            <h3 className="font-serif font-bold text-lg sm:text-xl text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '教会だより・お知らせ' : locale === 'ru' ? 'Приходские новости и объявления' : 'Parish News & Announcements'}
-            </h3>
-            <span className="text-xs text-slate-400">
-              {locale === 'ja' ? '最新の案内' : locale === 'ru' ? 'Последние события' : 'Latest updates'}
-            </span>
+            <div>
+              <h3 className="font-serif font-bold text-lg sm:text-xl text-orthodox-navy dark:text-orthodox-gold-light">
+                {locale === 'ja' ? '教会だより・お知らせ' : locale === 'ru' ? 'Приходские новости и объявления' : 'Parish News & Announcements'}
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {locale === 'ja' ? '教会行事や日曜学校、お知らせのご案内' : locale === 'ru' ? 'Жизнь прихода, праздники и воскресная школа' : 'Parish life, upcoming events and church school'}
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -667,143 +751,347 @@ export function ParishView() {
         </div>
       )}
 
-      {/* 3. Visitor Guide Sub-tab */}
+      {/* 3. Visitor Guide Sub-tab (Enhanced with Authentic Photos) */}
       {subTab === 'visit' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: Parish Overview & Emergency Pastoral Contact */}
-          <div className="lg:col-span-6 xl:col-span-7 space-y-4">
-            {/* Parish Overview Card */}
-            <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                <img
-                  src="/brand/church-seal-round.png"
-                  alt="Osaka Orthodox Church Logo"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-orthodox-gold shadow-md object-cover flex-shrink-0"
-                />
-                <div className="text-center sm:text-left">
-                  <h3 className="font-serif font-bold text-lg sm:text-2xl text-orthodox-navy dark:text-orthodox-gold-light">
+        <div className="space-y-6">
+          {/* Main Church Overview Hero Banner (Features church-exterior.jpg) */}
+          <div className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold/50 rounded-3xl p-5 sm:p-7 shadow-md overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              {/* Left Column: Photo of Osaka Church Exterior */}
+              <div className="lg:col-span-5 relative group cursor-pointer" onClick={() => setActivePhoto({
+                src: '/photos/church-exterior.jpg',
+                title: PARISH_PHOTOS[0].title[locale],
+                desc: PARISH_PHOTOS[0].desc[locale]
+              })}>
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden border-2 border-orthodox-gold shadow-md">
+                  <img
+                    src="/photos/church-exterior.jpg"
+                    alt="Holy Protection Church in Osaka Exterior"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-black/20 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="bg-black/70 text-white text-xs font-bold py-1.5 px-3 rounded-xl flex items-center space-x-1">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? '写真を拡大' : locale === 'ru' ? 'Увеличить' : 'Enlarge Photo'}</span>
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center mt-2 font-medium">
+                  {PARISH_PHOTOS[0].title[locale]}
+                </p>
+              </div>
+
+              {/* Right Column: Parish Information & Location */}
+              <div className="lg:col-span-7 space-y-4">
+                <div>
+                  <div className="flex items-center space-x-2.5 mb-1.5">
+                    <img
+                      src="/brand/church-seal-round.png"
+                      alt="Parish Seal"
+                      className="w-8 h-8 rounded-full border border-orthodox-gold object-cover shadow-sm"
+                    />
+                    <span className="text-xs font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold">
+                      {locale === 'ja' ? '日本ハリストス正教会 西日本主教教区' : locale === 'ru' ? 'Японская Православная Церковь' : 'Orthodox Church in Japan'}
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif font-bold text-2xl sm:text-3xl text-orthodox-navy dark:text-orthodox-gold-light">
                     {PARISH_INFO.name[locale]}
                   </h3>
                   <p className="text-xs sm:text-sm text-orthodox-burgundy dark:text-orthodox-gold font-serif mt-0.5 font-bold">
                     {locale === 'ja'
-                      ? '聖生神女庇護聖堂（日本ハリストス正教会 西日本主教教区）'
+                      ? '聖生神女庇護聖堂（大阪ハリストス正教会）'
                       : locale === 'ru'
-                      ? 'Храм Покрова Пресвятой Богородицы (Западно-Японская епархия)'
-                      : 'Holy Protection Temple (Western Diocese, Orthodox Church in Japan)'}
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2.5">
-                    {locale === 'ja'
-                      ? '大阪ハリストス正教会は、日本正教会・西日本主教教区に属する歴史ある祈りの場です。正教会の信徒の方だけでなく、初めて見学される方や祈りを共にしたい方も心より歓迎いたします。'
-                      : locale === 'ru'
-                      ? 'Храм Покрова Пресвятой Богородицы в Осаке — приход Японской Православной Церкви (Западно-Японская епархия). Мы всегда рады православным христианам и всем ищущим Бога!'
-                      : 'The Holy Protection Church in Osaka is a parish of the Orthodox Church in Japan (Western Diocese). We warmly welcome all faithful, visitors, and inquirers.'}
+                      ? 'Храм Покрова Пресвятой Богородицы в Осаке'
+                      : 'Holy Protection Temple, Osaka'}
                   </p>
                 </div>
-              </div>
 
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
-                <div className="flex items-start space-x-2.5">
-                  <MapPin className="w-4 h-4 text-orthodox-gold flex-shrink-0 mt-0.5" />
-                  <span>{PARISH_INFO.address[locale]}</span>
-                </div>
-                <div className="flex items-start space-x-2.5">
-                  <Compass className="w-4 h-4 text-orthodox-gold flex-shrink-0 mt-0.5" />
-                  <span>{PARISH_INFO.access[locale]}</span>
-                </div>
-                <div className="flex items-center space-x-2.5">
-                  <Phone className="w-4 h-4 text-orthodox-gold flex-shrink-0" />
-                  <a href={`tel:${PARISH_INFO.phone}`} className="hover:text-orthodox-gold-dark hover:underline">
-                    {PARISH_INFO.phone}
-                  </a>
-                </div>
-                <div className="flex items-center space-x-2.5">
-                  <Mail className="w-4 h-4 text-orthodox-gold flex-shrink-0" />
-                  <a href={`mailto:${PARISH_INFO.email}`} className="hover:text-orthodox-gold-dark hover:underline">
-                    {PARISH_INFO.email}
-                  </a>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <a
-                  href="https://maps.google.com/?q=大阪府吹田市山手町1-8-15"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1.5 py-2.5 px-4 rounded-xl bg-orthodox-gold text-orthodox-navy font-bold text-xs sm:text-sm hover:bg-orthodox-gold-dark shadow transition-all"
-                >
-                  <MapPin className="w-4 h-4" />
-                  <span>{locale === 'ja' ? 'Googleマップで開く' : locale === 'ru' ? 'Открыть на Google Maps' : 'Open in Google Maps'}</span>
-                  <ExternalLink className="w-3.5 h-3.5 ml-1" />
-                </a>
-              </div>
-            </div>
-
-            {/* Emergency Pastoral Contact Card */}
-            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-2xl p-4 flex items-center space-x-3.5">
-              <Phone className="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0" />
-              <div>
-                <h5 className="font-bold text-sm text-red-900 dark:text-red-200">
-                  {locale === 'ja' ? '緊急の牧会連絡（臨終・病者訪問など）' : locale === 'ru' ? 'Срочные требы (причастие болящих, отпевание)' : 'Urgent Pastoral Needs'}
-                </h5>
-                <p className="text-xs text-red-700 dark:text-red-300 mt-0.5">
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                   {locale === 'ja'
-                    ? '緊急の病気のお見舞いや葬儀のご相談は、教会電話（06-6388-4512）またはメールにてご連絡ください。'
+                    ? '大阪ハリストス正教会は、日本正教会・西日本主教教区に属する歴史ある祈りの場です。正教会の信徒の方だけでなく、初めて見学される方や祈りを共にしたい方も心より歓迎いたします。'
                     : locale === 'ru'
-                    ? 'В экстренных случаях звоните по телефону храма 06-6388-4512 или пишите на почту.'
-                    : 'For hospital visits or funeral arrangements, please call 06-6388-4512.'}
+                    ? 'Храм Покрова Пресвятой Богородицы в Осаке — приход Японской Православной Церкви (Западно-Японская епархия). Мы всегда рады православным христианам, гостям города и всем ищущим Бога!'
+                    : 'The Holy Protection Church in Osaka is a parish of the Orthodox Church in Japan (Western Diocese). We warmly welcome all faithful, visitors, and inquirers.'}
                 </p>
+
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  <div className="flex items-start space-x-2">
+                    <MapPin className="w-4 h-4 text-orthodox-gold flex-shrink-0 mt-0.5" />
+                    <span>{PARISH_INFO.address[locale]}</span>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <Compass className="w-4 h-4 text-orthodox-gold flex-shrink-0 mt-0.5" />
+                    <span>{PARISH_INFO.access[locale]}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-x-6 gap-y-1.5 pt-1">
+                    <a href={`tel:${PARISH_INFO.phone}`} className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 hover:text-orthodox-gold-dark font-medium">
+                      <Phone className="w-4 h-4 text-orthodox-gold" />
+                      <span>{PARISH_INFO.phone}</span>
+                    </a>
+                    <a href={`mailto:${PARISH_INFO.email}`} className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 hover:text-orthodox-gold-dark font-medium">
+                      <Mail className="w-4 h-4 text-orthodox-gold" />
+                      <span>{PARISH_INFO.email}</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex flex-wrap gap-2.5">
+                  <a
+                    href="https://maps.google.com/?q=大阪府吹田市山手町1-8-15"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1.5 py-2 px-4 rounded-xl bg-orthodox-gold text-orthodox-navy font-bold text-xs sm:text-sm hover:bg-orthodox-gold-dark shadow transition-all"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    <span>{locale === 'ja' ? 'Googleマップで開く' : locale === 'ru' ? 'Открыть на Google Maps' : 'Open in Google Maps'}</span>
+                    <ExternalLink className="w-3.5 h-3.5 ml-1" />
+                  </a>
+                  <a
+                    href={`tel:${PARISH_INFO.phone}`}
+                    className="inline-flex items-center space-x-1.5 py-2 px-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-xs"
+                  >
+                    <Phone className="w-4 h-4 text-orthodox-gold-dark" />
+                    <span>{locale === 'ja' ? '教会に電話する' : locale === 'ru' ? 'Позвонить в храм' : 'Call Parish'}</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: First-Time Visitor Etiquette Guide */}
-          <div className="lg:col-span-6 xl:col-span-5 bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm space-y-3.5">
-            <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-              <Info className="w-4 h-4 text-orthodox-gold" />
-              <span>
-                {locale === 'ja' ? '初めて正教会に来られる方へ（参拝の心得）' : locale === 'ru' ? 'Для тех, кто впервые в храме' : 'First-Time Visitors: Church Etiquette'}
-              </span>
-            </h4>
-
-            <div className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-              <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                <h5 className="font-bold text-slate-900 dark:text-white mb-1">
-                  {locale === 'ja' ? '1. 服装について' : locale === 'ru' ? '1. Одежда' : '1. Attire'}
-                </h5>
-                <p>
-                  {locale === 'ja'
-                    ? '礼拝にふさわしい清楚で敬虔な服装でお越しください。露出の多い服装や短パンは控えめにされることをお勧めします。'
-                    : locale === 'ru'
-                    ? 'Просьба приходить в храм в скромной и благоговейной одежде.'
-                    : 'Modest, respectful attire is appropriate for church services.'}
+          {/* Pastoral Care & Rector's Welcome Card (Features priest-liturgy.jpg) */}
+          <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-3xl p-5 sm:p-7 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              {/* Priest Photo */}
+              <div className="md:col-span-4 lg:col-span-3 text-center cursor-pointer group" onClick={() => setActivePhoto({
+                src: '/photos/priest-liturgy.jpg',
+                title: PARISH_PHOTOS[3].title[locale],
+                desc: PARISH_PHOTOS[3].desc[locale]
+              })}>
+                <div className="relative inline-block mx-auto">
+                  <img
+                    src="/photos/priest-liturgy.jpg"
+                    alt="Parish Rector in Festive Vestments"
+                    className="w-36 h-48 sm:w-44 sm:h-56 rounded-2xl object-cover border-2 border-orthodox-gold shadow-md mx-auto group-hover:scale-105 transition-transform"
+                  />
+                  <div className="absolute inset-0 bg-black/20 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Maximize2 className="w-4 h-4 text-white drop-shadow" />
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-400 mt-2 font-medium">
+                  {locale === 'ja' ? '聖体礼儀における香炉の祝福' : locale === 'ru' ? 'Настоятель храма за богослужением' : 'Parish Priest at Divine Liturgy'}
                 </p>
               </div>
 
-              <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                <h5 className="font-bold text-slate-900 dark:text-white mb-1">
-                  {locale === 'ja' ? '2. ろうそくのお献げ' : locale === 'ru' ? '2. Свечи' : '2. Candles'}
-                </h5>
-                <p>
+              {/* Pastoral Welcome Text */}
+              <div className="md:col-span-8 lg:col-span-9 space-y-3">
+                <div className="flex items-center space-x-2 text-orthodox-gold-dark dark:text-orthodox-gold font-bold text-xs uppercase tracking-wider">
+                  <HeartHandshake className="w-4 h-4" />
+                  <span>{locale === 'ja' ? '管轄司祭より皆様へ' : locale === 'ru' ? 'Пастырское слово настоятеля' : 'A Pastoral Welcome'}</span>
+                </div>
+
+                <h4 className="font-serif font-bold text-lg sm:text-2xl text-orthodox-navy dark:text-orthodox-gold-light">
                   {locale === 'ja'
-                    ? '聖堂入口でろうそくをいただき、イコン（聖像）の前でお祈りしながら灯します。献金箱にお心をお納めください。'
+                    ? '「どなたでも心よりお待ちしております」'
                     : locale === 'ru'
-                    ? 'Свечи возжигаются перед святыми иконами с молитвой о здравии и упокоении.'
-                    : 'Candles are placed before the holy icons with a quiet prayer for loved ones.'}
+                    ? '«Двери нашего храма всегда открыты для каждого»'
+                    : '“You are warmly welcome in our spiritual home”'}
+                </h4>
+
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {locale === 'ja'
+                    ? '大阪ハリストス正教会は、聖生神女の温かい庇護のもと、祈りと愛を分かち合う神の家族です。信仰をお持ちの方はもちろん、キリスト教に関心をお持ちの方、祈りの静けさをお求めの方、人生のご相談など、どなたでも歓迎いたします。土曜の徹夜祷や日曜の聖体礼儀にお気軽にお越しください。'
+                    : locale === 'ru'
+                    ? 'Храм Покрова Пресвятой Богородицы в Осаке — это молитвенный дом и духовная семья под материнским кровом Божией Матери. Мы рады приветствовать прихожан, соотечественников в Японии, гостей и всех, кто интересуется православием. Приходите на субботнюю вечерню и воскресную Литургию!'
+                    : 'The Holy Protection Church in Osaka is a spiritual family praying together under the maternal protection of the Mother of God. Whether you are a lifelong Orthodox Christian, exploring the faith, or simply in need of prayer and peace, you are warmly invited to join us for Saturday Vigil and Sunday Divine Liturgy.'}
                 </p>
+
+                <div className="pt-2 flex flex-wrap gap-2 text-xs">
+                  <span className="py-1 px-2.5 rounded-lg bg-orthodox-candle/70 dark:bg-slate-800 text-orthodox-navy dark:text-orthodox-gold-light border border-orthodox-gold/30 font-medium">
+                    {locale === 'ja' ? '☦ 告解・信仰相談' : locale === 'ru' ? '☦ Исповедь и беседы' : '☦ Confession & Counseling'}
+                  </span>
+                  <span className="py-1 px-2.5 rounded-lg bg-orthodox-candle/70 dark:bg-slate-800 text-orthodox-navy dark:text-orthodox-gold-light border border-orthodox-gold/30 font-medium">
+                    {locale === 'ja' ? '🏥 病者訪問・病気平癒祈祷' : locale === 'ru' ? '🏥 Причастие болящих' : '🏥 Hospital & Sick Visits'}
+                  </span>
+                  <span className="py-1 px-2.5 rounded-lg bg-orthodox-candle/70 dark:bg-slate-800 text-orthodox-navy dark:text-orthodox-gold-light border border-orthodox-gold/30 font-medium">
+                    {locale === 'ja' ? '🏠 家屋成聖式（家祓い）' : locale === 'ru' ? '🏠 Освящение жилищ' : '🏠 House Blessings'}
+                  </span>
+                  <span className="py-1 px-2.5 rounded-lg bg-orthodox-candle/70 dark:bg-slate-800 text-orthodox-navy dark:text-orthodox-gold-light border border-orthodox-gold/30 font-medium">
+                    {locale === 'ja' ? '🕊️ 永眠者のパニヒダ（記憶祭）' : locale === 'ru' ? '🕊️ Панихиды и поминовение' : '🕊️ Memorial Prayers'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Two Columns: Church Sanctuary/Interior Photo + Visitor Etiquette Guide */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left: Sanctuary Photo & Iconostasis Details */}
+            <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-3xl p-5 shadow-sm space-y-3">
+              <div className="flex items-center space-x-2 text-xs font-bold text-orthodox-navy dark:text-orthodox-gold-light">
+                <Camera className="w-4 h-4 text-orthodox-gold" />
+                <span>{locale === 'ja' ? '聖堂内部（イコノスタシス）' : locale === 'ru' ? 'Внутреннее убранство храма' : 'Sanctuary & Iconostasis'}</span>
               </div>
 
-              <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                <h5 className="font-bold text-slate-900 dark:text-white mb-1">
-                  {locale === 'ja' ? '3. 聖体礼儀の「領聖（聖体拝領）」について' : locale === 'ru' ? '3. Святое Причастие' : '3. Holy Communion'}
-                </h5>
-                <p>
-                  {locale === 'ja'
-                    ? '聖体と聖血の拝領（杯からの領聖）は、正教会で洗礼・傅膏機密を受け、告解による準備をした信徒に限られます。洗礼を受けておられない方や見学の方は、礼儀の最後に配られる「アンティドル（祝福されたパン）」を感謝してお受け取りいただけます。'
-                    : locale === 'ru'
-                    ? 'К Святой Чаше приступают только крещеные православные христиане, подготовившиеся постом и исповедью. Неправославные гости могут подойти к кресту и получить благословенный антидор (хлеб).'
-                    : 'Holy Communion from the Chalice is reserved for prepared Orthodox Christians. All visitors are warmly welcome to receive the blessed bread (antidoron) distributed at the end.'}
+              <div className="relative group cursor-pointer aspect-[4/3] rounded-2xl overflow-hidden border-2 border-orthodox-gold shadow-sm" onClick={() => setActivePhoto({
+                src: '/photos/church-interior.jpg',
+                title: PARISH_PHOTOS[2].title[locale],
+                desc: PARISH_PHOTOS[2].desc[locale]
+              })}>
+                <img
+                  src="/photos/church-interior.jpg"
+                  alt="Holy Protection Church Iconostasis"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="bg-black/70 text-white text-xs font-bold py-1.5 px-3 rounded-xl flex items-center space-x-1">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? '写真を拡大' : locale === 'ru' ? 'Увеличить' : 'Enlarge'}</span>
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                {locale === 'ja'
+                  ? '聖堂前方の壁一面に広がる「イコノスタシス（聖障）」には、ハリストス、生神女マリヤ、天使や聖人たちのイコンが美しく配置されています。中央の「王門」の奥に至聖所（祭壇）があります。'
+                  : locale === 'ru'
+                  ? 'Величественный деревянный иконостас с образами Спасителя, Богородицы и святых отделяет алтарную часть от средней части храма. В центре находятся Царские врата.'
+                  : 'The carved iconostasis separates the nave from the altar, adorned with holy icons of Christ, the Theotokos, angels, and patron saints. The Royal Doors stand in the center.'}
+              </p>
+            </div>
+
+            {/* Right: First-Time Visitor Etiquette Guide */}
+            <div className="lg:col-span-7 bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-3xl p-5 sm:p-6 shadow-sm space-y-3.5">
+              <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <Info className="w-4 h-4 text-orthodox-gold" />
+                <span>
+                  {locale === 'ja' ? '初めて正教会に来られる方へ（参拝の心得）' : locale === 'ru' ? 'Для тех, кто впервые в храме' : 'First-Time Visitors: Church Etiquette'}
+                </span>
+              </h4>
+
+              <div className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  <h5 className="font-bold text-slate-900 dark:text-white mb-1">
+                    {locale === 'ja' ? '1. 服装について' : locale === 'ru' ? '1. Одежда' : '1. Attire'}
+                  </h5>
+                  <p>
+                    {locale === 'ja'
+                      ? '礼拝にふさわしい清楚で敬虔な服装でお越しください。露出の多い服装や短パンは控えめにされることをお勧めします。'
+                      : locale === 'ru'
+                      ? 'Просьба приходить в храм в скромной и благоговейной одежде.'
+                      : 'Modest, respectful attire is appropriate for church services.'}
+                  </p>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  <h5 className="font-bold text-slate-900 dark:text-white mb-1">
+                    {locale === 'ja' ? '2. ろうそくのお献げ' : locale === 'ru' ? '2. Свечи' : '2. Candles'}
+                  </h5>
+                  <p>
+                    {locale === 'ja'
+                      ? '聖堂入口でろうそくをいただき、イコン（聖像）の前でお祈りしながら灯します。献金箱にお心をお納めください。'
+                      : locale === 'ru'
+                      ? 'Свечи возжигаются перед святыми иконами с молитвой о здравии и упокоении.'
+                      : 'Candles are placed before the holy icons with a quiet prayer for loved ones.'}
+                  </p>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  <h5 className="font-bold text-slate-900 dark:text-white mb-1">
+                    {locale === 'ja' ? '3. 聖体礼儀の「領聖（聖体拝領）」について' : locale === 'ru' ? '3. Святое Причастие' : '3. Holy Communion'}
+                  </h5>
+                  <p>
+                    {locale === 'ja'
+                      ? '聖体と聖血の拝領（杯からの領聖）は、正教会で洗礼・傅膏機密を受け、告解による準備をした信徒に限られます。洗礼を受けておられない方や見学の方は、礼儀の最後に配られる「アンティドル（祝福されたパン）」を感謝してお受け取りいただけます。'
+                      : locale === 'ru'
+                      ? 'К Святой Чаше приступают только крещеные православные христиане, подготовившиеся постом и исповедью. Неправославные гости могут подойти к кресту и получить благословенный антидор (хлеб).'
+                      : 'Holy Communion from the Chalice is reserved for prepared Orthodox Christians. All visitors are warmly welcome to receive the blessed bread (antidoron) distributed at the end.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Parish Life Photo Gallery (4 Photos Grid with enlargement) */}
+          <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-serif font-bold text-lg sm:text-xl text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
+                  <Camera className="w-5 h-5 text-orthodox-gold" />
+                  <span>{locale === 'ja' ? '教会フォトギャラリー' : locale === 'ru' ? 'Фотогалерея прихода' : 'Parish Photo Gallery'}</span>
+                </h4>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  {locale === 'ja' ? 'タップすると写真を拡大表示できます' : locale === 'ru' ? 'Нажмите на фото для увеличения' : 'Click any photo to enlarge'}
                 </p>
               </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              {PARISH_PHOTOS.map((photo) => (
+                <div
+                  key={photo.id}
+                  onClick={() => setActivePhoto({
+                    src: photo.src,
+                    title: photo.title[locale],
+                    desc: photo.desc[locale]
+                  })}
+                  className="group cursor-pointer rounded-2xl overflow-hidden border-2 border-orthodox-gold/40 hover:border-orthodox-gold bg-slate-100 dark:bg-slate-800 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img
+                      src={photo.src}
+                      alt={photo.title[locale]}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Maximize2 className="w-5 h-5 text-white drop-shadow" />
+                    </div>
+                  </div>
+                  <div className="p-2.5 bg-white dark:bg-slate-900">
+                    <h5 className="font-bold text-xs text-slate-800 dark:text-slate-200 line-clamp-1">
+                      {photo.title[locale]}
+                    </h5>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Photo Lightbox Modal */}
+      {activePhoto && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setActivePhoto(null)}
+        >
+          <div
+            className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setActivePhoto(null)}
+              className="absolute right-3 top-3 z-10 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+              aria-label="Close photo"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="max-h-[65vh] overflow-hidden bg-black flex items-center justify-center">
+              <img
+                src={activePhoto.src}
+                alt={activePhoto.title}
+                className="max-h-[65vh] w-auto max-w-full object-contain"
+              />
+            </div>
+
+            <div className="p-5 space-y-1.5 bg-white dark:bg-slate-900">
+              <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                {activePhoto.title}
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                {activePhoto.desc}
+              </p>
             </div>
           </div>
         </div>

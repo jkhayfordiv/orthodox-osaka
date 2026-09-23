@@ -450,43 +450,56 @@ export function TodayView() {
       {/* 6. Next Service at Osaka Church Card */}
       {nextService && (
         <div className="bg-orthodox-candle/40 dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl p-4 sm:p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold-light flex items-center space-x-1.5">
               <Clock className="w-3.5 h-3.5" />
               <span>{locale === 'ja' ? '次の奉事（大阪教会）' : locale === 'ru' ? 'Ближайшая служба в Осаке' : 'Next Service in Osaka'}</span>
             </span>
-            <span className="text-xs font-bold py-0.5 px-2 rounded-full bg-orthodox-gold text-orthodox-navy">
+            <span className="text-xs font-bold py-0.5 px-2 rounded-full bg-orthodox-gold text-orthodox-navy shadow-xs">
               {daysUntilService === 0
                 ? locale === 'ja' ? '本日開催' : locale === 'ru' ? 'Сегодня' : 'Today!'
                 : locale === 'ja' ? `あと${daysUntilService}日` : locale === 'ru' ? `через ${daysUntilService} дн.` : `in ${daysUntilService} days`}
             </span>
           </div>
 
-          <div className="space-y-1">
-            <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-              {nextService.date}（{new Date(nextService.date).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', { weekday: 'short' })}）
-              {' '}{nextService.time} — {nextService.title[locale]}
-            </h4>
+          <div className="flex items-start space-x-3.5">
+            <img
+              src="/photos/church-belfry.jpg"
+              alt="Osaka Orthodox Church Belfry"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover border-2 border-orthodox-gold/60 shadow-xs flex-shrink-0"
+            />
+            <div className="space-y-1 min-w-0 flex-1">
+              <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
+                {(() => {
+                  const [y, m, d] = nextService.date.split('-').map(Number);
+                  const dateObj = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+                  const weekday = locale === 'ja'
+                    ? ['日', '月', '火', '水', '木', '金', '土'][dateObj.getUTCDay()]
+                    : dateObj.toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', { weekday: 'short', timeZone: 'UTC' });
+                  return `${m}/${d} (${weekday}) ${nextService.time} — ${nextService.title[locale]}`;
+                })()}
+              </h4>
 
-            {nextService.dutyGroup && (
-              <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 flex items-center flex-wrap gap-1.5 pt-0.5">
-                <span className="font-semibold text-orthodox-navy dark:text-orthodox-gold-light">
-                  {locale === 'ja' ? '当番: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty: '}
-                </span>
-                <span className="font-semibold text-orthodox-burgundy dark:text-orthodox-gold bg-orthodox-gold/15 dark:bg-orthodox-gold/20 px-2 py-0.5 rounded-md text-xs">
-                  {nextService.dutyGroup.replace(/^<|>$/g, '')}
-                </span>
-                {nextService.dutyPeople && nextService.dutyPeople.length > 0 && (
-                  <span className="text-xs text-slate-500"> ({nextService.dutyPeople.join(', ')})</span>
-                )}
-              </div>
-            )}
+              {nextService.dutyGroup && (
+                <div className="text-xs text-slate-600 dark:text-slate-400 flex items-center flex-wrap gap-1 pt-0.5">
+                  <span className="font-semibold text-orthodox-navy dark:text-orthodox-gold-light">
+                    {locale === 'ja' ? '当番: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty: '}
+                  </span>
+                  <span className="font-semibold text-orthodox-burgundy dark:text-orthodox-gold bg-orthodox-gold/15 dark:bg-orthodox-gold/20 px-2 py-0.5 rounded-md text-xs">
+                    {nextService.dutyGroup.replace(/^<|>$/g, '')}
+                  </span>
+                  {nextService.dutyPeople && nextService.dutyPeople.length > 0 && (
+                    <span className="text-slate-500"> ({nextService.dutyPeople.join(', ')})</span>
+                  )}
+                </div>
+              )}
 
-            {nextService.notes && (
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">
-                {nextService.notes[locale]}
-              </p>
-            )}
+              {nextService.notes && (
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">
+                  {nextService.notes[locale]}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       )}

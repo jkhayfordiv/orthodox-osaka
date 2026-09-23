@@ -87,18 +87,32 @@ export function OnboardingModal() {
 
         {/* Step 2: Welcome & Reassurance */}
         {step === 'welcome' && selectedLang && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto rounded-full bg-orthodox-gold/20 flex items-center justify-center text-orthodox-gold-dark mb-3">
-                <CheckCircle2 className="w-8 h-8 text-orthodox-gold" />
+          <div className="space-y-4">
+            <div className="relative rounded-2xl overflow-hidden border-2 border-orthodox-gold shadow-md">
+              <div className="h-32 sm:h-36 w-full relative">
+                <img
+                  src="/photos/church-exterior.jpg"
+                  alt="Osaka Orthodox Church"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <div className="absolute bottom-2.5 inset-x-3 text-center text-white">
+                  <h3 className="text-lg sm:text-xl font-serif font-bold text-orthodox-gold-light drop-shadow">
+                    {selectedLang === 'ja'
+                      ? 'ようこそ、大阪教会へ'
+                      : selectedLang === 'ru'
+                      ? 'Добро пожаловать в храм Осаки'
+                      : 'Welcome to Osaka Orthodox Church'}
+                  </h3>
+                  <p className="text-[11px] text-slate-200">
+                    {selectedLang === 'ja'
+                      ? '聖生神女庇護聖堂（大阪府吹田市）'
+                      : selectedLang === 'ru'
+                      ? 'Храм Покрова Пресвятой Богородицы'
+                      : 'Holy Protection Orthodox Temple, Osaka'}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-                {selectedLang === 'ja'
-                  ? 'ようこそ、大阪教会へ'
-                  : selectedLang === 'ru'
-                  ? 'Добро пожаловать в храм Осаки'
-                  : 'Welcome to Osaka Orthodox Church'}
-              </h3>
             </div>
 
             <div className="space-y-3.5 text-sm">

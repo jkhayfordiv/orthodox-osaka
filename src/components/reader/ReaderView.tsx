@@ -225,23 +225,36 @@ export function ReaderView() {
           ======================================================== */}
       {mainCategory === 'liturgy' && (
         <div className="space-y-4">
-          <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
-            <div className="border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
-              <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light mb-1">
-                {locale === 'ja'
-                  ? '聖金口イオアン聖体礼儀（全編祈祷文）'
-                  : locale === 'ru'
-                  ? 'Божественная Литургия святителя Иоанна Златоуста'
-                  : 'The Divine Liturgy of St. John Chrysostom'}
-              </h3>
-              <p className="text-xs text-slate-500">
-                {locale === 'ja'
-                  ? '全17章の式順と祈祷文を掲載。各章をタップして開閉できます。'
-                  : locale === 'ru'
-                  ? 'Полный чин Литургии из 17 последовательных частей. Нажмите для открытия.'
-                  : 'Complete text and rubrics for all 17 parts of the Divine Liturgy.'}
-              </p>
+          {/* Sanctuary Banner with Church Interior */}
+          <div className="relative rounded-3xl overflow-hidden border-2 border-orthodox-gold shadow-md">
+            <div className="h-44 sm:h-52 w-full relative">
+              <img
+                src="/photos/church-interior.jpg"
+                alt="Holy Protection Church Sanctuary & Iconostasis"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/25"></div>
+              <div className="absolute bottom-0 inset-x-0 p-5 sm:p-6 text-white space-y-1">
+                <span className="text-[11px] font-bold py-0.5 px-2.5 rounded-full bg-orthodox-gold text-orthodox-navy uppercase tracking-wider inline-block shadow-sm">
+                  {locale === 'ja' ? '大阪ハリストス正教会 聖体礼儀' : locale === 'ru' ? 'Божественная Литургия' : 'Divine Liturgy'}
+                </span>
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-orthodox-gold-light drop-shadow">
+                  {locale === 'ja'
+                    ? '聖金口イオアン聖体礼儀（全編祈祷文）'
+                    : locale === 'ru'
+                    ? 'Божественная Литургия святителя Иоанна Златоуста'
+                    : 'The Divine Liturgy of St. John Chrysostom'}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-200 drop-shadow line-clamp-1">
+                  {locale === 'ja'
+                    ? '聖生神女庇護聖堂にて捧げられる全17章の式順と祈祷文（日本正教会訳）'
+                    : locale === 'ru'
+                    ? 'Полный чин Литургии из 17 последовательных частей с японским, церковнославянским и английским текстами'
+                    : 'Complete text and rubrics for all 17 parts as served at Holy Protection Temple'}
+                </p>
+              </div>
             </div>
+          </div>
 
             <div className="space-y-3">
               {LITURGY_CHRYSOSTOM.map((part) => {
@@ -306,8 +319,7 @@ export function ReaderView() {
               })}
             </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* ========================================================
           C. Prayer Book (Categorized: Morning, Evening, Communion, Meals)
