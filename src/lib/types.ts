@@ -13,7 +13,7 @@ export type FastingLevel =
   | 'wine_oil'    // 🟡 🫒 酒油可 / Wine & oil / Вино и елей
   | 'oil_only'    // 🟠 🍳 油可 / Oil allowed / Горячая с маслом
   | 'strict'      // 🟣 🍞 厳斎 / Strict fast (Xerophagy) / Сухоядение
-  | 'total';      // ⚪ ✕ 完全斎 / Total fast / Полный пост
+  | 'total';      // ⚫ ✕ 完全断食 / Total fast / Полный пост
 
 export type FastingPeriod =
   | 'none'

@@ -160,7 +160,7 @@ export function getFastingRule(date: Date): FastingInfo {
       return {
         level: 'total',
         period: 'holy_week',
-        icon: '⚪',
+        icon: '⚫',
         badgeText: { ja: '完全斎（聖大金曜日）', en: 'Total Fast (Great & Holy Friday)', ru: 'Полный пост (Великий Пяток)' },
         periodName: { ja: '受難週', en: 'Holy Week', ru: 'Страстная Седмица' },
         explanation: {

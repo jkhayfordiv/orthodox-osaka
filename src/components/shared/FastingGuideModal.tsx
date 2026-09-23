@@ -96,7 +96,7 @@ export function FastingGuideModal({ isOpen, onClose }: FastingGuideModalProps) {
                 </>
               ) : (
                 <>
-                  <strong>Total Abstinence (⚪ 完全断食 / Complete Fast)</strong>—refraining entirely from all food and drink—is reserved for special solemn occasions:
+                  <strong>Total Abstinence (⚫ 完全断食 / Complete Fast)</strong>—refraining entirely from all food and drink—is reserved for special solemn occasions:
                   principally on <strong>Great and Holy Friday</strong> (until the afternoon Vespers of the Epitaphios / Shroud), and during the <strong>Eucharistic Fast</strong> from midnight before receiving Holy Communion.
                 </>
               )}
@@ -180,7 +180,7 @@ export function FastingGuideModal({ isOpen, onClose }: FastingGuideModalProps) {
               {/* Level 5: Total Fast */}
               <div className="p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-300 dark:border-slate-700 sm:col-span-2">
                 <div className="flex items-center space-x-2 font-bold text-slate-900 dark:text-slate-100">
-                  <span className="text-base">⚪</span>
+                  <span className="text-base">⚫</span>
                   <span>{locale === 'ja' ? '完全断食（絶食・完全斎）' : locale === 'ru' ? 'Полное воздержание (Полный пост)' : 'Total Fast (Complete Abstinence)'}</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">

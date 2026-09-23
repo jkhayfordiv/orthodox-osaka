@@ -488,6 +488,7 @@ export function CalendarView() {
               <span className="flex items-center space-x-0.5"><span>🐟</span><span>{locale === 'ja' ? '魚可' : locale === 'ru' ? 'Рыба' : 'Fish allowed'}</span></span>
               <span className="flex items-center space-x-0.5"><span>🟡</span><span>{locale === 'ja' ? '油可' : locale === 'ru' ? 'Елей' : 'Wine & Oil'}</span></span>
               <span className="flex items-center space-x-0.5"><span>🟣</span><span className="font-semibold text-purple-700 dark:text-purple-300">{locale === 'ja' ? '厳斎' : locale === 'ru' ? 'Строгий пост' : 'Strict Fast'}</span></span>
+              <span className="flex items-center space-x-0.5"><span>⚫</span><span className="font-semibold text-slate-900 dark:text-slate-100">{locale === 'ja' ? '完全断食' : locale === 'ru' ? 'Полный пост' : 'Total Fast'}</span></span>
             </button>
             <button
               onClick={() => setFastingGuideOpen(true)}
