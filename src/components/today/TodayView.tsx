@@ -21,6 +21,7 @@ import { formatJulianDate } from '../../lib/paschalion';
 import { Locale } from '../../lib/types';
 import { TONE_NAMES } from '../../data/terminology';
 import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifications';
+import { FastingGuideModal } from '../shared/FastingGuideModal';
 
 export function TodayView() {
   const {
@@ -36,6 +37,7 @@ export function TodayView() {
   } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>('epistle'); // open by default for rich immersion!
   const [copiedShare, setCopiedShare] = useState(false);
+  const [fastingGuideOpen, setFastingGuideOpen] = useState(false);
 
   const readingTextSizeClass =
     fontSize === 'sm'
@@ -411,8 +413,28 @@ export function TodayView() {
           </div>
         </div>
 
+        {/* Fasting Guide Button */}
+        <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800">
+          <button
+            onClick={() => setFastingGuideOpen(true)}
+            className="text-xs font-semibold text-orthodox-burgundy dark:text-orthodox-gold hover:underline flex items-center justify-between w-full transition-colors group"
+          >
+            <span className="flex items-center space-x-1.5">
+              <span>❓</span>
+              <span>
+                {locale === 'ja'
+                  ? '「厳斎」とは？ 斎の手引きを見る'
+                  : locale === 'ru'
+                  ? 'Что такое строгий пост? Руководство'
+                  : 'What is a Strict Fast? Fasting Guide'}
+              </span>
+            </span>
+            <span className="text-slate-400 group-hover:translate-x-0.5 transition-transform text-xs">➔</span>
+          </button>
+        </div>
+
         {showTooltips && (
-          <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 flex items-center space-x-1.5">
+          <div className="mt-2 text-[11px] text-slate-400 flex items-center space-x-1.5">
             <Info className="w-3.5 h-3.5 text-orthodox-gold flex-shrink-0" />
             <span>
               {locale === 'ja'
@@ -516,6 +538,12 @@ export function TodayView() {
       </div>
     </div>
   </div>
+
+  {/* Fasting Guide Modal */}
+  <FastingGuideModal
+    isOpen={fastingGuideOpen}
+    onClose={() => setFastingGuideOpen(false)}
+  />
 </div>
   );
 }

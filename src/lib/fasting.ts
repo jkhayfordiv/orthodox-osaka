@@ -33,9 +33,9 @@ export function getFastingRule(date: Date): FastingInfo {
       icon: '🟣',
       badgeText: { ja: '厳斎（神現祭前夜）', en: 'Strict Fast (Theophany Eve)', ru: 'Строгий пост (Навечерие Богоявления)' },
       explanation: {
-        ja: '神現祭の大聖水式に備える厳斎日です。',
-        en: 'Strict fast day preparing for the Great Blessing of Water on Theophany.',
-        ru: 'День строгого поста перед праздником Крещения Господня.',
+        ja: '神現祭の大聖水式に備える厳斎日。大聖水式まで飲食を控えるか、簡素な精進料理（穀物粥など）を摂ります。',
+        en: 'Strict fast day preparing for the Great Blessing of Water on Theophany. Traditionally simple food after the blessing.',
+        ru: 'Строгий пост перед праздником Крещения Господня. До великого освящения воды воздерживаются от скоромного (вкушают сочиво).',
       },
     };
   }
@@ -115,9 +115,9 @@ export function getFastingRule(date: Date): FastingInfo {
       badgeText: { ja: '厳斎（大斎平日）', en: 'Strict Fast (Great Lent Weekday)', ru: 'Строгий пост (Будни Великого Поста)' },
       periodName: { ja: '大斎', en: 'Great Lent', ru: 'Великий Пост' },
       explanation: {
-        ja: '肉、乳製品、魚、油、酒を断つ大斎の精進日です。',
-        en: 'Strict fast abstaining from meat, dairy, fish, wine, and oil.',
-        ru: 'Строгий пост без мяса, молока, рыбы, вина и масла.',
+        ja: '厳斎（乾食）：肉・乳製品・魚・酒・油を断ち、野菜・豆類・穀物・果物などの精進料理を摂ります（完全絶食ではありません）。',
+        en: 'Strict fast (Xerophagy): plant foods (vegetables, grains, legumes, fruit) without meat, dairy, fish, wine, or oil. (Not total abstinence from all food).',
+        ru: 'Строгий пост (сухоядение): растительная пища без мяса, молока, рыбы, вина и масла (не полное голодание).',
       },
     };
   }
@@ -161,12 +161,12 @@ export function getFastingRule(date: Date): FastingInfo {
         level: 'total',
         period: 'holy_week',
         icon: '⚪',
-        badgeText: { ja: '完全斎（聖大金曜日）', en: 'Total Fast (Holy Friday)', ru: 'Полный пост (Великий Пяток)' },
+        badgeText: { ja: '完全斎（聖大金曜日）', en: 'Total Fast (Great & Holy Friday)', ru: 'Полный пост (Великий Пяток)' },
         periodName: { ja: '受難週', en: 'Holy Week', ru: 'Страстная Седмица' },
         explanation: {
-          ja: '主の十字架の受難を想い、聖骸布着座まで完全断食とします。',
-          en: 'Total fast commemorating the Crucifixion until the Plaschanitsa (Epitaphios) vespers.',
-          ru: 'День строжайшего поста в воспоминание Крестных страданий Спасителя.',
+          ja: '主の十字架の受難と死を悼み、午後の聖骸布着座（夕祈祷）まで一切の飲食を断つ完全断食（絶食）の日です。',
+          en: 'Total fast (complete abstinence from all food and drink) commemorating the Crucifixion and Death of Christ until the afternoon Vespers of the Epitaphios (Shroud).',
+          ru: 'День строжайшего поста — полное воздержание от всякой пищи и пития в воспоминание Крестных страданий Спасителя до выноса Плащаницы.',
         },
       };
     }
@@ -309,9 +309,9 @@ export function getFastingRule(date: Date): FastingInfo {
       icon: '🟣',
       badgeText: { ja: '厳斎（前駆授洗イオアン斬首祭）', en: 'Strict Fast (Beheading of St. John)', ru: 'Строгий пост (Усекновение главы Иоанна Предтечи)' },
       explanation: {
-        ja: '前駆授洗イオアンの斬首殉教を偲ぶ一日厳斎日です。',
-        en: 'Strict fast day commemorating the Beheading of the Holy Forerunner John the Baptist.',
-        ru: 'День строгого поста в память Усекновения главы святого Иоанна Предтечи.',
+        ja: '前駆授洗イオアンの斬首殉教を偲ぶ一日厳斎日。肉・魚・乳製品・酒・油を断ちます。古くは午後まで飲食を控え、簡素な精進料理を摂る伝統があります。',
+        en: 'Strict fast day commemorating the Beheading of the Holy Forerunner John the Baptist. Abstain from meat, dairy, fish, wine, and oil. Piously, food is refrained from until afternoon.',
+        ru: 'Строгий пост в память Усекновения главы Иоанна Предтечи. Воздержание от мяса, молока, рыбы, вина и елея. По благочестивому обычаю пищу вкушают во второй половине дня.',
       },
     };
   }
@@ -324,9 +324,9 @@ export function getFastingRule(date: Date): FastingInfo {
       icon: '🟣',
       badgeText: { ja: '厳斎（十字架挙栄祭）', en: 'Strict Fast (Exaltation of the Cross)', ru: 'Строгий пост (Воздвижение Креста Господня)' },
       explanation: {
-        ja: '尊い十字架の崇敬と主の苦難を想う一日厳斎日です。',
-        en: 'Strict fast day in honor of the Elevation of the Precious and Life-Giving Cross.',
-        ru: 'День строгого поста в честь Воздвижения Животворящего Креста Господня.',
+        ja: '尊い生命を施す十字架の崇敬と主の苦難を想う一日厳斎日。肉・乳製品・魚・酒・油を断ち、救いの十字架に祈りを捧げます。',
+        en: 'Strict fast day in solemn remembrance of the Crucifixion upon the Precious Cross. Abstain from meat, dairy, fish, wine, and oil.',
+        ru: 'Строгий пост в память крестных страданий Спасителя на Честном Кресте. Воздержание от мяса, рыбы, молока, вина и елея.',
       },
     };
   }

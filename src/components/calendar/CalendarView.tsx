@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { formatJulianDate, gregorianToJulian } from '../../lib/paschalion';
 import { TONE_NAMES } from '../../data/terminology';
+import { FastingGuideModal } from '../shared/FastingGuideModal';
 
 export function CalendarView() {
   const {
@@ -35,6 +36,7 @@ export function CalendarView() {
   const [inspectDate, setInspectDate] = useState<Date>(selectedDate);
   const [showFastingSeasons, setShowFastingSeasons] = useState<boolean>(true);
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
+  const [fastingGuideOpen, setFastingGuideOpen] = useState<boolean>(false);
 
   // Month navigation
   const handlePrevMonth = () => {
@@ -475,12 +477,24 @@ export function CalendarView() {
 
         {/* Legend for Fasting & View Mode Switcher */}
         <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
-          {/* Fasting Legend */}
-          <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-600 dark:text-slate-400">
-            <span className="flex items-center space-x-0.5"><span>🟢</span><span>{locale === 'ja' ? '斎なし' : locale === 'ru' ? 'Без поста' : 'Fast-free'}</span></span>
-            <span className="flex items-center space-x-0.5"><span>🐟</span><span>{locale === 'ja' ? '魚可' : locale === 'ru' ? 'Рыба' : 'Fish allowed'}</span></span>
-            <span className="flex items-center space-x-0.5"><span>🟡</span><span>{locale === 'ja' ? '油可' : locale === 'ru' ? 'Елей' : 'Wine & Oil'}</span></span>
-            <span className="flex items-center space-x-0.5"><span>🟣</span><span>{locale === 'ja' ? '厳斎' : locale === 'ru' ? 'Строгий пост' : 'Strict Fast'}</span></span>
+          {/* Fasting Legend with Fasting Guide Button */}
+          <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-600 dark:text-slate-400">
+            <button
+              onClick={() => setFastingGuideOpen(true)}
+              className="flex flex-wrap items-center gap-1.5 hover:opacity-80 transition-opacity cursor-pointer text-left"
+              title="Click to view Fasting Guide"
+            >
+              <span className="flex items-center space-x-0.5"><span>🟢</span><span>{locale === 'ja' ? '斎なし' : locale === 'ru' ? 'Без поста' : 'Fast-free'}</span></span>
+              <span className="flex items-center space-x-0.5"><span>🐟</span><span>{locale === 'ja' ? '魚可' : locale === 'ru' ? 'Рыба' : 'Fish allowed'}</span></span>
+              <span className="flex items-center space-x-0.5"><span>🟡</span><span>{locale === 'ja' ? '油可' : locale === 'ru' ? 'Елей' : 'Wine & Oil'}</span></span>
+              <span className="flex items-center space-x-0.5"><span>🟣</span><span className="font-semibold text-purple-700 dark:text-purple-300">{locale === 'ja' ? '厳斎' : locale === 'ru' ? 'Строгий пост' : 'Strict Fast'}</span></span>
+            </button>
+            <button
+              onClick={() => setFastingGuideOpen(true)}
+              className="text-[10px] sm:text-[11px] font-bold py-0.5 px-2 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold hover:bg-orthodox-gold hover:text-orthodox-navy transition-all"
+            >
+              ℹ️ {locale === 'ja' ? '斎の手引き' : locale === 'ru' ? 'О посте' : 'Fasting Guide'}
+            </button>
           </div>
 
           {/* Grid / List view toggle */}
@@ -745,6 +759,12 @@ export function CalendarView() {
           {renderInspectCard()}
         </div>
       )}
+
+      {/* Fasting Guide Modal */}
+      <FastingGuideModal
+        isOpen={fastingGuideOpen}
+        onClose={() => setFastingGuideOpen(false)}
+      />
     </div>
   );
 }
