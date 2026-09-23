@@ -35,7 +35,7 @@ export function TodayView() {
     notificationPrefs,
     fontSize,
   } = useApp();
-  const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>('epistle'); // open by default for rich immersion!
+  const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
   const [copiedShare, setCopiedShare] = useState(false);
   const [fastingGuideOpen, setFastingGuideOpen] = useState(false);
 

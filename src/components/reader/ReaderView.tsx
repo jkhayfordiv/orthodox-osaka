@@ -29,8 +29,10 @@ export function ReaderView() {
   // Top-level category: Scripture | Liturgy | Prayer Book | Patronal Hymns
   const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal'>('scripture');
 
-  // Sub-category under Prayer Book
-  const [prayerSubCategory, setPrayerSubCategory] = useState<'morning' | 'evening' | 'communion' | 'meals' | 'diptychs'>('morning');
+  // Sub-category under Prayer Book: Daily Prayers (Morning/Evening) | Communion | Meals/Travel | Diptychs
+  const [prayerSubCategory, setPrayerSubCategory] = useState<'daily' | 'communion' | 'meals' | 'diptychs'>('daily');
+  const [dailyRuleType, setDailyRuleType] = useState<'morning' | 'evening'>('morning');
+  const [communionPhase, setCommunionPhase] = useState<'preparation' | 'thanksgiving'>('preparation');
 
   const [parallelLang, setParallelLang] = useState<Locale | 'none'>('none');
   const [expandedLiturgyPart, setExpandedLiturgyPart] = useState<string | null>(null);
@@ -69,14 +71,9 @@ export function ReaderView() {
 
   const prayerSubCategories = [
     {
-      id: 'morning' as const,
+      id: 'daily' as const,
       icon: <Sun className="w-3.5 h-3.5" />,
-      label: { ja: '朝の祈り', en: 'Morning', ru: 'Утренние' },
-    },
-    {
-      id: 'evening' as const,
-      icon: <Moon className="w-3.5 h-3.5" />,
-      label: { ja: '就寝前の祈り', en: 'Evening', ru: 'На сон' },
+      label: { ja: '朝夕の祈り', en: 'Daily Prayers', ru: 'Утренние и вечерние' },
     },
     {
       id: 'communion' as const,
@@ -120,21 +117,21 @@ export function ReaderView() {
 
       {/* 2. Sub-Category Tabs (Shown only when "Prayer Book / 祈祷書" is selected) */}
       {mainCategory === 'prayers' && (
-        <div className="grid grid-cols-5 gap-1 sm:gap-2 bg-slate-100 dark:bg-slate-800/60 p-1.5 sm:p-2 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in">
+        <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5 bg-slate-100 dark:bg-slate-800/60 p-1.5 sm:p-2 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in">
           {prayerSubCategories.map((sub) => {
             const isSubActive = prayerSubCategory === sub.id;
             return (
               <button
                 key={sub.id}
                 onClick={() => setPrayerSubCategory(sub.id)}
-                className={`py-1.5 px-0.5 sm:py-2 sm:px-2 rounded-lg text-xs font-bold flex flex-col sm:flex-row items-center justify-center space-y-0.5 sm:space-y-0 sm:space-x-1.5 transition-all select-none ${
+                className={`py-1.5 px-1 sm:py-2 sm:px-2 rounded-lg text-xs font-bold flex flex-col sm:flex-row items-center justify-center space-y-0.5 sm:space-y-0 sm:space-x-1.5 transition-all select-none ${
                   isSubActive
                     ? 'bg-orthodox-navy text-orthodox-gold-light dark:bg-orthodox-gold dark:text-orthodox-navy shadow'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {sub.icon}
-                <span className="text-[10px] sm:text-xs tracking-tight">{sub.label[locale]}</span>
+                <span className="text-[11px] sm:text-xs tracking-tight">{sub.label[locale]}</span>
               </button>
             );
           })}
@@ -333,51 +330,121 @@ export function ReaderView() {
           ======================================================== */}
       {mainCategory === 'prayers' && (
         <div className="space-y-4">
-          <div className="px-1">
-            <h3 className="text-base sm:text-xl font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-              {prayerSubCategory === 'morning' && (locale === 'ja' ? '朝の祈り（起床時の祈祷）' : locale === 'ru' ? 'Утренние молитвы' : 'Morning Prayers')}
-              {prayerSubCategory === 'evening' && (locale === 'ja' ? '就寝前の祈り（晩の祈祷）' : locale === 'ru' ? 'Молитвы на сон грядущим' : 'Prayers before Sleep')}
-              {prayerSubCategory === 'communion' && (locale === 'ja' ? '領聖祝文（聖体拝領準備及び感謝）' : locale === 'ru' ? 'Молитвы ко Святому Причащению' : 'Holy Communion Prayers')}
-              {prayerSubCategory === 'meals' && (locale === 'ja' ? '日常の祈り（食前・食後・旅・生神女）' : locale === 'ru' ? 'Трапезные молитвы, в дорогу и Богородице' : 'Prayers at Meals, Travel & Marian')}
-              {prayerSubCategory === 'diptychs' && (locale === 'ja' ? '記憶帳（生者・永眠者の代祷名簿）' : locale === 'ru' ? 'Помянник (О здравии и О упокоении)' : 'Diptychs / Commemoration List')}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              {prayerSubCategory === 'morning' && (
-                locale === 'ja'
-                  ? '一日を神への感謝と祈りで始める伝統の正教会祈祷規則（信経・詩篇50篇を含む全8祈祷）'
-                  : locale === 'ru'
-                  ? 'Последование утренних молитв (включая Символ веры и 50-й псалом)'
-                  : 'Traditional morning prayer rule upon rising (including the Creed and Psalm 50)'
-              )}
-              {prayerSubCategory === 'evening' && (
-                locale === 'ja'
-                  ? '一日の過ちの赦しを乞い、安らかな眠りを祈る就寝前の祈祷規則（痛悔讃詞・十字架の祈り）'
-                  : locale === 'ru'
-                  ? 'Молитвы на сон грядущим с покаянными тропарями и молитвой Честному Кресту'
-                  : 'Evening prayer rule before sleep with penitential troparia and prayer to the Cross'
-              )}
-              {prayerSubCategory === 'communion' && (
-                locale === 'ja'
-                  ? '主の聖体と尊き聖血を拝領するための告白と感謝の祈祷（金口イオアンの祈祷）'
-                  : locale === 'ru'
-                  ? 'Молитвы ко Святому Причащению и благодарственные молитвы'
-                  : 'Pre-communion confession and post-communion thanksgiving'
-              )}
-              {prayerSubCategory === 'meals' && (
-                locale === 'ja'
-                  ? '日々の食事（食前・食後）・旅路の平安・生神女への祈祷（ボゴロージツェ）'
-                  : locale === 'ru'
-                  ? 'Молитвы перед и после вкушения пищи, в дорогу и Богородице Дево'
-                  : 'Prayers at meals, travel, and the Angelic Salutation (Bogoroditse Devo)'
-              )}
-              {prayerSubCategory === 'diptychs' && (
-                locale === 'ja'
-                  ? '生者（健康と救い）および永眠者（永遠の記憶）を祈るための私的代祷名簿。代子・家族の聖名日も自動連動。'
-                  : locale === 'ru'
-                  ? 'Записки о здравии и о упокоении с именами по крещению. Автоматически синхронизируется с именами семьи и крестников.'
-                  : 'Commemoration lists of the Living and the Departed with baptismal patron saints. Auto-syncs with family & godchildren.'
-              )}
-            </p>
+          <div className="px-1 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base sm:text-xl font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
+                {prayerSubCategory === 'daily' && (
+                  dailyRuleType === 'morning'
+                    ? (locale === 'ja' ? '朝の祈り（起床時の祈祷規則）' : locale === 'ru' ? 'Утренние молитвы' : 'Morning Prayers')
+                    : (locale === 'ja' ? '就寝前の祈り（晩の祈祷規則）' : locale === 'ru' ? 'Молитвы на сон грядущим' : 'Evening Prayers')
+                )}
+                {prayerSubCategory === 'communion' && (
+                  communionPhase === 'preparation'
+                    ? (locale === 'ja' ? '領聖準備祝文（聖体拝領前の祈祷）' : locale === 'ru' ? 'Последование ко Святому Причащению' : 'Pre-Communion Prayers')
+                    : (locale === 'ja' ? '領聖感謝祝文（聖体拝領後の感謝）' : locale === 'ru' ? 'Благодарственные молитвы по Святом Причащении' : 'Thanksgiving after Holy Communion')
+                )}
+                {prayerSubCategory === 'meals' && (locale === 'ja' ? '日常の祈り（食前・食後・旅・生神女）' : locale === 'ru' ? 'Трапезные молитвы, в дорогу и Богородице' : 'Prayers at Meals, Travel & Marian')}
+                {prayerSubCategory === 'diptychs' && (locale === 'ja' ? '記憶帳（生者・永眠者の代祷名簿）' : locale === 'ru' ? 'Помянник (О здравии и О упокоении)' : 'Diptychs / Commemoration List')}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                {prayerSubCategory === 'daily' && (
+                  dailyRuleType === 'morning'
+                    ? (locale === 'ja'
+                      ? '一日を神への感謝と祈りで始める伝統の正教会祈祷規則（信経・詩篇50篇を含む全8祈祷）'
+                      : locale === 'ru'
+                      ? 'Последование утренних молитв (включая Символ веры и 50-й псалом)'
+                      : 'Traditional morning prayer rule upon rising (including the Creed and Psalm 50)')
+                    : (locale === 'ja'
+                      ? '一日の過ちの赦しを乞い、安らかな眠りを祈る就寝前の祈祷規則（痛悔讃詞・十字架の祈り）'
+                      : locale === 'ru'
+                      ? 'Молитвы на сон грядущим с покаянными тропарями и молитвой Честному Кресту'
+                      : 'Evening prayer rule before sleep with penitential troparia and prayer to the Cross')
+                )}
+                {prayerSubCategory === 'communion' && (
+                  communionPhase === 'preparation'
+                    ? (locale === 'ja'
+                      ? '主の聖体と尊き聖血を拝領するための告白と準備（聖大ワシリイ・金口イオアン・ダマスコのイオアン・新神学者シメオンの祈祷）'
+                      : locale === 'ru'
+                      ? 'Молитвы ко Святому Причащению святителей Василия Великаго, Иоанна Златоуста, Иоанна Дамаскина и Симеона Новаго Богослова'
+                      : 'Prayers of preparation before partaking of the Holy Mysteries (St. Basil the Great, St. John Chrysostom, St. John of Damascus, St. Symeon the New Theologian)')
+                    : (locale === 'ja'
+                      ? '尊き身肉と血を拝領した後の感謝祈祷（聖大ワシリイ・シメオン・メタフラスト・至聖生神女への祈り・シメオン祝歌）'
+                      : locale === 'ru'
+                      ? 'Благодарственные молитвы по Святом Причащении (свт. Василия Великаго, св. Симеона Метафраста, ко Богородице и Ныне отпущаеши)'
+                      : 'Thanksgiving prayers following Holy Communion (St. Basil the Great, St. Symeon Metaphrastes, to the Theotokos, and Nunc Dimittis)')
+                )}
+                {prayerSubCategory === 'meals' && (
+                  locale === 'ja'
+                    ? '日々の食事（食前・食後）・旅路の平安・生神女への祈祷（ボゴロージツェ）'
+                    : locale === 'ru'
+                    ? 'Молитвы перед и после вкушения пищи, в дорогу и Богородице Дево'
+                    : 'Prayers at meals, travel, and the Angelic Salutation (Bogoroditse Devo)'
+                )}
+                {prayerSubCategory === 'diptychs' && (
+                  locale === 'ja'
+                    ? '生者（健康と救い）および永眠者（永遠の記憶）を祈るための私的代祷名簿。代子・家族の聖名日も自動連動。'
+                    : locale === 'ru'
+                    ? 'Записки о здравии и о упокоении с именами по крещению. Автоматически синхронизируется с именами семьи и крестников.'
+                    : 'Commemoration lists of the Living and the Departed with baptismal patron saints. Auto-syncs with family & godchildren.'
+                )}
+              </p>
+            </div>
+
+            {/* 1. Daily Prayers Switch: Morning vs Evening */}
+            {prayerSubCategory === 'daily' && (
+              <div className="flex items-center space-x-1.5 bg-slate-200/80 dark:bg-slate-800 p-1 rounded-xl flex-shrink-0 self-start md:self-auto shadow-inner">
+                <button
+                  onClick={() => setDailyRuleType('morning')}
+                  className={`py-1.5 px-3 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all select-none ${
+                    dailyRuleType === 'morning'
+                      ? 'bg-orthodox-gold text-orthodox-navy shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Sun className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '朝の祈り' : locale === 'ru' ? 'Утренние' : 'Morning'}</span>
+                </button>
+                <button
+                  onClick={() => setDailyRuleType('evening')}
+                  className={`py-1.5 px-3 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all select-none ${
+                    dailyRuleType === 'evening'
+                      ? 'bg-orthodox-navy text-orthodox-gold-light dark:bg-orthodox-gold dark:text-orthodox-navy shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Moon className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '就寝前の祈り' : locale === 'ru' ? 'На сон' : 'Evening'}</span>
+                </button>
+              </div>
+            )}
+
+            {/* 2. Communion Switch: Preparation vs Thanksgiving */}
+            {prayerSubCategory === 'communion' && (
+              <div className="flex items-center space-x-1.5 bg-slate-200/80 dark:bg-slate-800 p-1 rounded-xl flex-shrink-0 self-start md:self-auto shadow-inner">
+                <button
+                  onClick={() => setCommunionPhase('preparation')}
+                  className={`py-1.5 px-3 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all select-none ${
+                    communionPhase === 'preparation'
+                      ? 'bg-orthodox-gold text-orthodox-navy shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Wine className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '準備祝文' : locale === 'ru' ? 'Подготовка' : 'Preparation'}</span>
+                </button>
+                <button
+                  onClick={() => setCommunionPhase('thanksgiving')}
+                  className={`py-1.5 px-3 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all select-none ${
+                    communionPhase === 'thanksgiving'
+                      ? 'bg-orthodox-navy text-orthodox-gold-light dark:bg-orthodox-gold dark:text-orthodox-navy shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <PrayingHandsIcon className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '感謝祝文' : locale === 'ru' ? 'Благодарение' : 'Thanksgiving'}</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {prayerSubCategory === 'diptychs' ? (
@@ -385,10 +452,15 @@ export function ReaderView() {
           ) : (
             <div className={parallelLang !== 'none' && parallelLang !== locale ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4 items-start'}>
               {PRAYERS_DATA.filter((p) => {
-                if (prayerSubCategory === 'morning') return p.category === 'morning';
-                if (prayerSubCategory === 'evening') return p.category === 'evening';
-                if (prayerSubCategory === 'communion') return p.category === 'communion';
-                if (prayerSubCategory === 'meals') return p.category === 'meals' || p.category === 'occasional';
+                if (prayerSubCategory === 'daily') {
+                  return dailyRuleType === 'morning' ? p.category === 'morning' : p.category === 'evening';
+                }
+                if (prayerSubCategory === 'communion') {
+                  return p.category === 'communion' && (p.communionPhase === communionPhase || (!p.communionPhase && communionPhase === 'preparation'));
+                }
+                if (prayerSubCategory === 'meals') {
+                  return p.category === 'meals' || p.category === 'occasional';
+                }
                 return false;
               }).map((prayer) => (
                 <div

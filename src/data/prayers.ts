@@ -3,6 +3,7 @@ import { TrilingualText } from '../lib/types';
 export interface PrayerItem {
   id: string;
   category: 'morning' | 'evening' | 'communion' | 'meals' | 'patronal' | 'occasional';
+  communionPhase?: 'preparation' | 'thanksgiving';
   patronGroup?: 'pokrov' | 'st-nicholas';
   sequenceNumber?: number;
   title: TrilingualText;
@@ -651,19 +652,141 @@ Bless me, have mercy upon me, and grant me life eternal. Amen.`,
   },
 
   // ==========================================
-  // 3. 領聖前の祈祷（聖体拝領準備 / Pre-Communion）
+  // 3. 領聖前の準備祈祷 (Pre-Communion Preparation / Ко Святому Причащению)
   // ==========================================
+  {
+    id: 'communion-troparia',
+    category: 'communion',
+    communionPhase: 'preparation',
+    sequenceNumber: 1,
+    title: {
+      ja: '領聖準備の小讃詞・詩節',
+      en: 'Verses & Troparia before Holy Communion',
+      ru: 'Входные стихи пред Святым Причащением',
+    },
+    subtitle: {
+      ja: '恐れつつ神の血を仰げ（神の身肉と血への畏敬）',
+      en: 'Beholding the Deifying Blood and Sacred Mysteries',
+      ru: 'Боготворящую Кровь ужаснися, человече, зря',
+    },
+    text: {
+      ja: `【機密に近づく者の詩節】
+恐れつつ神の血を仰げ、人よ。是れ不相応なる者を焼き尽くす炭火なればなり。
+神の尊き身肉は我を神化し、我が霊を養い、人知を超えて我が心を潔む。
+
+主の甘美なる愛をもて我を引き寄せ、神の情熱をもて我を変容せしめ給え。
+無形の火をもて我が罪過を焼き払い、爾の喜びに満たし給え。
+以て我が歓喜して、善徳者よ、爾の初めと終わりの顕現を讃揚せしめんことを。
+
+爾の聖徒らの光栄のうちに、我はいかにして不相応に入らんや。
+我あえて婚宴の部屋に入らんとせば、我が衣服は我を責む、是れ婚宴の服ならざればなり。
+我は縛られて天使らに投げ出されん。
+主よ、我が霊の汚れを潔め、唯一人を愛する主よ、我を救い給え。`,
+      en: `[Verses upon Approaching the Holy Mysteries]
+Tremble, O mortal, beholding the deifying Blood; for it is a coal that burneth the unworthy.
+The divine Body both deifieth and nourisheth me; it deifieth the spirit and wondrously nourisheth the mind.
+
+Thou hast sweetened me with longing for Thee, O Christ, and hast transformed me by Thy divine love.
+Consume my sins with immaterial fire, and vouchsafe me to be filled with delight in Thee,
+that leaping for joy I may magnify Thy two comings, O Good One!
+
+Into the splendor of Thy saints, how can I who am unworthy enter?
+For if I dare to enter into the bridal chamber, my raiment convicteth me, for it is not a wedding garment,
+and bound I shall be cast out by the angels.
+Cleanse, O Lord, the defilement of my soul, and save me, for Thou art the Lover of mankind.`,
+      ru: `[Стихи пред причащением]
+Боготворящую Кровь ужаснися, человече, зря: огнь бо есть, недостойныя паляй.
+Божественное Тело и обожает мя и питает: обожает дух, ум же питает странно.
+
+Усладил мя еси любовию, Христе, и изменил мя еси божественным Твоим рачением;
+но попали огнем невещественным грехи моя, и насытитися Твоея пищи сподоби,
+да ликуя величаю, Блаже, два пришествия Твоя.
+
+Во светлостех святых Твоих како вниду недостойный?
+Аще бо дерзну совнити в чертог, одежда мя обличает, яко несть брачна,
+и связан извержен буду от Ангелов.
+Очисти, Господи, скверну души моея, и спаси мя, яко Человеколюбец.`,
+    },
+  },
+  {
+    id: 'communion-basil',
+    category: 'communion',
+    communionPhase: 'preparation',
+    sequenceNumber: 2,
+    title: {
+      ja: '聖大ワシリイの領聖祈祷',
+      en: 'First Prayer of St. Basil the Great',
+      ru: 'Молитва 1-я, святителя Василия Великаго',
+    },
+    subtitle: {
+      ja: '生命と不朽の泉、万物の造り主なる主への悔悛',
+      en: 'Master, Lord Jesus Christ, Source of Life and Immortality',
+      ru: 'Владыко Господи Иисусе Христе, Источниче жизни и безсмертия',
+    },
+    text: {
+      ja: `主宰主イイスス・ハリストス、我らの神よ、生命と不朽の泉よ、見ゆると見えざる万物の造り主よ、
+常生の父の共栄なる子よ、過ぐる日の慈愛によりて、終わりの時に肉をまとい、
+我ら恩を知らざる歪める者のために十字架に釘うたれ、爾自らの血をもって我が罪過に損なわれたる性を更新し給いし主よ。
+
+不死の王よ、罪人なる我が悔い改めを受け容れ、爾の耳を傾けて我が言葉を聴き給え。
+我は罪を犯せり、主よ、天と爾の御前において罪を犯し、爾の至高の光栄を仰ぎ望むに相応しからず。
+我は爾の戒めを破り、爾の掟に従わざりき。
+
+然れども主よ、爾は寛容にして大いなる慈悲深き主なり。我を我が不法のうちに滅ぼすことなく、我が立ち返りを待ち給えり。
+人を愛する主宰よ、爾預言者を以て語り給いき、「我は悪人の死を喜ばず、悪人のその道より立ち返りて生くるを喜ぶ」と。
+爾の造り物を滅ぼさんことを欲せず、総ての人の救われて真理の知識に至らんことを欲し給えり。
+
+是の故に、天にも地にも相応しからざる我、罪に我が全身を委ね、肉の欲情に仕えし者なれども、
+爾の測り知れざる慈愛と寛容に依り頼みて、爾に近づく。
+善徳者よ、我を斥け給う勿れ。我が霊と肉体を潔め、爾の尊き潔白なる聖体と聖血を拝領せしめ、
+以て罪の赦しと永遠の生命を得せしめ給え。アミン。`,
+      en: `Master, Lord Jesus Christ our God, Source of life and immortality, Creator of all things visible and invisible,
+Son of the co-eternal Father, Who through the abundance of Thy goodness didst in the last days put on flesh,
+and was crucified and buried for us ungrateful and thankless ones, and by Thine own Blood didst renew our nature corrupted by sin:
+
+Do Thou, O Immortal King, accept the repentance of me a sinner, and incline Thine ear unto me and hearken unto my words.
+For I have sinned, O Lord, I have sinned against heaven and before Thee, and am not worthy to lift up mine eyes to the height of Thy glory;
+for I have provoked Thy goodness by transgressing Thy commandments and not obeying Thine ordinances.
+
+But Thou, O Lord, being longsuffering and plenteous in mercy, hast not given me over to perish in my transgressions,
+but ever awaitest my return.
+For Thou, O Lover of mankind, hast said through Thy prophet: "As I live, saith the Lord, I desire not the death of a sinner, but that he turn and live."
+For Thou willest not, O Master, that the work of Thy hands should perish, but desirest that all men should be saved and come to the knowledge of the truth.
+
+Wherefore, though I am unworthy both of heaven and of earth, yet trusting in Thine infinite mercy and goodness,
+I draw near unto Thee.
+Cast me not away from Thy presence, O Good One, but cleanse my soul and body, and grant me without condemnation
+to partake of Thine immaculate and life-giving Mysteries, unto the remission of sins and unto life eternal. Amen.`,
+      ru: `Владыко Господи Иисусе Христе, Боже наш, Источниче жизни и безсмертия, всея твари видимыя и невидимыя Содетелю,
+безначальнаго Отца соприсносущный Сыне и собезначальный, премногия ради благости в последния дни в плоть обокийся,
+и распныйся, и погребыйся за ны, неблагодарныя и злонравныя, и Твоею Кровию возобновивый растлевшее грехом естество наше:
+
+Сам, Безсмертный Царю, приими и мое грешнаго покаяние, и приклони ухо Твое мне, и услыши глаголы моя.
+Согреших бо, Господи, согреших на небо и пред Тобою, и несмь достоин воззрети на высоту славы Твоея:
+прогневах бо Твою благость, Твоя заповеди преступив, и не послушав Твоих повелений.
+
+Но Ты, Господи, незлобив сый, долготерпелив же и многомилостив, не предал еси мене погибнути со беззаконьми моими,
+моего всячески ожидая обращения.
+Ты бо рекл еси, Человеколюбче, пророком Твоим: яко хотением не хощу смерти грешника, но еже обратитися и живу быти ему.
+Не хощеши бо, Владыко, создания Твоего руку погубити, но хощеши всем спастися, и в разум истины приити.
+
+Темже и аз, аще и недостоин есмь небесе и земли, уповая на безмерное Твое благоутробие, дерзая прихожду к Тебе.
+Не отрини мене от лица Твоего, Блаже, но сподоби мя неосужденно причаститися пречистых Твоих Таин,
+во оставление грехов и в жизнь вечную. Аминь.`,
+    },
+  },
   {
     id: 'communion-chrysostom',
     category: 'communion',
-    sequenceNumber: 1,
+    communionPhase: 'preparation',
+    sequenceNumber: 3,
     title: {
       ja: '聖金口イオアンの領聖祈祷（主よ、我信ず）',
       en: 'Pre-Communion Prayer of St. John Chrysostom',
       ru: 'Молитва свт. Иоанна Златоуста перед Причащением',
     },
     subtitle: {
-      ja: '聖杯に近づく直前の告白祈祷',
+      ja: '聖杯に近づく直前の信仰の告白祈祷',
       en: 'Confession of Faith before the Chalice',
       ru: 'Верую, Господи, и исповедую',
     },
@@ -701,9 +824,97 @@ May the communion of Thy holy Mysteries be neither to my judgment, nor to my con
     },
   },
   {
+    id: 'communion-damascus',
+    category: 'communion',
+    communionPhase: 'preparation',
+    sequenceNumber: 4,
+    title: {
+      ja: 'ダマスコの聖イオアンの領聖祈祷',
+      en: 'Prayer of St. John of Damascus',
+      ru: 'Молитва преподобнаго Иоанна Дамаскина',
+    },
+    subtitle: {
+      ja: '聖堂の門前に立ちて主の慈悲を乞う祈り',
+      en: 'Standing before the Doors of Thy Sanctuary',
+      ru: 'Пред враты храма Твоего предстою',
+    },
+    text: {
+      ja: `主宰主イイスス・ハリストス、我らの神よ、唯一人を愛する主よ、
+我は爾の聖堂の門前に立ちて、悪しき想念より離るること能わず。
+されど、取税人を義とし、罪ある女の涙を納れ、盗賊に楽園の門を開き給いしハリストス神よ、
+我を受け容れ、悔い改めて爾に近づく我を抱き給え。
+
+我が汚れし唇と穢れたる手をもて、爾の尊き身肉を拝領せんとする我を退け給う勿れ。
+主よ、爾の愛の神秘によりて我が不法を赦し、
+我が霊を照らし、至聖なる御名、父と子と聖神を罪に定められずして讃美せしめ給え。アミン。`,
+      en: `Master, Lord Jesus Christ our God, Who alone hast power to remit sins:
+I stand before the doors of Thy sanctuary, and am not able to banish my evil thoughts.
+But Thou, O Christ God, Who didst justify the publican, and hadst mercy on the sinful woman, and didst open the gates of Paradise to the thief:
+receive me also as I come and touch Thee.
+
+Turn not away from me as I touch Thy sacred Body with defiled lips and hands,
+but according to Thine ineffable love pardon all my transgressions,
+enlighten my soul, and make me worthy to glorify Thy most holy Name: of the Father, and of the Son, and of the Holy Spirit, now and ever, and unto ages of ages. Amen.`,
+      ru: `Владыко Господи Иисусе Христе, Боже наш, един имеяй власть человеком грехи отпущати:
+Пред враты храма Твоего предстою, и лютых помышлений не отступаю;
+но Ты, Христе Боже, мытаря оправдивый, и грешницу помиловавый, и разбойнику райския двери отверзый,
+отверзи ми утробы человеколюбия Твоего, и приими мя приходяща и прикасающася Тебе.
+
+Не возгнушайся скверных устен моих и нечистых рук,
+но яко Благ и Человеколюбец прости ми вся прегрешения моя,
+просвети душу мою, и сподоби мя неосужденно славити всесвятое имя Твое, Отца и Сына и Святаго Духа, ныне и присно и во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'communion-new-theologian',
+    category: 'communion',
+    communionPhase: 'preparation',
+    sequenceNumber: 5,
+    title: {
+      ja: '新神学者聖シメオンの領聖祈祷',
+      en: 'Prayer of St. Symeon the New Theologian',
+      ru: 'Молитва преподобнаго Симеона Новаго Богослова',
+    },
+    subtitle: {
+      ja: '汚れし心より注ぐ涙の悔い改め',
+      en: 'From Defiled Lips and an Unclean Heart',
+      ru: 'От скверных устен, от мерзкаго сердца',
+    },
+    text: {
+      ja: `汚れし唇より、悪しき心より、潔からざる舌より、汚れたる魂より、
+我が祈りを受け給え、我がハリストスよ。
+我が言葉を斥けず、我が面を避けず、我が大胆さを咎め給う勿れ。
+主よ、我をして願うところを大胆に語らしめ給え。
+
+我が罪の数は海砂よりも多く、我が不法は重し。
+然れども主よ、我が涙を看過し給う勿れ、爾は我が滴る涙をすべて知ろし召せばなり。
+我が弱さを顧み、我が罪を赦し、神の機密に与る我を聖化し給え。
+以て我が爾に結ばれ、爾我がうちに住まわんことを。アミン。`,
+      en: `From lips defiled, from a heart unclean, from a tongue polluted, from a soul defiled:
+receive my prayer, O my Christ!
+Disdain not my words, nor my countenance, nor my shamelessness.
+Grant me, O my Christ, with boldness to speak what I desire.
+
+For my sins are more in number than the sands of the sea, and heavy is mine iniquity.
+Yet, O Lord, despise not my tears, for Thou knowest every drop that falleth from mine eyes.
+Look upon mine infirmity, forgive all my sins, and sanctify me as I partake of Thy divine Mysteries,
+that I may abide in Thee, and Thou in me, unto ages of ages. Amen.`,
+      ru: `От скверных устен, от мерзкаго сердца, от нечистаго языка, от души осквернены,
+приими моление, Христе мой:
+и не отрини мене, ниже словес моих, ниже образов, ниже безстудия.
+Даждь ми дерзновенно глаголати, яже хощу, Христе мой.
+
+Грехи бо моя превысиша песок морский, и тяжка беззакония моя.
+Но, Господи, не презри слез моих, вся бо капли слезныя веси.
+Призри на немощь мою, прости вся грехи моя, и освяти мя причащающася Божественных Твоих Таинств,
+да пребываю в Тебе, и Ты во мне, во веки веков. Аминь.`,
+    },
+  },
+  {
     id: 'communion-metaphrastes',
     category: 'communion',
-    sequenceNumber: 2,
+    communionPhase: 'preparation',
+    sequenceNumber: 6,
     title: {
       ja: 'シメオン・メタフラストの領聖祝文',
       en: 'Prayer of St. Symeon Metaphrastes',
@@ -727,35 +938,215 @@ and by Thy life-creating Mysteries make my heart a living temple of Thy Holy Spi
   },
 
   // ==========================================
-  // 4. 領聖後の感謝祝文 (Post-Communion Thanksgiving)
+  // 4. 領聖後の感謝祝文 (Post-Communion Thanksgiving / Благодарственные молитвы)
   // ==========================================
   {
     id: 'post-communion-thanks',
     category: 'communion',
-    sequenceNumber: 3,
+    communionPhase: 'thanksgiving',
+    sequenceNumber: 1,
     title: {
-      ja: '領聖後の感謝祈祷',
-      en: 'Thanksgiving after Holy Communion',
-      ru: 'Благодарственные молитвы по Святом Причащении',
+      ja: '領聖後の感謝祈祷（光栄は爾に帰す）',
+      en: 'First Prayer of Thanksgiving after Holy Communion',
+      ru: 'Благодарственная молитва 1-я, анонимная',
     },
     subtitle: {
-      ja: '聖体拝領の恵みに対する感謝',
-      en: 'Thanksgiving for Partaking of the Holy Mysteries',
-      ru: 'Благодарение за причастие Святых Таин',
+      ja: '天の聖なる機密に与りし恵みへの三度の感謝',
+      en: 'Glory to Thee, O God (Thrice) for Partaking of the Holy Gifts',
+      ru: 'Слава Тебе, Боже! (трижды) за причастие Святых Таин',
     },
     text: {
       ja: `光栄は爾に帰す、神よ、光栄は爾に帰す、神よ、光栄は爾に帰す、神よ。
+
 主よ、罪人にして不相応なる我を退けず、爾の極めて清き天の機密に与ることを許し給いしことを感謝す。
 願わくは此の領聖の我が霊と肉体の癒やしとなり、信仰の堅固、仁愛の全き成就、悪徳の絶滅、並びに爾の戒めの実行とならんことを。
-願わくは我が生命の終わりに至るまで、罪に定められずして爾の尊き体を拝領せしめ給え。アミン。`,
+願わくは我が生命の終わりに至るまで、罪に定められずして爾の尊き体を拝領せしめ給え。
+
+聖なる主宰よ、爾の聖所の中に我を守り、日夜を問わず爾の義を学ぶことを得せしめ給え。
+以て我がもはや己のために生きず、我らのために死して復活し給いし主宰、神なる爾のために生きんことを。アミン。`,
       en: `Glory to Thee, O God! Glory to Thee, O God! Glory to Thee, O God!
+
 I thank Thee, O Lord my God, that Thou hast not rejected me, a sinner, but hast permitted me to partake of Thy holy and heavenly Mysteries.
-Let these holy Gifts be for the healing of my soul and body, the strengthening of faith, the perfecting of love, and the keeping of Thy commandments.
-Preserve me in Thy holiness all the days of my life, that I may live no longer for myself, but for Thee, our Master and Benefactor. Amen.`,
+Let these holy Gifts be for the healing of my soul and body, the strengthening of faith, the perfecting of love, the destruction of passions, and the keeping of Thy commandments.
+Preserve me in Thy holiness all the days of my life, that I may live no longer for myself, but for Thee, our Master and Benefactor, Who didst die and rise again for us. Amen.`,
       ru: `Слава Тебе, Боже! Слава Тебе, Боже! Слава Тебе, Боже!
+
 Благодарю Тя, Господи Боже мой, яко не отринул еси мене грешнаго, но сподобил мя еси причастника быти святынь Твоих.
-Да будут ми Святыя сия во исцеление души же и тела, в веру непостыдну, в любовь нелицемерну, в соблюдение заповедей Твоих.
-Святый Владыко, соблюди мя во Твоей святыне, да всю жизнь мою славлю пресвятое имя Твое. Аминь.`,
+Да будут ми Святыя сия во исцеление души же и тела, во отгнание всякаго сопротивнаго, в просвещение очес сердца моего, в мир душевных моих сил, в веру непостыдну, в любовь нелицемерну, в соблюдение заповедей Твоих.
+Святый Владыко, соблюди мя во Твоей святыне, да всю жизнь мою славлю пресвятое имя Твое, и не ктому себе живу, но Тебе, нашему Владыце и Благодетелю. Аминь.`,
+    },
+  },
+  {
+    id: 'communion-thanks-basil',
+    category: 'communion',
+    communionPhase: 'thanksgiving',
+    sequenceNumber: 2,
+    title: {
+      ja: '聖大ワシリイの領聖感謝祈祷',
+      en: 'Second Prayer of Thanksgiving (St. Basil the Great)',
+      ru: 'Молитва 2-я, святителя Василия Великаго',
+    },
+    subtitle: {
+      ja: '庇護の翼の下に守られんことを乞う感謝の祈り',
+      en: 'Master, Christ God, King of the Ages and Creator of All',
+      ru: 'Владыко Христе Боже, Царю веков и Содетелю всех',
+    },
+    text: {
+      ja: `万物の主宰、世々の王、万物の造り主なるハリストス神よ、
+爾の我に賜いし総ての善きものと、爾の尊き潔白にして生命を施す機密に与ることを許し給いしことを感謝す。
+善徳にして人を愛する主よ、爾に祈る、我を爾の庇護の翼の下に守り給え。
+
+我が最後の息に至るまで、潔き良心をもって相応しく爾の機密に与り、
+罪の赦しと永遠の生命を得せしめ給え。
+蓋し爾は生命のパン、聖化の泉、万善の施主にして、
+我らは父と子と聖神に光栄を帰す、今もいつも世々に至るまで。アミン。`,
+      en: `Master, Christ God, King of the ages and Creator of all:
+I thank Thee for all the good things Thou hast given me, and for the communion of Thy pure and life-giving Mysteries.
+I pray Thee, therefore, O Good One and Lover of mankind: keep me under Thy shelter and under the shadow of Thy wings.
+
+Grant me, even unto my last breath, with a pure conscience worthily to partake of Thy Holy Gifts,
+unto the remission of sins and unto life eternal.
+For Thou art the Bread of life, the Fountain of holiness, and the Giver of all good things,
+and unto Thee do we send up glory: to the Father, and to the Son, and to the Holy Spirit, now and ever, and unto ages of ages. Amen.`,
+      ru: `Владыко Христе Боже, Царю веков и Содетелю всех,
+благодарю Тя о всех, яже ми еси подал благих, и о причащении пречистых и животворящих Твоих Таинств.
+Молю убо Тя, Блаже и Человеколюбче: сохрани мя под кровом Твоим, и в сени крилу Твоею.
+
+И даруй ми чистою совестию, даже до последняго издыхания моего, достойно причащатися святынь Твоих,
+во оставление грехов, и в жизнь вечную.
+Ты бо еси Хлеб животный, Источник святыни, Податель благих,
+и Тебе славу возсылаем, со Отцем и Святым Духом, ныне и присно и во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'communion-thanks-metaphrastes',
+    category: 'communion',
+    communionPhase: 'thanksgiving',
+    sequenceNumber: 3,
+    title: {
+      ja: 'シメオン・メタフラストの感謝祈祷',
+      en: 'Third Prayer of Thanksgiving (St. Symeon Metaphrastes)',
+      ru: 'Молитва 3-я, святаго Симеона Метафраста',
+    },
+    subtitle: {
+      ja: '悪しき情欲を焼き尽くし骨節と心を聖化する火',
+      en: 'Thou Who Willingly Givest Thy Flesh to Me as Food',
+      ru: 'Давый пищу мне плоть Твою волею',
+    },
+    text: {
+      ja: `我が身肉を喜んで我に与え給いし主よ、火となりて相応しからざる者を焼き尽くす主よ、
+願わくは我が身を焼き尽くすことなく、我が骨節に入りて我が全身を清め、
+悪しき情欲の棘を焼き払い給え。
+
+我が霊を潔め、我が思いを聖化し、我が足取りを堅固にし給え。
+我をして総ての悪しき言葉と行いより免れしめ、
+爾の光栄の住まいとならしめ給え。
+以て我が爾の受難と復活を感謝し、世々に至るまで爾を讃美せんことを。アミン。`,
+      en: `O Thou Who willingly givest Thy flesh to me as food,
+Thou Who art a fire consuming the unworthy: consume me not, O my Creator!
+Rather, penetrate into my members, into all my joints, into my heart and reins,
+and burn up the thorns of all my sins.
+
+Purify my soul, sanctify my mind, strengthen my steps.
+Establish me in Thy fear, and show me to be the dwelling-place of Thy Holy Spirit alone.
+That entering in peace, I may ever bless and glorify Thee, my Lord and Savior, unto ages of ages. Amen.`,
+      ru: `Давый пищу мне плоть Твою волею,
+огнь сый и опаляяй недостойныя, да не опалиши мене, Содетелю мой;
+но пройди во уды моя, во вся составы, во утробу, в сердце.
+Попали терние всех моих прегрешений.
+
+Душу очисти, освяти помышления, составы утверди с костьми вкупе.
+Страхом Твоим утверди мя, и скинию мя покажи Единаго Духа Святаго.
+Да благословляю Тя, Владыку моего и Спасителя, во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'communion-thanks-theotokos',
+    category: 'communion',
+    communionPhase: 'thanksgiving',
+    sequenceNumber: 4,
+    title: {
+      ja: '至聖なる生神女への感謝祈祷',
+      en: 'Fourth Prayer of Thanksgiving (To the Most Holy Theotokos)',
+      ru: 'Молитва 4-я, ко Пресвятей Богородице',
+    },
+    subtitle: {
+      ja: '暗き霊の光、真の生命のパンの母',
+      en: 'Light of My Darkened Soul, Mother of the Bread of Life',
+      ru: 'Свете помраченныя моея души, Богородице Дево',
+    },
+    text: {
+      ja: `至聖なる女宰生神女よ、我が暗き霊の光、我が希望、我が保護、我が避難所、我が慰め、我が喜びよ。
+生命の真のパンを生み給いし爾に感謝す。
+我をして罪に定められずして、爾の子の尊き身肉と血を拝領せしめ給いし爾に感謝す。
+
+慈愛深き母よ、我を憐れみ、我が心に痛悔と謙遜を与え、悪しき誘惑より我を守り給え。
+我が最後の息に至るまで、聖体拝領の恵みを保たしめ、天の歓喜に至らしめ給え。
+蓋し爾は福なり、世々に至るまで。アミン。`,
+      en: `O Most Holy Lady Theotokos, light of my darkened soul, my hope, shelter, refuge, consolation, and joy!
+I thank thee that thou hast vouchsafed me, who am unworthy, to be a communicant of the most pure Body and precious Blood of thy Son.
+Thou who didst bear the true Light: enlighten the spiritual eyes of my heart.
+
+Thou who didst conceive the Source of Immortality: enliven me who am dead in sins.
+O merciful and compassionate Mother of the merciful God, have mercy on me,
+and grant me repentance and contrition of heart, and humble thoughts.
+Vouchsafe me, even unto my last breath, without condemnation to receive the sanctification of the most pure Mysteries,
+for the healing of soul and body. For thou art blessed unto all ages. Amen.`,
+      ru: `Пресвятая Владычице Богородице, свете помраченныя моея души, надеждо, покрове, прибежище, утешение, радование мое!
+Благодарю тя, яко сподобила мя еси недостойнаго, причастника быти пречистаго Тела и честныя Крове Сына твоего.
+Но рождшая истинный Свет, просвети моя умныя очи сердца.
+
+Яже Источника безсмертия рождшая, оживотвори мя уязвленнаго грехом.
+Яже милостиваго Бога милосердная Мати, помилуй мя,
+и даждь ми умиление и сокрушение в сердце моем, и смирение в мыслех моих.
+И сподоби мя до последняго издыхания неосужденно приимати пречистых Таин освящение,
+во исцеление души же и тела. Яко благословена еси во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'communion-thanks-simeon',
+    category: 'communion',
+    communionPhase: 'thanksgiving',
+    sequenceNumber: 5,
+    title: {
+      ja: '神を受けしシメオンの祝歌（今爾の僕を去らしめ給う）',
+      en: 'The Prayer of St. Simeon the God-Receiver (Nunc Dimittis)',
+      ru: 'Песнь святаго Симеона Богоприимца (Ныне отпущаеши)',
+    },
+    subtitle: {
+      ja: 'ルカによる福音書第2章29-32節・万民を照らす光',
+      en: 'Luke 2:29-32 — Lord, Now Lettest Thou Thy Servant Depart in Peace',
+      ru: 'Ныне отпущаеши раба Твоего, Владыко (Лк. 2:29–32)',
+    },
+    text: {
+      ja: `主宰よ、今爾の僕を安らかに去らしめ給う、爾の言葉の如く。
+蓋し我が目、爾の救いを見たり。
+是れ爾が万民の御前に備え給いし者にして、
+異邦人を照らす光、爾の民イスラエルの光栄なり。
+
+【三聖讃〜至聖三位〜主の祈り】
+聖なる神、聖なる勇力、聖なる不滅なる主、我等を憐れめよ。（三度）
+光栄は父と子と聖神に帰す、今もいつも世々に至るまで、アミン。
+天におらるる我らの父よ、願わくは爾の名は聖とせられ、爾の国は来たり、爾の旨は天に行わるるが如く地にも行われん...
+（主の祈りを終え、聖堂の解散讃詞を唱う）`,
+      en: `Lord, now lettest Thou Thy servant depart in peace, according to Thy word;
+for mine eyes have seen Thy salvation,
+which Thou hast prepared before the face of all people:
+a light to lighten the Gentiles, and the glory of Thy people Israel.
+
+[Trisagion Prayers through The Lord’s Prayer]
+Holy God, Holy Mighty, Holy Immortal, have mercy on us. (Thrice)
+Glory to the Father, and to the Son, and to the Holy Spirit, now and ever, and unto ages of ages. Amen.
+Our Father, Who art in heaven, hallowed be Thy Name...`,
+      ru: `Ныне отпущаеши раба Твоего, Владыко, по глаголу Твоему, с миром;
+яко видеста очи мои спасение Твое,
+еже еси уготовал пред лицем всех людей,
+свет во откровение языков, и славу людей Твоих Израиля.
+
+[Трисвятое по Отче наш]
+Святый Боже, Святый Крепкий, Святый Безсмертный, помилуй нас. (Трижды)
+Слава Отцу и Сыну и Святому Духу, и ныне и присно и во веки веков. Аминь.
+Отче наш, Иже еси на небесех!..`,
     },
   },
 

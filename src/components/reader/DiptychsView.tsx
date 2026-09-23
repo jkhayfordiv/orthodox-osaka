@@ -175,7 +175,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
               </p>
             </div>
 
-            {/* View Mode Switcher: Prayer Mode vs Manage Mode */}
+            {/* View Mode Switcher: Prayer vs Manage Mode */}
             <div className="flex items-center bg-slate-800/80 p-1 rounded-xl border border-orthodox-gold/30 self-start sm:self-auto">
               <button
                 onClick={() => setActiveView('prayer')}
@@ -186,7 +186,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                 }`}
               >
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>{locale === 'ja' ? '祈祷用全覧' : locale === 'ru' ? 'Для молитвы' : 'Prayer Mode'}</span>
+                <span>{locale === 'ja' ? '祈祷' : locale === 'ru' ? 'Молитва' : 'Prayer'}</span>
               </button>
               <button
                 onClick={() => setActiveView('manage')}
@@ -197,7 +197,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                 }`}
               >
                 <Edit2 className="w-3.5 h-3.5" />
-                <span>{locale === 'ja' ? '名簿の編集' : locale === 'ru' ? 'Редактировать' : 'Manage Names'}</span>
+                <span>{locale === 'ja' ? '名簿の編集' : locale === 'ru' ? 'Редактировать' : 'Manage'}</span>
               </button>
             </div>
           </div>

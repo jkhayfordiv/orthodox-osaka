@@ -34,7 +34,7 @@ export function CalendarView() {
   const [currentMonth, setCurrentMonth] = useState<number>(selectedDate.getMonth()); // 0-indexed
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [inspectDate, setInspectDate] = useState<Date>(selectedDate);
-  const [showFastingSeasons, setShowFastingSeasons] = useState<boolean>(true);
+  const [showFastingSeasons, setShowFastingSeasons] = useState<boolean>(false);
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
   const [fastingGuideOpen, setFastingGuideOpen] = useState<boolean>(false);
 
