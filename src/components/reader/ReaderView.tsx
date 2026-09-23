@@ -8,11 +8,12 @@ import { getDayInfo } from '../../lib/calendarEngine';
 import {
   BookOpen,
   Church,
+  Heart,
+  Sparkles,
   Sun,
   Moon,
   Wine,
   Utensils,
-  Sparkles,
   Type,
   SplitSquareVertical,
   ChevronDown,
@@ -22,71 +23,111 @@ import { Locale } from '../../lib/types';
 
 export function ReaderView() {
   const { locale, selectedDate, fontSize, setFontSize } = useApp();
-  const [section, setSection] = useState<'todayReadings' | 'liturgy' | 'morning' | 'evening' | 'communion' | 'meals' | 'patronal'>('todayReadings');
+
+  // Top-level category: Scripture | Liturgy | Prayer Book | Patronal Hymns
+  const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal'>('scripture');
+
+  // Sub-category under Prayer Book
+  const [prayerSubCategory, setPrayerSubCategory] = useState<'morning' | 'evening' | 'communion' | 'meals'>('morning');
+
   const [parallelLang, setParallelLang] = useState<Locale | 'none'>('none');
   const [expandedLiturgyPart, setExpandedLiturgyPart] = useState<string | null>(null);
 
   const dayInfo = getDayInfo(selectedDate);
 
-  const sections = [
+  const mainCategories = [
     {
-      id: 'todayReadings' as const,
-      icon: <BookOpen className="w-3.5 h-3.5" />,
-      label: { ja: '今日の朗読', en: "Today's Readings", ru: 'Чтения дня' },
+      id: 'scripture' as const,
+      icon: <BookOpen className="w-4 h-4" />,
+      label: { ja: '日課朗読', en: 'Scripture', ru: 'Чтения' },
     },
     {
       id: 'liturgy' as const,
-      icon: <Church className="w-3.5 h-3.5" />,
-      label: { ja: '聖体礼儀（全編）', en: 'Divine Liturgy', ru: 'Литургия (полная)' },
+      icon: <Church className="w-4 h-4" />,
+      label: { ja: '聖体礼儀', en: 'Liturgy', ru: 'Литургия' },
     },
+    {
+      id: 'prayers' as const,
+      icon: <Heart className="w-4 h-4" />,
+      label: { ja: '祈祷書', en: 'Prayer Book', ru: 'Молитвослов' },
+    },
+    {
+      id: 'patronal' as const,
+      icon: <Sparkles className="w-4 h-4" />,
+      label: { ja: '守護聖歌', en: 'Pokrov', ru: 'Покров' },
+    },
+  ];
+
+  const prayerSubCategories = [
     {
       id: 'morning' as const,
       icon: <Sun className="w-3.5 h-3.5" />,
-      label: { ja: '朝の祈り', en: 'Morning Prayers', ru: 'Утренние молитвы' },
+      label: { ja: '朝の祈り', en: 'Morning', ru: 'Утренние' },
     },
     {
       id: 'evening' as const,
       icon: <Moon className="w-3.5 h-3.5" />,
-      label: { ja: '就寝前の祈り', en: 'Evening Prayers', ru: 'На сон грядущим' },
+      label: { ja: '就寝前の祈り', en: 'Evening', ru: 'На сон' },
     },
     {
       id: 'communion' as const,
       icon: <Wine className="w-3.5 h-3.5" />,
-      label: { ja: '領聖祝文（前後）', en: 'Holy Communion', ru: 'Ко Святому Причащению' },
+      label: { ja: '領聖祝文', en: 'Communion', ru: 'Причащение' },
     },
     {
       id: 'meals' as const,
       icon: <Utensils className="w-3.5 h-3.5" />,
-      label: { ja: '食前・食後・旅', en: 'Meals & Occasional', ru: 'Трапеза и разные' },
-    },
-    {
-      id: 'patronal' as const,
-      icon: <Sparkles className="w-3.5 h-3.5" />,
-      label: { ja: '庇護祭 守護聖歌', en: 'Pokrov Hymns', ru: 'Тропарь Покрова' },
+      label: { ja: '食前食後・旅', en: 'Meals/Travel', ru: 'Трапеза' },
     },
   ];
 
   return (
     <div className="space-y-4 pb-24 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
-      {/* Category Pills (Scrollable on small mobile) */}
-      <div className="flex overflow-x-auto no-scrollbar gap-1.5 bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-1.5 shadow-sm">
-        {sections.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => setSection(s.id)}
-            className={`py-2 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-1.5 whitespace-nowrap transition-all select-none ${
-              section === s.id
-                ? 'bg-orthodox-gold text-orthodox-navy shadow-md font-bold'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            {s.icon}
-            <span>{s.label[locale]}</span>
-          </button>
-        ))}
+      {/* 1. Main Category Navigation (No horizontal scrolling! Fits cleanly on any screen) */}
+      <div className="grid grid-cols-4 gap-1.5 bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-2xl p-1.5 shadow-sm">
+        {mainCategories.map((c) => {
+          const isActive = mainCategory === c.id;
+          return (
+            <button
+              key={c.id}
+              onClick={() => setMainCategory(c.id)}
+              className={`py-2 px-1 rounded-xl text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-1.5 transition-all select-none ${
+                isActive
+                  ? 'bg-orthodox-gold text-orthodox-navy shadow-md'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              {c.icon}
+              <span className="tracking-tight">{c.label[locale]}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Font Size & Dual-Language Control Bar */}
+      {/* 2. Sub-Category Tabs (Shown only when "Prayer Book / 祈祷書" is selected) */}
+      {mainCategory === 'prayers' && (
+        <div className="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-800/60 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in">
+          {prayerSubCategories.map((sub) => {
+            const isSubActive = prayerSubCategory === sub.id;
+            return (
+              <button
+                key={sub.id}
+                onClick={() => setPrayerSubCategory(sub.id)}
+                className={`py-1.5 px-1 rounded-lg text-xs font-bold flex flex-col sm:flex-row items-center justify-center space-y-0.5 sm:space-y-0 sm:space-x-1 transition-all select-none ${
+                  isSubActive
+                    ? 'bg-orthodox-navy text-orthodox-gold-light dark:bg-orthodox-gold dark:text-orthodox-navy shadow'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                {sub.icon}
+                <span className="text-[11px] sm:text-xs">{sub.label[locale]}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* 3. Font Size & Dual-Language Control Bar */}
       <div className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 flex items-center justify-between text-xs">
         {/* Font size picker */}
         <div className="flex items-center space-x-1.5">
@@ -109,8 +150,8 @@ export function ReaderView() {
           ))}
         </div>
 
-        {/* Parallel Language Mode */}
-        {section === 'liturgy' && (
+        {/* Parallel Language Mode (for Liturgy) */}
+        {mainCategory === 'liturgy' && (
           <div className="flex items-center space-x-1">
             <SplitSquareVertical className="w-3.5 h-3.5 text-orthodox-gold" />
             <select
@@ -127,8 +168,10 @@ export function ReaderView() {
         )}
       </div>
 
-      {/* 1. Today's Scripture Readings Section */}
-      {section === 'todayReadings' && (
+      {/* ========================================================
+          A. Daily Scripture Readings Section
+          ======================================================== */}
+      {mainCategory === 'scripture' && (
         <div className="space-y-4">
           <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm">
             <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light mb-1">
@@ -168,8 +211,10 @@ export function ReaderView() {
         </div>
       )}
 
-      {/* 2. Full Divine Liturgy of St. John Chrysostom (All 17 Movements!) */}
-      {section === 'liturgy' && (
+      {/* ========================================================
+          B. Full Divine Liturgy of St. John Chrysostom
+          ======================================================== */}
+      {mainCategory === 'liturgy' && (
         <div className="space-y-4">
           <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
@@ -182,10 +227,10 @@ export function ReaderView() {
               </h3>
               <p className="text-xs text-slate-500">
                 {locale === 'ja'
-                  ? '礼拝の順序に従い、全17章の祈祷文と式順を掲載しています。各項目をタップして開閉できます。'
+                  ? '全17章の式順と祈祷文を掲載。各章をタップして開閉できます。'
                   : locale === 'ru'
-                  ? 'Полный чин Литургии из 17 последовательных частей. Нажмите для открытия/закрытия.'
-                  : 'Complete text and rubrics for the 17 parts of the Divine Liturgy.'}
+                  ? 'Полный чин Литургии из 17 последовательных частей. Нажмите для открытия.'
+                  : 'Complete text and rubrics for all 17 parts of the Divine Liturgy.'}
               </p>
             </div>
 
@@ -255,140 +300,61 @@ export function ReaderView() {
         </div>
       )}
 
-      {/* 3. Morning Prayers */}
-      {section === 'morning' && (
+      {/* ========================================================
+          C. Prayer Book (Categorized: Morning, Evening, Communion, Meals)
+          ======================================================== */}
+      {mainCategory === 'prayers' && (
         <div className="space-y-4">
           <div className="px-1">
             <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '朝の祈り（小祈祷書）' : locale === 'ru' ? 'Утренние молитвы' : 'Morning Prayers'}
+              {prayerSubCategory === 'morning' && (locale === 'ja' ? '朝の祈り（起床時の祈祷）' : locale === 'ru' ? 'Утренние молитвы' : 'Morning Prayers')}
+              {prayerSubCategory === 'evening' && (locale === 'ja' ? '就寝前の祈り（晩の祈祷）' : locale === 'ru' ? 'Молитвы на сон грядущим' : 'Prayers before Sleep')}
+              {prayerSubCategory === 'communion' && (locale === 'ja' ? '領聖祝文（聖体拝領準備及び感謝）' : locale === 'ru' ? 'Молитвы ко Святому Причащению' : 'Holy Communion Prayers')}
+              {prayerSubCategory === 'meals' && (locale === 'ja' ? '日常の祈り（食前・食後・旅立ち）' : locale === 'ru' ? 'Трапезные молитвы и в дорогу' : 'Prayers at Meals & Travel')}
             </h3>
             <p className="text-xs text-slate-500">
-              {locale === 'ja' ? '一日を神への感謝と祈りで始める伝統の祈祷' : locale === 'ru' ? 'Молитвенное правило на начало дня' : 'Traditional prayer rule upon rising'}
+              {prayerSubCategory === 'morning' && (locale === 'ja' ? '一日を神への感謝と祈りで始める伝統の祈祷' : 'Traditional prayer rule upon rising')}
+              {prayerSubCategory === 'evening' && (locale === 'ja' ? '一日の過ちの赦しを乞い、安らかな眠りを祈る' : 'Evening prayer rule before going to sleep')}
+              {prayerSubCategory === 'communion' && (locale === 'ja' ? '主の聖体と尊き聖血を拝領するための告白と感謝の祈祷' : 'Pre-communion confession and post-communion thanksgiving')}
+              {prayerSubCategory === 'meals' && (locale === 'ja' ? '日々の食事と旅路を守る祈祷' : 'Prayers for food, drink, and safe journey')}
             </p>
           </div>
 
-          {PRAYERS_DATA.filter((p) => p.category === 'morning').map((prayer) => (
-            <div
-              key={prayer.id}
-              className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-2"
-            >
-              <div>
-                <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                  {prayer.title[locale]}
-                </h4>
-                {prayer.subtitle && (
-                  <span className="text-xs text-slate-500 font-medium">
-                    {prayer.subtitle[locale]}
-                  </span>
-                )}
+          <div className="space-y-3.5">
+            {PRAYERS_DATA.filter((p) => {
+              if (prayerSubCategory === 'morning') return p.category === 'morning';
+              if (prayerSubCategory === 'evening') return p.category === 'evening';
+              if (prayerSubCategory === 'communion') return p.category === 'communion';
+              if (prayerSubCategory === 'meals') return p.category === 'meals' || p.category === 'occasional';
+              return false;
+            }).map((prayer) => (
+              <div
+                key={prayer.id}
+                className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-2"
+              >
+                <div>
+                  <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                    {prayer.title[locale]}
+                  </h4>
+                  {prayer.subtitle && (
+                    <span className="text-xs text-slate-500 font-medium">
+                      {prayer.subtitle[locale]}
+                    </span>
+                  )}
+                </div>
+                <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1">
+                  {prayer.text[locale]}
+                </p>
               </div>
-              <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1">
-                {prayer.text[locale]}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* 4. Evening Prayers */}
-      {section === 'evening' && (
-        <div className="space-y-4">
-          <div className="px-1">
-            <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '晩の祈り（就寝前の祈祷）' : locale === 'ru' ? 'Молитвы на сон грядущим' : 'Prayers before Sleep'}
-            </h3>
-            <p className="text-xs text-slate-500">
-              {locale === 'ja' ? '一日の過ちの赦しを乞い、安らかな眠りを祈る' : locale === 'ru' ? 'Вечернее молитвенное правило перед отходом ко сну' : 'Evening prayer rule before going to sleep'}
-            </p>
+            ))}
           </div>
-
-          {PRAYERS_DATA.filter((p) => p.category === 'evening').map((prayer) => (
-            <div
-              key={prayer.id}
-              className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-2"
-            >
-              <div>
-                <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                  {prayer.title[locale]}
-                </h4>
-                {prayer.subtitle && (
-                  <span className="text-xs text-slate-500 font-medium">
-                    {prayer.subtitle[locale]}
-                  </span>
-                )}
-              </div>
-              <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1">
-                {prayer.text[locale]}
-              </p>
-            </div>
-          ))}
         </div>
       )}
 
-      {/* 5. Communion Prayers (Pre & Post) */}
-      {section === 'communion' && (
-        <div className="space-y-4">
-          <div className="px-1">
-            <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '領聖祝文（聖体拝領前及び拝領後）' : locale === 'ru' ? 'Молитвы ко Святому Причащению' : 'Prayers for Holy Communion'}
-            </h3>
-            <p className="text-xs text-slate-500">
-              {locale === 'ja' ? '主の聖体と尊き聖血を拝領するための告白と感謝の祈祷' : locale === 'ru' ? 'Последование ко Святому Причащению и благодарственные молитвы' : 'Pre-communion preparation and post-communion thanksgiving'}
-            </p>
-          </div>
-
-          {PRAYERS_DATA.filter((p) => p.category === 'communion').map((prayer) => (
-            <div
-              key={prayer.id}
-              className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-2"
-            >
-              <div>
-                <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                  {prayer.title[locale]}
-                </h4>
-                {prayer.subtitle && (
-                  <span className="text-xs text-slate-500 font-medium">
-                    {prayer.subtitle[locale]}
-                  </span>
-                )}
-              </div>
-              <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1">
-                {prayer.text[locale]}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* 6. Meals & Occasional Prayers */}
-      {section === 'meals' && (
-        <div className="space-y-4">
-          <div className="px-1">
-            <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '日常の祈り（食前・食後・旅立ち）' : locale === 'ru' ? 'Молитвы на разные случаи' : 'Daily Life & Occasional Prayers'}
-            </h3>
-          </div>
-
-          {PRAYERS_DATA.filter((p) => p.category === 'meals' || p.category === 'occasional').map((prayer) => (
-            <div
-              key={prayer.id}
-              className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-2"
-            >
-              <div>
-                <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                  {prayer.title[locale]}
-                </h4>
-              </div>
-              <p className="font-serif leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1">
-                {prayer.text[locale]}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* 7. Pokrov Patronal Hymns */}
-      {section === 'patronal' && (
+      {/* ========================================================
+          D. Pokrov Patronal Hymns Section
+          ======================================================== */}
+      {mainCategory === 'patronal' && (
         <div className="space-y-4">
           <div className="px-1">
             <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold block">
@@ -397,6 +363,13 @@ export function ReaderView() {
             <h3 className="text-base sm:text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
               {locale === 'ja' ? '生神女庇護祭 祭日讃詞及び小讃詞' : locale === 'ru' ? 'Тропарь и Кондак Покрова Богородицы' : 'Troparion & Kontakion of Pokrov'}
             </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {locale === 'ja'
+                ? '大阪ハリストス正教会 聖生神女庇護聖堂の守護聖歌です。'
+                : locale === 'ru'
+                ? 'Тропарь и кондак престольного праздника Покрова Божией Матери в Осаке.'
+                : 'Patronal hymns for Holy Protection Church in Osaka.'}
+            </p>
           </div>
 
           {PRAYERS_DATA.filter((p) => p.category === 'patronal').map((prayer) => (
