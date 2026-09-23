@@ -75,8 +75,13 @@ export function TodayView() {
     selectedDate.getDate()
   ).padStart(2, '0')}`;
 
-  const todayNameDaySaints = COMMON_NAME_DAYS.filter((s) => s.feastDateCivil === currentMonthDay);
-  const isUserPatronSaintToday = patronSaintId && todayNameDaySaints.some((s) => s.id === patronSaintId);
+  const userPatronSaint = patronSaintId ? COMMON_NAME_DAYS.find((s) => s.id === patronSaintId) : null;
+  const isUserPatronSaintToday = userPatronSaint ? userPatronSaint.feastDateCivil === currentMonthDay : false;
+
+  const celebratingFamilyMembers = familyMembers.filter((m) => {
+    const saint = COMMON_NAME_DAYS.find((s) => s.id === m.saintId);
+    return saint && saint.feastDateCivil === currentMonthDay;
+  });
 
   // Formatting date string
   const formatCivilDate = (date: Date) => {
@@ -227,23 +232,44 @@ export function TodayView() {
       </div>
 
       {/* 4. Name Day Celebration Card */}
-      {isUserPatronSaintToday && (
-        <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl p-4 shadow-sm flex items-center space-x-3">
-          <Award className="w-8 h-8 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-          <div>
-            <h4 className="font-bold text-sm sm:text-base text-amber-900 dark:text-amber-200">
-              {locale === 'ja'
-                ? 'おめでとうございます！本日はあなたの聖名日（名前の日）です！'
+      {(isUserPatronSaintToday || celebratingFamilyMembers.length > 0) && (
+        <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-orthodox-gold rounded-2xl p-4 shadow-sm flex items-start space-x-3.5 animate-in fade-in">
+          <Award className="w-8 h-8 text-orthodox-gold flex-shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h4 className="font-serif font-bold text-sm sm:text-base text-amber-950 dark:text-amber-100">
+              {isUserPatronSaintToday
+                ? locale === 'ja'
+                  ? '聖名日のお祝い！本日はあなたの守護聖人の記念日です！'
+                  : locale === 'ru'
+                  ? 'С Днём Ангела! Сегодня день памяти вашего святого покровителя!'
+                  : 'Happy Name Day! Today is your Patron Saint celebration!'
+                : locale === 'ja'
+                ? 'ご家族の聖名日のお祝い！'
                 : locale === 'ru'
-                ? 'С Днём Ангела! Сегодня день памяти вашего святого покровителя!'
-                : 'Happy Name Day! Today is the commemoration of your patron saint!'}
+                ? 'Именины в вашей семье!'
+                : 'Family Name Day Celebration!'}
             </h4>
-            <p className="text-xs text-amber-700 dark:text-amber-300 mt-0.5">
+            <div className="text-xs text-amber-900 dark:text-amber-200 space-y-0.5">
+              {isUserPatronSaintToday && userPatronSaint && (
+                <p className="font-semibold">
+                  ☦ {userPatronSaint.name[locale]} — {userPatronSaint.saint[locale]}
+                </p>
+              )}
+              {celebratingFamilyMembers.map((m) => {
+                const saint = COMMON_NAME_DAYS.find((s) => s.id === m.saintId);
+                return (
+                  <p key={m.id} className="font-medium">
+                    🎉 {m.name}: {saint ? `${saint.saint[locale]}` : ''}
+                  </p>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-amber-800 dark:text-amber-300 font-serif italic pt-0.5">
               {locale === 'ja'
-                ? '聖人の執り成しの祈りがあなたの上に豊かにありますように。'
+                ? '「多くの歳月を！（ムノガヤ・レタ）」聖人の執り成しにより主の恵みが豊かにありますように。'
                 : locale === 'ru'
-                ? 'Молитвами святого вашего да укрепит вас Господь!'
-                : 'May your patron saint always intercede for you before the Lord!'}
+                ? 'Многая и благая лета! Молитвами святых ваших да укрепит вас Господь!'
+                : 'Many Years! (Mnogaya Leta!) May your holy patrons intercede for you before God!'}
             </p>
           </div>
         </div>

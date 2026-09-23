@@ -5,6 +5,7 @@ import { useApp, FontSize } from '../../context/AppContext';
 import { COMMON_NAME_DAYS } from '../../data/nameDays';
 import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle } from 'lucide-react';
 import { Locale } from '../../lib/types';
+import { SaintSearchCombobox } from './SaintSearchCombobox';
 
 export function SettingsModal() {
   const {
@@ -164,20 +165,18 @@ export function SettingsModal() {
               <Award className="w-4 h-4 text-orthodox-gold" />
               <span>{locale === 'ja' ? 'あなたの守護聖人（聖名祝日・名前の日）' : locale === 'ru' ? 'Ваш небесный покровитель (Именины)' : 'Your Patron Saint (Name Day)'}</span>
             </label>
-            <select
-              value={patronSaintId || ''}
-              onChange={(e) => setPatronSaintId(e.target.value ? e.target.value : null)}
-              className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-orthodox-gold"
-            >
-              <option value="">
-                {locale === 'ja' ? '（未設定）' : locale === 'ru' ? '(Не выбрано)' : '(Not selected)'}
-              </option>
-              {COMMON_NAME_DAYS.map((entry) => (
-                <option key={entry.id} value={entry.id}>
-                  {entry.name[locale]} — {entry.saint[locale]} ({entry.feastDateCivil})
-                </option>
-              ))}
-            </select>
+            <p className="text-xs text-slate-500">
+              {locale === 'ja'
+                ? '聖人名を入力すると候補が検索されます（例: マリヤ、ニコライ、Mary、John）'
+                : locale === 'ru'
+                ? 'Начните вводить имя святого для поиска (напр. Мария, Николай)'
+                : 'Start typing to search 80+ Orthodox saints (e.g. Mary, Nicholas, John)...'}
+            </p>
+            <SaintSearchCombobox
+              selectedSaintId={patronSaintId}
+              onSelect={setPatronSaintId}
+              locale={locale}
+            />
           </section>
 
           {/* 5. Family Members for Name Day Tracking */}
@@ -194,19 +193,19 @@ export function SettingsModal() {
                   return (
                     <li
                       key={m.id}
-                      className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-800 text-xs sm:text-sm border border-slate-200 dark:border-slate-700"
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-slate-800 text-xs sm:text-sm border border-slate-200 dark:border-slate-700 shadow-sm"
                     >
-                      <div>
+                      <div className="min-w-0 pr-2">
                         <span className="font-bold text-orthodox-navy dark:text-orthodox-gold-light mr-2">
                           {m.name}
                         </span>
-                        <span className="text-slate-500">
-                          {saint ? `${saint.name[locale]} (${saint.feastDateCivil})` : ''}
+                        <span className="text-slate-500 block sm:inline text-xs">
+                          {saint ? `${saint.saint[locale]} (${saint.feastDateCivil})` : ''}
                         </span>
                       </div>
                       <button
                         onClick={() => removeFamilyMember(m.id)}
-                        className="text-red-500 hover:text-red-700 text-xs px-2 py-0.5 rounded"
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 text-xs px-2.5 py-1 rounded-lg transition-colors font-semibold flex-shrink-0"
                       >
                         {locale === 'ja' ? '削除' : locale === 'ru' ? 'Удалить' : 'Remove'}
                       </button>
@@ -216,30 +215,39 @@ export function SettingsModal() {
               </ul>
             )}
 
-            <form onSubmit={handleAddMember} className="flex flex-col sm:flex-row gap-2">
+            <form onSubmit={handleAddMember} className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2.5">
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                {locale === 'ja' ? '新しい家族・代子の追加' : locale === 'ru' ? 'Добавить члена семьи' : 'Add New Family Member'}
+              </span>
               <input
                 type="text"
-                placeholder={locale === 'ja' ? 'お名前（例: アナスタシヤ）' : locale === 'ru' ? 'Имя' : 'Name'}
+                placeholder={locale === 'ja' ? 'お名前（例: 太郎、Maria、Anna）' : locale === 'ru' ? 'Имя' : 'Name'}
                 value={newMemberName}
                 onChange={(e) => setNewMemberName(e.target.value)}
-                className="flex-1 p-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs sm:text-sm focus:outline-none focus:border-orthodox-gold"
+                className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs sm:text-sm focus:outline-none focus:border-orthodox-gold"
               />
-              <select
-                value={newMemberSaintId}
-                onChange={(e) => setNewMemberSaintId(e.target.value)}
-                className="p-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs sm:text-sm focus:outline-none focus:border-orthodox-gold"
-              >
-                {COMMON_NAME_DAYS.map((entry) => (
-                  <option key={entry.id} value={entry.id}>
-                    {entry.name[locale]} ({entry.feastDateCivil})
-                  </option>
-                ))}
-              </select>
+              <SaintSearchCombobox
+                selectedSaintId={newMemberSaintId || null}
+                onSelect={(id) => setNewMemberSaintId(id || '')}
+                locale={locale}
+                placeholder={
+                  locale === 'ja'
+                    ? '守護聖人を検索（例: マリヤ、Mary、John）'
+                    : locale === 'ru'
+                    ? 'Поиск святого (напр. Мария, Николай)'
+                    : 'Search patron saint (e.g. Mary, Nicholas)...'
+                }
+              />
               <button
                 type="submit"
-                className="py-2 px-3 rounded-xl bg-orthodox-gold text-orthodox-navy font-bold text-xs sm:text-sm hover:bg-orthodox-gold-dark shadow"
+                disabled={!newMemberName.trim() || !newMemberSaintId}
+                className={`w-full py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all shadow ${
+                  newMemberName.trim() && newMemberSaintId
+                    ? 'bg-orthodox-gold text-orthodox-navy hover:bg-orthodox-gold-dark'
+                    : 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
+                }`}
               >
-                {locale === 'ja' ? '追加' : locale === 'ru' ? 'Добавить' : 'Add'}
+                {locale === 'ja' ? '家族リストに追加' : locale === 'ru' ? 'Добавить' : 'Add to Family List'}
               </button>
             </form>
           </section>
