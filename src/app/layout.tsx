@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   title: '大阪ハリストス正教会 / Osaka Orthodox Church',
   description: '大阪ハリストス正教会 聖生神女庇護聖堂 聖暦カレンダー・奉事日程・祈祷書 (The Holy Protection Orthodox Church in Osaka)',
   manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.png',
+    apple: '/apple-touch-icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -29,7 +33,8 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className="min-h-screen flex flex-col bg-orthodox-parchment dark:bg-slate-950 transition-colors">
         <AppProvider>

@@ -20,9 +20,11 @@ export function Header() {
       <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
         {/* Left: Church Icon & Title */}
         <div className="flex items-center space-x-2.5">
-          <div className="w-9 h-9 rounded-full bg-orthodox-gold flex items-center justify-center text-orthodox-navy font-bold text-xl shadow-inner select-none">
-            ☦
-          </div>
+          <img
+            src="/brand/church-seal-round.png"
+            alt="Osaka Orthodox Church Emblem"
+            className="w-9 h-9 rounded-full object-cover border border-orthodox-gold shadow-sm select-none flex-shrink-0"
+          />
           <div>
             <h1 className="font-serif font-bold text-base sm:text-lg leading-tight tracking-wide text-orthodox-gold-light">
               {PARISH_INFO.shortName[locale]}

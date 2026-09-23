@@ -29,9 +29,11 @@ export function OnboardingModal() {
         {/* Step 1: Big Language Selection */}
         {step === 'language' && (
           <div className="text-center space-y-6">
-            <div className="w-16 h-16 mx-auto rounded-full bg-orthodox-gold flex items-center justify-center text-orthodox-navy font-bold text-3xl shadow-lg">
-              ☦
-            </div>
+            <img
+              src="/brand/church-seal-round.png"
+              alt="Osaka Orthodox Church Logo"
+              className="w-20 h-20 mx-auto rounded-full object-cover border-2 border-orthodox-gold shadow-xl"
+            />
 
             <div>
               <h2 className="text-xl sm:text-2xl font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light mb-1">

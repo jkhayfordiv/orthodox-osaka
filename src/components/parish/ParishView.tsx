@@ -201,17 +201,33 @@ export function ParishView() {
       {subTab === 'visit' && (
         <div className="space-y-4">
           {/* Parish Overview Card */}
-          <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-3">
-            <h3 className="font-serif font-bold text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-              {PARISH_INFO.name[locale]}
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              {locale === 'ja'
-                ? '大阪ハリストス正教会は、日本正教会・西日本主教教区に属する歴史ある祈りの場です。正教会の信徒の方だけでなく、初めて見学される方や祈りを共にしたい方も心より歓迎いたします。'
-                : locale === 'ru'
-                ? 'Храм Покрова Пресвятой Богородицы в Осаке — приход Японской Православной Церкви (Западно-Японская епархия). Мы всегда рады православным христианам и всем ищущим Бога!'
-                : 'The Holy Protection Church in Osaka is a parish of the Orthodox Church in Japan (Western Diocese). We warmly welcome all faithful, visitors, and inquirers.'}
-            </p>
+          <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+              <img
+                src="/brand/church-seal-round.png"
+                alt="Osaka Orthodox Church Logo"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-orthodox-gold shadow-md object-cover flex-shrink-0"
+              />
+              <div className="text-center sm:text-left">
+                <h3 className="font-serif font-bold text-lg sm:text-xl text-orthodox-navy dark:text-orthodox-gold-light">
+                  {PARISH_INFO.name[locale]}
+                </h3>
+                <p className="text-xs text-orthodox-burgundy dark:text-orthodox-gold font-serif mt-0.5 font-bold">
+                  {locale === 'ja'
+                    ? '聖生神女庇護聖堂（日本ハリストス正教会 西日本主教教区）'
+                    : locale === 'ru'
+                    ? 'Храм Покрова Пресвятой Богородицы (Западно-Японская епархия)'
+                    : 'Holy Protection Temple (Western Diocese, Orthodox Church in Japan)'}
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2">
+                  {locale === 'ja'
+                    ? '大阪ハリストス正教会は、日本正教会・西日本主教教区に属する歴史ある祈りの場です。正教会の信徒の方だけでなく、初めて見学される方や祈りを共にしたい方も心より歓迎いたします。'
+                    : locale === 'ru'
+                    ? 'Храм Покрова Пресвятой Богородицы в Осаке — приход Японской Православной Церкви (Западно-Японская епархия). Мы всегда рады православным христианам и всем ищущим Бога!'
+                    : 'The Holy Protection Church in Osaka is a parish of the Orthodox Church in Japan (Western Diocese). We warmly welcome all faithful, visitors, and inquirers.'}
+                </p>
+              </div>
+            </div>
 
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2 text-sm text-slate-600 dark:text-slate-300">
               <div className="flex items-start space-x-2">
