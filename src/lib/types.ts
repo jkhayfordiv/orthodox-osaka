@@ -53,12 +53,26 @@ export interface FeastDay {
   isMovable: boolean;
 }
 
+export type ServiceType =
+  | 'vigil'
+  | 'liturgy'
+  | 'vespers'
+  | 'panikhida'
+  | 'moleben'
+  | 'water_blessing'
+  | 'compline'
+  | 'presanctified'
+  | 'matins'
+  | 'special'
+  | 'other';
+
 export interface ParishService {
   id: string;
   date: string; // YYYY-MM-DD
   time: string; // e.g. "17:00", "10:00"
-  serviceType: 'vigil' | 'liturgy' | 'vespers' | 'panikhida' | 'water_blessing' | 'compline' | 'presanctified' | 'matins' | 'special';
+  serviceType: ServiceType;
   title: TrilingualText;
+  feastName?: TrilingualText;
   tone?: string;
   dutyGroup?: string; // e.g. "Rabboni", "Daria's Kitchen", "Women's Club", "Church Friends", "Choir"
   dutyPeople?: string[];

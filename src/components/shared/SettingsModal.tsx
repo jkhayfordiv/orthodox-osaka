@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp, FontSize } from '../../context/AppContext';
-import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell, Smartphone, Download, CheckCircle } from 'lucide-react';
+import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell, Smartphone, Download, CheckCircle, Calendar, ChevronRight } from 'lucide-react';
 import { Locale } from '../../lib/types';
 import { SaintSearchCombobox } from './SaintSearchCombobox';
 import { isNotificationSupported, getNotificationPermission } from '../../lib/notifications';
@@ -31,6 +31,7 @@ export function SettingsModal() {
     isInstallable,
     isInstalled,
     installApp,
+    setAdminModalOpen,
   } = useApp();
 
   const [newMemberName, setNewMemberName] = useState('');
@@ -371,6 +372,33 @@ export function SettingsModal() {
                   </ol>
                 </div>
               </div>
+            </section>
+
+            {/* Parish Schedule Admin Access */}
+            <section className="pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setSettingsOpen(false);
+                  setAdminModalOpen(true);
+                }}
+                className="w-full flex items-center justify-between p-3.5 rounded-xl border border-orthodox-gold/40 bg-orthodox-gold/10 hover:bg-orthodox-gold/20 text-orthodox-navy dark:text-orthodox-gold transition-all group"
+              >
+                <div className="flex items-center space-x-3 text-left">
+                  <div className="p-2 rounded-lg bg-orthodox-gold/20 text-orthodox-gold-dark dark:text-orthodox-gold">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                      <span>{locale === 'ja' ? '教会予定表・愛餐当番の管理' : locale === 'ru' ? 'Управление расписанием и трапезой' : 'Parish Schedule & Duty Manager'}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                      {locale === 'ja' ? '月報テキスト/PDFからの自動取込・追加・編集' : locale === 'ru' ? 'Импорт из текста / PDF и редактирование' : 'Import monthly schedule from text / PDF'}
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-orthodox-gold transition-colors" />
+              </button>
             </section>
           </div>
 

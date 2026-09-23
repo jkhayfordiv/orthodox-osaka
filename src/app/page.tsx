@@ -10,6 +10,7 @@ import { ParishView } from '../components/parish/ParishView';
 import { ReaderView } from '../components/reader/ReaderView';
 import { SettingsModal } from '../components/shared/SettingsModal';
 import { OnboardingModal } from '../components/onboarding/OnboardingModal';
+import { ScheduleAdminModal } from '../components/admin/ScheduleAdminModal';
 
 export default function Home() {
   const { activeTab } = useApp();
@@ -28,6 +29,7 @@ export default function Home() {
       <BottomNav />
       <SettingsModal />
       <OnboardingModal />
+      <ScheduleAdminModal />
     </div>
   );
 }

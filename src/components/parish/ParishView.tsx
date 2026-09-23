@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../../context/AppContext';
-import { PARISH_SCHEDULE_2026 } from '../../data/parishSchedule2026';
 import { PARISH_ANNOUNCEMENTS } from '../../data/bulletin';
 import { PARISH_INFO } from '../../data/terminology';
 import { ParishService, Locale } from '../../lib/types';
@@ -27,6 +26,7 @@ import {
   HeartHandshake,
   ChevronDown,
   Utensils,
+  Settings,
 } from 'lucide-react';
 
 // Safe date parser to avoid timezone drift across midnight UTC/local
@@ -270,7 +270,7 @@ const PARISH_PHOTOS = [
 ];
 
 export function ParishView() {
-  const { locale } = useApp();
+  const { locale, parishSchedule, setAdminModalOpen } = useApp();
   const [subTab, setSubTab] = useState<'schedule' | 'bulletin' | 'visit'>('schedule');
 
   // Schedule filtering states
@@ -289,22 +289,22 @@ export function ParishView() {
 
   // Compute Next Upcoming Service
   const nextService = useMemo(() => {
-    const upcoming = PARISH_SCHEDULE_2026.filter((s) => s.date >= todayStr);
-    return upcoming.length > 0 ? upcoming[0] : PARISH_SCHEDULE_2026[0];
-  }, [todayStr]);
+    const upcoming = parishSchedule.filter((s) => s.date >= todayStr);
+    return upcoming.length > 0 ? upcoming[0] : parishSchedule[0];
+  }, [parishSchedule, todayStr]);
 
   // Extract all unique Year-Months available in schedule
   const availableMonths = useMemo(() => {
     const set = new Set<string>();
-    PARISH_SCHEDULE_2026.forEach((s) => {
+    parishSchedule.forEach((s) => {
       set.add(s.date.slice(0, 7)); // 'YYYY-MM'
     });
     return Array.from(set).sort();
-  }, []);
+  }, [parishSchedule]);
 
   // Filtered services
   const filteredServices = useMemo(() => {
-    return PARISH_SCHEDULE_2026.filter((s) => {
+    return parishSchedule.filter((s) => {
       // View scope filter (Upcoming vs All Year)
       if (viewScope === 'upcoming' && selectedMonth === 'all') {
         if (s.date < todayStr) return false;
@@ -435,13 +435,24 @@ export function ParishView() {
               </p>
             </div>
 
-            <button
-              onClick={handlePrint}
-              className="no-print inline-flex items-center space-x-2 self-start sm:self-auto text-xs sm:text-sm py-2 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200 shadow-sm transition-all"
-            >
-              <Printer className="w-4 h-4 text-orthodox-gold-dark" />
-              <span>{locale === 'ja' ? '日程を印刷・保存' : locale === 'ru' ? 'Печать расписания' : 'Print Schedule'}</span>
-            </button>
+            <div className="flex items-center space-x-2 self-start sm:self-auto">
+              <button
+                onClick={() => setAdminModalOpen(true)}
+                className="no-print inline-flex items-center space-x-1.5 text-xs sm:text-sm py-2 px-3.5 rounded-xl border border-orthodox-gold/40 bg-orthodox-gold/10 hover:bg-orthodox-gold/20 font-semibold text-orthodox-navy dark:text-orthodox-gold shadow-sm transition-all"
+                title={locale === 'ja' ? '予定表の編集・月報取込（管理者）' : locale === 'ru' ? 'Редактировать расписание' : 'Manage Schedule'}
+              >
+                <Settings className="w-4 h-4 text-orthodox-gold" />
+                <span>{locale === 'ja' ? '予定の編集・取込' : locale === 'ru' ? 'Управление' : 'Admin & Import'}</span>
+              </button>
+
+              <button
+                onClick={handlePrint}
+                className="no-print inline-flex items-center space-x-2 text-xs sm:text-sm py-2 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200 shadow-sm transition-all"
+              >
+                <Printer className="w-4 h-4 text-orthodox-gold-dark" />
+                <span>{locale === 'ja' ? '日程を印刷・保存' : locale === 'ru' ? 'Печать расписания' : 'Print Schedule'}</span>
+              </button>
+            </div>
           </div>
 
           {/* Clean, Non-Scrolling Linear Toolbar (NO horizontal scrollbar) */}
@@ -503,7 +514,7 @@ export function ParishView() {
                               year: 'numeric',
                               timeZone: 'UTC',
                             });
-                      const count = PARISH_SCHEDULE_2026.filter((s) => s.date.startsWith(ym)).length;
+                      const count = parishSchedule.filter((s) => s.date.startsWith(ym)).length;
                       return (
                         <option key={ym} value={ym}>
                           {label} ({count})

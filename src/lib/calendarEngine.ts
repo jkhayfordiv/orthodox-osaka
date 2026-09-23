@@ -1,4 +1,4 @@
-import { DayInfo, FeastDay, SaintCommemoration, ScriptureReading } from './types';
+import { DayInfo, FeastDay, SaintCommemoration, ScriptureReading, ParishService } from './types';
 import { calculateOrthodoxPascha, formatJulianDate, getMoveableCycle, gregorianToJulian, calculateTone } from './paschalion';
 import { getFastingRule } from './fasting';
 import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
@@ -6,7 +6,7 @@ import { TONE_NAMES } from '../data/terminology';
 import { DAILY_SAINTS_JULIAN } from '../data/dailySaints';
 import { SCRIPTURE_DATABASE } from '../data/scripturePassages';
 
-export function getDayInfo(date: Date): DayInfo {
+export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInfo {
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth() + 1; // 1-12
   const day = date.getUTCDate();
@@ -349,7 +349,8 @@ export function getDayInfo(date: Date): DayInfo {
   }
 
   // Match parish services for this specific date
-  const parishServices = PARISH_SCHEDULE_2026.filter((s) => s.date === dateString);
+  const scheduleSource = customSchedule && customSchedule.length > 0 ? customSchedule : PARISH_SCHEDULE_2026;
+  const parishServices = scheduleSource.filter((s) => s.date === dateString);
 
   // Sunday Title (if Sunday)
   let sundayTitle = undefined;

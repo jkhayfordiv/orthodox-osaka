@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Locale, NameDayEntry, NotificationPreferences, PrayerListItem } from '../lib/types';
+import { Locale, NameDayEntry, NotificationPreferences, PrayerListItem, ParishService } from '../lib/types';
 import { COMMON_NAME_DAYS } from '../data/nameDays';
+import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
 import { requestNotificationPermission as requestPerm } from '../lib/notifications';
 
 export type FontSize = 'sm' | 'base' | 'lg' | 'xl';
@@ -50,6 +51,14 @@ interface AppContextType {
   isInstallable: boolean;
   isInstalled: boolean;
   installApp: () => Promise<boolean>;
+  parishSchedule: ParishService[];
+  addParishService: (service: Omit<ParishService, 'id'>) => void;
+  updateParishService: (id: string, updates: Partial<ParishService>) => void;
+  deleteParishService: (id: string) => void;
+  importParishSchedule: (services: ParishService[], mode?: 'merge' | 'replace' | 'replace_month') => void;
+  resetParishSchedule: () => void;
+  adminModalOpen: boolean;
+  setAdminModalOpen: (open: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -73,6 +82,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   });
   const [showTooltips, setShowTooltipsState] = useState<boolean>(true);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
+  const [customSchedule, setCustomSchedule] = useState<ParishService[]>([]);
   const [mounted, setMounted] = useState(false);
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
@@ -123,6 +134,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       const prayers = localStorage.getItem('orthodox_manual_prayer_list');
       if (prayers) setManualPrayerList(JSON.parse(prayers));
+
+      const sched = localStorage.getItem('orthodox_custom_parish_schedule');
+      if (sched) {
+        try {
+          setCustomSchedule(JSON.parse(sched));
+        } catch {}
+      }
 
       const notif = localStorage.getItem('orthodox_notification_prefs');
       if (notif) setNotificationPrefsState(JSON.parse(notif));
@@ -402,6 +420,75 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   };
 
+  const parishSchedule = React.useMemo(() => {
+    if (customSchedule && customSchedule.length > 0) {
+      return customSchedule;
+    }
+    return PARISH_SCHEDULE_2026;
+  }, [customSchedule]);
+
+  const saveSchedule = (newSchedule: ParishService[]) => {
+    setCustomSchedule(newSchedule);
+    try {
+      localStorage.setItem('orthodox_custom_parish_schedule', JSON.stringify(newSchedule));
+    } catch {}
+  };
+
+  const addParishService = (service: Omit<ParishService, 'id'>) => {
+    const current = customSchedule.length > 0 ? customSchedule : [...PARISH_SCHEDULE_2026];
+    const newService: ParishService = {
+      ...service,
+      id: `s-${service.date}-${service.time.replace(':', '')}-${Date.now().toString().slice(-4)}`,
+    };
+    const updated = [...current, newService].sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+    saveSchedule(updated);
+  };
+
+  const updateParishService = (id: string, updates: Partial<ParishService>) => {
+    const current = customSchedule.length > 0 ? customSchedule : [...PARISH_SCHEDULE_2026];
+    const updated = current.map((s) => (s.id === id ? { ...s, ...updates } : s));
+    saveSchedule(updated);
+  };
+
+  const deleteParishService = (id: string) => {
+    const current = customSchedule.length > 0 ? customSchedule : [...PARISH_SCHEDULE_2026];
+    const updated = current.filter((s) => s.id !== id);
+    saveSchedule(updated);
+  };
+
+  const importParishSchedule = (
+    services: ParishService[],
+    mode: 'merge' | 'replace' | 'replace_month' = 'replace_month'
+  ) => {
+    if (mode === 'replace') {
+      saveSchedule(services);
+    } else if (mode === 'replace_month') {
+      const current = customSchedule.length > 0 ? customSchedule : [...PARISH_SCHEDULE_2026];
+      const targetMonths = new Set(services.map((s) => s.date.slice(0, 7))); // e.g. "2026-09"
+      const filtered = current.filter((s) => !targetMonths.has(s.date.slice(0, 7)));
+      const combined = [...filtered, ...services].sort(
+        (a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time)
+      );
+      saveSchedule(combined);
+    } else {
+      const current = customSchedule.length > 0 ? customSchedule : [...PARISH_SCHEDULE_2026];
+      const map = new Map<string, ParishService>();
+      current.forEach((s) => map.set(`${s.date}_${s.time}`, s));
+      services.forEach((s) => map.set(`${s.date}_${s.time}`, s));
+      const merged = Array.from(map.values()).sort(
+        (a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time)
+      );
+      saveSchedule(merged);
+    }
+  };
+
+  const resetParishSchedule = () => {
+    setCustomSchedule([]);
+    try {
+      localStorage.removeItem('orthodox_custom_parish_schedule');
+    } catch {}
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -440,6 +527,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isInstallable,
         isInstalled,
         installApp,
+        parishSchedule,
+        addParishService,
+        updateParishService,
+        deleteParishService,
+        importParishSchedule,
+        resetParishSchedule,
+        adminModalOpen,
+        setAdminModalOpen,
       }}
     >
       <div

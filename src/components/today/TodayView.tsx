@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { getDayInfo } from '../../lib/calendarEngine';
-import { PARISH_SCHEDULE_2026 } from '../../data/parishSchedule2026';
 import { SCRIPTURE_DATABASE } from '../../data/scripturePassages';
 import {
   ChevronLeft,
@@ -34,6 +33,7 @@ export function TodayView() {
     allSaints,
     notificationPrefs,
     fontSize,
+    parishSchedule,
   } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
   const [copiedShare, setCopiedShare] = useState(false);
@@ -49,7 +49,7 @@ export function TodayView() {
       : 'text-sm sm:text-base';
 
   // Compute information for selectedDate
-  const dayInfo = getDayInfo(selectedDate);
+  const dayInfo = getDayInfo(selectedDate, parishSchedule);
 
   // Navigate dates
   const handlePrevDay = () => {
@@ -79,7 +79,7 @@ export function TodayView() {
 
   // Find next upcoming Osaka parish service
   const todayStr = new Date().toISOString().split('T')[0];
-  const upcomingServices = PARISH_SCHEDULE_2026.filter((s) => s.date >= todayStr).sort((a, b) =>
+  const upcomingServices = parishSchedule.filter((s) => s.date >= todayStr).sort((a, b) =>
     a.date.localeCompare(b.date)
   );
   const nextService = upcomingServices[0];

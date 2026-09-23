@@ -29,6 +29,7 @@ export function CalendarView() {
     patronSaintId,
     familyMembers,
     allSaints,
+    parishSchedule,
   } = useApp();
   const [currentYear, setCurrentYear] = useState<number>(selectedDate.getFullYear());
   const [currentMonth, setCurrentMonth] = useState<number>(selectedDate.getMonth()); // 0-indexed
@@ -106,7 +107,7 @@ export function CalendarView() {
 
   // Fasting seasons data
   const fastingSeasons = getFastingSeasons(currentYear, selectedDate);
-  const inspectDayInfo = getDayInfo(inspectDate);
+  const inspectDayInfo = getDayInfo(inspectDate, parishSchedule);
 
   const userPatronSaint = patronSaintId ? allSaints.find((s) => s.id === patronSaintId) : null;
 
@@ -562,7 +563,7 @@ export function CalendarView() {
                   return <div key={`empty-${index}`} className="min-h-[56px] sm:min-h-[68px] lg:min-h-[85px]" />;
                 }
 
-                const info = getDayInfo(d);
+                const info = getDayInfo(d, parishSchedule);
                 const isSelected =
                   inspectDate &&
                   inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
@@ -675,7 +676,7 @@ export function CalendarView() {
             {daysArray
               .filter((d): d is Date => d !== null)
               .map((d) => {
-                const info = getDayInfo(d);
+                const info = getDayInfo(d, parishSchedule);
                 const nameDayStatus = getNameDaysForDate(d);
                 const isSelected =
                   inspectDate &&
