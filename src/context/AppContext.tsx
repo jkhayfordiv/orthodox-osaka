@@ -7,7 +7,16 @@ import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
 import { requestNotificationPermission as requestPerm } from '../lib/notifications';
 
 export type FontSize = 'sm' | 'base' | 'lg' | 'xl';
-export type AppTab = 'today' | 'calendar' | 'parish' | 'reader';
+export type AppTab =
+  | 'home'
+  | 'history'
+  | 'orthodoxy'
+  | 'access'
+  | 'sermons'
+  | 'today'
+  | 'calendar'
+  | 'parish'
+  | 'reader';
 
 export interface FamilyMember {
   id: string;
@@ -67,7 +76,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('ja');
   const [theme, setThemeState] = useState<'light' | 'dark'>('light');
   const [fontSize, setFontSizeState] = useState<FontSize>('base');
-  const [activeTab, setActiveTab] = useState<AppTab>('today');
+  const [activeTab, setActiveTab] = useState<AppTab>('home');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(true); // default true for SSR, checked in useEffect
   const [patronSaintId, setPatronSaintIdState] = useState<string | null>(null);

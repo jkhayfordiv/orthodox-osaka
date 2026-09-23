@@ -2,15 +2,20 @@
 
 import React from 'react';
 import { useApp, AppTab } from '../../context/AppContext';
-import { Home, Calendar as CalendarIcon, Church, BookOpen } from 'lucide-react';
+import { Church, Sparkles, Calendar as CalendarIcon, CalendarDays, MapPin } from 'lucide-react';
 
 export function BottomNav() {
   const { activeTab, setActiveTab, locale } = useApp();
 
   const tabs: { id: AppTab; icon: React.ReactNode; label: { ja: string; en: string; ru: string } }[] = [
     {
+      id: 'home',
+      icon: <Church className="w-5 h-5 sm:w-6 sm:h-6" />,
+      label: { ja: '教会案内', en: 'Home', ru: 'Главная' },
+    },
+    {
       id: 'today',
-      icon: <Home className="w-5 h-5 sm:w-6 sm:h-6" />,
+      icon: <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />,
       label: { ja: '今日', en: 'Today', ru: 'Сегодня' },
     },
     {
@@ -20,19 +25,19 @@ export function BottomNav() {
     },
     {
       id: 'parish',
-      icon: <Church className="w-5 h-5 sm:w-6 sm:h-6" />,
-      label: { ja: '教会', en: 'Parish', ru: 'Приход' },
+      icon: <CalendarDays className="w-5 h-5 sm:w-6 sm:h-6" />,
+      label: { ja: '奉事日程', en: 'Schedule', ru: 'Службы' },
     },
     {
-      id: 'reader',
-      icon: <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />,
-      label: { ja: '祈祷書', en: 'Reader', ru: 'Молитвы' },
+      id: 'access',
+      icon: <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />,
+      label: { ja: '見学・交通', en: 'Visit', ru: 'Визит' },
     },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 bg-orthodox-navy border-t border-orthodox-gold/40 shadow-2xl safe-area-bottom md:hidden">
-      <div className="max-w-4xl mx-auto flex items-center justify-around h-16 sm:h-18 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 bg-orthodox-navy border-t border-orthodox-gold/40 shadow-2xl safe-area-bottom lg:hidden">
+      <div className="max-w-4xl mx-auto flex items-center justify-around h-16 sm:h-18 px-1">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -52,7 +57,7 @@ export function BottomNav() {
               >
                 {tab.icon}
               </div>
-              <span className="text-[11px] sm:text-xs tracking-tight mt-0.5">
+              <span className="text-[10px] sm:text-xs tracking-tight mt-0.5 whitespace-nowrap">
                 {tab.label[locale]}
               </span>
             </button>

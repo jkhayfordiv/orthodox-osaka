@@ -4,6 +4,11 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 import { Header } from '../components/shared/Header';
 import { BottomNav } from '../components/shared/BottomNav';
+import { HomeWebsiteView } from '../components/website/HomeWebsiteView';
+import { HistoryView } from '../components/website/HistoryView';
+import { AboutOrthodoxyView } from '../components/website/AboutOrthodoxyView';
+import { AccessVisitView } from '../components/website/AccessVisitView';
+import { SermonsView } from '../components/website/SermonsView';
 import { TodayView } from '../components/today/TodayView';
 import { CalendarView } from '../components/calendar/CalendarView';
 import { ParishView } from '../components/parish/ParishView';
@@ -20,6 +25,11 @@ export default function Home() {
       <Header />
 
       <main className="flex-1">
+        {activeTab === 'home' && <HomeWebsiteView />}
+        {activeTab === 'history' && <HistoryView />}
+        {activeTab === 'orthodoxy' && <AboutOrthodoxyView />}
+        {activeTab === 'access' && <AccessVisitView />}
+        {activeTab === 'sermons' && <SermonsView />}
         {activeTab === 'today' && <TodayView />}
         {activeTab === 'calendar' && <CalendarView />}
         {activeTab === 'parish' && <ParishView />}
