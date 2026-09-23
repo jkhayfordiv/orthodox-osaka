@@ -127,12 +127,12 @@ export const LITURGICAL_TERMS: Record<string, TrilingualText> = {
 };
 
 export const TONE_NAMES: Record<number, TrilingualText> = {
-  1: { ja: '1調', en: 'Tone 1', ru: 'Глас 1' },
-  2: { ja: '2調', en: 'Tone 2', ru: 'Глас 2' },
-  3: { ja: '3調', en: 'Tone 3', ru: 'Глас 3' },
-  4: { ja: '4調', en: 'Tone 4', ru: 'Глас 4' },
-  5: { ja: '5調', en: 'Tone 5', ru: 'Глас 5' },
-  6: { ja: '6調', en: 'Tone 6', ru: 'Глас 6' },
-  7: { ja: '7調', en: 'Tone 7', ru: 'Глас 7' },
-  8: { ja: '8調', en: 'Tone 8', ru: 'Глас 8' },
+  1: { ja: '第1調', en: 'Tone 1', ru: 'Глас 1' },
+  2: { ja: '第2調', en: 'Tone 2', ru: 'Глас 2' },
+  3: { ja: '第3調', en: 'Tone 3', ru: 'Глас 3' },
+  4: { ja: '第4調', en: 'Tone 4', ru: 'Глас 4' },
+  5: { ja: '第5調', en: 'Tone 5', ru: 'Глас 5' },
+  6: { ja: '第6調', en: 'Tone 6', ru: 'Глас 6' },
+  7: { ja: '第7調', en: 'Tone 7', ru: 'Глас 7' },
+  8: { ja: '第8調', en: 'Tone 8', ru: 'Глас 8' },
 };

@@ -17,6 +17,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { formatJulianDate } from '../../lib/paschalion';
+import { TONE_NAMES } from '../../data/terminology';
 
 export function CalendarView() {
   const { locale, selectedDate, setSelectedDate, setActiveTab } = useApp();
@@ -422,7 +423,9 @@ export function CalendarView() {
                 {inspectDayInfo.tone > 0 && (
                   <>
                     <span>•</span>
-                    <span>{inspectDayInfo.tone}調 / Tone {inspectDayInfo.tone}</span>
+                    <span>
+                      {TONE_NAMES[inspectDayInfo.tone]?.[locale] || (locale === 'ja' ? `第${inspectDayInfo.tone}調` : locale === 'ru' ? `Глас ${inspectDayInfo.tone}` : `Tone ${inspectDayInfo.tone}`)}
+                    </span>
                   </>
                 )}
               </div>

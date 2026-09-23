@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { formatJulianDate } from '../../lib/paschalion';
 import { Locale } from '../../lib/types';
+import { TONE_NAMES } from '../../data/terminology';
 
 export function TodayView() {
   const { locale, selectedDate, setSelectedDate, patronSaintId, familyMembers, showTooltips } = useApp();
@@ -143,7 +144,7 @@ export function TodayView() {
                 <>
                   <span>•</span>
                   <span className="font-semibold text-orthodox-gold-dark dark:text-orthodox-gold">
-                    {dayInfo.tone}調 / Tone {dayInfo.tone}
+                    {TONE_NAMES[dayInfo.tone]?.[locale] || (locale === 'ja' ? `第${dayInfo.tone}調` : locale === 'ru' ? `Глас ${dayInfo.tone}` : `Tone ${dayInfo.tone}`)}
                   </span>
                 </>
               )}
