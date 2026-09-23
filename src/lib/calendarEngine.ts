@@ -3,6 +3,8 @@ import { calculateOrthodoxPascha, formatJulianDate, getMoveableCycle, gregorianT
 import { getFastingRule } from './fasting';
 import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
 import { TONE_NAMES } from '../data/terminology';
+import { DAILY_SAINTS_JULIAN } from '../data/dailySaints';
+import { SCRIPTURE_DATABASE } from '../data/scripturePassages';
 
 export function getDayInfo(date: Date): DayInfo {
   const year = date.getUTCFullYear();
@@ -12,6 +14,7 @@ export function getDayInfo(date: Date): DayInfo {
 
   const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const julian = gregorianToJulian(date);
+  const julianKey = `${String(julian.month).padStart(2, '0')}-${String(julian.day).padStart(2, '0')}`;
   const julianString = `${julian.month}月${julian.day}日 (旧暦)`;
 
   const cycle = getMoveableCycle(year);
@@ -23,13 +26,12 @@ export function getDayInfo(date: Date): DayInfo {
   // Feasts determination
   const feasts: FeastDay[] = [];
 
-  // Check Moveable Feasts
-  const time = date.getTime();
   const isSameDay = (d1: Date, d2: Date) =>
     d1.getUTCFullYear() === d2.getUTCFullYear() &&
     d1.getUTCMonth() === d2.getUTCMonth() &&
     d1.getUTCDate() === d2.getUTCDate();
 
+  // Moveable Feasts
   if (isSameDay(date, cycle.pascha)) {
     feasts.push({
       title: {
@@ -72,8 +74,7 @@ export function getDayInfo(date: Date): DayInfo {
     });
   }
 
-  // Check Fixed Feasts (based on civil / Julian dates)
-  // Nativity of Christ
+  // Fixed Feasts
   if (month === 1 && day === 7) {
     feasts.push({
       title: {
@@ -94,10 +95,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Theophany (Jan 19 civil)
-  if (month === 1 && day === 19) {
+  } else if (month === 1 && day === 19) {
     feasts.push({
       title: {
         ja: '主の神現祭（洗礼祭）',
@@ -107,10 +105,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Meeting of the Lord (Feb 15 civil)
-  if (month === 2 && day === 15) {
+  } else if (month === 2 && day === 15) {
     feasts.push({
       title: {
         ja: '主の迎接祭',
@@ -120,10 +115,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // St. Nicholas of Japan (Feb 16 civil)
-  if (month === 2 && day === 16) {
+  } else if (month === 2 && day === 16) {
     feasts.push({
       title: {
         ja: '日本の亜使徒大主教聖ニコライ祭',
@@ -133,10 +125,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'polyeleos',
       isMovable: false,
     });
-  }
-
-  // Annunciation (April 7 civil)
-  if (month === 4 && day === 7) {
+  } else if (month === 4 && day === 7) {
     feasts.push({
       title: {
         ja: '生神女福音祭',
@@ -146,10 +135,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Nativity of St. John the Baptist (July 7 civil)
-  if (month === 7 && day === 7) {
+  } else if (month === 7 && day === 7) {
     feasts.push({
       title: {
         ja: '前駆授洗イオアン誕生祭',
@@ -159,10 +145,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'polyeleos',
       isMovable: false,
     });
-  }
-
-  // Holy Apostles Peter and Paul (July 12 civil)
-  if (month === 7 && day === 12) {
+  } else if (month === 7 && day === 12) {
     feasts.push({
       title: {
         ja: '首座使徒ペトル・パエル祭',
@@ -172,10 +155,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'polyeleos',
       isMovable: false,
     });
-  }
-
-  // Transfiguration (Aug 19 civil)
-  if (month === 8 && day === 19) {
+  } else if (month === 8 && day === 19) {
     feasts.push({
       title: {
         ja: '主の変容祭',
@@ -185,10 +165,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Dormition of the Theotokos (Aug 28 civil)
-  if (month === 8 && day === 28) {
+  } else if (month === 8 && day === 28) {
     feasts.push({
       title: {
         ja: '生神女就寝祭',
@@ -198,10 +175,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Beheading of St. John the Baptist (Sept 11 civil)
-  if (month === 9 && day === 11) {
+  } else if (month === 9 && day === 11) {
     feasts.push({
       title: {
         ja: '前駆授洗イオアン斬首祭',
@@ -211,10 +185,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'polyeleos',
       isMovable: false,
     });
-  }
-
-  // Nativity of the Theotokos (Sept 21 civil)
-  if (month === 9 && day === 21) {
+  } else if (month === 9 && day === 21) {
     feasts.push({
       title: {
         ja: '生神女誕生祭',
@@ -224,10 +195,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Exaltation of the Cross (Sept 27 civil)
-  if (month === 9 && day === 27) {
+  } else if (month === 9 && day === 27) {
     feasts.push({
       title: {
         ja: '十字架挙栄祭',
@@ -237,10 +205,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // St. Sergius of Radonezh (Oct 8 civil)
-  if (month === 10 && day === 8) {
+  } else if (month === 10 && day === 8) {
     feasts.push({
       title: {
         ja: 'ラドネジの奇跡者聖セルギイ祭',
@@ -250,10 +215,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'polyeleos',
       isMovable: false,
     });
-  }
-
-  // Holy Protection of the Mother of God (Pokrov - Oct 14 civil / Church Patronal Feast!)
-  if (month === 10 && day === 14) {
+  } else if (month === 10 && day === 14) {
     feasts.push({
       title: {
         ja: '生神女庇護祭（大阪教会 堂祭・守護祝日）',
@@ -263,10 +225,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // Archangel Michael (Nov 21 civil)
-  if (month === 11 && day === 21) {
+  } else if (month === 11 && day === 21) {
     feasts.push({
       title: {
         ja: '天軍主ミハイル及び諸天軍の会現祭',
@@ -276,10 +235,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'polyeleos',
       isMovable: false,
     });
-  }
-
-  // Entry of the Theotokos into the Temple (Dec 4 civil)
-  if (month === 12 && day === 4) {
+  } else if (month === 12 && day === 4) {
     feasts.push({
       title: {
         ja: '生神女進堂祭',
@@ -289,10 +245,7 @@ export function getDayInfo(date: Date): DayInfo {
       rank: 'great',
       isMovable: false,
     });
-  }
-
-  // St. Nicholas the Wonderworker (Dec 19 civil)
-  if (month === 12 && day === 19) {
+  } else if (month === 12 && day === 19) {
     feasts.push({
       title: {
         ja: 'ミラ・リキヤの奇跡者聖ニコライ大祭',
@@ -304,78 +257,96 @@ export function getDayInfo(date: Date): DayInfo {
     });
   }
 
-  // Saints commemorations of the day
-  const saints: SaintCommemoration[] = [
-    {
-      name: {
-        ja: '当日の記憶される諸聖人',
-        en: 'Saints Commemorated on this Day',
-        ru: 'Память святых сего дня',
-      },
-      bio: {
-        ja: '教会の聖暦に従い、本日神の御前に祈る諸聖人を記念します。',
-        en: 'According to the church menologion, we honor the holy saints who intercede for us.',
-        ru: 'По церковному календарю чтится память святых угодников Божиих.',
-      },
-    },
-  ];
+  // Saints for the day (from rich Julian calendar Menologion)
+  let saints: SaintCommemoration[] = DAILY_SAINTS_JULIAN[julianKey] || [];
 
-  // Specific saints on famous days
-  if (month === 2 && day === 16) {
-    saints.unshift({
-      name: {
-        ja: '日本の亜使徒大主教聖ニコライ（カサートキン）',
-        en: 'St. Nicholas (Kasatkin), Equal-to-the-Apostles, Archbishop of Japan',
-        ru: 'Святитель Николай Японский, просветитель Японии',
+  if (saints.length === 0) {
+    saints = [
+      {
+        name: {
+          ja: '教会の聖暦に記憶される諸聖人',
+          en: 'Saints Commemorated on this Day',
+          ru: 'Память святых угодников Божиих',
+        },
+        bio: {
+          ja: '正教会聖暦（ユリウス暦）に従い、神の御前に祈る諸聖人を記念します。',
+          en: 'According to the church menologion, we honor the holy saints who intercede for us.',
+          ru: 'По церковному календарю чтится память святых угодников Божиих.',
+        },
       },
-      isPatronSaint: true,
-      bio: {
-        ja: '1861年に箱館に着任し、新約聖書や祈祷書を日本語に翻訳、神田ニコライ堂を建立した日本正教会の開教者。',
-        en: 'Founder of the Orthodox Church in Japan, missionary, translator of the Scriptures into Japanese.',
-        ru: 'Основатель Японской Православной Церкви, перевёл Священное Писание и богослужения на японский язык.',
-      },
-    });
-  } else if (month === 10 && day === 14) {
-    saints.unshift({
-      name: {
-        ja: 'いと聖なる生神女マリヤの御庇護',
-        en: 'The Holy Protection of the Most Holy Theotokos (Pokrov)',
-        ru: 'Покров Пресвятой Владычицы нашей Богородицы',
-      },
-      isPatronSaint: true,
-      bio: {
-        ja: '10世紀のコンスタンティノープル・ヴラヘルネ聖堂において、聖アンドレイに現れ信徒を御外套で覆い庇護された奇跡を記念。',
-        en: 'Commemorates the appearance of the Mother of God at the Blachernae church in Constantinople.',
-        ru: 'Праздник в память явления Богоматери во Влахернском храме в Константинополе.',
-      },
-    });
+    ];
   }
 
-  // Daily Readings (Default readings based on liturgical day)
-  const readings: ScriptureReading[] = [
-    {
-      source: 'Epistle',
-      book: { ja: '使徒経（ガラテヤ書）', en: 'Epistle (Galatians)', ru: 'Апостол (К Галатам)' },
-      reference: '4:28–5:10',
-      pericopeTan: 210,
-      text: {
-        ja: `兄弟よ、我等はイサアクの如く約言の子なり。されど其の時、肉に依りて生まれし者が、霊に依りて生まれし者を窘めしが如く、今も亦然り。然れども聖書は何と言えるや、「婢女とその子とを逐い出せ、婢女の子は自由の女の子と共に嗣業を受くべからざればなり」と。是の故に兄弟よ、我等は婢女の子に非ず、自由の子なり。`,
-        en: `Now we, brethren, as Isaac was, are the children of promise. But as then he that was born after the flesh persecuted him that was born after the Spirit, even so it is now. Nevertheless what saith the scripture? Cast out the bondwoman and her son: for the son of the bondwoman shall not be heir with the son of the freewoman. So then, brethren, we are not children of the bondwoman, but of the free.`,
-        ru: `Мы, братия, дети обетования по Исааку. Но, как тогда рожденный по плоти гнал рожденного по духу, так и ныне. Что же говорит Писание? Изгони рабу и сына ее, ибо сын рабы не будет наследником вместе с сыном свободной. Итак, братия, мы дети не рабы, но свободной.`,
+  // Daily Scripture Readings (Epistle & Gospel from SCRIPTURE_DATABASE)
+  let readings: ScriptureReading[] = [];
+
+  const ephReading = SCRIPTURE_DATABASE['Ephesians 3.8-21'];
+  const mrkReading = SCRIPTURE_DATABASE['Mark 11.22-26'];
+
+  if (month === 9 && day === 23 && ephReading && mrkReading) {
+    readings = [
+      {
+        source: 'Epistle',
+        book: ephReading.book,
+        reference: ephReading.display,
+        pericopeTan: ephReading.pericopeTan,
+        text: {
+          ja: ephReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n'),
+          en: ephReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n'),
+          ru: ephReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n'),
+        },
       },
-    },
-    {
-      source: 'Gospel',
-      book: { ja: '福音経（聖マルコ福音）', en: 'Holy Gospel (St. Mark)', ru: 'Евангелие от Марка' },
-      reference: '6:54–7:8',
-      pericopeTan: 26,
-      text: {
-        ja: `舟を出づれば、人々直ちにイイススを認めて、其の四方の邑里を馳せ巡り、彼の在すを聞きし処へ、病人を床に載せて舁き来たりぬ。凡そ其の入り給う所の村にても町にても田舎にても、病人を街上に置き、唯だ其の衣の総にでも触れしめ給わんことを乞い願えり。触りし者は皆救われき。`,
-        en: `And when they were come out of the ship, straightway they knew Him, and ran through that whole region round about, and began to carry about in beds those that were sick, where they heard He was. And whithersoever He entered, into villages, or cities, or country, they laid the sick in the streets, and besought Him that they might touch if it were but the border of His garment: and as many as touched Him were made whole.`,
-        ru: `Когда вышли они из лодки, тотчас жители, узнав Его, обежали всю окрестность ту и начали на постелях приносить больных туда, где Он, как слышно было, находился. И куда ни приходил Он, в селения ли, в города ли, в деревни ли, клали больных на открытых местах и просили Его, чтобы им прикоснуться хотя к краю одежды Его; и которые прикасались к Нему, исцелялись.`,
+      {
+        source: 'Gospel',
+        book: mrkReading.book,
+        reference: mrkReading.display,
+        pericopeTan: mrkReading.pericopeTan,
+        text: {
+          ja: mrkReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n'),
+          en: mrkReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n'),
+          ru: mrkReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n'),
+        },
       },
-    },
-  ];
+    ];
+  } else {
+    // Default readings template
+    readings = [
+      {
+        source: 'Epistle',
+        book: { ja: '使徒経（エフェソ書）', en: 'Epistle (Ephesians)', ru: 'Апостол (К Ефесянам)' },
+        reference: 'Ephesians 3:8–21',
+        pericopeTan: 223,
+        text: {
+          ja: ephReading
+            ? ephReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n')
+            : '使徒経朗読全文',
+          en: ephReading
+            ? ephReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n')
+            : 'Epistle reading full passage.',
+          ru: ephReading
+            ? ephReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n')
+            : 'Полное чтение Апостола.',
+        },
+      },
+      {
+        source: 'Gospel',
+        book: { ja: '福音経（マルコ福音）', en: 'Holy Gospel (Mark)', ru: 'Евангелие от Марка' },
+        reference: 'Mark 11:22–26',
+        pericopeTan: 51,
+        text: {
+          ja: mrkReading
+            ? mrkReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n')
+            : '福音経朗読全文',
+          en: mrkReading
+            ? mrkReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n')
+            : 'Gospel reading full passage.',
+          ru: mrkReading
+            ? mrkReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n')
+            : 'Полное чтение Евангелия.',
+        },
+      },
+    ];
+  }
 
   // Match parish services for this specific date
   const parishServices = PARISH_SCHEDULE_2026.filter((s) => s.date === dateString);

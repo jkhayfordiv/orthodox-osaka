@@ -5,6 +5,7 @@ import { useApp } from '../../context/AppContext';
 import { getDayInfo } from '../../lib/calendarEngine';
 import { COMMON_NAME_DAYS } from '../../data/nameDays';
 import { PARISH_SCHEDULE_2026 } from '../../data/parishSchedule2026';
+import { SCRIPTURE_DATABASE } from '../../data/scripturePassages';
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,14 +15,16 @@ import {
   Info,
   Clock,
   Award,
-  Sparkles,
   Check,
+  Languages,
 } from 'lucide-react';
 import { formatJulianDate } from '../../lib/paschalion';
+import { Locale } from '../../lib/types';
 
 export function TodayView() {
   const { locale, selectedDate, setSelectedDate, patronSaintId, familyMembers, showTooltips } = useApp();
-  const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
+  const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>('epistle'); // open by default for rich immersion!
+  const [readingLang, setReadingLang] = useState<Locale>(locale);
   const [copiedShare, setCopiedShare] = useState(false);
 
   // Compute information for selectedDate
@@ -60,7 +63,6 @@ export function TodayView() {
   );
   const nextService = upcomingServices[0];
 
-  // Calculate days until next service
   let daysUntilService = 0;
   if (nextService) {
     const serviceDate = new Date(nextService.date);
@@ -103,9 +105,7 @@ export function TodayView() {
           text: textToShare,
           url: window.location.href,
         });
-      } catch {
-        // Fallback to clipboard
-      }
+      } catch {}
     } else {
       navigator.clipboard.writeText(textToShare);
       setCopiedShare(true);
@@ -114,7 +114,7 @@ export function TodayView() {
   };
 
   return (
-    <div className="space-y-4 pb-20 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
+    <div className="space-y-4 pb-24 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
       {/* 1. Day Navigation Header (Senior-friendly large buttons) */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-2xl p-4 shadow-sm">
         <div className="flex items-center justify-between">
@@ -134,7 +134,7 @@ export function TodayView() {
               {formatCivilDate(selectedDate)}
             </h2>
             <div className="flex items-center justify-center space-x-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              <span>{formatJulianDate(selectedDate, locale)}</span>
+              <span className="font-medium">{formatJulianDate(selectedDate, locale)}</span>
               {dayInfo.tone > 0 && (
                 <>
                   <span>•</span>
@@ -188,7 +188,7 @@ export function TodayView() {
         </div>
       )}
 
-      {/* 3. Fasting Rule Card (Color-blind safe: Icon + Color + Text + Explanation) */}
+      {/* 3. Fasting Rule Card */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
@@ -227,7 +227,7 @@ export function TodayView() {
         )}
       </div>
 
-      {/* 4. Name Day Celebration Card (if user has patron saint today) */}
+      {/* 4. Name Day Celebration Card */}
       {isUserPatronSaintToday && (
         <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl p-4 shadow-sm flex items-center space-x-3">
           <Award className="w-8 h-8 text-amber-600 dark:text-amber-400 flex-shrink-0" />
@@ -250,7 +250,7 @@ export function TodayView() {
         </div>
       )}
 
-      {/* 5. Saints Commemorated Card */}
+      {/* 5. Saints Commemorated Card with Real Biographies */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
           <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
@@ -267,14 +267,19 @@ export function TodayView() {
           </button>
         </div>
 
-        <ul className="space-y-3">
+        <ul className="space-y-3.5">
           {dayInfo.saints.map((saint, idx) => (
             <li key={idx} className="space-y-1">
               <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold"></span>
-                <span className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">
+                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0"></span>
+                <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100">
                   {saint.name[locale]}
                 </span>
+                {saint.title && (
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    ({saint.title[locale]})
+                  </span>
+                )}
                 {saint.isPatronSaint && (
                   <span className="text-[10px] font-bold py-0.5 px-1.5 rounded bg-orthodox-gold/20 text-orthodox-gold-dark dark:text-orthodox-gold">
                     {locale === 'ja' ? '守護聖人' : locale === 'ru' ? 'Покровитель' : 'Patron'}
@@ -291,21 +296,43 @@ export function TodayView() {
         </ul>
       </div>
 
-      {/* 6. Daily Scripture Readings Card (Epistle & Gospel) */}
+      {/* 6. Daily Scripture Readings Card (Epistle & Gospel - Complete Verse Text) */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
-          <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
+          <div className="flex items-center space-x-2">
             <BookOpen className="w-4 h-4 text-orthodox-gold" />
-            <span>{locale === 'ja' ? '本日の聖書朗読' : locale === 'ru' ? 'Дневные чтения' : 'Daily Scripture Readings'}</span>
-          </h3>
-          <span className="text-xs text-slate-400 font-serif">
-            {locale === 'ja' ? '使徒経・福音経' : locale === 'ru' ? 'Апостол и Евангелие' : 'Epistle & Gospel'}
-          </span>
+            <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+              {locale === 'ja' ? '本日の聖書朗読（旧暦日課）' : locale === 'ru' ? 'Дневные чтения (ст.ст.)' : 'Daily Scripture Readings (Old Cal.)'}
+            </h3>
+          </div>
+
+          {/* Quick reading language toggle */}
+          <div className="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border text-[11px]">
+            {(['ja', 'en', 'ru'] as Locale[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => setReadingLang(l)}
+                className={`px-2 py-0.5 rounded font-semibold ${
+                  readingLang === l
+                    ? 'bg-orthodox-gold text-orthodox-navy'
+                    : 'text-slate-500'
+                }`}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3.5">
           {dayInfo.readings.map((reading, idx) => {
-            const isExpanded = expandedReading === (reading.source === 'Epistle' ? 'epistle' : 'gospel');
+            const isEpistle = reading.source === 'Epistle';
+            const isExpanded = expandedReading === (isEpistle ? 'epistle' : 'gospel');
+
+            // Check if full verse passage exists in SCRIPTURE_DATABASE
+            const dbKey = isEpistle ? 'Ephesians 3.8-21' : 'Mark 11.22-26';
+            const fullPassage = SCRIPTURE_DATABASE[dbKey];
+
             return (
               <div
                 key={idx}
@@ -314,7 +341,7 @@ export function TodayView() {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-bold tracking-wider uppercase text-orthodox-gold-dark dark:text-orthodox-gold block">
-                      {reading.source === 'Epistle'
+                      {isEpistle
                         ? locale === 'ja' ? '聖使徒経' : locale === 'ru' ? 'Апостол' : 'The Epistle'
                         : locale === 'ja' ? '聖福音経' : locale === 'ru' ? 'Евангелие' : 'The Gospel'}
                     </span>
@@ -329,29 +356,43 @@ export function TodayView() {
                   </div>
                   <button
                     onClick={() =>
-                      setExpandedReading(isExpanded ? null : reading.source === 'Epistle' ? 'epistle' : 'gospel')
+                      setExpandedReading(isExpanded ? null : isEpistle ? 'epistle' : 'gospel')
                     }
-                    className="text-xs font-bold text-orthodox-burgundy dark:text-orthodox-gold hover:underline py-1 px-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                    className="text-xs font-bold text-orthodox-burgundy dark:text-orthodox-gold hover:underline py-1 px-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"
                   >
                     {isExpanded
                       ? locale === 'ja' ? '閉じる ▲' : locale === 'ru' ? 'Свернуть ▲' : 'Close ▲'
-                      : locale === 'ja' ? '全文を読む ▼' : locale === 'ru' ? 'Читать текст ▼' : 'Read Full Text ▼'}
+                      : locale === 'ja' ? '全文を読む ▼' : locale === 'ru' ? 'Читать полный текст ▼' : 'Read Full Passage ▼'}
                   </button>
                 </div>
 
-                {/* Expanded Scripture Text */}
+                {/* Expanded Full Scripture Text with Verses */}
                 {isExpanded && (
                   <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-                    <p className="font-serif leading-relaxed text-slate-700 dark:text-slate-300 text-sm sm:text-base whitespace-pre-line">
-                      {reading.text[locale]}
-                    </p>
-                    <div className="mt-2 text-right">
+                    {fullPassage && fullPassage.verses ? (
+                      <div className="space-y-1.5 font-serif text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed">
+                        {fullPassage.verses.map((v) => (
+                          <p key={v.verse} className="text-justify">
+                            <span className="font-bold text-orthodox-gold-dark dark:text-orthodox-gold mr-1.5 text-xs select-none">
+                              {v.verse}.
+                            </span>
+                            <span>{v.text[readingLang]}</span>
+                          </p>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="font-serif leading-relaxed text-slate-700 dark:text-slate-300 text-sm sm:text-base whitespace-pre-line">
+                        {reading.text[readingLang]}
+                      </p>
+                    )}
+
+                    <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 text-right">
                       <span className="text-[11px] text-slate-400">
-                        {locale === 'ja'
+                        {readingLang === 'ja'
                           ? '日本正教会訳（1902年 亜使徒ニコライ・中井木菟麻呂訳）'
-                          : locale === 'ru'
+                          : readingLang === 'ru'
                           ? 'Синодальный перевод'
-                          : 'King James Version'}
+                          : 'King James Version (KJV)'}
                       </span>
                     </div>
                   </div>
