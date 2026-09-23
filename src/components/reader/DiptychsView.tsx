@@ -37,10 +37,14 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
   const [formType, setFormType] = useState<'living' | 'departed'>('living');
   const [formName, setFormName] = useState('');
   const [formBaptismalName, setFormBaptismalName] = useState('');
+  const [formSelectedSaintId, setFormSelectedSaintId] = useState<string | undefined>(undefined);
   const [formRelation, setFormRelation] = useState('');
   const [formNotes, setFormNotes] = useState('');
   const [saintSearch, setSaintSearch] = useState('');
   const [showSaintSuggestions, setShowSaintSuggestions] = useState(false);
+
+  // Delete confirmation state
+  const [deletingItem, setDeletingItem] = useState<PrayerListItem | null>(null);
 
   // Filtered lists
   const livingList = useMemo(() => {
@@ -87,6 +91,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
     setFormType(type);
     setFormName('');
     setFormBaptismalName('');
+    setFormSelectedSaintId(undefined);
     setFormRelation('');
     setFormNotes('');
     setSaintSearch('');
@@ -99,11 +104,16 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
     setFormType(item.type);
     setFormName(item.name);
     setFormBaptismalName(item.baptismalName || '');
+    setFormSelectedSaintId(item.saintId);
     setFormRelation(item.relation || '');
     setFormNotes(item.notes || '');
     setSaintSearch(item.baptismalName || '');
     setShowSaintSuggestions(false);
     setModalOpen(true);
+  };
+
+  const handleConfirmDelete = (item: PrayerListItem) => {
+    setDeletingItem(item);
   };
 
   const handleSave = (e: React.FormEvent) => {
@@ -114,6 +124,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
       updatePrayerItem(editingItem.id, {
         name: formName.trim(),
         baptismalName: formBaptismalName.trim() || undefined,
+        saintId: formSelectedSaintId,
         relation: formRelation.trim() || undefined,
         notes: formNotes.trim() || undefined,
         type: formType,
@@ -123,6 +134,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
         type: formType,
         name: formName.trim(),
         baptismalName: formBaptismalName.trim() || undefined,
+        saintId: formSelectedSaintId,
         relation: formRelation.trim() || undefined,
         notes: formNotes.trim() || undefined,
       });
@@ -299,9 +311,10 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                 {livingList.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-amber-200 dark:border-slate-700 shadow-sm flex items-start justify-between space-x-2"
+                    onClick={() => handleOpenEdit(item)}
+                    className="group cursor-pointer bg-white dark:bg-slate-800 hover:bg-amber-50/60 dark:hover:bg-slate-750 p-3 rounded-xl border border-amber-200 dark:border-slate-700 hover:border-amber-400 dark:hover:border-amber-600/70 shadow-sm flex items-start justify-between space-x-2 transition-all"
                   >
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex-1 min-w-0">
                       <div className="flex items-center space-x-1.5 flex-wrap">
                         <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
                           {item.name}
@@ -329,6 +342,34 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                           </span>
                         )}
                       </div>
+                    </div>
+
+                    {/* Action buttons (Edit & Delete) */}
+                    <div className="flex items-center space-x-0.5 flex-shrink-0 opacity-80 sm:opacity-40 group-hover:opacity-100 transition-opacity">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenEdit(item);
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-amber-100/70 dark:hover:bg-slate-700 transition-colors"
+                        title={locale === 'ja' ? '編集' : locale === 'ru' ? 'Редактировать' : 'Edit'}
+                        aria-label="Edit name"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleConfirmDelete(item);
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                        title={locale === 'ja' ? '削除' : locale === 'ru' ? 'Удалить' : 'Delete'}
+                        aria-label="Delete name"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -392,9 +433,10 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                 {departedList.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-indigo-200 dark:border-slate-700 shadow-sm flex items-start justify-between space-x-2"
+                    onClick={() => handleOpenEdit(item)}
+                    className="group cursor-pointer bg-white dark:bg-slate-800 hover:bg-indigo-50/60 dark:hover:bg-slate-750 p-3 rounded-xl border border-indigo-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-600/70 shadow-sm flex items-start justify-between space-x-2 transition-all"
                   >
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex-1 min-w-0">
                       <div className="flex items-center space-x-1.5 flex-wrap">
                         <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
                           {item.name}
@@ -417,6 +459,34 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                           </span>
                         )}
                       </div>
+                    </div>
+
+                    {/* Action buttons (Edit & Delete) */}
+                    <div className="flex items-center space-x-0.5 flex-shrink-0 opacity-80 sm:opacity-40 group-hover:opacity-100 transition-opacity">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenEdit(item);
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-indigo-100/70 dark:hover:bg-slate-700 transition-colors"
+                        title={locale === 'ja' ? '編集' : locale === 'ru' ? 'Редактировать' : 'Edit'}
+                        aria-label="Edit name"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleConfirmDelete(item);
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                        title={locale === 'ja' ? '削除' : locale === 'ru' ? 'Удалить' : 'Delete'}
+                        aria-label="Delete name"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -565,7 +635,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
-                      onClick={() => removePrayerItem(item.id)}
+                      onClick={() => handleConfirmDelete(item)}
                       className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all"
                       title={locale === 'ja' ? '削除' : 'Delete'}
                     >
@@ -697,6 +767,7 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                         type="button"
                         onClick={() => {
                           setFormBaptismalName(s.name[locale]);
+                          setFormSelectedSaintId(s.id);
                           setShowSaintSuggestions(false);
                         }}
                         className="w-full text-left px-3 py-2 hover:bg-amber-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between"
@@ -770,33 +841,129 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
                 </div>
               </div>
 
-              {/* Submit Buttons */}
-              <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
-                >
-                  {locale === 'ja' ? 'キャンセル' : locale === 'ru' ? 'Отмена' : 'Cancel'}
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl text-xs font-bold bg-orthodox-gold hover:bg-orthodox-gold-dark text-orthodox-navy shadow-sm transition-all"
-                >
-                  {editingItem
-                    ? locale === 'ja'
-                      ? '変更を保存'
+              {/* Submit & Delete Buttons */}
+              <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+                {editingItem ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const itemToDelete = editingItem;
+                      setModalOpen(false);
+                      handleConfirmDelete(itemToDelete);
+                    }}
+                    className="flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all border border-rose-200 dark:border-rose-900/50"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? 'この名前を削除' : locale === 'ru' ? 'Удалить' : 'Delete Name'}</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  >
+                    {locale === 'ja' ? 'キャンセル' : locale === 'ru' ? 'Отмена' : 'Cancel'}
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-xl text-xs font-bold bg-orthodox-gold hover:bg-orthodox-gold-dark text-orthodox-navy shadow-sm transition-all"
+                  >
+                    {editingItem
+                      ? locale === 'ja'
+                        ? '変更を保存'
+                        : locale === 'ru'
+                        ? 'Сохранить'
+                        : 'Save Changes'
+                      : locale === 'ja'
+                      ? '記憶帳に保存'
                       : locale === 'ru'
-                      ? 'Сохранить'
-                      : 'Save Changes'
-                    : locale === 'ja'
-                    ? '記憶帳に保存'
-                    : locale === 'ru'
-                    ? 'Записать'
-                    : 'Save to Diptychs'}
-                </button>
+                      ? 'Записать'
+                      : 'Save to Diptychs'}
+                  </button>
+                </div>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 4. DELETE CONFIRMATION MODAL                              */}
+      {/* ========================================================= */}
+      {deletingItem && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 border border-rose-300 dark:border-rose-900/60 rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4">
+            <div className="flex items-center space-x-3 text-rose-600 dark:text-rose-400">
+              <div className="w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-950 flex items-center justify-center flex-shrink-0">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">
+                  {locale === 'ja'
+                    ? '名前の削除確認'
+                    : locale === 'ru'
+                    ? 'Удалить из помянника?'
+                    : 'Delete from Prayer List?'}
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {locale === 'ja'
+                    ? 'この名前を記憶帳から削除しますか？'
+                    : locale === 'ru'
+                    ? 'Удалить это имя из списка?'
+                    : 'Remove this person from your prayer list?'}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 space-y-1">
+              <div className="font-bold text-sm text-slate-900 dark:text-white flex items-center space-x-1.5">
+                <span>{deletingItem.name}</span>
+                {deletingItem.baptismalName && (
+                  <span className="text-xs font-normal text-orthodox-gold">
+                    ☦ {deletingItem.baptismalName}
+                  </span>
+                )}
+              </div>
+              {deletingItem.relation && (
+                <div>
+                  <span className="text-slate-400">{locale === 'ja' ? '間柄: ' : locale === 'ru' ? 'Сродство: ' : 'Relation: '}</span>
+                  <span>{deletingItem.relation}</span>
+                </div>
+              )}
+              {deletingItem.isFromFamily && (
+                <p className="text-[11px] text-amber-700 dark:text-amber-300 font-medium pt-1.5 mt-1 border-t border-slate-200 dark:border-slate-700 leading-relaxed">
+                  ⚠️ {locale === 'ja'
+                    ? '※この名前は「家族・代子の聖名祝日」にも登録されています。削除すると聖名祝日リストからも連動して削除されます。'
+                    : locale === 'ru'
+                    ? '※Это имя также привязано к именинам семьи. Удаление удалит его и из списка именин.'
+                    : '※This name is linked with your Family Name Days. Deleting it will also remove it from your Name Days list.'}
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center justify-end space-x-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setDeletingItem(null)}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+              >
+                {locale === 'ja' ? 'キャンセル' : locale === 'ru' ? 'Отмена' : 'Cancel'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  removePrayerItem(deletingItem.id);
+                  setDeletingItem(null);
+                }}
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition-all"
+              >
+                {locale === 'ja' ? '削除する' : locale === 'ru' ? 'Удалить' : 'Delete'}
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -271,13 +271,32 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const updatePrayerItem = (id: string, updates: Partial<PrayerListItem>) => {
     if (id.startsWith('fam-prayer-')) {
       const famId = id.replace('fam-prayer-', '');
-      if (updates.name) {
-        const updatedFam = familyMembers.map((f) => (f.id === famId ? { ...f, name: updates.name! } : f));
-        setFamilyMembers(updatedFam);
-        try {
-          localStorage.setItem('orthodox_family_members', JSON.stringify(updatedFam));
-        } catch {}
-      }
+      const updatedFam = familyMembers.map((f) => {
+        if (f.id === famId) {
+          let newSaintId = f.saintId;
+          if (updates.saintId) {
+            newSaintId = updates.saintId;
+          } else if (updates.baptismalName) {
+            const matched = allSaints.find(
+              (s) =>
+                s.name.ja === updates.baptismalName ||
+                s.name.en.toLowerCase() === updates.baptismalName?.toLowerCase() ||
+                s.name.ru.toLowerCase() === updates.baptismalName?.toLowerCase()
+            );
+            if (matched) newSaintId = matched.id;
+          }
+          return {
+            ...f,
+            name: updates.name !== undefined ? updates.name : f.name,
+            saintId: newSaintId,
+          };
+        }
+        return f;
+      });
+      setFamilyMembers(updatedFam);
+      try {
+        localStorage.setItem('orthodox_family_members', JSON.stringify(updatedFam));
+      } catch {}
       return;
     }
     const updated = manualPrayerList.map((p) => (p.id === id ? { ...p, ...updates } : p));
