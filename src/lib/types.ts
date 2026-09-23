@@ -82,6 +82,7 @@ export interface NameDayEntry {
   saint: TrilingualText;
   feastDateCivil: string; // MM-DD
   feastDateJulian: string; // MM-DD
+  aliases?: string[];
 }
 
 export interface DayInfo {
