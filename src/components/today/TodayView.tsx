@@ -24,7 +24,6 @@ import { Locale } from '../../lib/types';
 export function TodayView() {
   const { locale, selectedDate, setSelectedDate, patronSaintId, familyMembers, showTooltips } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>('epistle'); // open by default for rich immersion!
-  const [readingLang, setReadingLang] = useState<Locale>(locale);
   const [copiedShare, setCopiedShare] = useState(false);
 
   // Compute information for selectedDate
@@ -305,23 +304,9 @@ export function TodayView() {
               {locale === 'ja' ? '本日の聖書朗読（旧暦日課）' : locale === 'ru' ? 'Дневные чтения (ст.ст.)' : 'Daily Scripture Readings (Old Cal.)'}
             </h3>
           </div>
-
-          {/* Quick reading language toggle */}
-          <div className="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border text-[11px]">
-            {(['ja', 'en', 'ru'] as Locale[]).map((l) => (
-              <button
-                key={l}
-                onClick={() => setReadingLang(l)}
-                className={`px-2 py-0.5 rounded font-semibold ${
-                  readingLang === l
-                    ? 'bg-orthodox-gold text-orthodox-navy'
-                    : 'text-slate-500'
-                }`}
-              >
-                {l.toUpperCase()}
-              </button>
-            ))}
-          </div>
+          <span className="text-xs text-slate-400 font-serif">
+            {locale === 'ja' ? '使徒経・福音経' : locale === 'ru' ? 'Апостол и Евангелие' : 'Epistle & Gospel'}
+          </span>
         </div>
 
         <div className="space-y-3.5">
@@ -376,21 +361,21 @@ export function TodayView() {
                             <span className="font-bold text-orthodox-gold-dark dark:text-orthodox-gold mr-1.5 text-xs select-none">
                               {v.verse}.
                             </span>
-                            <span>{v.text[readingLang]}</span>
+                            <span>{v.text[locale]}</span>
                           </p>
                         ))}
                       </div>
                     ) : (
                       <p className="font-serif leading-relaxed text-slate-700 dark:text-slate-300 text-sm sm:text-base whitespace-pre-line">
-                        {reading.text[readingLang]}
+                        {reading.text[locale]}
                       </p>
                     )}
 
                     <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 text-right">
                       <span className="text-[11px] text-slate-400">
-                        {readingLang === 'ja'
+                        {locale === 'ja'
                           ? '日本正教会訳（1902年 亜使徒ニコライ・中井木菟麻呂訳）'
-                          : readingLang === 'ru'
+                          : locale === 'ru'
                           ? 'Синодальный перевод'
                           : 'King James Version (KJV)'}
                       </span>

@@ -2,13 +2,424 @@ import { TrilingualText } from '../lib/types';
 
 export interface PrayerItem {
   id: string;
-  category: 'patronal' | 'daily' | 'communion';
+  category: 'morning' | 'evening' | 'communion' | 'meals' | 'patronal' | 'occasional';
   title: TrilingualText;
   subtitle?: TrilingualText;
   text: TrilingualText;
 }
 
 export const PRAYERS_DATA: PrayerItem[] = [
+  // ==========================================
+  // 1. 朝の祈り (Morning Prayers / Утренние молитвы)
+  // ==========================================
+  {
+    id: 'morning-opening',
+    category: 'morning',
+    title: {
+      ja: '起床の祈祷',
+      en: 'Upon Awakening',
+      ru: 'Молитва по пробуждении от сна',
+    },
+    subtitle: {
+      ja: '目覚めたときの感謝',
+      en: 'First Prayer upon Rising',
+      ru: 'Начальная молитва',
+    },
+    text: {
+      ja: `父と子と聖神の御名によりて。アミン。
+光栄は爾に帰す、我らの神よ、光栄は爾に帰す。`,
+      en: `In the Name of the Father, and of the Son, and of the Holy Spirit. Amen.
+Glory to Thee, our God, glory to Thee!`,
+      ru: `Во имя Отца и Сына и Святаго Духа. Аминь.
+Слава Тебе, Боже наш, слава Тебе!`,
+    },
+  },
+  {
+    id: 'morning-heavenly-king',
+    category: 'morning',
+    title: {
+      ja: '天の王（聖神への祈祷）',
+      en: 'Prayer to the Holy Spirit (O Heavenly King)',
+      ru: 'Царю Небесный (Молитва Святому Духу)',
+    },
+    subtitle: {
+      ja: '聖神の恵みを求める祈り',
+      en: 'Invocation of the Comforter',
+      ru: 'Призывание Святаго Духа',
+    },
+    text: {
+      ja: `天の王、慰め主、真理の神よ、何れの処にも在り、満たざる所なき者よ、
+万善の宝蔵にして生命を施す主よ、来たりて我らの中に居り、
+我らを総ての穢れより潔め、憐れみ深き主よ、我が霊を救い給え。`,
+      en: `O Heavenly King, the Comforter, the Spirit of Truth, Who art everywhere and fillest all things;
+Treasury of Blessings, and Giver of Life: come and abide in us,
+and cleanse us from every impurity, and save our souls, O Good One!`,
+      ru: `Царю Небесный, Утешителю, Душе истины, Иже везде сый и вся исполняяй,
+Сокровище благих и жизни Подателю, прииди и вселися в ны,
+и очисти ны от всякия скверны, и спаси, Блаже, души наша.`,
+    },
+  },
+  {
+    id: 'morning-trisagion-cycle',
+    category: 'morning',
+    title: {
+      ja: '三聖讃〜至聖三位〜主の祈り',
+      en: 'Trisagion Prayers through The Lord’s Prayer',
+      ru: 'Трисвятое по Отче наш',
+    },
+    text: {
+      ja: `聖なる神、聖なる勇力、聖なる不滅なる主、我等を憐れめよ。（三度）
+光栄は父と子と聖神に帰す、今もいつも世々に至るまで、アミン。
+至聖なる三位、我らを憐れめよ。主よ、我らの罪を潔め給え。主宰よ、我らの不法を赦し給え。聖なる主よ、訪い憐れみて、爾の名の為に我らの病を癒し給え。
+主憐れめよ（三度）。
+光栄は父と子と聖神に帰す、今もいつも世々に至るまで、アミン。
+
+天におらるる我らの父よ、願わくは爾の名は聖とせられ、爾の国は来たり、爾の旨は天に行わるるが如く地にも行われん。
+我が日用の糧を今日我らに与え給え。
+我らに負い目ある者を我らが赦すが如く、我らの負い目を赦し給え。
+我らを誘惑に導かず、なお我らを凶悪より救い給え。
+蓋し国と権能と光栄は、爾父と子と聖神に世々に帰す。アミン。`,
+      en: `Holy God, Holy Mighty, Holy Immortal, have mercy on us. (Thrice)
+Glory to the Father, and to the Son, and to the Holy Spirit, now and ever and unto ages of ages. Amen.
+O Most Holy Trinity, have mercy on us. Lord, cleanse us from our sins. Master, pardon our transgressions. Holy One, visit and heal our infirmities for Thy Name's sake.
+Lord, have mercy. (Thrice)
+Glory to the Father, and to the Son, and to the Holy Spirit, now and ever and unto ages of ages. Amen.
+
+Our Father, Who art in heaven, hallowed be Thy name. Thy kingdom come, Thy will be done on earth as it is in heaven.
+Give us this day our daily bread, and forgive us our debts, as we forgive our debtors;
+and lead us not into temptation, but deliver us from evil.
+For Thine is the kingdom and the power and the glory, of the Father, and of the Son, and of the Holy Spirit, now and ever and unto ages of ages. Amen.`,
+      ru: `Святый Боже, Святый Крепкий, Святый Безсмертный, помилуй нас. (Трижды)
+Слава Отцу и Сыну и Святому Духу, и ныне и присно и во веки веков. Аминь.
+Пресвятая Троице, помилуй нас; Господи, очисти грехи наша; Владыко, прости беззакония наша; Святый, посети и исцели немощи наша, имене Твоего ради.
+Господи, помилуй. (Трижды)
+Слава Отцу и Сыну и Святому Духу, и ныне и присно и во веки веков. Аминь.
+
+Отче наш, Иже еси на небесех! Да святится имя Твое, да приидет Царствие Твое, да будет воля Твоя, яко на небеси и на земли.
+Хлеб наш насущный даждь нам днесь; и остави нам долги наша, якоже и мы оставляем должником нашим;
+и не введи нас во искушение, но избави нас от лукаваго.
+Яко Твое есть Царство и сила и слава Отца и Сына и Святаго Духа ныне и присно и во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'morning-troparia',
+    category: 'morning',
+    title: {
+      ja: '朝の痛悔讃詞（トロパリ）',
+      en: 'Morning Troparia of Contrition',
+      ru: 'Тропари утренние',
+    },
+    text: {
+      ja: `眠りより起きて爾に伏し拝み、善徳者よ、天使の歌を爾に叫び歌う、「聖なるかな、聖なるかな、聖なるかな、神よ、生神女に因りて我らを憐れめよ。」
+光栄は父と子と聖神に帰す。
+主よ、爾我を寝床と眠りより起こし給えり、我が心と思いとを照らし、我が唇を開きて、爾聖三位を讃歌せしめ給え、「聖なるかな、聖なるかな、聖なるかな、神よ、生神女に因りて我らを憐れめよ。」
+今もいつも世々に至るまで、アミン。
+審判者は俄かに来たり、各人の所行は明らかにせらるべし、是の故に我等畏れを以て夜半に叫ぶ、「聖なるかな、聖なるかな、聖なるかな、神よ、生神女に因りて我らを憐れめよ。」`,
+      en: `Having arisen from sleep, we fall down before Thee, O Blessed One, and we sing to Thee, O Mighty One, the angelic hymn: Holy, Holy, Holy art Thou, O God; through the Theotokos have mercy on us!
+Glory to the Father, and to the Son, and to the Holy Spirit.
+From bed and sleep Thou hast raised me, O Lord; enlighten my mind and heart, and open my lips that I may praise Thee, O Holy Trinity: Holy, Holy, Holy art Thou, O God; through the Theotokos have mercy on us!
+Now and ever and unto ages of ages. Amen.
+Suddenly the Judge shall come, and the deeds of each shall be revealed; but with fear we cry in the middle of the night: Holy, Holy, Holy art Thou, O God; through the Theotokos have mercy on us!`,
+      ru: `Воставше от сна, припадаем Ти, Блаже, и ангельскую песнь вопием Ти, Сильне: Свят, Свят, Свят еси, Боже, Богородицею помилуй нас.
+Слава Отцу и Сыну и Святому Духу.
+От одра и сна воздвигл мя еси, Господи, ум мой просвети и сердце, и устне мои отверзи, во еже пети Тя, Святая Троице: Свят, Свят, Свят еси, Боже, Богородицею помилуй нас.
+И ныне и присно и во веки веков. Аминь.
+Внезапно Судия приидет, и коегождо деяния обнажатся, но страхом зовем в полунощи: Свят, Свят, Свят еси, Боже, Богородицею помилуй нас.`,
+    },
+  },
+  {
+    id: 'morning-theotokos',
+    category: 'morning',
+    title: {
+      ja: '生神童女マリヤへの挨拶（アヴェ・マリア）',
+      en: 'The Angelic Salutation (Bogoroditse Devo)',
+      ru: 'Богородице Дево, радуйся',
+    },
+    text: {
+      ja: `生神童女マリヤや、喜べ、恵まれたるマリヤ、主は爾と共に在り。
+爾は女の中に讃美せられ、爾の胎の実も讃美せらる、
+蓋し爾は我が霊の救い主を生み給えり。`,
+      en: `Rejoice, O Virgin Theotokos, Mary, full of grace, the Lord is with thee!
+Blessed art thou among women, and blessed is the Fruit of thy womb,
+for thou hast borne the Savior of our souls.`,
+      ru: `Богородице Дево, радуйся, Благодатная Марие, Господь с Тобою;
+благословена Ты в женах и благословен плод чрева Твоего,
+яко Спаса родила еси душ наших.`,
+    },
+  },
+  {
+    id: 'morning-living-departed',
+    category: 'morning',
+    title: {
+      ja: '生ける者と眠れる者のための日毎の祈り',
+      en: 'Commemoration of the Living and the Departed',
+      ru: 'Молитва о живых и усопших',
+    },
+    text: {
+      ja: `慈愛深き主イイスス・ハリストスよ、我が霊父、父母、親族、正教の信徒ら、病気・艱難にある総ての人を顧み、憐れみ、その霊と肉体に恩寵を垂れ給え。
+又、眠りにつける我が先祖、教会の恩人、総ての正教の信徒らを記憶し、願わくは彼らの自らと自らならずして犯せし罪を赦し、彼らに天国を賜い、永遠の安息を与え給え。`,
+      en: `Remember, O Lord Jesus Christ, our spiritual father, our parents, relatives, all Orthodox Christians, those in sickness and sorrow; visit, strengthen, and preserve them by Thy grace.
+Remember also all our fathers, brethren, and loved ones who have fallen asleep in the hope of resurrection to eternal life; forgive them every sin committed willingly or unwillingly, and make their memory eternal!`,
+      ru: `Спаси, Господи, и помилуй отца моего духовнаго, родителей моих, сродников и всех православных христиан.
+Упокой, Господи, души усопших раб Твоих: праотцев, отец и братий наших, зде лежащих и повсюду православных, и прости им вся согрешения вольная и невольная, и даруй им Царствие Небесное. Вечная память!`,
+    },
+  },
+
+  // ==========================================
+  // 2. 晩の祈り（就寝前の祈り / Prayers before Sleep）
+  // ==========================================
+  {
+    id: 'evening-forgiveness',
+    category: 'evening',
+    title: {
+      ja: '一日の罪の赦しを乞う祈祷',
+      en: 'Prayer for Forgiveness of Daily Sins',
+      ru: 'Молитва на прощение грехов',
+    },
+    subtitle: {
+      ja: '就寝前の痛悔',
+      en: 'Evening Confession to God',
+      ru: 'Молитва святого Иоанна Златоуста',
+    },
+    text: {
+      ja: `主、我が神よ、今日において我が言葉、行い、想念をもって犯したる総ての罪を、善徳にして人を愛する主よ、我に赦し給え。
+安らかなる眠りと静けさを我に与え、一切の凶悪の煩いより我を守り給え。
+蓋し爾は我が霊と肉体の守護者にして、我等は爾父と子と聖神に光栄を帰す、今もいつも世々に至るまで。アミン。`,
+      en: `O Lord our God, whatever sins I have committed this day in word, deed, or thought, forgive me, for Thou art good and lovest mankind.
+Grant me peaceful and undisturbed sleep; send Thy Guardian Angel to shelter and protect me from every evil.
+For Thou art the Guardian of our souls and bodies, and to Thee we ascribe glory: to the Father, and to the Son, and to the Holy Spirit, now and ever, and unto ages of ages. Amen.`,
+      ru: `Господи Боже наш, еже согреших во дни сем словом, делом и помышлением, яко Благ и Человеколюбец прости ми.
+Мирен сон и безмятежен даруй ми. Ангела Твоего хранителя посли, покрывающа и соблюдающа мя от всякаго зла,
+яко Ты еси хранитель душам и телесем нашим, и Тебе славу возсылаем, Отцу и Сыну и Святому Духу, ныне и присно и во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'evening-guardian-angel',
+    category: 'evening',
+    title: {
+      ja: '守護天使への祈祷',
+      en: 'Prayer to the Holy Guardian Angel',
+      ru: 'Молитва Ангелу Хранителю',
+    },
+    text: {
+      ja: `ハリストスの聖なる天使、我が哀れなる霊と肉体の敬虔なる守護者よ、
+今日において爾を怒らせし我が総ての過失を赦し、敵の総ての悪巧みより我を救い給え。
+我の為に我が主神に祈り、主の恩寵に値する僕となさしめ給え。アミン。`,
+      en: `O Angel of Christ, holy guardian and protector of my soul and body,
+forgive me everything wherein I have sinned this day, and deliver me from every deceit of the enemy.
+Pray for me to the Lord God, that He may show me to be worthy of His goodness and grace. Amen.`,
+      ru: `Ангеле Христов, хранителю мой святый и покровителю души и тела моего,
+вся ми прости, елика согреших во днешний день, и от всякаго лукавствия противнаго ми врага избави мя.
+Но моли за мя грешнаго и недостойнаго раба, яко да достойна мя покажеши благости и милости Святыя Троицы. Аминь.`,
+    },
+  },
+  {
+    id: 'evening-cross',
+    category: 'evening',
+    title: {
+      ja: '尊い十字架への祈祷',
+      en: 'Prayer to the Precious and Life-Giving Cross',
+      ru: 'Молитва Честному Кресту',
+    },
+    text: {
+      ja: `神よ奮い起きて、その仇を散らし、主を憎む者をその御前より逃げ走らしめ給え。
+煙の散るが如く彼らを散らし、火の前に蝋の溶くるが如く、悪霊どもを神を愛し十字架の印を結ぶ者の前より滅ぼし給え。
+尊く生命を施す主の十字架よ、歓喜せよ。爾の力によりて悪霊は追い払わる。
+尊い十字架と至聖なる生神女よ、我を助け給え。世々に至るまで。アミン。`,
+      en: `Let God arise, and let His enemies be scattered; let those who hate Him flee before His face!
+As smoke vanishes, so let them vanish; as wax melts before the fire, so let the demons perish from before the face of those who love God and sign themselves with the sign of the Cross.
+Rejoice, O Most Precious and Life-Creating Cross of the Lord, which drivest away demons by the power of our Lord Jesus Christ!
+O Precious and Life-Giving Cross of the Lord, help me with the Holy Virgin Theotokos and with all the Saints forever. Amen.`,
+      ru: `Да воскреснет Бог, и расточатся врази Его, и да бежат от лица Его ненавидящии Его.
+Яко исчезает дым, да исчезнут; яко тает воск от лица огня, тако да погибнут беси от лица любящих Бога и знаменующихся крестным знамением.
+Радуйся, Пречестный и Животворящий Кресте Господень, прогоняяй бесы силою на тебе распятаго Господа нашего Иисуса Христа.
+О, Пречестный и Животворящий Кресте Господень! Помогай ми со Святою Госпожею Девою Богородицею и со всеми святыми во веки. Аминь.`,
+    },
+  },
+  {
+    id: 'evening-into-thy-hands',
+    category: 'evening',
+    title: {
+      ja: '就寝時の委ね（主の御手に）',
+      en: 'Into Thy Hands, O Lord (At Sleep)',
+      ru: 'В руце Твои, Господи',
+    },
+    text: {
+      ja: `主イイスス・ハリストス、我が神よ、爾の御手に我が霊を委ね奉る。
+主よ、我を祝し、我を憐れみ、永遠の生命を我に賜え。アミン。`,
+      en: `Into Thy hands, O Lord Jesus Christ, my God, I commend my spirit.
+Bless me, have mercy upon me, and grant me life eternal. Amen.`,
+      ru: `В руце Твои, Господи Иисусе Христе, Боже мой, предаю дух мой:
+Ты же мя благослови, Ты мя помилуй и живот вечный даруй ми. Аминь.`,
+    },
+  },
+
+  // ==========================================
+  // 3. 領聖前の祈祷（聖体拝領準備 / Pre-Communion）
+  // ==========================================
+  {
+    id: 'communion-chrysostom',
+    category: 'communion',
+    title: {
+      ja: '聖金口イオアンの領聖祈祷（主よ、我信ず）',
+      en: 'Pre-Communion Prayer of St. John Chrysostom',
+      ru: 'Молитва свт. Иоанна Златоуста перед Причащением',
+    },
+    subtitle: {
+      ja: '聖杯に近づく直前の告白祈祷',
+      en: 'Confession of Faith before the Chalice',
+      ru: 'Верую, Господи, и исповедую',
+    },
+    text: {
+      ja: `主よ、我信ず、また言い表す、爾は真に生ける神の子ハリストスにして、罪人を救わんが為に世に来たり給えり、罪人の中に我は首なり。
+又信ず、是れ真に爾の尊き身肉にして、是れ真に爾の尊き血なり。
+是の故に爾に祈る、我を憐れみ、我が自らと自らならずして、言葉により、行いにより、知ると知らざるとを問わず犯したる総ての罪を赦し給え。
+我をして罪に定められずして、爾の尊き機密に与らしめ、以て罪の赦しと永遠の生命を得せしめ給え。
+
+神の子よ、本日我を爾の神秘の晩餐の預かり人となし給え。
+我は爾の仇に奥秘を語らず、イウダの如き接吻を爾に与えじ、
+唯だ盗賊の如く爾に言い表さん、「主よ、爾の国において我を記憶し給え。」
+
+主よ、爾の聖なる機密に与ることは、我が審判又は罪定めとなることなく、我が霊と肉体の癒やしとならんことを。アミン。`,
+      en: `I believe, O Lord, and I confess that Thou art truly the Christ, the Son of the Living God, Who camest into the world to save sinners, of whom I am first.
+I believe also that this is truly Thine own most pure Body, and that this is truly Thine own precious Blood.
+Therefore I pray Thee: have mercy upon me and forgive my transgressions both voluntary and involuntary, of word and of deed, of knowledge and of ignorance.
+And make me worthy to partake without condemnation of Thy most pure Mysteries, unto the remission of sins and unto life everlasting.
+
+Of Thy Mystical Supper, O Son of God, accept me today as a communicant;
+for I will not speak of Thy Mystery to Thine enemies, neither like Judas will I give Thee a kiss;
+but like the thief will I confess Thee: "Remember me, O Lord, in Thy Kingdom."
+
+May the communion of Thy holy Mysteries be neither to my judgment, nor to my condemnation, O Lord, but to the healing of soul and body. Amen.`,
+      ru: `Верую, Господи, и исповедую, яко Ты еси воистину Христос, Сын Бога живаго, пришедый в мир грешныя спасти, от нихже первый есмь аз.
+Еще верую, яко сие есть самое пречистое Тело Твое, и сия есть самая честная Кровь Твоя.
+Молюся убо Тебе: помилуй мя, и прости ми прегрешения моя, вольная и невольная, яже словом, яже делом, яже ведением и неведением,
+и сподоби мя неосужденно причаститися пречистых Твоих Таинств, во оставление грехов, и в жизнь вечную.
+
+Вечери Твоея тайныя днесь, Сыне Божий, причастника мя приими;
+не бо врагом Твоим тайну повем, ни лобзания Ти дам, яко Иуда,
+но яко разбойник исповедаю Тя: помяни мя, Господи, во Царствии Твоем.
+
+Да не в суд или во осуждение будет мне причащение святых Твоих Таин, Господи, но во исцеление души и тела. Аминь.`,
+    },
+  },
+  {
+    id: 'communion-metaphrastes',
+    category: 'communion',
+    title: {
+      ja: 'シメオン・メタフラストの領聖祝文',
+      en: 'Prayer of St. Symeon Metaphrastes',
+      ru: 'Молитва св. Симеона Метафраста перед Причащением',
+    },
+    text: {
+      ja: `唯一潔白にして不朽なる主イイスス・ハリストスよ、
+言い難き慈愛をもって我らの全き人性を取り、十字架の受難によりて我らを救い給いし主よ、
+我が肉の欲情を殺し、我が霊の汚れを潔め、爾の生命を施す玄義によりて、我が心にハリストスを住まわしめ給え。アミン。`,
+      en: `O Lord Jesus Christ, alone pure and incorruptible, Who in Thy wondrous love didst take our human flesh:
+Cleanse my soul from every defilement, mortify the passions of my flesh,
+and by Thy life-creating Mysteries make my heart a living temple of Thy Holy Spirit. Amen.`,
+      ru: `Едине чистый и нетленный Господи Иисусе Христе, неизреченным Твоим человеколюбием плоть нашу восприявый:
+Очисти душу мою от всякия скверны, умертви плотския страсти, и причащением животворящих Твоих Таин вселися в сердце мое. Аминь.`,
+    },
+  },
+
+  // ==========================================
+  // 4. 領聖後の感謝祝文 (Post-Communion Thanksgiving)
+  // ==========================================
+  {
+    id: 'post-communion-thanks',
+    category: 'communion',
+    title: {
+      ja: '領聖後の感謝祈祷',
+      en: 'Thanksgiving after Holy Communion',
+      ru: 'Благодарственные молитвы по Святом Причащении',
+    },
+    text: {
+      ja: `光栄は爾に帰す、神よ、光栄は爾に帰す、神よ、光栄は爾に帰す、神よ。
+主よ、罪人にして不相応なる我を退けず、爾の極めて清き天の機密に与ることを許し給いしことを感謝す。
+願わくは此の領聖の我が霊と肉体の癒やしとなり、信仰の堅固、仁愛の全き成就、悪徳の絶滅、並びに爾の戒めの実行とならんことを。
+願わくは我が生命の終わりに至るまで、罪に定められずして爾の尊き体を拝領せしめ給え。アミン。`,
+      en: `Glory to Thee, O God! Glory to Thee, O God! Glory to Thee, O God!
+I thank Thee, O Lord my God, that Thou hast not rejected me, a sinner, but hast permitted me to partake of Thy holy and heavenly Mysteries.
+Let these holy Gifts be for the healing of my soul and body, the strengthening of faith, the perfecting of love, and the keeping of Thy commandments.
+Preserve me in Thy holiness all the days of my life, that I may live no longer for myself, but for Thee, our Master and Benefactor. Amen.`,
+      ru: `Слава Тебе, Боже! Слава Тебе, Боже! Слава Тебе, Боже!
+Благодарю Тя, Господи Боже мой, яко не отринул еси мене грешнаго, но сподобил мя еси причастника быти святынь Твоих.
+Да будут ми Святыя сия во исцеление души же и тела, в веру непостыдну, в любовь нелицемерну, в соблюдение заповедей Твоих.
+Святый Владыко, соблюди мя во Твоей святыне, да всю жизнь мою славлю пресвятое имя Твое. Аминь.`,
+    },
+  },
+
+  // ==========================================
+  // 5. 食前・食後の祈り (Prayers at Meals / Трапезные молитвы)
+  // ==========================================
+  {
+    id: 'meals-before',
+    category: 'meals',
+    title: {
+      ja: '食前の祈り（総ての人の目は爾を仰ぎ望む）',
+      en: 'Prayer before Meals',
+      ru: 'Молитва перед вкушением пищи',
+    },
+    text: {
+      ja: `総ての人の目は爾を仰ぎ望む、主よ、爾は時に従って彼らに糧を与え給う。
+爾はその御手を開きて、生きとし生ける者をその恵みをもて満たし給う。
+（主の祈り：「天におらるる我らの父よ...」を唱う）
+ハリストス神よ、爾の僕の飲食を祝福し給え、蓋し爾は聖なり、世々に至るまで。アミン。`,
+      en: `The eyes of all look unto Thee with hope, O Lord, and Thou givest them their food in due season.
+Thou openest Thy hand, and fillest every living thing with Thy favor.
+(Pray the Lord’s Prayer: Our Father...)
+Christ our God, bless the food and drink of Thy servants, for Thou art holy, always, now and ever, and unto ages of ages. Amen.`,
+      ru: `Очи всех на Тя, Господи, уповают, и Ты даеши им пищу во благовремении,
+отверзаеши Ты щедрую руку Твою и исполняеши всякое животное благоволения.
+(Отче наш...)
+Христе Боже, благослови ястие и питие рабом Твоим, яко Свят еси всегда, ныне и присно и во веки веков. Аминь.`,
+    },
+  },
+  {
+    id: 'meals-after',
+    category: 'meals',
+    title: {
+      ja: '食後の祈り（感謝の祈祷）',
+      en: 'Prayer after Meals',
+      ru: 'Молитва после вкушения пищи',
+    },
+    text: {
+      ja: `我らは爾に感謝す、ハリストス我が神よ、爾地上の良き糧をもて我らを飽かし給えばなり。
+願わくは天の国より我らを除かず、爾の弟子等の真ん中に来たりて平安を与え給いし如く、我らの中に来たりて我らを救い給え。アミン。`,
+      en: `We thank Thee, Christ our God, that Thou hast satisfied us with Thy earthly blessings;
+deprive us not of Thy Heavenly Kingdom, but as Thou didst come among Thy disciples, O Savior, and gavest them peace: come unto us and save us! Amen.`,
+      ru: `Благодарим Тя, Христе Боже наш, яко насытил еси нас земных Твоих благ;
+не лиши нас и Небеснаго Твоего Царствия, но яко посреде учеников Твоих пришел еси, Спасе, мир даяй им, прииди к нам и спаси нас. Аминь.`,
+    },
+  },
+
+  // ==========================================
+  // 6. 旅立ちの祈り (Prayer before Traveling)
+  // ==========================================
+  {
+    id: 'occasional-travel',
+    category: 'occasional',
+    title: {
+      ja: '旅立つ者のための祈願',
+      en: 'Prayer before a Journey',
+      ru: 'Молитва перед отправлением в путь',
+    },
+    text: {
+      ja: `道と真理と生命なる主イイスス・ハリストスよ、
+かつてルカとクレオパの道連れとなり給いし如く、今爾の僕なる我と共に歩み、あらゆる危険と凶悪より我が道程を守り給え。
+我が往復の旅を平穏に成し遂げしめ、爾の光栄を讃美せしめ給え。アミン。`,
+      en: `O Lord Jesus Christ our God, the Way, the Truth, and the Life,
+Who didst accompany Luke and Cleopas to Emmaus: travel also with Thy servant, and preserve me from every danger and snare along the way.
+Direct my path according to Thy will, and bring me back safely in peace to glorify Thy Holy Name. Amen.`,
+      ru: `Господи Иисусе Христе Боже наш, истинный и живый Путю, спошествовати мнимому Твоему рабу Иосифу и Пречистей Деве Матери в Египет изволивый, и Луце и Клеопе во Еммаус спутешествовавый!
+И ныне смиренно молим Тя, Владыко Пресвятый, и рабу Твоему сему Твоею благодатию спутешествуй. И всякаго злаго обстояния избави, мир и благомощие устрояя. Аминь.`,
+    },
+  },
+
+  // ==========================================
+  // 7. 当教会の守護聖歌 (Pokrov Patronal Hymns)
+  // ==========================================
   {
     id: 'pokrov-troparion',
     category: 'patronal',
@@ -18,9 +429,9 @@ export const PRAYERS_DATA: PrayerItem[] = [
       ru: 'Тропарь Покрова Пресвятой Богородицы',
     },
     subtitle: {
-      ja: '第4調 — 当教会の守護聖歌',
+      ja: '第4調 — 大阪ハリストス正教会の守護聖歌',
       en: 'Tone 4 — Patronal Hymn of Osaka Church',
-      ru: 'Глас 4 — Тропарь престольного праздника',
+      ru: 'Глас 4 — Тропарь престольного праздника в Осаке',
     },
     text: {
       ja: `本日信徒等、神光を帯びて祝い、爾の神現の像に寄りて懇祷し、至潔なる生神女よ、爾の光栄なる庇護に頼りて祈る、
@@ -60,120 +471,6 @@ since for our sake the Theotokos prays to the pre-eternal God.`,
       ru: `Дева днесь предстоит в церкви и с лики святых невидимо за ны молится Богу,
 Ангели со архиереи покланяются, апостоли же со пророки ликовствуют:
 нас бо ради молит Богородица Превечнаго Бога.`,
-    },
-  },
-  {
-    id: 'trisagion',
-    category: 'daily',
-    title: {
-      ja: '三聖の祝文（聖なる神）',
-      en: 'The Trisagion Prayers',
-      ru: 'Трисвятое',
-    },
-    subtitle: {
-      ja: '全ての祈りの基本',
-      en: 'Core Daily Prayer',
-      ru: 'Молитва ко Пресвятой Троице',
-    },
-    text: {
-      ja: `聖なる神、聖なる勇力、聖なる不滅なる主、我等を憐れめよ。（三度）
-光栄は父と子と聖神に帰す、今もいつも世々に至るまで、アミン。
-至聖なる三位、我等を憐れめよ。主よ、我等の罪を潔め給え。主宰よ、我等の不法を赦し給え。聖なる主よ、訪い憐れみて、爾の名の為に我等の病を癒し給え。主憐れめよ（三度）。
-光栄は父と子と聖神に帰す、今もいつも世々に至るまで、アミン。`,
-      en: `Holy God, Holy Mighty, Holy Immortal, have mercy on us. (3 times)
-Glory to the Father, and to the Son, and to the Holy Spirit, now and ever and unto ages of ages. Amen.
-O Most Holy Trinity, have mercy on us. Lord, cleanse us from our sins. Master, pardon our transgressions. Holy One, visit and heal our infirmities for Your Name's sake. Lord have mercy (3 times).
-Glory to the Father, and to the Son, and to the Holy Spirit, now and ever and unto ages of ages. Amen.`,
-      ru: `Святый Боже, Святый Крепкий, Святый Безсмертный, помилуй нас. (Трижды)
-Слава Отцу и Сыну и Святому Духу, и ныне и присно и во веки веков. Аминь.
-Пресвятая Троице, помилуй нас; Господи, очисти грехи наша; Владыко, прости беззакония наша; Святый, посети и исцели немощи наша, имене Твоего ради. Господи, помилуй (Трижды).
-Слава Отцу и Сыну и Святому Духу, и ныне и присно и во веки веков. Аминь.`,
-    },
-  },
-  {
-    id: 'our-father',
-    category: 'daily',
-    title: {
-      ja: '主の祈り（天におらるる我らの父）',
-      en: "The Lord's Prayer (Our Father)",
-      ru: 'Молитва Господня (Отче наш)',
-    },
-    text: {
-      ja: `天におらるる我らの父よ、願わくは爾の名は聖とせられ、爾の国は来たり、爾の旨は天に行わるるが如く地にも行われん。
-我が日用の糧を今日我らに与え給え。
-我らに負い目ある者を我らが赦すが如く、我らの負い目を赦し給え。
-我らを誘惑に導かず、なお我らを凶悪より救い給え。
-蓋し国と権能と光栄は、爾父と子と聖神に世々に帰す。アミン。`,
-      en: `Our Father, Who art in heaven, hallowed be Thy name. Thy kingdom come, Thy will be done, on earth as it is in heaven.
-Give us this day our daily bread, and forgive us our trespasses, as we forgive those who trespass against us;
-and lead us not into temptation, but deliver us from evil.
-For Thine is the kingdom and the power and the glory, of the Father and of the Son and of the Holy Spirit, now and ever and unto ages of ages. Amen.`,
-      ru: `Отче наш, Иже еси на небесех! Да святится имя Твое, да приидет Царствие Твое, да будет воля Твоя, яко на небеси и на земли.
-Хлеб наш насущный даждь нам днесь; и остави нам долги наша, якоже и мы оставляем должником нашим;
-и не введи нас во искушение, но избави нас от лукаваго.
-Яко Твое есть Царство и сила и слава Отца и Сына и Святаго Духа ныне и присно и во веки веков. Аминь.`,
-    },
-  },
-  {
-    id: 'jesus-prayer',
-    category: 'daily',
-    title: {
-      ja: 'イイススの祈り',
-      en: 'The Jesus Prayer',
-      ru: 'Иисусова молитва',
-    },
-    subtitle: {
-      ja: '心の絶えざる祈祷',
-      en: 'Unceasing Prayer of the Heart',
-      ru: 'Непрестанная сердечная молитва',
-    },
-    text: {
-      ja: `主イイスス・ハリストス、神の子よ、罪人なる我を憐れみ給え。`,
-      en: `Lord Jesus Christ, Son of God, have mercy on me, a sinner.`,
-      ru: `Господи Иисусе Христе, Сыне Божий, помилуй мя, грешнаго.`,
-    },
-  },
-  {
-    id: 'creed',
-    category: 'daily',
-    title: {
-      ja: '信経（信仰の告白）',
-      en: 'The Symbol of Faith (Nicene Creed)',
-      ru: 'Символ веры',
-    },
-    text: {
-      ja: `我信ず、唯一の神・全能の父、天と地、見ゆる天地の総てを造りし主を。
-又信ず、唯一の主イイスス・ハリストス、神の独生の子、世々に先だちて父より生まれ、光よりの光、真実の神よりの真実の神、生まれし者にて造られしに非ず、父と一体にして、万物彼に造られ、
-我等名々の為、又我等の救いの為に天より降り、聖神及び童女マリヤより身を取りて人となり、
-我等の為にポノティオ・ピラトの時に十字架に釘うたれ、苦しみを受け、葬られ、
-聖書に相合いて第三日に復活し、天に昇り、父の右に座し、
-光栄を顕して生ける者と死せし者を審判する為に還幸すべし、その国は終りなからん。
-又信ず、聖神、主、生命を施す者、父より出で、父及び子と共に拝まれ讃美せられ、預言者を以て言わしめし主を。
-又信ず、一なる聖なる公なる使徒の教会を。
-我言い表す、唯一の洗礼、以て罪の赦しを得ることを。
-我望む、死人の復活、並びに来世の生命を。アミン。`,
-      en: `I believe in one God, Father Almighty, Maker of heaven and earth, and of all things visible and invisible.
-And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the Father before all ages; Light of Light, true God of true God, begotten, not made, of one essence with the Father, by Whom all things were made.
-Who for us men and for our salvation came down from heaven, and was incarnate of the Holy Spirit and the Virgin Mary, and became man.
-And was crucified also for us under Pontius Pilate, and suffered and was buried.
-And the third day He rose again, according to the Scriptures.
-And ascended into heaven, and sits at the right hand of the Father.
-And He shall come again, with glory, to judge the living and the dead; Whose kingdom shall have no end.
-And in the Holy Spirit, the Lord, the Giver of Life, Who proceeds from the Father, Who with the Father and the Son together is worshipped and glorified, Who spoke by the Prophets.
-And in one, holy, catholic and apostolic Church.
-I acknowledge one baptism for the remission of sins.
-I look for the resurrection of the dead, and the life of the world to come. Amen.`,
-      ru: `Верую во единаго Бога Отца, Вседержителя, Творца небу и земли, видимым же всем и невидимым.
-И во единаго Господа Иисуса Христа, Сына Божия, Единороднаго, Иже от Отца рожденнаго прежде всех век; Света от Света, Бога истинна от Бога истинна, рожденна, несотворенна, единосущна Отцу, Имже вся быша.
-Нас ради человек и нашего ради спасения сшедшаго с небес и воплотившагося от Духа Свята и Марии Девы, и вочеловечшася.
-Распятаго же за ны при Понтийстем Пилате, и страдавша, и погребенна.
-И воскресшаго в третий день по Писанием.
-И возшедшаго на небеса, и седяща одесную Отца.
-И паки грядущаго со славою судити живым и мертвым, Егоже Царствию не будет конца.
-И в Духа Святаго, Господа, Животворящаго, Иже от Отца исходящаго, Иже со Отцем и Сыном спокланяема и сславима, глаголавшаго пророки.
-Во едину Святую, Соборную и Апостольскую Церковь.
-Исповедую едино крещение во оставление грехов.
-Чаю воскресения мертвых, и жизни будущаго века. Аминь.`,
     },
   },
 ];
