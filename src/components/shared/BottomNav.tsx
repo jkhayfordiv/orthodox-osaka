@@ -31,7 +31,7 @@ export function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 bg-orthodox-navy border-t border-orthodox-gold/40 shadow-2xl safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 bg-orthodox-navy border-t border-orthodox-gold/40 shadow-2xl safe-area-bottom md:hidden">
       <div className="max-w-4xl mx-auto flex items-center justify-around h-16 sm:h-18 px-2">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;

@@ -155,7 +155,7 @@ export function TodayView() {
   };
 
   return (
-    <div className="space-y-4 pb-24 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
+    <div className="space-y-4 pb-24 md:pb-12 max-w-7xl mx-auto px-3 sm:px-6 pt-3 sm:pt-4">
       {/* 1. Day Navigation Header (Senior-friendly large buttons) */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-2xl p-4 shadow-sm">
         <div className="flex items-center justify-between">
@@ -174,7 +174,7 @@ export function TodayView() {
             <h2 className="text-base sm:text-xl font-bold font-serif text-orthodox-navy dark:text-orthodox-gold-light">
               {formatCivilDate(selectedDate)}
             </h2>
-            <div className="flex items-center justify-center space-x-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               <span className="font-medium">{formatJulianDate(selectedDate, locale)}</span>
               {dayInfo.tone > 0 && (
                 <>
@@ -184,6 +184,11 @@ export function TodayView() {
                   </span>
                 </>
               )}
+              <span>•</span>
+              <span className="font-bold text-orthodox-burgundy dark:text-orthodox-gold flex items-center space-x-1">
+                <span>{dayInfo.fasting.icon}</span>
+                <span>{dayInfo.fasting.badgeText[locale]}</span>
+              </span>
             </div>
           </div>
 
@@ -211,6 +216,11 @@ export function TodayView() {
           </div>
         )}
       </div>
+
+      {/* Responsive 2-Column Dashboard on Desktop (lg:grid) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* Left Main Column: Celebrations & Scripture Readings */}
+        <div className="lg:col-span-7 xl:col-span-8 space-y-4">
 
       {/* 2. TOP PRIORITY: Name Day Celebration Card */}
       {(isUserPatronSaintToday || celebratingFamilyMembers.length > 0) && (
@@ -270,92 +280,7 @@ export function TodayView() {
         </div>
       )}
 
-      {/* 4. Fasting Rule Card */}
-      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-3">
-            <span className="text-3xl" role="img" aria-label="Fasting icon">
-              {dayInfo.fasting.icon}
-            </span>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-white">
-                  {dayInfo.fasting.badgeText[locale]}
-                </h3>
-                {dayInfo.fasting.periodName && (
-                  <span className="text-xs py-0.5 px-2 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold font-bold">
-                    {dayInfo.fasting.periodName[locale]}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
-                {dayInfo.fasting.explanation[locale]}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {showTooltips && (
-          <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 flex items-center space-x-1.5">
-            <Info className="w-3.5 h-3.5 text-orthodox-gold flex-shrink-0" />
-            <span>
-              {locale === 'ja'
-                ? '「斎（ものいみ）」は祈りと節制により神に向かう正教会の伝統的な精進です。'
-                : locale === 'ru'
-                ? 'Пост — это время молитвы, воздержания и духовного очищения перед Господом.'
-                : 'Fasting in the Orthodox Church is a spiritual practice of prayer and abstinence.'}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* 5. Saints Commemorated Card with Real Biographies */}
-      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
-          <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
-            <span>⛪</span>
-            <span>{locale === 'ja' ? '今日の記憶（聖人）' : locale === 'ru' ? 'Память святых' : 'Saints of the Day'}</span>
-          </h3>
-          <button
-            onClick={handleShare}
-            className="flex items-center space-x-1 text-xs py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
-            title="Share"
-          >
-            {copiedShare ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
-            <span>{copiedShare ? (locale === 'ja' ? 'コピー完了' : 'Copied!') : (locale === 'ja' ? '共有' : locale === 'ru' ? 'Поделиться' : 'Share')}</span>
-          </button>
-        </div>
-
-        <ul className="space-y-3.5">
-          {dayInfo.saints.map((saint, idx) => (
-            <li key={idx} className="space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0"></span>
-                <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100">
-                  {saint.name[locale]}
-                </span>
-                {saint.title && (
-                  <span className="text-[11px] text-slate-500 font-medium">
-                    ({saint.title[locale]})
-                  </span>
-                )}
-                {saint.isPatronSaint && (
-                  <span className="text-[10px] font-bold py-0.5 px-1.5 rounded bg-orthodox-gold/20 text-orthodox-gold-dark dark:text-orthodox-gold">
-                    {locale === 'ja' ? '守護聖人' : locale === 'ru' ? 'Покровитель' : 'Patron'}
-                  </span>
-                )}
-              </div>
-              {saint.bio && (
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 pl-3.5 leading-relaxed">
-                  {saint.bio[locale]}
-                </p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* 6. Daily Scripture Readings Card (Epistle & Gospel - Complete Verse Text) */}
+      {/* 4. Daily Scripture Readings Card (Epistle & Gospel - Complete Verse Text) */}
       <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
           <div className="flex items-center space-x-2">
@@ -447,8 +372,50 @@ export function TodayView() {
           })}
         </div>
       </div>
+    </div>
 
-      {/* 7. Next Service at Osaka Church Card */}
+    {/* Right Sidebar Column: Fasting, Services & Saints */}
+    <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+      {/* 5. Fasting Rule Card */}
+      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center space-x-3">
+            <span className="text-3xl" role="img" aria-label="Fasting icon">
+              {dayInfo.fasting.icon}
+            </span>
+            <div>
+              <div className="flex items-center space-x-2">
+                <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-white">
+                  {dayInfo.fasting.badgeText[locale]}
+                </h3>
+                {dayInfo.fasting.periodName && (
+                  <span className="text-xs py-0.5 px-2 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold font-bold">
+                    {dayInfo.fasting.periodName[locale]}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
+                {dayInfo.fasting.explanation[locale]}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {showTooltips && (
+          <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 flex items-center space-x-1.5">
+            <Info className="w-3.5 h-3.5 text-orthodox-gold flex-shrink-0" />
+            <span>
+              {locale === 'ja'
+                ? '「斎（ものいみ）」は祈りと節制により神に向かう正教会の伝統的な精進です。'
+                : locale === 'ru'
+                ? 'Пост — это время молитвы, воздержания и духовного очищения перед Господом.'
+                : 'Fasting in the Orthodox Church is a spiritual practice of prayer and abstinence.'}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* 6. Next Service at Osaka Church Card */}
       {nextService && (
         <div className="bg-orthodox-candle/40 dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl p-4 sm:p-5 shadow-sm">
           <div className="flex items-center justify-between mb-2">
@@ -491,6 +458,54 @@ export function TodayView() {
           </div>
         </div>
       )}
+
+      {/* 7. Saints Commemorated Card with Real Biographies */}
+      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+          <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
+            <span>⛪</span>
+            <span>{locale === 'ja' ? '今日の記憶（聖人）' : locale === 'ru' ? 'Память святых' : 'Saints of the Day'}</span>
+          </h3>
+          <button
+            onClick={handleShare}
+            className="flex items-center space-x-1 text-xs py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
+            title="Share"
+          >
+            {copiedShare ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+            <span>{copiedShare ? (locale === 'ja' ? 'コピー完了' : 'Copied!') : (locale === 'ja' ? '共有' : locale === 'ru' ? 'Поделиться' : 'Share')}</span>
+          </button>
+        </div>
+
+        <ul className="space-y-3.5">
+          {dayInfo.saints.map((saint, idx) => (
+            <li key={idx} className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0"></span>
+                <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100">
+                  {saint.name[locale]}
+                </span>
+                {saint.title && (
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    ({saint.title[locale]})
+                  </span>
+                )}
+                {saint.isPatronSaint && (
+                  <span className="text-[10px] font-bold py-0.5 px-1.5 rounded bg-orthodox-gold/20 text-orthodox-gold-dark dark:text-orthodox-gold">
+                    {locale === 'ja' ? '守護聖人' : locale === 'ru' ? 'Покровитель' : 'Patron'}
+                  </span>
+                )}
+              </div>
+              {saint.bio && (
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 pl-3.5 leading-relaxed">
+                  {saint.bio[locale]}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
+  </div>
+</div>
   );
 }

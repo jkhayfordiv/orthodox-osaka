@@ -131,8 +131,228 @@ export function CalendarView() {
     };
   };
 
+  const renderInspectCard = () => {
+    if (!inspectDayInfo || !inspectDate) {
+      return (
+        <div className="bg-white/60 dark:bg-slate-900/60 border border-dashed border-orthodox-gold/40 rounded-2xl p-6 text-center text-slate-500 space-y-2">
+          <CalendarIcon className="w-8 h-8 mx-auto text-orthodox-gold opacity-60" />
+          <p className="font-serif text-xs sm:text-sm">
+            {locale === 'ja'
+              ? 'カレンダーの日付を選択すると、その日の聖人・斎・聖書朗読が表示されます'
+              : locale === 'ru'
+              ? 'Выберите дату в календаре для просмотра чтений и святых'
+              : 'Select a date on the calendar to inspect readings, fasting and saints'}
+          </p>
+        </div>
+      );
+    }
+
+    const inspectNameDays = getNameDaysForDate(inspectDate);
+
+    return (
+      <div className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl p-4 sm:p-5 shadow-xl relative animate-in fade-in space-y-4">
+        {/* Top date and Tone header */}
+        <div className="flex items-start justify-between border-b border-orthodox-gold/30 pb-3 gap-2">
+          <div>
+            <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold">
+              <span>{formatJulianDate(inspectDate, locale)}</span>
+              {inspectDayInfo.tone > 0 && (
+                <>
+                  <span>•</span>
+                  <span>
+                    {TONE_NAMES[inspectDayInfo.tone]?.[locale] ||
+                      (locale === 'ja'
+                        ? `第${inspectDayInfo.tone}調`
+                        : locale === 'ru'
+                        ? `Глас ${inspectDayInfo.tone}`
+                        : `Tone ${inspectDayInfo.tone}`)}
+                  </span>
+                </>
+              )}
+            </div>
+            <h3 className="text-base sm:text-lg lg:text-xl font-serif font-bold text-orthodox-navy dark:text-white mt-0.5">
+              {inspectDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', {
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long',
+              })}
+            </h3>
+          </div>
+          <button
+            onClick={() => {
+              setSelectedDate(inspectDate);
+              setActiveTab('today');
+            }}
+            className="py-1.5 px-3 rounded-xl bg-orthodox-gold text-orthodox-navy text-xs font-bold hover:bg-orthodox-gold-dark shadow transition-all active:scale-95 flex-shrink-0"
+          >
+            {locale === 'ja' ? '「今日」画面で開く →' : locale === 'ru' ? 'В «Сегодня» →' : 'Open in Today →'}
+          </button>
+        </div>
+
+        {/* Name Day Celebration Card in Inspect Drawer */}
+        {(inspectNameDays.isUserPatron || inspectNameDays.celebratingFamily.length > 0) && (
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orthodox-gold/20 to-amber-500/10 dark:from-amber-950/40 dark:via-orthodox-gold/10 dark:to-amber-950/30 border-2 border-amber-400 dark:border-amber-600 shadow-sm space-y-2 animate-in fade-in">
+            <div className="flex items-center space-x-2">
+              <span className="text-xl sm:text-2xl">{inspectNameDays.isUserPatron ? '👑' : '🎂'}</span>
+              <h4 className="font-serif font-bold text-xs sm:text-sm text-amber-950 dark:text-amber-100">
+                {inspectNameDays.isUserPatron
+                  ? locale === 'ja'
+                    ? '聖名日のお祝い！あなたの守護聖人の日です！'
+                    : locale === 'ru'
+                    ? 'С Днём Ангела! День вашего святого покровителя!'
+                    : 'Happy Name Day! Your Patron Saint Day!'
+                  : locale === 'ja'
+                  ? 'ご家族・代子の聖名日です！'
+                  : locale === 'ru'
+                  ? 'Именины в вашей семье!'
+                  : 'Family Name Day Celebration!'}
+              </h4>
+            </div>
+
+            <div className="text-xs text-amber-900 dark:text-amber-200 space-y-1 pl-1">
+              {inspectNameDays.isUserPatron && userPatronSaint && (
+                <div className="font-bold flex items-center space-x-1.5">
+                  <span>☦</span>
+                  <span>
+                    {userPatronSaint.name[locale]} — {userPatronSaint.saint[locale]}
+                  </span>
+                </div>
+              )}
+              {inspectNameDays.celebratingFamily.map((f) => (
+                <div key={f.member.id} className="font-medium flex items-center space-x-1.5">
+                  <span>🎉</span>
+                  <span>
+                    {f.member.name}: {f.saint.saint[locale]}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[11px] text-amber-800 dark:text-amber-300 font-serif italic pt-1 border-t border-amber-300/40 dark:border-amber-700/40">
+              {locale === 'ja'
+                ? '「多くの歳月を！（ムノガヤ・レタ）」神の豊かな恵みと加護がありますように。'
+                : locale === 'ru'
+                ? 'Многая лета! Молитвами святых ваших да хранит вас Господь!'
+                : 'Many Years! (Mnogaya Leta!) May God grant you health and salvation through the prayers of your patron!'}
+            </p>
+          </div>
+        )}
+
+        {/* Fasting Details */}
+        <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-start space-x-3">
+          <span className="text-2xl mt-0.5">{inspectDayInfo.fasting.icon}</span>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                {inspectDayInfo.fasting.badgeText[locale]}
+              </span>
+              {inspectDayInfo.fasting.periodName && (
+                <span className="text-[10px] font-bold py-0.5 px-2 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold">
+                  {inspectDayInfo.fasting.periodName[locale]}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
+              {inspectDayInfo.fasting.explanation[locale]}
+            </p>
+          </div>
+        </div>
+
+        {/* Saints of this Day */}
+        <div className="space-y-2">
+          <h4 className="font-serif font-bold text-xs sm:text-sm text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-1.5">
+            <span>⛪</span>
+            <span>{locale === 'ja' ? '記憶される聖人' : locale === 'ru' ? 'Память святых' : 'Saints of the Day'}</span>
+          </h4>
+          <ul className="space-y-2 pl-1 max-h-56 overflow-y-auto pr-1">
+            {inspectDayInfo.saints.map((saint, idx) => (
+              <li key={idx} className="text-xs sm:text-sm">
+                <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0"></span>
+                  <span>{saint.name[locale]}</span>
+                </div>
+                {saint.bio && (
+                  <p className="text-xs text-slate-500 dark:text-slate-400 pl-3 leading-relaxed mt-0.5">
+                    {saint.bio[locale]}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Scripture Readings with Full Text Expander */}
+        <div className="space-y-2">
+          <h4 className="font-serif font-bold text-xs sm:text-sm text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-1.5">
+            <BookOpen className="w-3.5 h-3.5 text-orthodox-gold" />
+            <span>{locale === 'ja' ? '聖書朗読（日課）' : locale === 'ru' ? 'Чтения дня' : 'Daily Readings'}</span>
+          </h4>
+
+          <div className="space-y-2">
+            {inspectDayInfo.readings.map((reading, idx) => {
+              const isExpanded = expandedReading === (reading.source === 'Epistle' ? 'epistle' : 'gospel');
+              return (
+                <div
+                  key={idx}
+                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase text-orthodox-gold-dark dark:text-orthodox-gold">
+                        {reading.source}
+                      </span>
+                      <h5 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100">
+                        {reading.book[locale]} {reading.reference}
+                      </h5>
+                    </div>
+                    <button
+                      onClick={() =>
+                        setExpandedReading(isExpanded ? null : reading.source === 'Epistle' ? 'epistle' : 'gospel')
+                      }
+                      className="text-xs text-orthodox-burgundy dark:text-orthodox-gold hover:underline font-bold"
+                    >
+                      {isExpanded ? (locale === 'ja' ? '閉じる ▲' : 'Close ▲') : (locale === 'ja' ? '全文を開く ▼' : 'Full Text ▼')}
+                    </button>
+                  </div>
+
+                  {isExpanded && (
+                    <div className="mt-2.5 pt-2.5 border-t border-slate-100 dark:border-slate-700 text-xs sm:text-sm font-serif leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-line">
+                      {reading.text[locale]}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Osaka Parish Schedule if scheduled on this day */}
+        {inspectDayInfo.parishServices.length > 0 && (
+          <div className="p-3.5 rounded-xl bg-orthodox-candle/50 dark:bg-slate-800 border-2 border-orthodox-gold space-y-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold flex items-center space-x-1">
+              <Church className="w-3.5 h-3.5" />
+              <span>{locale === 'ja' ? '大阪教会の奉事日程' : locale === 'ru' ? 'Служба в храме Осаки' : 'Osaka Parish Service'}</span>
+            </span>
+            {inspectDayInfo.parishServices.map((s) => (
+              <div key={s.id}>
+                <p className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                  {s.time} — {s.title[locale]}
+                </p>
+                {s.dutyGroup && (
+                  <p className="text-xs text-slate-600 dark:text-slate-300">
+                    当番: &lt;{s.dutyGroup}&gt;
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <div className="space-y-4 pb-24 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
+    <div className="space-y-4 pb-24 md:pb-12 max-w-7xl mx-auto px-3 sm:px-6 pt-3 sm:pt-4">
       {/* 1. Fasting Periods Overview Card (Collapsible) */}
       <div className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold/60 rounded-2xl p-4 shadow-sm">
         <div className="flex items-center justify-between">
@@ -165,7 +385,7 @@ export function CalendarView() {
         </div>
 
         {showFastingSeasons && (
-          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
             {fastingSeasons.map((season) => (
               <div
                 key={season.id}
@@ -291,410 +511,231 @@ export function CalendarView() {
 
       {/* 3. Grid Mode View */}
       {viewMode === 'grid' && (
-        <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-3 sm:p-4 shadow-sm">
-          {/* Weekday headers */}
-          <div className="grid grid-cols-7 gap-1 text-center font-bold text-xs mb-2">
-            {weekdays.map((w, idx) => (
-              <div
-                key={idx}
-                className={`py-1 ${
-                  idx === 0
-                    ? 'text-red-600 dark:text-red-400'
-                    : idx === 6
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-slate-500'
-                }`}
-              >
-                {w[locale]}
-              </div>
-            ))}
-          </div>
-
-          {/* Calendar Day Cells */}
-          <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
-            {daysArray.map((d, index) => {
-              if (!d) {
-                return <div key={`empty-${index}`} className="min-h-[56px] sm:min-h-[66px]" />;
-              }
-
-              const info = getDayInfo(d);
-              const isSelected =
-                inspectDate &&
-                inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
-                inspectDate.getUTCMonth() === d.getUTCMonth() &&
-                inspectDate.getUTCDate() === d.getUTCDate();
-
-              const isActualToday =
-                new Date().getUTCFullYear() === d.getUTCFullYear() &&
-                new Date().getUTCMonth() === d.getUTCMonth() &&
-                new Date().getUTCDate() === d.getUTCDate();
-
-              const hasFeast = info.feasts.length > 0;
-              const hasService = info.parishServices.length > 0;
-              const nameDayStatus = getNameDaysForDate(d);
-
-              return (
-                <button
-                  key={d.toISOString()}
-                  onClick={() => setInspectDate(d)}
-                  className={`min-h-[56px] sm:min-h-[66px] p-1 rounded-xl flex flex-col justify-between items-center border transition-all text-left relative ${
-                    isSelected
-                      ? 'border-2 border-orthodox-gold bg-orthodox-candle/70 dark:bg-orthodox-gold/20 shadow-md ring-2 ring-orthodox-gold/40'
-                      : nameDayStatus.isUserPatron
-                      ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-400/50'
-                      : isActualToday
-                      ? 'border-orthodox-burgundy bg-red-50/50 dark:bg-red-950/20'
-                      : 'border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+          {/* Calendar Grid (left / main column) */}
+          <div className="lg:col-span-7 xl:col-span-8 bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-3 sm:p-5 shadow-sm">
+            {/* Weekday headers */}
+            <div className="grid grid-cols-7 gap-1 text-center font-bold text-xs sm:text-sm mb-2.5">
+              {weekdays.map((w, idx) => (
+                <div
+                  key={idx}
+                  className={`py-1.5 ${
+                    idx === 0
+                      ? 'text-red-600 dark:text-red-400 font-extrabold'
+                      : idx === 6
+                      ? 'text-blue-600 dark:text-blue-400 font-extrabold'
+                      : 'text-slate-500 dark:text-slate-400'
                   }`}
                 >
-                  <div className="w-full flex items-center justify-between text-xs">
-                    <span
-                      className={`font-bold ${
-                        d.getUTCDay() === 0
-                          ? 'text-red-600 dark:text-red-400'
-                          : d.getUTCDay() === 6
-                          ? 'text-blue-600 dark:text-blue-400'
-                          : 'text-slate-700 dark:text-slate-300'
-                      }`}
-                    >
-                      {d.getUTCDate()}
-                    </span>
-                    <span className="text-[11px]" title={info.fasting.badgeText[locale]}>
-                      {info.fasting.icon}
-                    </span>
-                  </div>
+                  {w[locale]}
+                </div>
+              ))}
+            </div>
 
-                  {/* Badges for Feast, Osaka Services & Name Days */}
-                  <div className="w-full flex flex-wrap gap-0.5 justify-center my-0.5">
-                    {nameDayStatus.isUserPatron && (
-                      <span
-                        className="text-[9px] px-1 py-0.2 rounded bg-amber-500 text-white font-bold flex items-center space-x-0.5 shadow-sm"
-                        title={
-                          userPatronSaint
-                            ? `${userPatronSaint.name[locale]} (${userPatronSaint.saint[locale]})`
-                            : 'Patron Saint'
-                        }
-                      >
-                        <span>👑</span>
-                        <span className="hidden sm:inline">{locale === 'ja' ? '聖名' : 'Name'}</span>
-                      </span>
-                    )}
-                    {nameDayStatus.celebratingFamily.length > 0 && (
-                      <span
-                        className="text-[9px] px-1 py-0.2 rounded bg-indigo-500 text-white font-bold flex items-center space-x-0.5 shadow-sm"
-                        title={nameDayStatus.celebratingFamily
-                          .map((f) => `${f.member.name}: ${f.saint.saint[locale]}`)
-                          .join(', ')}
-                      >
-                        <span>🎂</span>
-                        <span className="hidden sm:inline">{locale === 'ja' ? '家族' : 'Fam'}</span>
-                      </span>
-                    )}
-                    {hasFeast && (
-                      <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-gold text-orthodox-navy font-bold line-clamp-1">
-                        大祭
-                      </span>
-                    )}
-                    {hasService && (
-                      <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-burgundy text-white font-bold">
-                        奉事
-                      </span>
-                    )}
-                  </div>
+            {/* Calendar Day Cells */}
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
+              {daysArray.map((d, index) => {
+                if (!d) {
+                  return <div key={`empty-${index}`} className="min-h-[56px] sm:min-h-[68px] lg:min-h-[85px]" />;
+                }
 
-                  <span className="text-[9px] text-slate-400 dark:text-slate-500 scale-90">
-                    旧{info.julianDateString.split('月')[1]?.split('日')[0] || ''}
-                  </span>
-                </button>
-              );
-            })}
+                const info = getDayInfo(d);
+                const isSelected =
+                  inspectDate &&
+                  inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
+                  inspectDate.getUTCMonth() === d.getUTCMonth() &&
+                  inspectDate.getUTCDate() === d.getUTCDate();
+
+                const isActualToday =
+                  new Date().getUTCFullYear() === d.getUTCFullYear() &&
+                  new Date().getUTCMonth() === d.getUTCMonth() &&
+                  new Date().getUTCDate() === d.getUTCDate();
+
+                const hasFeast = info.feasts.length > 0;
+                const hasService = info.parishServices.length > 0;
+                const nameDayStatus = getNameDaysForDate(d);
+
+                return (
+                  <button
+                    key={d.toISOString()}
+                    onClick={() => setInspectDate(d)}
+                    className={`min-h-[56px] sm:min-h-[68px] lg:min-h-[85px] p-1 sm:p-1.5 rounded-xl flex flex-col justify-between items-center border transition-all text-left relative ${
+                      isSelected
+                        ? 'border-2 border-orthodox-gold bg-orthodox-candle/70 dark:bg-orthodox-gold/20 shadow-md ring-2 ring-orthodox-gold/40'
+                        : nameDayStatus.isUserPatron
+                        ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-400/50'
+                        : isActualToday
+                        ? 'border-orthodox-burgundy bg-red-50/50 dark:bg-red-950/20'
+                        : 'border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <div className="w-full flex items-center justify-between text-xs sm:text-sm">
+                      <span
+                        className={`font-bold ${
+                          d.getUTCDay() === 0
+                            ? 'text-red-600 dark:text-red-400'
+                            : d.getUTCDay() === 6
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        {d.getUTCDate()}
+                      </span>
+                      <span className="text-[11px] sm:text-xs" title={info.fasting.badgeText[locale]}>
+                        {info.fasting.icon}
+                      </span>
+                    </div>
+
+                    {/* Badges for Feast, Osaka Services & Name Days */}
+                    <div className="w-full flex flex-wrap gap-0.5 justify-center my-0.5">
+                      {nameDayStatus.isUserPatron && (
+                        <span
+                          className="text-[9px] px-1 py-0.2 rounded bg-amber-500 text-white font-bold flex items-center space-x-0.5 shadow-sm"
+                          title={
+                            userPatronSaint
+                              ? `${userPatronSaint.name[locale]} (${userPatronSaint.saint[locale]})`
+                              : 'Patron Saint'
+                          }
+                        >
+                          <span>👑</span>
+                          <span className="hidden sm:inline">{locale === 'ja' ? '聖名' : 'Name'}</span>
+                        </span>
+                      )}
+                      {nameDayStatus.celebratingFamily.length > 0 && (
+                        <span
+                          className="text-[9px] px-1 py-0.2 rounded bg-indigo-500 text-white font-bold flex items-center space-x-0.5 shadow-sm"
+                          title={nameDayStatus.celebratingFamily
+                            .map((f) => `${f.member.name}: ${f.saint.saint[locale]}`)
+                            .join(', ')}
+                        >
+                          <span>🎂</span>
+                          <span className="hidden sm:inline">{locale === 'ja' ? '家族' : 'Fam'}</span>
+                        </span>
+                      )}
+                      {hasFeast && (
+                        <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-gold text-orthodox-navy font-bold line-clamp-1">
+                          大祭
+                        </span>
+                      )}
+                      {hasService && (
+                        <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-burgundy text-white font-bold">
+                          奉事
+                        </span>
+                      )}
+                    </div>
+
+                    <span className="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 scale-90">
+                      旧{info.julianDateString.split('月')[1]?.split('日')[0] || ''}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Sticky Desktop Inspector (Right Column) */}
+          <div className="hidden lg:block lg:col-span-5 xl:col-span-4 lg:sticky lg:top-20 space-y-4">
+            {renderInspectCard()}
           </div>
         </div>
       )}
 
       {/* 4. List Mode View (Senior-friendly) */}
       {viewMode === 'list' && (
-        <div className="space-y-2">
-          {daysArray
-            .filter((d): d is Date => d !== null)
-            .map((d) => {
-              const info = getDayInfo(d);
-              const nameDayStatus = getNameDaysForDate(d);
-              const isSelected =
-                inspectDate &&
-                inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
-                inspectDate.getUTCMonth() === d.getUTCMonth() &&
-                inspectDate.getUTCDate() === d.getUTCDate();
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            {daysArray
+              .filter((d): d is Date => d !== null)
+              .map((d) => {
+                const info = getDayInfo(d);
+                const nameDayStatus = getNameDaysForDate(d);
+                const isSelected =
+                  inspectDate &&
+                  inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
+                  inspectDate.getUTCMonth() === d.getUTCMonth() &&
+                  inspectDate.getUTCDate() === d.getUTCDate();
 
-              return (
-                <button
-                  key={d.toISOString()}
-                  onClick={() => setInspectDate(d)}
-                  className={`w-full p-3 rounded-2xl border text-left flex items-start space-x-3 transition-all ${
-                    isSelected
-                      ? 'border-2 border-orthodox-gold bg-orthodox-candle/50 dark:bg-slate-800'
-                      : nameDayStatus.isUserPatron
-                      ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/20'
-                      : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50'
-                  }`}
-                >
-                  <div className="text-center min-w-[44px]">
-                    <span className="text-xl font-bold font-serif text-slate-900 dark:text-white block">
-                      {d.getUTCDate()}
-                    </span>
-                    <span className="text-xs text-slate-500">
-                      {weekdays[d.getUTCDay()][locale]}
-                    </span>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-base">{info.fasting.icon}</span>
-                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                        {info.fasting.badgeText[locale]}
+                return (
+                  <button
+                    key={d.toISOString()}
+                    onClick={() => setInspectDate(d)}
+                    className={`w-full p-3 rounded-2xl border text-left flex items-start space-x-3 transition-all ${
+                      isSelected
+                        ? 'border-2 border-orthodox-gold bg-orthodox-candle/50 dark:bg-slate-800'
+                        : nameDayStatus.isUserPatron
+                        ? 'border-amber-400 bg-amber-50/40 dark:bg-amber-950/20'
+                        : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="text-center min-w-[44px]">
+                      <span className="text-xl font-bold font-serif text-slate-900 dark:text-white block">
+                        {d.getUTCDate()}
                       </span>
-                      <span className="text-[11px] text-slate-400">
-                        ({formatJulianDate(d, locale)})
+                      <span className="text-xs text-slate-500">
+                        {weekdays[d.getUTCDay()][locale]}
                       </span>
                     </div>
 
-                    {nameDayStatus.isUserPatron && (
-                      <div className="text-xs font-bold text-amber-600 dark:text-amber-400 mt-1 flex items-center space-x-1">
-                        <span>👑</span>
-                        <span>
-                          {locale === 'ja'
-                            ? `聖名日（あなたの守護聖人: ${userPatronSaint?.name[locale]}）`
-                            : `Your Name Day: ${userPatronSaint?.name[locale]}`}
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-base">{info.fasting.icon}</span>
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          {info.fasting.badgeText[locale]}
+                        </span>
+                        <span className="text-[11px] text-slate-400">
+                          ({formatJulianDate(d, locale)})
                         </span>
                       </div>
-                    )}
 
-                    {nameDayStatus.celebratingFamily.length > 0 && (
-                      <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mt-0.5 flex items-center space-x-1">
-                        <span>🎂</span>
-                        <span>
-                          {nameDayStatus.celebratingFamily
-                            .map((f) => `${f.member.name} (${f.saint.saint[locale]})`)
-                            .join(', ')}
-                        </span>
-                      </div>
-                    )}
+                      {nameDayStatus.isUserPatron && (
+                        <div className="text-xs font-bold text-amber-600 dark:text-amber-400 mt-1 flex items-center space-x-1">
+                          <span>👑</span>
+                          <span>
+                            {locale === 'ja'
+                              ? `聖名日（あなたの守護聖人: ${userPatronSaint?.name[locale]}）`
+                              : `Your Name Day: ${userPatronSaint?.name[locale]}`}
+                          </span>
+                        </div>
+                      )}
 
-                    {info.feasts.length > 0 && (
-                      <div className="font-bold text-sm text-orthodox-burgundy dark:text-orthodox-gold mt-1">
-                        ☦ {info.feasts[0].title[locale]}
-                      </div>
-                    )}
+                      {nameDayStatus.celebratingFamily.length > 0 && (
+                        <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mt-0.5 flex items-center space-x-1">
+                          <span>🎂</span>
+                          <span>
+                            {nameDayStatus.celebratingFamily
+                              .map((f) => `${f.member.name} (${f.saint.saint[locale]})`)
+                              .join(', ')}
+                          </span>
+                        </div>
+                      )}
 
-                    {info.parishServices.length > 0 && (
-                      <div className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mt-0.5">
-                        ⛪ 大阪教会: {info.parishServices[0].time} {info.parishServices[0].title[locale]}
-                      </div>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
+                      {info.feasts.length > 0 && (
+                        <div className="font-bold text-sm text-orthodox-burgundy dark:text-orthodox-gold mt-1">
+                          ☦ {info.feasts[0].title[locale]}
+                        </div>
+                      )}
+
+                      {info.parishServices.length > 0 && (
+                        <div className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mt-0.5">
+                          ⛪ 大阪教会: {info.parishServices[0].time} {info.parishServices[0].title[locale]}
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+          </div>
+
+          <div className="mt-4">
+            {renderInspectCard()}
+          </div>
         </div>
       )}
 
-      {/* 5. Rich Daily Details Section in Month View */}
-      {inspectDayInfo && inspectDate && (
-        <div className="bg-white dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl p-4 sm:p-6 shadow-xl relative animate-in fade-in space-y-4">
-          <div className="flex items-start justify-between border-b border-orthodox-gold/30 pb-3">
-            <div>
-              <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold">
-                <span>{formatJulianDate(inspectDate, locale)}</span>
-                {inspectDayInfo.tone > 0 && (
-                  <>
-                    <span>•</span>
-                    <span>
-                      {TONE_NAMES[inspectDayInfo.tone]?.[locale] || (locale === 'ja' ? `第${inspectDayInfo.tone}調` : locale === 'ru' ? `Глас ${inspectDayInfo.tone}` : `Tone ${inspectDayInfo.tone}`)}
-                    </span>
-                  </>
-                )}
-              </div>
-              <h3 className="text-lg sm:text-xl font-serif font-bold text-orthodox-navy dark:text-white mt-0.5">
-                {inspectDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  weekday: 'long',
-                })}
-              </h3>
-            </div>
-            <button
-              onClick={() => {
-                setSelectedDate(inspectDate);
-                setActiveTab('today');
-              }}
-              className="py-1.5 px-3 rounded-xl bg-orthodox-gold text-orthodox-navy text-xs font-bold hover:bg-orthodox-gold-dark shadow transition-all active:scale-95"
-            >
-              {locale === 'ja' ? '「今日」画面で開く →' : locale === 'ru' ? 'В «Сегодня» →' : 'Open in Today →'}
-            </button>
-          </div>
-
-          {/* Name Day Celebration Card in Inspect Drawer */}
-          {(() => {
-            const inspectNameDays = getNameDaysForDate(inspectDate);
-            if (!inspectNameDays.isUserPatron && inspectNameDays.celebratingFamily.length === 0) return null;
-            return (
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orthodox-gold/20 to-amber-500/10 dark:from-amber-950/40 dark:via-orthodox-gold/10 dark:to-amber-950/30 border-2 border-amber-400 dark:border-amber-600 shadow-sm space-y-2 animate-in fade-in">
-                <div className="flex items-center space-x-2">
-                  <span className="text-2xl">{inspectNameDays.isUserPatron ? '👑' : '🎂'}</span>
-                  <h4 className="font-serif font-bold text-sm sm:text-base text-amber-950 dark:text-amber-100">
-                    {inspectNameDays.isUserPatron
-                      ? locale === 'ja'
-                        ? '聖名日のお祝い！あなたの守護聖人の日です！'
-                        : locale === 'ru'
-                        ? 'С Днём Ангела! День вашего святого покровителя!'
-                        : 'Happy Name Day! Your Patron Saint Day!'
-                      : locale === 'ja'
-                      ? 'ご家族・代子の聖名日です！'
-                      : locale === 'ru'
-                      ? 'Именины в вашей семье!'
-                      : 'Family Name Day Celebration!'}
-                  </h4>
-                </div>
-
-                <div className="text-xs text-amber-900 dark:text-amber-200 space-y-1 pl-1">
-                  {inspectNameDays.isUserPatron && userPatronSaint && (
-                    <div className="font-bold flex items-center space-x-1.5">
-                      <span>☦</span>
-                      <span>
-                        {userPatronSaint.name[locale]} — {userPatronSaint.saint[locale]}
-                      </span>
-                    </div>
-                  )}
-                  {inspectNameDays.celebratingFamily.map((f) => (
-                    <div key={f.member.id} className="font-medium flex items-center space-x-1.5">
-                      <span>🎉</span>
-                      <span>
-                        {f.member.name}: {f.saint.saint[locale]}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <p className="text-[11px] text-amber-800 dark:text-amber-300 font-serif italic pt-1 border-t border-amber-300/40 dark:border-amber-700/40">
-                  {locale === 'ja'
-                    ? '「多くの歳月を！（ムノガヤ・レタ）」神の豊かな恵みと加護がありますように。'
-                    : locale === 'ru'
-                    ? 'Многая лета! Молитвами святых ваших да хранит вас Господь!'
-                    : 'Many Years! (Mnogaya Leta!) May God grant you health and salvation through the prayers of your patron!'}
-                </p>
-              </div>
-            );
-          })()}
-
-          {/* Fasting Details */}
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-start space-x-3">
-            <span className="text-2xl mt-0.5">{inspectDayInfo.fasting.icon}</span>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
-                  {inspectDayInfo.fasting.badgeText[locale]}
-                </span>
-                {inspectDayInfo.fasting.periodName && (
-                  <span className="text-[10px] font-bold py-0.5 px-2 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold">
-                    {inspectDayInfo.fasting.periodName[locale]}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                {inspectDayInfo.fasting.explanation[locale]}
-              </p>
-            </div>
-          </div>
-
-          {/* Saints of this Day */}
-          <div className="space-y-2">
-            <h4 className="font-serif font-bold text-sm text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-1.5">
-              <span>⛪</span>
-              <span>{locale === 'ja' ? '記憶される聖人' : locale === 'ru' ? 'Память святых' : 'Saints of the Day'}</span>
-            </h4>
-            <ul className="space-y-2 pl-1">
-              {inspectDayInfo.saints.map((saint, idx) => (
-                <li key={idx} className="text-xs sm:text-sm">
-                  <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold flex-shrink-0"></span>
-                    <span>{saint.name[locale]}</span>
-                  </div>
-                  {saint.bio && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400 pl-3 leading-relaxed mt-0.5">
-                      {saint.bio[locale]}
-                    </p>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Scripture Readings with Full Text Expander */}
-          <div className="space-y-2">
-            <h4 className="font-serif font-bold text-sm text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-orthodox-gold" />
-              <span>{locale === 'ja' ? '聖書朗読（日課）' : locale === 'ru' ? 'Чтения дня' : 'Daily Readings'}</span>
-            </h4>
-
-            <div className="space-y-2">
-              {inspectDayInfo.readings.map((reading, idx) => {
-                const isExpanded = expandedReading === (reading.source === 'Epistle' ? 'epistle' : 'gospel');
-                return (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-[10px] font-bold uppercase text-orthodox-gold-dark dark:text-orthodox-gold">
-                          {reading.source}
-                        </span>
-                        <h5 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100">
-                          {reading.book[locale]} {reading.reference}
-                        </h5>
-                      </div>
-                      <button
-                        onClick={() =>
-                          setExpandedReading(isExpanded ? null : reading.source === 'Epistle' ? 'epistle' : 'gospel')
-                        }
-                        className="text-xs text-orthodox-burgundy dark:text-orthodox-gold hover:underline font-bold"
-                      >
-                        {isExpanded ? (locale === 'ja' ? '閉じる ▲' : 'Close ▲') : (locale === 'ja' ? '全文を開く ▼' : 'Full Text ▼')}
-                      </button>
-                    </div>
-
-                    {isExpanded && (
-                      <div className="mt-2.5 pt-2.5 border-t border-slate-100 dark:border-slate-700 text-xs sm:text-sm font-serif leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                        {reading.text[locale]}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Osaka Parish Schedule if scheduled on this day */}
-          {inspectDayInfo.parishServices.length > 0 && (
-            <div className="p-3.5 rounded-xl bg-orthodox-candle/50 dark:bg-slate-800 border-2 border-orthodox-gold space-y-1.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold flex items-center space-x-1">
-                <Church className="w-3.5 h-3.5" />
-                <span>{locale === 'ja' ? '大阪教会の奉事日程' : locale === 'ru' ? 'Служба в храме Осаки' : 'Osaka Parish Service'}</span>
-              </span>
-              {inspectDayInfo.parishServices.map((s) => (
-                <div key={s.id}>
-                  <p className="font-bold text-sm text-slate-900 dark:text-white">
-                    {s.time} — {s.title[locale]}
-                  </p>
-                  {s.dutyGroup && (
-                    <p className="text-xs text-slate-600 dark:text-slate-300">
-                      当番: &lt;{s.dutyGroup}&gt;
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+      {/* Mobile Drawer (visible on < lg when in grid mode) */}
+      {viewMode === 'grid' && (
+        <div className="block lg:hidden mt-4">
+          {renderInspectCard()}
         </div>
       )}
     </div>
