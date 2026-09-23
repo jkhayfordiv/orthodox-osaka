@@ -157,7 +157,15 @@ export function SettingsModal() {
                 <span className="text-xs text-slate-400 block mb-1">
                   {locale === 'ja' ? 'プレビュー表示:' : locale === 'ru' ? 'Предпросмотр:' : 'Preview:'}
                 </span>
-                <p className="font-serif">
+                <p className={`font-serif leading-relaxed text-slate-800 dark:text-slate-200 transition-all ${
+                  fontSize === 'sm'
+                    ? 'text-xs'
+                    : fontSize === 'lg'
+                    ? 'text-lg font-medium'
+                    : fontSize === 'xl'
+                    ? 'text-xl font-semibold'
+                    : 'text-base'
+                }`}>
                   {locale === 'ja'
                     ? '主イイスス・ハリストス、神の子よ、我を憐れみ給え。'
                     : locale === 'ru'

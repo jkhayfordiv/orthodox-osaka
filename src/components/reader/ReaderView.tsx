@@ -157,8 +157,8 @@ export function ReaderView() {
           ))}
         </div>
 
-        {/* Parallel Language Mode (for Liturgy) */}
-        {mainCategory === 'liturgy' && (
+        {/* Parallel Language Mode (for Liturgy, Prayers, and Patronal) */}
+        {(mainCategory === 'liturgy' || mainCategory === 'prayers' || mainCategory === 'patronal') && (
           <div className="flex items-center space-x-1.5">
             <SplitSquareVertical className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orthodox-gold" />
             <select
@@ -319,17 +319,41 @@ export function ReaderView() {
               {prayerSubCategory === 'morning' && (locale === 'ja' ? '朝の祈り（起床時の祈祷）' : locale === 'ru' ? 'Утренние молитвы' : 'Morning Prayers')}
               {prayerSubCategory === 'evening' && (locale === 'ja' ? '就寝前の祈り（晩の祈祷）' : locale === 'ru' ? 'Молитвы на сон грядущим' : 'Prayers before Sleep')}
               {prayerSubCategory === 'communion' && (locale === 'ja' ? '領聖祝文（聖体拝領準備及び感謝）' : locale === 'ru' ? 'Молитвы ко Святому Причащению' : 'Holy Communion Prayers')}
-              {prayerSubCategory === 'meals' && (locale === 'ja' ? '日常の祈り（食前・食後・旅立ち）' : locale === 'ru' ? 'Трапезные молитвы и в дорогу' : 'Prayers at Meals & Travel')}
+              {prayerSubCategory === 'meals' && (locale === 'ja' ? '日常の祈り（食前・食後・旅・生神女）' : locale === 'ru' ? 'Трапезные молитвы, в дорогу и Богородице' : 'Prayers at Meals, Travel & Marian')}
             </h3>
-            <p className="text-xs sm:text-sm text-slate-500">
-              {prayerSubCategory === 'morning' && (locale === 'ja' ? '一日を神への感謝と祈りで始める伝統の祈祷' : 'Traditional prayer rule upon rising')}
-              {prayerSubCategory === 'evening' && (locale === 'ja' ? '一日の過ちの赦しを乞い、安らかな眠りを祈る' : 'Evening prayer rule before going to sleep')}
-              {prayerSubCategory === 'communion' && (locale === 'ja' ? '主の聖体と尊き聖血を拝領するための告白と感謝の祈祷' : 'Pre-communion confession and post-communion thanksgiving')}
-              {prayerSubCategory === 'meals' && (locale === 'ja' ? '日々の食事と旅路を守る祈祷' : 'Prayers for food, drink, and safe journey')}
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              {prayerSubCategory === 'morning' && (
+                locale === 'ja'
+                  ? '一日を神への感謝と祈りで始める伝統の正教会祈祷規則（信経・詩篇50篇を含む全8祈祷）'
+                  : locale === 'ru'
+                  ? 'Последование утренних молитв (включая Символ веры и 50-й псалом)'
+                  : 'Traditional morning prayer rule upon rising (including the Creed and Psalm 50)'
+              )}
+              {prayerSubCategory === 'evening' && (
+                locale === 'ja'
+                  ? '一日の過ちの赦しを乞い、安らかな眠りを祈る就寝前の祈祷規則（痛悔讃詞・十字架の祈り）'
+                  : locale === 'ru'
+                  ? 'Молитвы на сон грядущим с покаянными тропарями и молитвой Честному Кресту'
+                  : 'Evening prayer rule before sleep with penitential troparia and prayer to the Cross'
+              )}
+              {prayerSubCategory === 'communion' && (
+                locale === 'ja'
+                  ? '主の聖体と尊き聖血を拝領するための告白と感謝の祈祷（金口イオアンの祈祷）'
+                  : locale === 'ru'
+                  ? 'Молитвы ко Святому Причащению и благодарственные молитвы'
+                  : 'Pre-communion confession and post-communion thanksgiving'
+              )}
+              {prayerSubCategory === 'meals' && (
+                locale === 'ja'
+                  ? '日々の食事（食前・食後）・旅路の平安・生神女への祈祷（ボゴロージツェ）'
+                  : locale === 'ru'
+                  ? 'Молитвы перед и после вкушения пищи, в дорогу и Богородице Дево'
+                  : 'Prayers at meals, travel, and the Angelic Salutation (Bogoroditse Devo)'
+              )}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+          <div className={parallelLang !== 'none' && parallelLang !== locale ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4 items-start'}>
             {PRAYERS_DATA.filter((p) => {
               if (prayerSubCategory === 'morning') return p.category === 'morning';
               if (prayerSubCategory === 'evening') return p.category === 'evening';
@@ -339,20 +363,51 @@ export function ReaderView() {
             }).map((prayer) => (
               <div
                 key={prayer.id}
-                className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm space-y-2 h-full flex flex-col justify-between"
+                className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm space-y-3 h-full flex flex-col justify-between"
               >
                 <div>
-                  <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                    {prayer.title[locale]}
-                  </h4>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center space-x-2">
+                      {prayer.sequenceNumber && (
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold border border-orthodox-gold/40">
+                          #{prayer.sequenceNumber}
+                        </span>
+                      )}
+                      <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                        {prayer.title[locale]}
+                      </h4>
+                    </div>
+                  </div>
                   {prayer.subtitle && (
-                    <span className="text-xs text-slate-500 font-medium block mt-0.5">
+                    <span className="text-xs text-slate-500 font-medium block mt-1">
                       {prayer.subtitle[locale]}
                     </span>
                   )}
-                  <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-2 ${fontSizeClasses}`}>
-                    {prayer.text[locale]}
-                  </p>
+
+                  {parallelLang !== 'none' && parallelLang !== locale ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold mb-1 block">
+                          {locale === 'ja' ? '日本語' : locale === 'ru' ? 'Русский' : 'English'}
+                        </span>
+                        <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                          {prayer.text[locale]}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 block">
+                          {parallelLang === 'ja' ? '日本語' : parallelLang === 'ru' ? 'Русский' : 'English'}
+                        </span>
+                        <p className={`font-serif text-slate-700 dark:text-slate-300 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                          {prayer.text[parallelLang]}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-2.5 ${fontSizeClasses}`}>
+                      {prayer.text[locale]}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -394,7 +449,7 @@ export function ReaderView() {
               </h4>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={parallelLang !== 'none' && parallelLang !== locale ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}>
               {PRAYERS_DATA.filter((p) => p.category === 'patronal' && p.patronGroup === 'pokrov').map((prayer) => (
                 <div
                   key={prayer.id}
@@ -409,9 +464,31 @@ export function ReaderView() {
                         {prayer.subtitle[locale]}
                       </span>
                     )}
-                    <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1.5 ${fontSizeClasses}`}>
-                      {prayer.text[locale]}
-                    </p>
+
+                    {parallelLang !== 'none' && parallelLang !== locale ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold mb-1 block">
+                            {locale === 'ja' ? '日本語' : locale === 'ru' ? 'Русский' : 'English'}
+                          </span>
+                          <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                            {prayer.text[locale]}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 block">
+                            {parallelLang === 'ja' ? '日本語' : parallelLang === 'ru' ? 'Русский' : 'English'}
+                          </span>
+                          <p className={`font-serif text-slate-700 dark:text-slate-300 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                            {prayer.text[parallelLang]}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1.5 ${fontSizeClasses}`}>
+                        {prayer.text[locale]}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -427,7 +504,7 @@ export function ReaderView() {
               </h4>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={parallelLang !== 'none' && parallelLang !== locale ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}>
               {PRAYERS_DATA.filter((p) => p.category === 'patronal' && p.patronGroup === 'st-nicholas').map((prayer) => (
                 <div
                   key={prayer.id}
@@ -442,9 +519,31 @@ export function ReaderView() {
                         {prayer.subtitle[locale]}
                       </span>
                     )}
-                    <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1.5 ${fontSizeClasses}`}>
-                      {prayer.text[locale]}
-                    </p>
+
+                    {parallelLang !== 'none' && parallelLang !== locale ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold mb-1 block">
+                            {locale === 'ja' ? '日本語' : locale === 'ru' ? 'Русский' : 'English'}
+                          </span>
+                          <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                            {prayer.text[locale]}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 block">
+                            {parallelLang === 'ja' ? '日本語' : parallelLang === 'ru' ? 'Русский' : 'English'}
+                          </span>
+                          <p className={`font-serif text-slate-700 dark:text-slate-300 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                            {prayer.text[parallelLang]}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-1.5 ${fontSizeClasses}`}>
+                        {prayer.text[locale]}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

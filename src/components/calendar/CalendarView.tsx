@@ -16,7 +16,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { formatJulianDate } from '../../lib/paschalion';
+import { formatJulianDate, gregorianToJulian } from '../../lib/paschalion';
 import { TONE_NAMES } from '../../data/terminology';
 
 export function CalendarView() {
@@ -171,7 +171,7 @@ export function CalendarView() {
               )}
             </div>
             <h3 className="text-base sm:text-lg lg:text-xl font-serif font-bold text-orthodox-navy dark:text-white mt-0.5">
-              {inspectDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', {
+              {inspectDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'ru' ? 'ru-RU' : 'en-US', {
                 month: 'long',
                 day: 'numeric',
                 weekday: 'long',
@@ -340,7 +340,7 @@ export function CalendarView() {
                 </p>
                 {s.dutyGroup && (
                   <p className="text-xs text-slate-600 dark:text-slate-300">
-                    当番: &lt;{s.dutyGroup}&gt;
+                    {locale === 'ja' ? '当番: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty: '}&lt;{s.dutyGroup}&gt;
                   </p>
                 )}
               </div>
@@ -423,10 +423,10 @@ export function CalendarView() {
 
                 <div className="text-[11px] text-slate-600 dark:text-slate-300 space-y-0.5 mt-1.5">
                   <p className="font-semibold text-orthodox-burgundy dark:text-orthodox-gold">
-                    📅 {season.startDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', { month: 'numeric', day: 'numeric' })}
+                    📅 {season.startDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'ru' ? 'ru-RU' : 'en-US', { month: 'numeric', day: 'numeric' })}
                     {' ～ '}
-                    {season.endDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', { month: 'numeric', day: 'numeric' })}
-                    {' '}({season.durationDays}{locale === 'ja' ? '日間' : ' days'})
+                    {season.endDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : locale === 'ru' ? 'ru-RU' : 'en-US', { month: 'numeric', day: 'numeric' })}
+                    {' '}({season.durationDays}{locale === 'ja' ? '日間' : locale === 'ru' ? ' дн.' : ' days'})
                   </p>
                   <p className="text-slate-500 leading-tight text-[10px] sm:text-xs">
                     {season.allowedFoods[locale]}
@@ -451,7 +451,9 @@ export function CalendarView() {
 
           <div className="text-center">
             <h2 className="text-lg sm:text-xl font-bold font-serif text-orthodox-navy dark:text-orthodox-gold-light">
-              {currentYear}年 {monthNames[currentMonth][locale]}
+              {locale === 'ja'
+                ? `${currentYear}年 ${monthNames[currentMonth].ja}`
+                : `${monthNames[currentMonth][locale]} ${currentYear}`}
             </h2>
             <button
               onClick={handleJumpToday}
@@ -475,10 +477,10 @@ export function CalendarView() {
         <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
           {/* Fasting Legend */}
           <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-600 dark:text-slate-400">
-            <span className="flex items-center space-x-0.5"><span>🟢</span><span>斎なし</span></span>
-            <span className="flex items-center space-x-0.5"><span>🐟</span><span>魚可</span></span>
-            <span className="flex items-center space-x-0.5"><span>🟡</span><span>油可</span></span>
-            <span className="flex items-center space-x-0.5"><span>🟣</span><span>厳斎</span></span>
+            <span className="flex items-center space-x-0.5"><span>🟢</span><span>{locale === 'ja' ? '斎なし' : locale === 'ru' ? 'Без поста' : 'Fast-free'}</span></span>
+            <span className="flex items-center space-x-0.5"><span>🐟</span><span>{locale === 'ja' ? '魚可' : locale === 'ru' ? 'Рыба' : 'Fish allowed'}</span></span>
+            <span className="flex items-center space-x-0.5"><span>🟡</span><span>{locale === 'ja' ? '油可' : locale === 'ru' ? 'Елей' : 'Wine & Oil'}</span></span>
+            <span className="flex items-center space-x-0.5"><span>🟣</span><span>{locale === 'ja' ? '厳斎' : locale === 'ru' ? 'Строгий пост' : 'Strict Fast'}</span></span>
           </div>
 
           {/* Grid / List view toggle */}
@@ -598,7 +600,7 @@ export function CalendarView() {
                           }
                         >
                           <span>👑</span>
-                          <span className="hidden sm:inline">{locale === 'ja' ? '聖名' : 'Name'}</span>
+                          <span className="hidden sm:inline">{locale === 'ja' ? '聖名' : locale === 'ru' ? 'Именины' : 'Name'}</span>
                         </span>
                       )}
                       {nameDayStatus.celebratingFamily.length > 0 && (
@@ -609,23 +611,28 @@ export function CalendarView() {
                             .join(', ')}
                         >
                           <span>🎂</span>
-                          <span className="hidden sm:inline">{locale === 'ja' ? '家族' : 'Fam'}</span>
+                          <span className="hidden sm:inline">{locale === 'ja' ? '家族' : locale === 'ru' ? 'Семья' : 'Fam'}</span>
                         </span>
                       )}
                       {hasFeast && (
                         <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-gold text-orthodox-navy font-bold line-clamp-1">
-                          大祭
+                          {locale === 'ja' ? '大祭' : locale === 'ru' ? 'Празд.' : 'Feast'}
                         </span>
                       )}
                       {hasService && (
                         <span className="text-[9px] px-1 py-0.2 rounded bg-orthodox-burgundy text-white font-bold">
-                          奉事
+                          {locale === 'ja' ? '奉事' : locale === 'ru' ? 'Служба' : 'Service'}
                         </span>
                       )}
                     </div>
 
                     <span className="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 scale-90">
-                      旧{info.julianDateString.split('月')[1]?.split('日')[0] || ''}
+                      {(() => {
+                        const j = gregorianToJulian(d);
+                        if (locale === 'ja') return `旧${j.day}`;
+                        if (locale === 'ru') return `ст.${j.day}`;
+                        return `OS ${j.day}`;
+                      })()}
                     </span>
                   </button>
                 );
@@ -717,7 +724,7 @@ export function CalendarView() {
 
                       {info.parishServices.length > 0 && (
                         <div className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mt-0.5">
-                          ⛪ 大阪教会: {info.parishServices[0].time} {info.parishServices[0].title[locale]}
+                          ⛪ {locale === 'ja' ? '大阪教会: ' : locale === 'ru' ? 'Храм в Осаке: ' : 'Osaka Church: '}{info.parishServices[0].time} {info.parishServices[0].title[locale]}
                         </div>
                       )}
                     </div>

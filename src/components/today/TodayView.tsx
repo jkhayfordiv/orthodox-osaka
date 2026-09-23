@@ -32,9 +32,19 @@ export function TodayView() {
     showTooltips,
     allSaints,
     notificationPrefs,
+    fontSize,
   } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>('epistle'); // open by default for rich immersion!
   const [copiedShare, setCopiedShare] = useState(false);
+
+  const readingTextSizeClass =
+    fontSize === 'sm'
+      ? 'text-xs sm:text-sm'
+      : fontSize === 'lg'
+      ? 'text-base sm:text-lg'
+      : fontSize === 'xl'
+      ? 'text-lg sm:text-xl'
+      : 'text-sm sm:text-base';
 
   // Compute information for selectedDate
   const dayInfo = getDayInfo(selectedDate);
@@ -340,7 +350,7 @@ export function TodayView() {
                 {isExpanded && (
                   <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
                     {fullPassage && fullPassage.verses ? (
-                      <div className="space-y-1.5 font-serif text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed">
+                      <div className={`space-y-1.5 font-serif ${readingTextSizeClass} text-slate-800 dark:text-slate-200 leading-relaxed`}>
                         {fullPassage.verses.map((v) => (
                           <p key={v.verse} className="text-justify">
                             <span className="font-bold text-orthodox-gold-dark dark:text-orthodox-gold mr-1.5 text-xs select-none">
@@ -351,7 +361,7 @@ export function TodayView() {
                         ))}
                       </div>
                     ) : (
-                      <p className="font-serif leading-relaxed text-slate-700 dark:text-slate-300 text-sm sm:text-base whitespace-pre-line">
+                      <p className={`font-serif leading-relaxed text-slate-700 dark:text-slate-300 ${readingTextSizeClass} whitespace-pre-line`}>
                         {reading.text[locale]}
                       </p>
                     )}

@@ -143,8 +143,31 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setFontSizeState(size);
     try {
       localStorage.setItem('orthodox_font_size', size);
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-font-size', size);
+        const fontSizes: Record<FontSize, string> = {
+          sm: '14px',
+          base: '16px',
+          lg: '18.5px',
+          xl: '22px',
+        };
+        document.documentElement.style.fontSize = fontSizes[size] || '16px';
+      }
     } catch {}
   };
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-font-size', fontSize);
+      const fontSizes: Record<FontSize, string> = {
+        sm: '14px',
+        base: '16px',
+        lg: '18.5px',
+        xl: '22px',
+      };
+      document.documentElement.style.fontSize = fontSizes[fontSize] || '16px';
+    }
+  }, [fontSize]);
 
   const completeOnboarding = (chosenLocale: Locale) => {
     setLocale(chosenLocale);
