@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Locale, NameDayEntry, NotificationPreferences } from '../lib/types';
+import { Locale, NameDayEntry, NotificationPreferences, PrayerListItem } from '../lib/types';
 import { COMMON_NAME_DAYS } from '../data/nameDays';
 import { requestNotificationPermission as requestPerm } from '../lib/notifications';
 
@@ -36,6 +36,10 @@ interface AppContextType {
   addCustomSaint: (saint: Omit<NameDayEntry, 'id'>) => string;
   deleteCustomSaint: (id: string) => void;
   allSaints: NameDayEntry[];
+  prayerList: PrayerListItem[];
+  addPrayerItem: (item: Omit<PrayerListItem, 'id'>) => void;
+  updatePrayerItem: (id: string, item: Partial<PrayerListItem>) => void;
+  removePrayerItem: (id: string) => void;
   notificationPrefs: NotificationPreferences;
   setNotificationPrefs: (prefs: Partial<NotificationPreferences>) => void;
   requestNotificationPermission: () => Promise<boolean>;
@@ -57,6 +61,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [patronSaintId, setPatronSaintIdState] = useState<string | null>(null);
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
   const [customSaints, setCustomSaints] = useState<NameDayEntry[]>([]);
+  const [manualPrayerList, setManualPrayerList] = useState<PrayerListItem[]>([]);
   const [notificationPrefs, setNotificationPrefsState] = useState<NotificationPreferences>({
     dailyReadingsEnabled: false,
     dailyReadingsTime: '08:00',
@@ -109,6 +114,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       const custom = localStorage.getItem('orthodox_custom_saints');
       if (custom) setCustomSaints(JSON.parse(custom));
+
+      const prayers = localStorage.getItem('orthodox_manual_prayer_list');
+      if (prayers) setManualPrayerList(JSON.parse(prayers));
 
       const notif = localStorage.getItem('orthodox_notification_prefs');
       if (notif) setNotificationPrefsState(JSON.parse(notif));
@@ -227,6 +235,71 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return [...customSaints, ...COMMON_NAME_DAYS];
   }, [customSaints]);
 
+  // Combined prayer list: auto-synced family members & godchildren (living) + manual prayer items
+  const prayerList = React.useMemo(() => {
+    const familyItems: PrayerListItem[] = familyMembers.map((fam) => {
+      const saint = allSaints.find((s) => s.id === fam.saintId);
+      const saintName = saint ? saint.name[locale] : undefined;
+      return {
+        id: `fam-prayer-${fam.id}`,
+        type: 'living' as const,
+        name: fam.name,
+        baptismalName: saintName,
+        saintId: fam.saintId,
+        relation: locale === 'ja' ? '代子・家族' : locale === 'ru' ? 'Семья / Кресник' : 'Family / Godchild',
+        isFromFamily: true,
+        familyMemberId: fam.id,
+      };
+    });
+
+    return [...familyItems, ...manualPrayerList];
+  }, [familyMembers, allSaints, locale, manualPrayerList]);
+
+  const addPrayerItem = (item: Omit<PrayerListItem, 'id'>) => {
+    const newItem: PrayerListItem = {
+      ...item,
+      id: 'prayer-' + Date.now(),
+      createdAt: new Date().toISOString(),
+    };
+    const updated = [...manualPrayerList, newItem];
+    setManualPrayerList(updated);
+    try {
+      localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(updated));
+    } catch {}
+  };
+
+  const updatePrayerItem = (id: string, updates: Partial<PrayerListItem>) => {
+    if (id.startsWith('fam-prayer-')) {
+      const famId = id.replace('fam-prayer-', '');
+      if (updates.name) {
+        const updatedFam = familyMembers.map((f) => (f.id === famId ? { ...f, name: updates.name! } : f));
+        setFamilyMembers(updatedFam);
+        try {
+          localStorage.setItem('orthodox_family_members', JSON.stringify(updatedFam));
+        } catch {}
+      }
+      return;
+    }
+    const updated = manualPrayerList.map((p) => (p.id === id ? { ...p, ...updates } : p));
+    setManualPrayerList(updated);
+    try {
+      localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(updated));
+    } catch {}
+  };
+
+  const removePrayerItem = (id: string) => {
+    if (id.startsWith('fam-prayer-')) {
+      const famId = id.replace('fam-prayer-', '');
+      removeFamilyMember(famId);
+    } else {
+      const updated = manualPrayerList.filter((p) => p.id !== id);
+      setManualPrayerList(updated);
+      try {
+        localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(updated));
+      } catch {}
+    }
+  };
+
   const setNotificationPrefs = (prefs: Partial<NotificationPreferences>) => {
     const updated = { ...notificationPrefs, ...prefs };
     setNotificationPrefsState(updated);
@@ -270,6 +343,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         addCustomSaint,
         deleteCustomSaint,
         allSaints,
+        prayerList,
+        addPrayerItem,
+        updatePrayerItem,
+        removePrayerItem,
         notificationPrefs,
         setNotificationPrefs,
         requestNotificationPermission,

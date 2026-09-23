@@ -17,8 +17,10 @@ import {
   SplitSquareVertical,
   ChevronDown,
   ChevronUp,
+  Scroll,
 } from 'lucide-react';
 import { PrayingHandsIcon } from '../shared/PrayingHandsIcon';
+import { DiptychsView } from './DiptychsView';
 import { Locale } from '../../lib/types';
 
 export function ReaderView() {
@@ -28,7 +30,7 @@ export function ReaderView() {
   const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal'>('scripture');
 
   // Sub-category under Prayer Book
-  const [prayerSubCategory, setPrayerSubCategory] = useState<'morning' | 'evening' | 'communion' | 'meals'>('morning');
+  const [prayerSubCategory, setPrayerSubCategory] = useState<'morning' | 'evening' | 'communion' | 'meals' | 'diptychs'>('morning');
 
   const [parallelLang, setParallelLang] = useState<Locale | 'none'>('none');
   const [expandedLiturgyPart, setExpandedLiturgyPart] = useState<string | null>(null);
@@ -86,6 +88,11 @@ export function ReaderView() {
       icon: <Utensils className="w-3.5 h-3.5" />,
       label: { ja: '食前食後・旅', en: 'Meals/Travel', ru: 'Трапеза' },
     },
+    {
+      id: 'diptychs' as const,
+      icon: <Scroll className="w-3.5 h-3.5" />,
+      label: { ja: '記憶帳', en: 'Prayer List', ru: 'Помянник' },
+    },
   ];
 
   return (
@@ -113,21 +120,21 @@ export function ReaderView() {
 
       {/* 2. Sub-Category Tabs (Shown only when "Prayer Book / 祈祷書" is selected) */}
       {mainCategory === 'prayers' && (
-        <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5 bg-slate-100 dark:bg-slate-800/60 p-1.5 sm:p-2 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in">
+        <div className="grid grid-cols-5 gap-1 sm:gap-2 bg-slate-100 dark:bg-slate-800/60 p-1.5 sm:p-2 rounded-xl border border-slate-200 dark:border-slate-700 animate-in fade-in">
           {prayerSubCategories.map((sub) => {
             const isSubActive = prayerSubCategory === sub.id;
             return (
               <button
                 key={sub.id}
                 onClick={() => setPrayerSubCategory(sub.id)}
-                className={`py-1.5 px-1 sm:py-2 sm:px-2 rounded-lg text-xs font-bold flex flex-col sm:flex-row items-center justify-center space-y-0.5 sm:space-y-0 sm:space-x-1.5 transition-all select-none ${
+                className={`py-1.5 px-0.5 sm:py-2 sm:px-2 rounded-lg text-xs font-bold flex flex-col sm:flex-row items-center justify-center space-y-0.5 sm:space-y-0 sm:space-x-1.5 transition-all select-none ${
                   isSubActive
                     ? 'bg-orthodox-navy text-orthodox-gold-light dark:bg-orthodox-gold dark:text-orthodox-navy shadow'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {sub.icon}
-                <span className="text-[11px] sm:text-xs">{sub.label[locale]}</span>
+                <span className="text-[10px] sm:text-xs tracking-tight">{sub.label[locale]}</span>
               </button>
             );
           })}
@@ -158,7 +165,7 @@ export function ReaderView() {
         </div>
 
         {/* Parallel Language Mode (for Liturgy, Prayers, and Patronal) */}
-        {(mainCategory === 'liturgy' || mainCategory === 'prayers' || mainCategory === 'patronal') && (
+        {(mainCategory === 'liturgy' || (mainCategory === 'prayers' && prayerSubCategory !== 'diptychs') || mainCategory === 'patronal') && (
           <div className="flex items-center space-x-1.5">
             <SplitSquareVertical className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orthodox-gold" />
             <select
@@ -332,6 +339,7 @@ export function ReaderView() {
               {prayerSubCategory === 'evening' && (locale === 'ja' ? '就寝前の祈り（晩の祈祷）' : locale === 'ru' ? 'Молитвы на сон грядущим' : 'Prayers before Sleep')}
               {prayerSubCategory === 'communion' && (locale === 'ja' ? '領聖祝文（聖体拝領準備及び感謝）' : locale === 'ru' ? 'Молитвы ко Святому Причащению' : 'Holy Communion Prayers')}
               {prayerSubCategory === 'meals' && (locale === 'ja' ? '日常の祈り（食前・食後・旅・生神女）' : locale === 'ru' ? 'Трапезные молитвы, в дорогу и Богородице' : 'Prayers at Meals, Travel & Marian')}
+              {prayerSubCategory === 'diptychs' && (locale === 'ja' ? '記憶帳（生者・永眠者の代祷名簿）' : locale === 'ru' ? 'Помянник (О здравии и О упокоении)' : 'Diptychs / Commemoration List')}
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
               {prayerSubCategory === 'morning' && (
@@ -362,68 +370,88 @@ export function ReaderView() {
                   ? 'Молитвы перед и после вкушения пищи, в дорогу и Богородице Дево'
                   : 'Prayers at meals, travel, and the Angelic Salutation (Bogoroditse Devo)'
               )}
+              {prayerSubCategory === 'diptychs' && (
+                locale === 'ja'
+                  ? '生者（健康と救い）および永眠者（永遠の記憶）を祈るための私的代祷名簿。代子・家族の聖名日も自動連動。'
+                  : locale === 'ru'
+                  ? 'Записки о здравии и о упокоении с именами по крещению. Автоматически синхронизируется с именами семьи и крестников.'
+                  : 'Commemoration lists of the Living and the Departed with baptismal patron saints. Auto-syncs with family & godchildren.'
+              )}
             </p>
           </div>
 
-          <div className={parallelLang !== 'none' && parallelLang !== locale ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4 items-start'}>
-            {PRAYERS_DATA.filter((p) => {
-              if (prayerSubCategory === 'morning') return p.category === 'morning';
-              if (prayerSubCategory === 'evening') return p.category === 'evening';
-              if (prayerSubCategory === 'communion') return p.category === 'communion';
-              if (prayerSubCategory === 'meals') return p.category === 'meals' || p.category === 'occasional';
-              return false;
-            }).map((prayer) => (
-              <div
-                key={prayer.id}
-                className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm space-y-3 h-full flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center space-x-2">
-                      {prayer.sequenceNumber && (
-                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold border border-orthodox-gold/40">
-                          #{prayer.sequenceNumber}
-                        </span>
-                      )}
-                      <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-                        {prayer.title[locale]}
-                      </h4>
+          {prayerSubCategory === 'diptychs' ? (
+            <DiptychsView />
+          ) : (
+            <div className={parallelLang !== 'none' && parallelLang !== locale ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4 items-start'}>
+              {PRAYERS_DATA.filter((p) => {
+                if (prayerSubCategory === 'morning') return p.category === 'morning';
+                if (prayerSubCategory === 'evening') return p.category === 'evening';
+                if (prayerSubCategory === 'communion') return p.category === 'communion';
+                if (prayerSubCategory === 'meals') return p.category === 'meals' || p.category === 'occasional';
+                return false;
+              }).map((prayer) => (
+                <div
+                  key={prayer.id}
+                  className={`bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm space-y-3 h-full flex flex-col justify-between ${
+                    prayer.id === 'morning-living-departed' ? 'lg:col-span-2' : ''
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center space-x-2">
+                        {prayer.sequenceNumber && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold border border-orthodox-gold/40">
+                            #{prayer.sequenceNumber}
+                          </span>
+                        )}
+                        <h4 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                          {prayer.title[locale]}
+                        </h4>
+                      </div>
                     </div>
-                  </div>
-                  {prayer.subtitle && (
-                    <span className="text-xs text-slate-500 font-medium block mt-1">
-                      {prayer.subtitle[locale]}
-                    </span>
-                  )}
+                    {prayer.subtitle && (
+                      <span className="text-xs text-slate-500 font-medium block mt-1">
+                        {prayer.subtitle[locale]}
+                      </span>
+                    )}
 
-                  {parallelLang !== 'none' && parallelLang !== locale ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
-                      <div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold mb-1 block">
-                          {locale === 'ja' ? '日本語' : locale === 'ru' ? 'Русский' : 'English'}
-                        </span>
-                        <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify ${fontSizeClasses}`}>
-                          {prayer.text[locale]}
-                        </p>
+                    {parallelLang !== 'none' && parallelLang !== locale ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold mb-1 block">
+                            {locale === 'ja' ? '日本語' : locale === 'ru' ? 'Русский' : 'English'}
+                          </span>
+                          <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                            {prayer.text[locale]}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 block">
+                            {parallelLang === 'ja' ? '日本語' : parallelLang === 'ru' ? 'Русский' : 'English'}
+                          </span>
+                          <p className={`font-serif text-slate-700 dark:text-slate-300 whitespace-pre-line text-justify ${fontSizeClasses}`}>
+                            {prayer.text[parallelLang]}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 block">
-                          {parallelLang === 'ja' ? '日本語' : parallelLang === 'ru' ? 'Русский' : 'English'}
-                        </span>
-                        <p className={`font-serif text-slate-700 dark:text-slate-300 whitespace-pre-line text-justify ${fontSizeClasses}`}>
-                          {prayer.text[parallelLang]}
-                        </p>
+                    ) : (
+                      <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-2.5 ${fontSizeClasses}`}>
+                        {prayer.text[locale]}
+                      </p>
+                    )}
+
+                    {/* If this is the commemoration prayer in Morning Rule, embed the prayer list right here! */}
+                    {prayer.id === 'morning-living-departed' && (
+                      <div className="mt-5 pt-4 border-t-2 border-orthodox-gold/40">
+                        <DiptychsView embeddedMode={true} />
                       </div>
-                    </div>
-                  ) : (
-                    <p className={`font-serif text-slate-800 dark:text-slate-200 whitespace-pre-line text-justify pt-2.5 ${fontSizeClasses}`}>
-                      {prayer.text[locale]}
-                    </p>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

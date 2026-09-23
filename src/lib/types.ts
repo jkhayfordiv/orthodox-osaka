@@ -93,6 +93,19 @@ export interface NotificationPreferences {
   nameDaysTime: string; // e.g. "08:00"
 }
 
+export interface PrayerListItem {
+  id: string;
+  type: 'living' | 'departed'; // 生者 (Living) vs 永眠者 (Departed)
+  name: string; // Birth name / secular name (e.g. "Taro", "Alexander", "Elena")
+  baptismalName?: string; // Patron saint / baptismal name (e.g. "St. Nicholas", "St. Anastasia")
+  saintId?: string; // Optional reference to NameDayEntry
+  relation?: string; // e.g. "Godchild / 代子", "Father / 父", "Mother / 母", "Friend / 友人"
+  notes?: string; // e.g. "for health / 病気平癒", "newly departed / 新永眠"
+  isFromFamily?: boolean; // true if auto-synced from Name Days family/godchildren
+  familyMemberId?: string; // ID of linked FamilyMember
+  createdAt?: string;
+}
+
 export interface DayInfo {
   civilDate: Date;
   dateString: string; // YYYY-MM-DD
@@ -106,3 +119,4 @@ export interface DayInfo {
   parishServices: ParishService[];
   daysToPascha?: number;
 }
+
