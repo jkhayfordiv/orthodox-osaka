@@ -25,6 +25,7 @@ import {
   Camera,
   Maximize2,
   HeartHandshake,
+  ChevronDown,
 } from 'lucide-react';
 
 // Safe date parser to avoid timezone drift across midnight UTC/local
@@ -58,21 +59,6 @@ function formatWeekday(dateObj: Date, locale: Locale, short = false): string {
   }
   return dateObj.toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
     weekday: short ? 'short' : 'long',
-    timeZone: 'UTC',
-  });
-}
-
-// Localized full date string (e.g. "2026年9月26日 (土)", "Saturday, September 26, 2026")
-function formatFullDate(dateObj: Date, locale: Locale): string {
-  if (locale === 'ja') {
-    const days = ['日', '月', '火', '水', '木', '金', '土'];
-    return `${dateObj.getUTCFullYear()}年${dateObj.getUTCMonth() + 1}月${dateObj.getUTCDate()}日 (${days[dateObj.getUTCDay()]})`;
-  }
-  return dateObj.toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
     timeZone: 'UTC',
   });
 }
@@ -133,6 +119,62 @@ function getServiceTypeBadge(type: ParishService['serviceType'], locale: Locale)
         label: { ja: '奉事', en: 'Service', ru: 'Служба' }[locale],
         badgeClass: 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700',
       };
+  }
+}
+
+// Seasonal icons for month sections
+function getMonthIcon(monthNum: number): string {
+  switch (monthNum) {
+    case 1:
+      return '🕊️';
+    case 2:
+      return '🌸';
+    case 3:
+      return '🌿';
+    case 4:
+      return '✝️';
+    case 5:
+      return '🌟';
+    case 8:
+      return '🍇';
+    case 9:
+      return '🍂';
+    case 10:
+      return '🍁';
+    case 11:
+      return '❄️';
+    case 12:
+      return '🎄';
+    default:
+      return '📅';
+  }
+}
+
+// Month highlights/subtitles
+function getMonthHighlight(yearMonth: string, locale: Locale): string | null {
+  switch (yearMonth) {
+    case '2026-08':
+      return locale === 'ja' ? '主の変容祭・生神女就寝祭' : locale === 'ru' ? 'Преображение и Успение Пресвятой Богородицы' : 'Transfiguration & Dormition';
+    case '2026-09':
+      return locale === 'ja' ? '十字架挙栄祭・敬老会' : locale === 'ru' ? 'Воздвижение Креста Господня' : 'Exaltation of the Cross';
+    case '2026-10':
+      return locale === 'ja' ? '堂祭 生神女庇護祭・庭園バーベキュー親睦会' : locale === 'ru' ? 'Престольный праздник Покрова и приходское барбекю' : 'Temple Feast of Holy Protection & Parish BBQ';
+    case '2026-11':
+      return locale === 'ja' ? '天軍主ミハイル祭・ロシア人墓地祈祷' : locale === 'ru' ? 'Собор Архистратига Михаила и панихида на кладбище' : 'Archangel Michael & Cemetery Prayers';
+    case '2026-12':
+      return locale === 'ja' ? '奇跡者聖ニコライ祭・主の降誕祭' : locale === 'ru' ? 'Святителя Николая и Рождество Христово' : 'St. Nicholas & Nativity of Christ';
+    case '2027-01':
+      return locale === 'ja' ? '旧暦降誕大祭・神現大祭大聖水式' : locale === 'ru' ? 'Рождество Христово и Богоявление (Великая Агиасма)' : 'Nativity (OS) & Theophany Blessing of Water';
+    case '2027-02':
+      return locale === 'ja' ? '日本の亜使徒大主教 聖ニコライ祭' : locale === 'ru' ? 'Святого равноапостольного Николая Японского' : 'St. Nicholas of Japan, Equal-to-the-Apostles';
+    case '2027-03':
+      return locale === 'ja' ? '大斎開始・乾酪主日赦罪晩課' : locale === 'ru' ? 'Начало Великого поста и Прощёное воскресенье' : 'Great Lent begins & Forgiveness Vespers';
+    case '2027-04':
+      return locale === 'ja' ? '聖受難週（聖大木曜日・聖大金曜日）' : locale === 'ru' ? 'Страстная седмица: Великий Четверток и Пяток' : 'Holy Week: Holy Thursday & Holy Friday';
+    case '2027-05':
+      return locale === 'ja' ? '主の復活大祭（ハリストス復活！パスカ祝宴）' : locale === 'ru' ? 'Светлое Христово Воскресение — Пасха Господня!' : 'Holy Pascha: Christ is Risen!';
+    default:
+      return null;
   }
 }
 
@@ -201,7 +243,8 @@ export function ParishView() {
   const [subTab, setSubTab] = useState<'schedule' | 'bulletin' | 'visit'>('schedule');
 
   // Schedule filtering states
-  const [monthFilter, setMonthFilter] = useState<string>('upcoming'); // 'upcoming', '2026-08', '2026-09', ..., 'all'
+  const [viewScope, setViewScope] = useState<'upcoming' | 'all'>('upcoming'); // Upcoming (Next 45 days) vs All Year
+  const [selectedMonth, setSelectedMonth] = useState<string>('all'); // 'all' or '2026-09', etc.
   const [typeFilter, setTypeFilter] = useState<'all' | 'liturgy' | 'vigil' | 'special'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -213,7 +256,7 @@ export function ParishView() {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   }, []);
 
-  // Compute Next Upcoming Service for the Hero Card
+  // Compute Next Upcoming Service
   const nextService = useMemo(() => {
     const upcoming = PARISH_SCHEDULE_2026.filter((s) => s.date >= todayStr);
     return upcoming.length > 0 ? upcoming[0] : PARISH_SCHEDULE_2026[0];
@@ -231,11 +274,14 @@ export function ParishView() {
   // Filtered services
   const filteredServices = useMemo(() => {
     return PARISH_SCHEDULE_2026.filter((s) => {
-      // Month filter
-      if (monthFilter === 'upcoming') {
+      // View scope filter (Upcoming vs All Year)
+      if (viewScope === 'upcoming' && selectedMonth === 'all') {
         if (s.date < todayStr) return false;
-      } else if (monthFilter !== 'all') {
-        if (!s.date.startsWith(monthFilter)) return false;
+      }
+
+      // Specific Month filter (from dropdown)
+      if (selectedMonth !== 'all') {
+        if (!s.date.startsWith(selectedMonth)) return false;
       }
 
       // Service type filter
@@ -258,7 +304,41 @@ export function ParishView() {
 
       return true;
     });
-  }, [monthFilter, typeFilter, searchQuery, todayStr, locale]);
+  }, [viewScope, selectedMonth, typeFilter, searchQuery, todayStr, locale]);
+
+  // Group filtered services chronologically by month
+  const groupedServices = useMemo(() => {
+    const groups: { monthKey: string; monthLabel: string; monthNum: number; highlight: string | null; services: ParishService[] }[] = [];
+    const map = new Map<string, ParishService[]>();
+
+    for (const s of filteredServices) {
+      const ym = s.date.slice(0, 7);
+      if (!map.has(ym)) map.set(ym, []);
+      map.get(ym)!.push(s);
+    }
+
+    const sortedKeys = Array.from(map.keys()).sort();
+    for (const key of sortedKeys) {
+      const [y, m] = key.split('-').map(Number);
+      const dateObj = new Date(Date.UTC(y, m - 1, 15));
+      const monthLabel =
+        locale === 'ja'
+          ? `${y}年${m}月`
+          : locale === 'ru'
+          ? dateObj.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric', timeZone: 'UTC' })
+          : dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+      groups.push({
+        monthKey: key,
+        monthLabel,
+        monthNum: m,
+        highlight: getMonthHighlight(key, locale),
+        services: map.get(key)!,
+      });
+    }
+
+    return groups;
+  }, [filteredServices, locale]);
 
   const subTabs = [
     {
@@ -283,7 +363,7 @@ export function ParishView() {
   };
 
   return (
-    <div className="space-y-5 pb-24 md:pb-12 max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-6 pt-3 sm:pt-4">
+    <div className="space-y-5 pb-24 md:pb-12 max-w-5xl xl:max-w-6xl mx-auto px-3 sm:px-6 pt-3 sm:pt-4">
       {/* Sub-tab Navigation */}
       <div className="no-print bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-1.5 shadow-sm flex space-x-1 max-w-xl mx-auto sm:mx-0">
         {subTabs.map((t) => (
@@ -302,7 +382,7 @@ export function ParishView() {
         ))}
       </div>
 
-      {/* 1. Services & Duty Roster Sub-tab */}
+      {/* 1. Services & Duty Roster Sub-tab (LINEAR LITURGICAL TIMELINE) */}
       {subTab === 'schedule' && (
         <div className="space-y-6">
           {/* Header Action Bar */}
@@ -333,213 +413,79 @@ export function ParishView() {
             </button>
           </div>
 
-          {/* Featured Hero Card: NEXT UPCOMING SERVICE */}
-          {nextService && (
-            <div className="no-print bg-gradient-to-br from-amber-50/90 via-white to-orange-50/50 dark:from-slate-900 dark:via-slate-900/90 dark:to-orthodox-navy-dark/40 border-2 border-orthodox-gold/60 rounded-3xl p-5 sm:p-6 shadow-md transition-all relative overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-orthodox-gold/20 pb-3">
-                <div className="flex items-center space-x-2">
-                  <span className="flex h-2.5 w-2.5 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                  </span>
-                  <span className="text-xs font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold">
-                    {locale === 'ja' ? '次回の奉事（直近）' : locale === 'ru' ? 'Ближайшая служба' : 'Next Upcoming Service'}
-                  </span>
-                </div>
+          {/* Clean, Non-Scrolling Linear Toolbar (NO horizontal scrollbar) */}
+          <div className="no-print bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm space-y-3">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              {/* Left: Scope Toggle (Upcoming vs All Year) */}
+              <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold">
+                <button
+                  onClick={() => {
+                    setViewScope('upcoming');
+                    setSelectedMonth('all');
+                  }}
+                  className={`py-1.5 px-3 rounded-lg flex items-center space-x-1.5 transition-all ${
+                    viewScope === 'upcoming' && selectedMonth === 'all'
+                      ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '近日の予定' : locale === 'ru' ? 'Ближайшие' : 'Upcoming'}</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setViewScope('all');
+                    setSelectedMonth('all');
+                  }}
+                  className={`py-1.5 px-3 rounded-lg transition-all ${
+                    viewScope === 'all' && selectedMonth === 'all'
+                      ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span>{locale === 'ja' ? '全日程（通年）' : locale === 'ru' ? 'Все службы' : 'All Year'}</span>
+                </button>
+              </div>
 
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs font-semibold py-1 px-2.5 rounded-lg border bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700">
-                    {getServiceTypeBadge(nextService.serviceType, locale).label}
-                  </span>
-                  {nextService.isTransferred && (
-                    <span className="text-xs font-bold py-1 px-2 rounded-lg bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
-                      {locale === 'ja' ? '繰上兼行' : locale === 'ru' ? 'Перенесено' : 'Transferred'}
-                    </span>
-                  )}
+              {/* Middle: Month Quick-Jump Dropdown */}
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-semibold text-slate-500 whitespace-nowrap hidden sm:inline">
+                  {locale === 'ja' ? '月を選択:' : locale === 'ru' ? 'Месяц:' : 'Month:'}
+                </span>
+                <div className="relative flex-1 sm:w-48">
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => setSelectedMonth(e.target.value)}
+                    className="w-full appearance-none py-1.5 pl-3 pr-8 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-orthodox-gold"
+                  >
+                    <option value="all">
+                      {locale === 'ja' ? 'すべての月を表示' : locale === 'ru' ? 'Все месяцы' : 'All Months'}
+                    </option>
+                    {availableMonths.map((ym) => {
+                      const [y, m] = ym.split('-');
+                      const monthObj = new Date(Date.UTC(parseInt(y, 10), parseInt(m, 10) - 1, 15));
+                      const label =
+                        locale === 'ja'
+                          ? `${y}年${parseInt(m, 10)}月`
+                          : monthObj.toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
+                              month: 'short',
+                              year: 'numeric',
+                              timeZone: 'UTC',
+                            });
+                      const count = PARISH_SCHEDULE_2026.filter((s) => s.date.startsWith(ym)).length;
+                      return (
+                        <option key={ym} value={ym}>
+                          {label} ({count})
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
 
-              {/* Main Content Area */}
-              {(() => {
-                const { dateObj } = parseServiceDate(nextService.date);
-                return (
-                  <div className="mt-4 grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-                    {/* Left: Liturgical Date & Time */}
-                    <div className="lg:col-span-4 flex items-center space-x-3 sm:space-x-4">
-                      {/* Belfry Photo Accent */}
-                      <div className="relative group cursor-pointer" onClick={() => setActivePhoto({
-                        src: '/photos/church-belfry.jpg',
-                        title: PARISH_PHOTOS[1].title[locale],
-                        desc: PARISH_PHOTOS[1].desc[locale]
-                      })}>
-                        <img
-                          src="/photos/church-belfry.jpg"
-                          alt="Osaka Orthodox Church Belfry"
-                          className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-orthodox-gold shadow-sm flex-shrink-0 group-hover:scale-105 transition-transform"
-                        />
-                        <div className="absolute inset-0 bg-black/20 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Maximize2 className="w-4 h-4 text-white drop-shadow" />
-                        </div>
-                      </div>
-
-                      {/* Date Block */}
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-orthodox-candle/70 dark:bg-slate-800 border-2 border-orthodox-gold flex flex-col items-center justify-center shadow-sm flex-shrink-0">
-                        <span className="text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          {formatMonthShort(dateObj, locale)}
-                        </span>
-                        <span className="text-2xl sm:text-3xl font-serif font-black text-orthodox-navy dark:text-orthodox-gold-light leading-none my-0.5">
-                          {dateObj.getUTCDate()}
-                        </span>
-                        <span className="text-[10px] sm:text-xs font-bold text-orthodox-burgundy dark:text-orthodox-gold">
-                          {formatWeekday(dateObj, locale, true)}
-                        </span>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center space-x-1.5 text-orthodox-navy dark:text-orthodox-gold font-bold text-sm sm:text-base">
-                          <Clock className="w-4 h-4 text-orthodox-gold-dark" />
-                          <span>{nextService.time}</span>
-                        </div>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                          {formatFullDate(dateObj, locale)}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Center: Service Title & Notes */}
-                    <div className="lg:col-span-5 space-y-1.5">
-                      <h3 className="font-serif font-bold text-lg sm:text-xl text-slate-900 dark:text-white leading-snug">
-                        {nextService.title[locale]}
-                      </h3>
-                      {nextService.notes && (
-                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-800/80 p-2.5 rounded-xl border border-orthodox-gold/20">
-                          {nextService.notes[locale]}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Right: Duty Team Assignment */}
-                    <div className="lg:col-span-3 bg-white dark:bg-slate-800/80 rounded-2xl p-3.5 border border-orthodox-gold/30 shadow-sm space-y-1.5">
-                      <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
-                        <Users className="w-4 h-4 text-orthodox-gold" />
-                        <span>{locale === 'ja' ? '担当当番組' : locale === 'ru' ? 'Дежурные' : 'Assigned Duty Team'}</span>
-                      </div>
-                      {nextService.dutyGroup ? (
-                        <div className="space-y-1">
-                          <span className="inline-block font-bold text-sm text-orthodox-navy dark:text-orthodox-gold-light">
-                            {cleanDutyGroupName(nextService.dutyGroup, locale)}
-                          </span>
-                          {nextService.dutyPeople && nextService.dutyPeople.length > 0 && (
-                            <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-                              {nextService.dutyPeople.join(', ')}
-                            </p>
-                          )}
-                        </div>
-                      ) : nextService.dutyPeople && nextService.dutyPeople.length > 0 ? (
-                        <p className="text-xs font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-                          {nextService.dutyPeople.join(', ')}
-                        </p>
-                      ) : (
-                        <p className="text-xs text-slate-400 italic">
-                          {locale === 'ja' ? '全信徒奉加' : locale === 'ru' ? 'Общее служение' : 'All Parishioners'}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-
-          {/* Interactive Filters Bar */}
-          <div className="no-print space-y-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 shadow-sm">
-            {/* Top Row: Month Selector Pills */}
-            <div className="flex items-center space-x-1.5 overflow-x-auto pb-1.5 scrollbar-thin">
-              {/* Upcoming Option */}
-              <button
-                onClick={() => setMonthFilter('upcoming')}
-                className={`flex-shrink-0 text-xs sm:text-sm font-bold py-1.5 px-3 rounded-xl transition-all flex items-center space-x-1.5 ${
-                  monthFilter === 'upcoming'
-                    ? 'bg-orthodox-navy text-orthodox-gold-light shadow-sm'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-orthodox-gold" />
-                <span>{locale === 'ja' ? '近日の奉事' : locale === 'ru' ? 'Ближайшие' : 'Upcoming'}</span>
-              </button>
-
-              {/* Month Pills */}
-              {availableMonths.map((ym) => {
-                const [y, m] = ym.split('-');
-                const monthObj = new Date(Date.UTC(parseInt(y, 10), parseInt(m, 10) - 1, 15));
-                const monthLabel =
-                  locale === 'ja'
-                    ? `${y}年${parseInt(m, 10)}月`
-                    : locale === 'ru'
-                    ? monthObj.toLocaleDateString('ru-RU', { month: 'short', year: 'numeric', timeZone: 'UTC' })
-                    : monthObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-
-                const count = PARISH_SCHEDULE_2026.filter((s) => s.date.startsWith(ym)).length;
-
-                return (
-                  <button
-                    key={ym}
-                    onClick={() => setMonthFilter(ym)}
-                    className={`flex-shrink-0 text-xs sm:text-sm font-semibold py-1.5 px-3 rounded-xl transition-all flex items-center space-x-1.5 ${
-                      monthFilter === ym
-                        ? 'bg-orthodox-gold text-orthodox-navy font-bold shadow-sm'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                    }`}
-                  >
-                    <span>{monthLabel}</span>
-                    <span className="text-[10px] py-0.2 px-1.5 rounded-full bg-black/10 dark:bg-white/10 font-bold">
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-
-              {/* All Year Option */}
-              <button
-                onClick={() => setMonthFilter('all')}
-                className={`flex-shrink-0 text-xs sm:text-sm font-bold py-1.5 px-3 rounded-xl transition-all ${
-                  monthFilter === 'all'
-                    ? 'bg-orthodox-navy text-orthodox-gold-light shadow-sm'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-              >
-                {locale === 'ja' ? '通年（全日程）' : locale === 'ru' ? 'Все службы' : 'All Year'}
-              </button>
-            </div>
-
-            {/* Bottom Row: Service Type Filter Chips + Search Input */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-              {/* Type Chips */}
-              <div className="flex items-center space-x-1 overflow-x-auto text-xs">
-                {(
-                  [
-                    { id: 'all', label: { ja: 'すべて', en: 'All Services', ru: 'Все' } },
-                    { id: 'liturgy', label: { ja: '聖体礼儀のみ', en: 'Divine Liturgy', ru: 'Литургия' } },
-                    { id: 'vigil', label: { ja: '徹夜祷・晩課', en: 'Vigil & Vespers', ru: 'Всенощная' } },
-                    { id: 'special', label: { ja: '特別祭・パニヒダ', en: 'Feasts & Special', ru: 'Праздники' } },
-                  ] as const
-                ).map((chip) => (
-                  <button
-                    key={chip.id}
-                    onClick={() => setTypeFilter(chip.id)}
-                    className={`py-1.5 px-3 rounded-lg font-medium whitespace-nowrap transition-all ${
-                      typeFilter === chip.id
-                        ? 'bg-orthodox-candle/90 dark:bg-slate-800 text-orthodox-navy dark:text-orthodox-gold border border-orthodox-gold/60 font-bold shadow-xs'
-                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
-                    }`}
-                  >
-                    {chip.label[locale]}
-                  </button>
-                ))}
-              </div>
-
-              {/* Search Bar */}
-              <div className="relative w-full sm:w-64 flex-shrink-0">
+              {/* Right: Search Input */}
+              <div className="relative flex-1 md:w-56">
                 <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
@@ -547,10 +493,10 @@ export function ParishView() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={
                     locale === 'ja'
-                      ? '奉事名・当番組・行事を検索...'
+                      ? '奉事名・当番・行事を検索...'
                       : locale === 'ru'
                       ? 'Поиск службы или дежурных...'
-                      : 'Search services, duties, notes...'
+                      : 'Search services, duties...'
                   }
                   className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-orthodox-gold"
                 />
@@ -564,9 +510,36 @@ export function ParishView() {
                 )}
               </div>
             </div>
+
+            {/* Type filter chips (Compact single line) */}
+            <div className="flex items-center space-x-1 pt-1.5 border-t border-slate-100 dark:border-slate-800 text-xs overflow-x-auto">
+              <span className="text-[11px] font-semibold text-slate-400 mr-1 flex-shrink-0">
+                {locale === 'ja' ? '種別:' : locale === 'ru' ? 'Тип:' : 'Type:'}
+              </span>
+              {(
+                [
+                  { id: 'all', label: { ja: 'すべて', en: 'All', ru: 'Все' } },
+                  { id: 'liturgy', label: { ja: '聖体礼儀', en: 'Liturgy', ru: 'Литургия' } },
+                  { id: 'vigil', label: { ja: '徹夜祷・晩課', en: 'Vigil', ru: 'Всенощная' } },
+                  { id: 'special', label: { ja: '特別祭・パニヒダ', en: 'Feasts & Special', ru: 'Праздники' } },
+                ] as const
+              ).map((chip) => (
+                <button
+                  key={chip.id}
+                  onClick={() => setTypeFilter(chip.id)}
+                  className={`py-1 px-2.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                    typeFilter === chip.id
+                      ? 'bg-orthodox-navy text-orthodox-gold-light font-bold shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+                  }`}
+                >
+                  {chip.label[locale]}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Results Count Summary */}
+          {/* Results Count & Reset Filter */}
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
             <span>
               {locale === 'ja'
@@ -575,10 +548,11 @@ export function ParishView() {
                 ? `Найдено богослужений: ${filteredServices.length}`
                 : `Showing ${filteredServices.length} services`}
             </span>
-            {(monthFilter !== 'upcoming' || typeFilter !== 'all' || searchQuery) && (
+            {(selectedMonth !== 'all' || typeFilter !== 'all' || searchQuery || viewScope !== 'upcoming') && (
               <button
                 onClick={() => {
-                  setMonthFilter('upcoming');
+                  setViewScope('upcoming');
+                  setSelectedMonth('all');
                   setTypeFilter('all');
                   setSearchQuery('');
                 }}
@@ -589,8 +563,8 @@ export function ParishView() {
             )}
           </div>
 
-          {/* Service Cards Grid */}
-          {filteredServices.length === 0 ? (
+          {/* LINEAR CHRONOLOGICAL TIMELINE */}
+          {groupedServices.length === 0 ? (
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-10 text-center space-y-2">
               <CalendarDays className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
               <h4 className="font-bold text-base text-slate-700 dark:text-slate-300">
@@ -598,99 +572,135 @@ export function ParishView() {
               </h4>
               <p className="text-xs text-slate-400 max-w-sm mx-auto">
                 {locale === 'ja'
-                  ? '検索条件や選択中の月フィルターを変更してお試しください。'
+                  ? '条件を変更するか「全日程（通年）」を選択してお試しください。'
                   : locale === 'ru'
-                  ? 'Попробуйте изменить параметры поиска или выбрать другой месяц.'
-                  : 'Try selecting a different month or clearing your search filter.'}
+                  ? 'Попробуйте изменить фильтры или выберите «Все службы».'
+                  : 'Try changing your search or switching to "All Year".'}
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredServices.map((s) => {
-                const { dateObj } = parseServiceDate(s.date);
-                const badge = getServiceTypeBadge(s.serviceType, locale);
-                const isNext = s.id === nextService?.id;
-
-                return (
-                  <div
-                    key={s.id}
-                    className={`bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-xs border transition-all flex flex-col justify-between ${
-                      isNext
-                        ? 'border-2 border-orthodox-gold ring-1 ring-orthodox-gold/30'
-                        : 'border-slate-200 dark:border-slate-800 hover:border-orthodox-gold/50 hover:shadow-sm'
-                    }`}
-                  >
-                    <div>
-                      {/* Top Row: Date square + Service Type + Time */}
-                      <div className="flex items-start space-x-3">
-                        {/* Liturgical Date Badge */}
-                        <div className="w-12 text-center py-1 px-1 rounded-xl bg-orthodox-candle/70 dark:bg-slate-800 border border-orthodox-gold/40 flex-shrink-0">
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block uppercase tracking-tight">
-                            {formatMonthShort(dateObj, locale)}
-                          </span>
-                          <span className="text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light block leading-tight">
-                            {dateObj.getUTCDate()}
-                          </span>
-                          <span className="text-[9px] font-bold text-orthodox-burgundy dark:text-orthodox-gold block">
-                            {formatWeekday(dateObj, locale, true)}
-                          </span>
-                        </div>
-
-                        {/* Title and metadata */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex flex-wrap items-center gap-1.5 mb-1">
-                            <span className={`text-[10px] font-bold py-0.5 px-2 rounded-md border ${badge.badgeClass}`}>
-                              {badge.label}
-                            </span>
-                            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center space-x-1">
-                              <Clock className="w-3 h-3 text-orthodox-gold-dark inline" />
-                              <span>{s.time}</span>
-                            </span>
-                            {s.isTransferred && (
-                              <span className="text-[9px] font-bold py-0.5 px-1.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900">
-                                {locale === 'ja' ? '繰上' : locale === 'ru' ? 'Перенос' : 'Transferred'}
-                              </span>
-                            )}
-                          </div>
-
-                          <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white leading-snug">
-                            {s.title[locale]}
-                          </h4>
-                        </div>
-                      </div>
-
-                      {/* Special Service Notes Callout */}
-                      {s.notes && (
-                        <div className="mt-3 text-xs text-slate-600 dark:text-slate-300 bg-amber-50/60 dark:bg-slate-800/60 p-2.5 rounded-xl border border-orthodox-gold/20">
-                          {s.notes[locale]}
-                        </div>
+            <div className="space-y-6">
+              {groupedServices.map((group) => (
+                <div key={group.monthKey} className="space-y-2.5">
+                  {/* Month Section Header */}
+                  <div className="flex items-center justify-between pb-1.5 border-b-2 border-orthodox-gold/40 px-1">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg sm:text-xl">{getMonthIcon(group.monthNum)}</span>
+                      <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
+                        {group.monthLabel}
+                      </h3>
+                      {group.highlight && (
+                        <span className="hidden sm:inline-block text-xs font-semibold py-0.5 px-2 rounded-full bg-orthodox-candle/70 dark:bg-slate-800 text-orthodox-burgundy dark:text-orthodox-gold border border-orthodox-gold/30">
+                          {group.highlight}
+                        </span>
                       )}
                     </div>
-
-                    {/* Duty Team Footer */}
-                    {(s.dutyGroup || (s.dutyPeople && s.dutyPeople.length > 0)) && (
-                      <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-xs">
-                        <div className="flex items-center space-x-1.5 text-slate-600 dark:text-slate-400">
-                          <Users className="w-3.5 h-3.5 text-orthodox-gold-dark flex-shrink-0" />
-                          <span className="text-slate-400">
-                            {locale === 'ja' ? '当番:' : locale === 'ru' ? 'Дежурные:' : 'Duty:'}
-                          </span>
-                          {s.dutyGroup && (
-                            <span className="font-bold text-orthodox-navy dark:text-orthodox-gold-light">
-                              {cleanDutyGroupName(s.dutyGroup, locale)}
-                            </span>
-                          )}
-                          {s.dutyPeople && s.dutyPeople.length > 0 && (
-                            <span className="text-slate-500 dark:text-slate-400 truncate">
-                              ({s.dutyPeople.join(', ')})
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
+                    <span className="text-xs font-semibold text-slate-400">
+                      {group.services.length} {locale === 'ja' ? '件' : locale === 'ru' ? 'служб' : 'services'}
+                    </span>
                   </div>
-                );
-              })}
+
+                  {/* Linear List of Services for this Month */}
+                  <div className="space-y-2">
+                    {group.services.map((s) => {
+                      const { dateObj } = parseServiceDate(s.date);
+                      const badge = getServiceTypeBadge(s.serviceType, locale);
+                      const isNext = s.id === nextService?.id;
+
+                      return (
+                        <div
+                          key={s.id}
+                          className={`p-3 sm:p-4 rounded-2xl border transition-all ${
+                            isNext
+                              ? 'border-2 border-orthodox-gold bg-amber-50/50 dark:bg-amber-950/20 shadow-sm ring-1 ring-orthodox-gold/30'
+                              : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-orthodox-gold/50'
+                          }`}
+                        >
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            {/* Left: Date Square + Time & Service Title */}
+                            <div className="flex items-start sm:items-center space-x-3.5 flex-1 min-w-0">
+                              {/* Date Badge */}
+                              <div className="w-12 text-center py-1 px-1 rounded-xl bg-orthodox-candle/70 dark:bg-slate-800 border border-orthodox-gold/40 flex-shrink-0">
+                                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block uppercase tracking-tight">
+                                  {formatMonthShort(dateObj, locale)}
+                                </span>
+                                <span className="text-lg font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light block leading-tight">
+                                  {dateObj.getUTCDate()}
+                                </span>
+                                <span className="text-[9px] font-bold text-orthodox-burgundy dark:text-orthodox-gold block">
+                                  {formatWeekday(dateObj, locale, true)}
+                                </span>
+                              </div>
+
+                              {/* Title, Time, Badges */}
+                              <div className="space-y-1 min-w-0 flex-1">
+                                <div className="flex flex-wrap items-center gap-1.5">
+                                  {/* Time */}
+                                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1">
+                                    <Clock className="w-3.5 h-3.5 text-orthodox-gold-dark inline" />
+                                    <span>{s.time}</span>
+                                  </span>
+
+                                  {/* Service Type Chip */}
+                                  <span className={`text-[10px] font-bold py-0.5 px-2 rounded-md border ${badge.badgeClass}`}>
+                                    {badge.label}
+                                  </span>
+
+                                  {/* Next Service Indicator */}
+                                  {isNext && (
+                                    <span className="text-[9px] font-bold py-0.5 px-2 rounded-full bg-emerald-500 text-white uppercase tracking-wider animate-pulse flex items-center space-x-1">
+                                      <span>★</span>
+                                      <span>{locale === 'ja' ? '次回の奉事' : locale === 'ru' ? 'Ближайшая' : 'Next Up'}</span>
+                                    </span>
+                                  )}
+
+                                  {/* Transferred Badge */}
+                                  {s.isTransferred && (
+                                    <span className="text-[9px] font-bold py-0.5 px-1.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900">
+                                      {locale === 'ja' ? '繰上' : locale === 'ru' ? 'Перенос' : 'Transferred'}
+                                    </span>
+                                  )}
+                                </div>
+
+                                <h4 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white leading-snug">
+                                  {s.title[locale]}
+                                </h4>
+
+                                {/* Event Notes (Inline for quick reading) */}
+                                {s.notes && (
+                                  <p className="text-xs text-slate-600 dark:text-slate-300 bg-amber-50/70 dark:bg-slate-800/80 p-1.5 rounded-lg border border-orthodox-gold/20 inline-block mt-0.5">
+                                    {s.notes[locale]}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Right: Duty Team Assignment */}
+                            {(s.dutyGroup || (s.dutyPeople && s.dutyPeople.length > 0)) && (
+                              <div className="flex items-center space-x-1.5 text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/70 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 flex-shrink-0 self-start md:self-center ml-15 md:ml-0">
+                                <Users className="w-3.5 h-3.5 text-orthodox-gold-dark flex-shrink-0" />
+                                <span className="text-slate-400">
+                                  {locale === 'ja' ? '当番:' : locale === 'ru' ? 'Дежурные:' : 'Duty:'}
+                                </span>
+                                {s.dutyGroup && (
+                                  <span className="font-bold text-orthodox-navy dark:text-orthodox-gold-light">
+                                    {cleanDutyGroupName(s.dutyGroup, locale)}
+                                  </span>
+                                )}
+                                {s.dutyPeople && s.dutyPeople.length > 0 && (
+                                  <span className="text-slate-500 dark:text-slate-400">
+                                    ({s.dutyPeople.join(', ')})
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
