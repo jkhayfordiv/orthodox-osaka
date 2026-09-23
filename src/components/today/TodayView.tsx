@@ -1,0 +1,410 @@
+'use client';
+
+import React, { useState } from 'react';
+import { useApp } from '../../context/AppContext';
+import { getDayInfo } from '../../lib/calendarEngine';
+import { COMMON_NAME_DAYS } from '../../data/nameDays';
+import { PARISH_SCHEDULE_2026 } from '../../data/parishSchedule2026';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  Share2,
+  BookOpen,
+  Info,
+  Clock,
+  Award,
+  Sparkles,
+  Check,
+} from 'lucide-react';
+import { formatJulianDate } from '../../lib/paschalion';
+
+export function TodayView() {
+  const { locale, selectedDate, setSelectedDate, patronSaintId, familyMembers, showTooltips } = useApp();
+  const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
+  const [copiedShare, setCopiedShare] = useState(false);
+
+  // Compute information for selectedDate
+  const dayInfo = getDayInfo(selectedDate);
+
+  // Navigate dates
+  const handlePrevDay = () => {
+    const prev = new Date(selectedDate);
+    prev.setDate(prev.getDate() - 1);
+    setSelectedDate(prev);
+  };
+
+  const handleNextDay = () => {
+    const next = new Date(selectedDate);
+    next.setDate(next.getDate() + 1);
+    setSelectedDate(next);
+  };
+
+  const handleResetToday = () => {
+    setSelectedDate(new Date());
+  };
+
+  const isToday = () => {
+    const today = new Date();
+    return (
+      today.getFullYear() === selectedDate.getFullYear() &&
+      today.getMonth() === selectedDate.getMonth() &&
+      today.getDate() === selectedDate.getDate()
+    );
+  };
+
+  // Find next upcoming Osaka parish service
+  const todayStr = new Date().toISOString().split('T')[0];
+  const upcomingServices = PARISH_SCHEDULE_2026.filter((s) => s.date >= todayStr).sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
+  const nextService = upcomingServices[0];
+
+  // Calculate days until next service
+  let daysUntilService = 0;
+  if (nextService) {
+    const serviceDate = new Date(nextService.date);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    daysUntilService = Math.round((serviceDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
+  // Name days check for today (MM-DD)
+  const currentMonthDay = `${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(
+    selectedDate.getDate()
+  ).padStart(2, '0')}`;
+
+  const todayNameDaySaints = COMMON_NAME_DAYS.filter((s) => s.feastDateCivil === currentMonthDay);
+  const isUserPatronSaintToday = patronSaintId && todayNameDaySaints.some((s) => s.id === patronSaintId);
+
+  // Formatting date string
+  const formatCivilDate = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString(
+      locale === 'ja' ? 'ja-JP' : locale === 'ru' ? 'ru-RU' : 'en-US',
+      options
+    );
+  };
+
+  // Share functionality
+  const handleShare = async () => {
+    const saintTitle = dayInfo.saints[0]?.name[locale] || 'Saints of the Day';
+    const textToShare = `☦ ${formatCivilDate(selectedDate)} (${formatJulianDate(selectedDate, locale)})\n${saintTitle}\n${dayInfo.fasting.badgeText[locale]}\n\n大阪ハリストス正教会 (Holy Protection Orthodox Church in Osaka)`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Osaka Orthodox Church Calendar',
+          text: textToShare,
+          url: window.location.href,
+        });
+      } catch {
+        // Fallback to clipboard
+      }
+    } else {
+      navigator.clipboard.writeText(textToShare);
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2000);
+    }
+  };
+
+  return (
+    <div className="space-y-4 pb-20 max-w-3xl mx-auto px-3 sm:px-4 pt-3">
+      {/* 1. Day Navigation Header (Senior-friendly large buttons) */}
+      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-2xl p-4 shadow-sm">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={handlePrevDay}
+            className="flex items-center space-x-1 py-2 px-3 sm:px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-candle dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold transition-all active:scale-95"
+            aria-label="Previous day"
+          >
+            <ChevronLeft className="w-5 h-5 text-orthodox-gold-dark" />
+            <span className="text-xs sm:text-sm hidden sm:inline">
+              {locale === 'ja' ? '前日' : locale === 'ru' ? 'Вчера' : 'Yesterday'}
+            </span>
+          </button>
+
+          <div className="text-center">
+            <h2 className="text-base sm:text-xl font-bold font-serif text-orthodox-navy dark:text-orthodox-gold-light">
+              {formatCivilDate(selectedDate)}
+            </h2>
+            <div className="flex items-center justify-center space-x-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <span>{formatJulianDate(selectedDate, locale)}</span>
+              {dayInfo.tone > 0 && (
+                <>
+                  <span>•</span>
+                  <span className="font-semibold text-orthodox-gold-dark dark:text-orthodox-gold">
+                    {dayInfo.tone}調 / Tone {dayInfo.tone}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <button
+            onClick={handleNextDay}
+            className="flex items-center space-x-1 py-2 px-3 sm:px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-candle dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold transition-all active:scale-95"
+            aria-label="Next day"
+          >
+            <span className="text-xs sm:text-sm hidden sm:inline">
+              {locale === 'ja' ? '翌日' : locale === 'ru' ? 'Завтра' : 'Tomorrow'}
+            </span>
+            <ChevronRight className="w-5 h-5 text-orthodox-gold-dark" />
+          </button>
+        </div>
+
+        {!isToday() && (
+          <div className="text-center mt-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <button
+              onClick={handleResetToday}
+              className="text-xs font-bold text-orthodox-burgundy dark:text-orthodox-gold hover:underline inline-flex items-center space-x-1"
+            >
+              <Calendar className="w-3.5 h-3.5" />
+              <span>{locale === 'ja' ? '今日に戻る' : locale === 'ru' ? 'Вернуться к сегодняшнему дню' : 'Back to Today'}</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* 2. Feast Day Celebratory Banner (if Major Feast) */}
+      {dayInfo.feasts.length > 0 && (
+        <div className="bg-gradient-to-r from-orthodox-burgundy via-orthodox-burgundy-light to-orthodox-burgundy text-white p-4 rounded-2xl shadow-md border-2 border-orthodox-gold flex items-center space-x-3.5">
+          <div className="w-12 h-12 rounded-full bg-orthodox-gold flex items-center justify-center text-orthodox-navy font-bold text-2xl flex-shrink-0 shadow">
+            ☦
+          </div>
+          <div className="flex-1">
+            <span className="text-[11px] font-bold tracking-wider uppercase text-orthodox-gold-light block">
+              {locale === 'ja' ? '大祝日' : locale === 'ru' ? 'Великий праздник' : 'Great Feast Day'}
+            </span>
+            <h3 className="text-base sm:text-lg font-serif font-bold text-white leading-snug">
+              {dayInfo.feasts[0].title[locale]}
+            </h3>
+          </div>
+        </div>
+      )}
+
+      {/* 3. Fasting Rule Card (Color-blind safe: Icon + Color + Text + Explanation) */}
+      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center space-x-3">
+            <span className="text-3xl" role="img" aria-label="Fasting icon">
+              {dayInfo.fasting.icon}
+            </span>
+            <div>
+              <div className="flex items-center space-x-2">
+                <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-white">
+                  {dayInfo.fasting.badgeText[locale]}
+                </h3>
+                {dayInfo.fasting.periodName && (
+                  <span className="text-xs py-0.5 px-2 rounded-full bg-orthodox-gold/20 text-orthodox-burgundy dark:text-orthodox-gold font-bold">
+                    {dayInfo.fasting.periodName[locale]}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
+                {dayInfo.fasting.explanation[locale]}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {showTooltips && (
+          <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 flex items-center space-x-1.5">
+            <Info className="w-3.5 h-3.5 text-orthodox-gold flex-shrink-0" />
+            <span>
+              {locale === 'ja'
+                ? '「斎（ものいみ）」は祈りと節制により神に向かう正教会の伝統的な精進です。'
+                : locale === 'ru'
+                ? 'Пост — это время молитвы, воздержания и духовного очищения перед Господом.'
+                : 'Fasting in the Orthodox Church is a spiritual practice of prayer and abstinence.'}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* 4. Name Day Celebration Card (if user has patron saint today) */}
+      {isUserPatronSaintToday && (
+        <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl p-4 shadow-sm flex items-center space-x-3">
+          <Award className="w-8 h-8 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+          <div>
+            <h4 className="font-bold text-sm sm:text-base text-amber-900 dark:text-amber-200">
+              {locale === 'ja'
+                ? 'おめでとうございます！本日はあなたの聖名日（名前の日）です！'
+                : locale === 'ru'
+                ? 'С Днём Ангела! Сегодня день памяти вашего святого покровителя!'
+                : 'Happy Name Day! Today is the commemoration of your patron saint!'}
+            </h4>
+            <p className="text-xs text-amber-700 dark:text-amber-300 mt-0.5">
+              {locale === 'ja'
+                ? '聖人の執り成しの祈りがあなたの上に豊かにありますように。'
+                : locale === 'ru'
+                ? 'Молитвами святого вашего да укрепит вас Господь!'
+                : 'May your patron saint always intercede for you before the Lord!'}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 5. Saints Commemorated Card */}
+      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+          <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
+            <span>⛪</span>
+            <span>{locale === 'ja' ? '今日の記憶（聖人）' : locale === 'ru' ? 'Память святых' : 'Saints of the Day'}</span>
+          </h3>
+          <button
+            onClick={handleShare}
+            className="flex items-center space-x-1 text-xs py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
+            title="Share"
+          >
+            {copiedShare ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+            <span>{copiedShare ? (locale === 'ja' ? 'コピー完了' : 'Copied!') : (locale === 'ja' ? '共有' : locale === 'ru' ? 'Поделиться' : 'Share')}</span>
+          </button>
+        </div>
+
+        <ul className="space-y-3">
+          {dayInfo.saints.map((saint, idx) => (
+            <li key={idx} className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold"></span>
+                <span className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">
+                  {saint.name[locale]}
+                </span>
+                {saint.isPatronSaint && (
+                  <span className="text-[10px] font-bold py-0.5 px-1.5 rounded bg-orthodox-gold/20 text-orthodox-gold-dark dark:text-orthodox-gold">
+                    {locale === 'ja' ? '守護聖人' : locale === 'ru' ? 'Покровитель' : 'Patron'}
+                  </span>
+                )}
+              </div>
+              {saint.bio && (
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 pl-3.5 leading-relaxed">
+                  {saint.bio[locale]}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 6. Daily Scripture Readings Card (Epistle & Gospel) */}
+      <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+          <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light flex items-center space-x-2">
+            <BookOpen className="w-4 h-4 text-orthodox-gold" />
+            <span>{locale === 'ja' ? '本日の聖書朗読' : locale === 'ru' ? 'Дневные чтения' : 'Daily Scripture Readings'}</span>
+          </h3>
+          <span className="text-xs text-slate-400 font-serif">
+            {locale === 'ja' ? '使徒経・福音経' : locale === 'ru' ? 'Апостол и Евангелие' : 'Epistle & Gospel'}
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          {dayInfo.readings.map((reading, idx) => {
+            const isExpanded = expandedReading === (reading.source === 'Epistle' ? 'epistle' : 'gospel');
+            return (
+              <div
+                key={idx}
+                className="border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 bg-slate-50/50 dark:bg-slate-800/40"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold tracking-wider uppercase text-orthodox-gold-dark dark:text-orthodox-gold block">
+                      {reading.source === 'Epistle'
+                        ? locale === 'ja' ? '聖使徒経' : locale === 'ru' ? 'Апостол' : 'The Epistle'
+                        : locale === 'ja' ? '聖福音経' : locale === 'ru' ? 'Евангелие' : 'The Gospel'}
+                    </span>
+                    <h4 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">
+                      {reading.book[locale]} {reading.reference}
+                      {reading.pericopeTan && (
+                        <span className="text-xs font-normal text-slate-500 ml-1.5">
+                          （{locale === 'ja' ? `端${reading.pericopeTan}` : locale === 'ru' ? `Зач. ${reading.pericopeTan}` : `Pericope ${reading.pericopeTan}`}）
+                        </span>
+                      )}
+                    </h4>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setExpandedReading(isExpanded ? null : reading.source === 'Epistle' ? 'epistle' : 'gospel')
+                    }
+                    className="text-xs font-bold text-orthodox-burgundy dark:text-orthodox-gold hover:underline py-1 px-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                  >
+                    {isExpanded
+                      ? locale === 'ja' ? '閉じる ▲' : locale === 'ru' ? 'Свернуть ▲' : 'Close ▲'
+                      : locale === 'ja' ? '全文を読む ▼' : locale === 'ru' ? 'Читать текст ▼' : 'Read Full Text ▼'}
+                  </button>
+                </div>
+
+                {/* Expanded Scripture Text */}
+                {isExpanded && (
+                  <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+                    <p className="font-serif leading-relaxed text-slate-700 dark:text-slate-300 text-sm sm:text-base whitespace-pre-line">
+                      {reading.text[locale]}
+                    </p>
+                    <div className="mt-2 text-right">
+                      <span className="text-[11px] text-slate-400">
+                        {locale === 'ja'
+                          ? '日本正教会訳（1902年 亜使徒ニコライ・中井木菟麻呂訳）'
+                          : locale === 'ru'
+                          ? 'Синодальный перевод'
+                          : 'King James Version'}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 7. Next Service at Osaka Church Card */}
+      {nextService && (
+        <div className="bg-orthodox-candle/40 dark:bg-slate-900 border-2 border-orthodox-gold rounded-2xl p-4 sm:p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold-light flex items-center space-x-1.5">
+              <Clock className="w-3.5 h-3.5" />
+              <span>{locale === 'ja' ? '次の奉事（大阪教会）' : locale === 'ru' ? 'Ближайшая служба в Осаке' : 'Next Service in Osaka'}</span>
+            </span>
+            <span className="text-xs font-bold py-0.5 px-2 rounded-full bg-orthodox-gold text-orthodox-navy">
+              {daysUntilService === 0
+                ? locale === 'ja' ? '本日開催' : locale === 'ru' ? 'Сегодня' : 'Today!'
+                : locale === 'ja' ? `あと${daysUntilService}日` : locale === 'ru' ? `через ${daysUntilService} дн.` : `in ${daysUntilService} days`}
+            </span>
+          </div>
+
+          <div className="space-y-1">
+            <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+              {nextService.date}（{new Date(nextService.date).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', { weekday: 'short' })}）
+              {' '}{nextService.time} — {nextService.title[locale]}
+            </h4>
+
+            {nextService.dutyGroup && (
+              <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                <span className="font-semibold text-orthodox-navy dark:text-orthodox-gold-light">
+                  {locale === 'ja' ? '当番グループ: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty Group: '}
+                </span>
+                <span className="font-medium text-orthodox-burgundy dark:text-orthodox-gold">
+                  &lt;{nextService.dutyGroup}&gt;
+                </span>
+                {nextService.dutyPeople && nextService.dutyPeople.length > 0 && (
+                  <span> ({nextService.dutyPeople.join(', ')})</span>
+                )}
+              </div>
+            )}
+
+            {nextService.notes && (
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">
+                {nextService.notes[locale]}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
