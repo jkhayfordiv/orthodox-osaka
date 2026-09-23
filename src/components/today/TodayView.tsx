@@ -483,7 +483,7 @@ export function TodayView() {
               {nextService.dutyGroup && (
                 <div className="text-xs text-slate-600 dark:text-slate-400 flex items-center flex-wrap gap-1 pt-0.5">
                   <span className="font-semibold text-orthodox-navy dark:text-orthodox-gold-light">
-                    {locale === 'ja' ? '当番: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty: '}
+                    {locale === 'ja' ? '愛餐（昼食）当番: ' : locale === 'ru' ? 'Дежурные по трапезе: ' : 'Meal Duty: '}
                   </span>
                   <span className="font-semibold text-orthodox-burgundy dark:text-orthodox-gold bg-orthodox-gold/15 dark:bg-orthodox-gold/20 px-2 py-0.5 rounded-md text-xs">
                     {nextService.dutyGroup.replace(/^<|>$/g, '')}

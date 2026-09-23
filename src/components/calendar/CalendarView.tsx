@@ -340,9 +340,15 @@ export function CalendarView() {
                 <p className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                   {s.time} — {s.title[locale]}
                 </p>
-                {s.dutyGroup && (
-                  <p className="text-xs text-slate-600 dark:text-slate-300">
-                    {locale === 'ja' ? '当番: ' : locale === 'ru' ? 'Дежурные: ' : 'Duty: '}&lt;{s.dutyGroup}&gt;
+                {(s.dutyGroup || (s.dutyPeople && s.dutyPeople.length > 0)) && (
+                  <p className="text-xs text-amber-700 dark:text-amber-300 flex items-center space-x-1 mt-0.5">
+                    <span className="font-semibold">
+                      {locale === 'ja' ? '愛餐（昼食）当番: ' : locale === 'ru' ? 'Дежурные по трапезе: ' : 'Meal Duty: '}
+                    </span>
+                    <span>
+                      {s.dutyGroup?.replace(/^<|>$/g, '')}
+                      {s.dutyPeople && s.dutyPeople.length > 0 && ` (${s.dutyPeople.join(', ')})`}
+                    </span>
                   </p>
                 )}
               </div>

@@ -257,7 +257,9 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
     "feastDateJulian": "06-04",
     "aliases": [
       "martha",
-      "марфа"
+      "марфа",
+      "マルタ",
+      "marta"
     ]
   },
   {
@@ -287,7 +289,7 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
     "name": {
       "ja": "イオアン",
       "en": "John",
-      "ru": "Иオアン"
+      "ru": "Иоанн"
     },
     "saint": {
       "ja": "主の先駆・洗礼者聖イオアン（斬首祭・厳斎）",
@@ -297,9 +299,11 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
     "feastDateCivil": "09-11",
     "feastDateJulian": "08-29",
     "aliases": [
+      "baptist",
       "beheading",
       "useknovenie",
-      "斬首祭"
+      "斬首祭",
+      "ヨハネ"
     ]
   },
   {
@@ -318,7 +322,8 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
     "feastDateJulian": "01-07",
     "aliases": [
       "synaxis",
-      "sobor"
+      "sobor",
+      "ヨハネ"
     ]
   },
   {
@@ -339,7 +344,9 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "theologian",
       "evangelist",
       "bogoslov",
-      "神学者"
+      "神学者",
+      "ヨハネ",
+      "john"
     ]
   },
   {
@@ -618,7 +625,8 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "pyotr",
       "peter",
       "петр",
-      "петер"
+      "петер",
+      "ペテロ"
     ]
   },
   {
@@ -777,18 +785,19 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "matthew",
       "matvey",
       "levi",
-      "матвей"
+      "матвей",
+      "マタイ"
     ]
   },
   {
     "id": "nd-thomas-apostle",
     "name": {
-      "ja": "トマス",
+      "ja": "フォマ",
       "en": "Thomas",
       "ru": "Фома"
     },
     "saint": {
-      "ja": "聖使徒トマス（双子）",
+      "ja": "聖使徒フォマ（双子・トマス）",
       "en": "Holy Apostle Thomas (Didymus)",
       "ru": "Святой апостол Фома"
     },
@@ -798,7 +807,9 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "thomas",
       "foma",
       "didymus",
-      "фома"
+      "фома",
+      "トマス",
+      "フォマ"
     ]
   },
   {
@@ -916,7 +927,9 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
     "aliases": [
       "bartholomew",
       "nathanael",
-      "варфоломей"
+      "варфоломей",
+      "バルトロマイ",
+      "ナタナエル"
     ]
   },
   {
@@ -1016,7 +1029,8 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
     "aliases": [
       "timothy",
       "timofey",
-      "тимофей"
+      "тимофей",
+      "テモテ"
     ]
   },
   {
@@ -2627,7 +2641,8 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "anastasiya",
       "nastya",
       "анастасия",
-      "настя"
+      "настя",
+      "アナスタシア"
     ]
   },
   {
@@ -6233,6 +6248,71 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "noah",
       "ной",
       "ノア"
+    ]
+  },
+  {
+    "id": "nd-antonina-nicea",
+    "name": {
+      "ja": "アントニナ",
+      "en": "Antonina",
+      "ru": "Антонина"
+    },
+    "saint": {
+      "ja": "ニケアの聖致命女アントニナ",
+      "en": "Holy Martyr Antonina of Nicaea",
+      "ru": "Святая мученица Антонина Никейская"
+    },
+    "feastDateCivil": "03-14",
+    "feastDateJulian": "03-01",
+    "aliases": [
+      "antonina",
+      "антонина",
+      "トニア",
+      "tonia",
+      "アントニナ"
+    ]
+  },
+  {
+    "id": "nd-antonina-croamma",
+    "name": {
+      "ja": "アントニナ",
+      "en": "Antonina",
+      "ru": "Антонина"
+    },
+    "saint": {
+      "ja": "クロアンマの聖致命女アントニナ",
+      "en": "Holy Martyr Antonina of Krodamos / Croamma",
+      "ru": "Святая мученица Антонина Кроаммская"
+    },
+    "feastDateCivil": "06-23",
+    "feastDateJulian": "06-10",
+    "aliases": [
+      "antonina",
+      "антонина",
+      "アントニナ"
+    ]
+  },
+  {
+    "id": "nd-alexandra-empress",
+    "name": {
+      "ja": "アレクサンドラ",
+      "en": "Alexandra",
+      "ru": "Александра"
+    },
+    "saint": {
+      "ja": "聖皇后致命女アレクサンドラ（大致命者ゲオルギイの致命時）",
+      "en": "Holy Empress-Martyr Alexandra of Rome",
+      "ru": "Святая мученица царица Александра Римская"
+    },
+    "feastDateCivil": "05-06",
+    "feastDateJulian": "04-23",
+    "aliases": [
+      "alexandra",
+      "александра",
+      "アレクサンドラ",
+      "アレキサンドラ",
+      "サーシャ",
+      "sasha"
     ]
   }
 ];

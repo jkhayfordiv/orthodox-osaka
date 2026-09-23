@@ -26,6 +26,7 @@ import {
   Maximize2,
   HeartHandshake,
   ChevronDown,
+  Utensils,
 } from 'lucide-react';
 
 // Safe date parser to avoid timezone drift across midnight UTC/local
@@ -63,12 +64,12 @@ function formatWeekday(dateObj: Date, locale: Locale, short = false): string {
   });
 }
 
-// Clean duty team name (removes raw angle brackets)
+// Clean meal duty team name (removes raw angle brackets and translates)
 function cleanDutyGroupName(group: string, locale: Locale): string {
   const stripped = group.replace(/^<|>$/g, '').trim();
   switch (stripped.toLowerCase()) {
     case 'rabboni':
-      return locale === 'ja' ? 'ラボニ組' : locale === 'ru' ? 'Группа «Рабвуни»' : 'Rabboni Team';
+      return locale === 'ja' ? 'ラボーニ組' : locale === 'ru' ? 'Группа «Рабвуни»' : 'Rabboni Team';
     case "daria's kitchen":
     case 'darias kitchen':
       return locale === 'ja' ? 'ダリヤの台所' : locale === 'ru' ? '«Кухня Дарии»' : "Daria's Kitchen";
@@ -76,9 +77,39 @@ function cleanDutyGroupName(group: string, locale: Locale): string {
       return locale === 'ja' ? 'チャーチフレンズ' : locale === 'ru' ? '«Друзья церкви»' : 'Church Friends';
     case 'choir':
       return locale === 'ja' ? '聖歌隊' : locale === 'ru' ? 'Клирос / Хор' : 'Choir';
+    case "women's club":
+    case 'womens club':
+      return locale === 'ja' ? '婦人会' : locale === 'ru' ? 'Сестричество / Женский клуб' : "Women's Association";
+    case 'all parishioners':
+    case 'all parishioners / 全員':
+    case 'church friends & all parishioners':
+      return locale === 'ja' ? '信徒全員' : locale === 'ru' ? 'Все прихожане' : 'All Parishioners';
     default:
       return stripped;
   }
+}
+
+// Localize parishioner duty names into canonical Katakana / Russian / English
+function formatDutyPerson(name: string, locale: Locale): string {
+  const nameMap: Record<string, { ja: string; ru: string; en: string }> = {
+    'Anastasia': { ja: 'アナスタシヤ', ru: 'Анастасия', en: 'Anastasia' },
+    'Antonina': { ja: 'アントニナ', ru: 'Антонина', en: 'Antonina' },
+    'Alexandra S.': { ja: 'アレクサンドラ S.', ru: 'Александра С.', en: 'Alexandra S.' },
+    'Alexandra': { ja: 'アレクサンドラ', ru: 'Александра', en: 'Alexandra' },
+    'Anna': { ja: 'アンナ', ru: 'Анна', en: 'Anna' },
+    'Natalia': { ja: 'ナタリヤ', ru: 'Наталия', en: 'Natalia' },
+    'Olya': { ja: 'オーリャ', ru: 'Оля', en: 'Olya' },
+    'Olga': { ja: 'オリガ', ru: 'Ольга', en: 'Olga' },
+    'Elena': { ja: 'エレナ', ru: 'Елена', en: 'Elena' },
+    'Jace': { ja: 'ジェイス', ru: 'Джейс', en: 'Jace' },
+    'Ruth': { ja: 'ルフィ', ru: 'Руфь', en: 'Ruth' },
+    'All Parishioners / 全員': { ja: '全員', ru: 'Все прихожане', en: 'All' },
+  };
+
+  if (nameMap[name]) {
+    return nameMap[name][locale];
+  }
+  return name;
 }
 
 // Visual badges for liturgical service types
@@ -344,7 +375,7 @@ export function ParishView() {
     {
       id: 'schedule' as const,
       icon: <Calendar className="w-4 h-4" />,
-      label: { ja: '奉事日程・当番', en: 'Services & Roster', ru: 'Расписание служб' },
+      label: { ja: '奉事日程・愛餐当番', en: 'Services & Meal Roster', ru: 'Расписание служб и трапеза' },
     },
     {
       id: 'bulletin' as const,
@@ -390,10 +421,10 @@ export function ParishView() {
             <div>
               <h2 className="font-serif font-bold text-xl sm:text-2xl text-orthodox-navy dark:text-orthodox-gold-light">
                 {locale === 'ja'
-                  ? '大阪ハリストス正教会 奉事日程・当番表'
+                  ? '大阪ハリストス正教会 奉事日程・愛餐当番表'
                   : locale === 'ru'
-                  ? 'Расписание богослужений и череда дежурств'
-                  : 'Parish Service Schedule & Duty Roster'}
+                  ? 'Расписание богослужений и дежурство по трапезе'
+                  : 'Parish Services & Meal Duty Roster'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                 {locale === 'ja'
@@ -493,10 +524,10 @@ export function ParishView() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={
                     locale === 'ja'
-                      ? '奉事名・当番・行事を検索...'
+                      ? '奉事名・愛餐当番・行事を検索...'
                       : locale === 'ru'
-                      ? 'Поиск службы или дежурных...'
-                      : 'Search services, duties...'
+                      ? 'Поиск службы, трапезы, событий...'
+                      : 'Search services, meal duty, events...'
                   }
                   className="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-orthodox-gold"
                 />
@@ -675,12 +706,12 @@ export function ParishView() {
                               </div>
                             </div>
 
-                            {/* Right: Duty Team Assignment */}
+                            {/* Right: Meal Duty Team Assignment */}
                             {(s.dutyGroup || (s.dutyPeople && s.dutyPeople.length > 0)) && (
-                              <div className="flex items-center space-x-1.5 text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/70 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 flex-shrink-0 self-start md:self-center ml-15 md:ml-0">
-                                <Users className="w-3.5 h-3.5 text-orthodox-gold-dark flex-shrink-0" />
-                                <span className="text-slate-400">
-                                  {locale === 'ja' ? '当番:' : locale === 'ru' ? 'Дежурные:' : 'Duty:'}
+                              <div className="flex items-center space-x-1.5 text-xs text-slate-600 dark:text-slate-400 bg-amber-50/80 dark:bg-amber-950/40 px-3 py-1.5 rounded-xl border border-amber-200/70 dark:border-amber-900/60 flex-shrink-0 self-start md:self-center ml-15 md:ml-0">
+                                <Utensils className="w-3.5 h-3.5 text-orthodox-gold-dark flex-shrink-0" />
+                                <span className="text-slate-500 dark:text-slate-400 font-medium">
+                                  {locale === 'ja' ? '愛餐（昼食）当番:' : locale === 'ru' ? 'Дежурные по трапезе:' : 'Meal Duty:'}
                                 </span>
                                 {s.dutyGroup && (
                                   <span className="font-bold text-orthodox-navy dark:text-orthodox-gold-light">
@@ -688,8 +719,8 @@ export function ParishView() {
                                   </span>
                                 )}
                                 {s.dutyPeople && s.dutyPeople.length > 0 && (
-                                  <span className="text-slate-500 dark:text-slate-400">
-                                    ({s.dutyPeople.join(', ')})
+                                  <span className="text-slate-600 dark:text-slate-300">
+                                    ({s.dutyPeople.map((p) => formatDutyPerson(p, locale)).join(', ')})
                                   </span>
                                 )}
                               </div>

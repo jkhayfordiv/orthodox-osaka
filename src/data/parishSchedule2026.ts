@@ -12,8 +12,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil (9th Sunday after Pentecost)',
       ru: 'Всенощное бдение (Неделя 9-я по Пятидесятнице)',
     },
-    dutyGroup: 'Rabboni',
-    dutyPeople: ['Anastasia'],
   },
   {
     id: 's-2026-08-02',
@@ -25,7 +23,8 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (9th Sunday after Pentecost)',
       ru: 'Божественная Литургия (Неделя 9-я по Пятидесятнице)',
     },
-    dutyPeople: ['Antonina'],
+    dutyGroup: 'Rabboni',
+    dutyPeople: ['Anastasia', 'Antonina'],
     notes: {
       ja: '聖堂掃除、執事会',
       en: 'Chapel cleaning, Board Meeting',
@@ -42,8 +41,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil (10th Sunday after Pentecost)',
       ru: 'Всенощное бдение (Неделя 10-я по Пятидесятнице)',
     },
-    dutyGroup: "Daria's Kitchen",
-    dutyPeople: ['Alexandra S.'],
   },
   {
     id: 's-2026-08-09',
@@ -55,7 +52,8 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (10th Sunday after Pentecost)',
       ru: 'Божественная Литургия (Неделя 10-я по Пятидесятнице)',
     },
-    dutyPeople: ['Anna', 'Natalia', 'Olya'],
+    dutyGroup: "Daria's Kitchen",
+    dutyPeople: ['Alexandra S.', 'Anna', 'Natalia', 'Olya'],
     notes: {
       ja: '月例パニヒダ、婦人会総会',
       en: 'Memorial Service (Panikhida), Women’s Association Meeting',
@@ -83,7 +81,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil (Transfiguration of the Lord - Transferred)',
       ru: 'Всенощное бдение (Преображение Господне - перенесено)',
     },
-    dutyGroup: 'Church Friends',
     isTransferred: true,
   },
   {
@@ -96,6 +93,7 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (Transfiguration of the Lord)',
       ru: 'Божественная Литургия (Преображение Господне)',
     },
+    dutyGroup: 'Church Friends',
     notes: {
       ja: 'ぶどう・果物の成聖式',
       en: 'Blessing of grapes and first-fruits',
@@ -112,7 +110,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil (12th Sunday after Pentecost)',
       ru: 'Всенощное бдение (Неделя 12-я по Пятидесятнице)',
     },
-    dutyGroup: 'Choir',
   },
   {
     id: 's-2026-08-23',
@@ -124,6 +121,7 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (12th Sunday after Pentecost)',
       ru: 'Божественная Литургия (Неделя 12-я по Пятидесятнице)',
     },
+    dutyGroup: 'Choir',
   },
   {
     id: 's-2026-08-29',
@@ -135,7 +133,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Hikari no Ko-kai (Children of the Light: Programming & Bread Baking)',
       ru: 'Хикари но Ко-кай (Занятие по программированию и выпечка хлеба)',
     },
-    dutyGroup: 'Rabboni',
   },
   {
     id: 's-2026-08-29-v',
@@ -158,6 +155,7 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (Dormition of our Lady)',
       ru: 'Божественная Литургия (Успение Пресвятой Богородицы)',
     },
+    dutyGroup: 'Rabboni',
     isTransferred: true,
   },
 
@@ -172,8 +170,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil (14th Sunday after Pentecost)',
       ru: 'Всенощное бдение (Неделя 14-я по Пятидесятнице)',
     },
-    dutyGroup: 'Rabboni',
-    dutyPeople: ['Anastasia'],
   },
   {
     id: 's-2026-09-06',
@@ -185,7 +181,8 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (14th Sunday after Pentecost)',
       ru: 'Божественная Литургия (Неделя 14-я по Пятидесятнице)',
     },
-    dutyPeople: ['Antonina', 'Elena'],
+    dutyGroup: 'Rabboni',
+    dutyPeople: ['Anastasia', 'Antonina', 'Elena'],
     notes: {
       ja: '聖堂掃除、執事会',
       en: 'Chapel cleaning, Board Meeting',
@@ -202,8 +199,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Parish Meeting & All-Night Vigil (15th Sunday after Pentecost)',
       ru: 'Собрание и Всенощное бдение (Неделя 15-я по Пятидесятнице)',
     },
-    dutyGroup: "Daria's Kitchen",
-    dutyPeople: ['Alexandra S.'],
   },
   {
     id: 's-2026-09-13',
@@ -215,7 +210,8 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy, Memorial Service (Panikhida)',
       ru: 'Божественная Литургия, Панихида',
     },
-    dutyPeople: ['Anna', 'Natalia'],
+    dutyGroup: "Daria's Kitchen",
+    dutyPeople: ['Alexandra S.', 'Anna', 'Natalia'],
     notes: {
       ja: '光の子会（日曜学校）',
       en: 'Sunday School (Hikari no Ko)',
@@ -232,7 +228,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil (16th Sunday after Pentecost)',
       ru: 'Всенощное бдение (Неделя 16-я по Пятидесятнице)',
     },
-    dutyGroup: 'Church Friends',
   },
   {
     id: 's-2026-09-20',
@@ -244,6 +239,7 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (Respect for the Aged Event)',
       ru: 'Божественная Литургия (День почитания старших)',
     },
+    dutyGroup: 'Church Friends',
     notes: {
       ja: '教会のお年寄りに敬意を表してお祝い会を行います。若い方の協力をお願いします。',
       en: 'Event to honor the senior members of our parish with luncheon.',
@@ -260,7 +256,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil Tone 8 (Exaltation of the Cross)',
       ru: 'Всенощное бдение Глас 8 (Воздвижение Креста Господня)',
     },
-    dutyGroup: 'Choir',
   },
   {
     id: 's-2026-09-27',
@@ -272,6 +267,7 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy (The Exaltation of the Cross - Strict Fast)',
       ru: 'Божественная Литургия (Воздвижение Креста Господня - Строгий пост)',
     },
+    dutyGroup: 'Choir',
   },
 
   // --- October 2026 (Temple Feast & BBQ!) ---
@@ -285,8 +281,6 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'All-Night Vigil Tone 8 (18th Sunday after Pentecost)',
       ru: 'Всенощное бдение Глас 8 (Неделя 18-я по Пятидесятнице)',
     },
-    dutyGroup: 'Rabboni',
-    dutyPeople: ['Anastasia'],
   },
   {
     id: 's-2026-10-04',
@@ -298,7 +292,8 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Divine Liturgy Tone 1 (18th Sunday after Pentecost)',
       ru: 'Божественная Литургия Глас 1 (Неделя 18-я по Пятидесятнице)',
     },
-    dutyPeople: ['Antonina', 'Elena'],
+    dutyGroup: 'Rabboni',
+    dutyPeople: ['Anastasia', 'Antonina', 'Elena'],
     notes: {
       ja: '聖堂掃除、執事会',
       en: 'Chapel cleaning, Board Meeting',
@@ -326,6 +321,8 @@ export const PARISH_SCHEDULE_2026: ParishService[] = [
       en: 'Temple Feast Divine Liturgy (Holy Protection & Parish Barbecue)',
       ru: 'Престольный праздник — Божественная Литургия (Покров Пресвятой Богородицы и барбекю)',
     },
+    dutyGroup: 'All Parishioners',
+    dutyPeople: ['All Parishioners / 全員'],
     notes: {
       ja: '当聖堂の名前の由来のお祝いの日です。礼儀後、庭でバーベキュー親睦会を開催します！',
       en: 'Patronal feast of our temple! Festive BBQ picnic in the garden following Liturgy.',
