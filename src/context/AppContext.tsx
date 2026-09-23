@@ -47,6 +47,9 @@ interface AppContextType {
   setShowTooltips: (show: boolean) => void;
   settingsOpen: boolean;
   setSettingsOpen: (open: boolean) => void;
+  isInstallable: boolean;
+  isInstalled: boolean;
+  installApp: () => Promise<boolean>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -71,6 +74,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [showTooltips, setShowTooltipsState] = useState<boolean>(true);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
+  const [isInstallable, setIsInstallable] = useState<boolean>(false);
+  const [isInstalled, setIsInstalled] = useState<boolean>(false);
+  const deferredPromptRef = React.useRef<any>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -126,7 +132,65 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Ignore localStorage errors (e.g. incognito)
     }
+
+    // PWA Standalone Detection & beforeinstallprompt handler
+    if (typeof window !== 'undefined') {
+      const isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as any).standalone === true ||
+        document.referrer.includes('android-app://');
+      setIsInstalled(Boolean(isStandalone));
+
+      const mediaQuery = window.matchMedia('(display-mode: standalone)');
+      const handleMediaChange = (e: MediaQueryListEvent) => {
+        setIsInstalled(e.matches);
+      };
+      mediaQuery.addEventListener('change', handleMediaChange);
+
+      const handleBeforeInstallPrompt = (e: Event) => {
+        e.preventDefault();
+        deferredPromptRef.current = e;
+        setIsInstallable(true);
+      };
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+      const handleAppInstalled = () => {
+        setIsInstalled(true);
+        setIsInstallable(false);
+        deferredPromptRef.current = null;
+      };
+      window.addEventListener('appinstalled', handleAppInstalled);
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch((err) => {
+          console.debug('ServiceWorker reg notice:', err);
+        });
+      }
+
+      return () => {
+        mediaQuery.removeEventListener('change', handleMediaChange);
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        window.removeEventListener('appinstalled', handleAppInstalled);
+      };
+    }
   }, []);
+
+  const installApp = async (): Promise<boolean> => {
+    if (!deferredPromptRef.current) return false;
+    try {
+      await deferredPromptRef.current.prompt();
+      const choice = await deferredPromptRef.current.userChoice;
+      deferredPromptRef.current = null;
+      if (choice && choice.outcome === 'accepted') {
+        setIsInstalled(true);
+        setIsInstallable(false);
+        return true;
+      }
+    } catch (err) {
+      console.debug('Install prompt error:', err);
+    }
+    return false;
+  };
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
@@ -373,6 +437,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setShowTooltips,
         settingsOpen,
         setSettingsOpen,
+        isInstallable,
+        isInstalled,
+        installApp,
       }}
     >
       <div

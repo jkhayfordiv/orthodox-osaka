@@ -35,6 +35,9 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="大阪正教会" />
       </head>
       <body className="min-h-screen flex flex-col bg-orthodox-parchment dark:bg-slate-950 transition-colors">
         <AppProvider>

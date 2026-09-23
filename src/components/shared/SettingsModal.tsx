@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp, FontSize } from '../../context/AppContext';
-import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell } from 'lucide-react';
+import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell, Smartphone, Download, CheckCircle } from 'lucide-react';
 import { Locale } from '../../lib/types';
 import { SaintSearchCombobox } from './SaintSearchCombobox';
 import { isNotificationSupported, getNotificationPermission } from '../../lib/notifications';
@@ -28,6 +28,9 @@ export function SettingsModal() {
     notificationPrefs,
     setNotificationPrefs,
     requestNotificationPermission,
+    isInstallable,
+    isInstalled,
+    installApp,
   } = useApp();
 
   const [newMemberName, setNewMemberName] = useState('');
@@ -284,6 +287,90 @@ export function SettingsModal() {
                 onChange={(e) => setShowTooltips(e.target.checked)}
                 className="w-5 h-5 accent-orthodox-gold rounded cursor-pointer"
               />
+            </section>
+
+            {/* 6. PWA App Installation (Android & iPhone) */}
+            <section className="p-3.5 bg-white dark:bg-slate-800 rounded-xl border border-orthodox-gold/40 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Smartphone className="w-4 h-4 text-orthodox-gold" />
+                  <span className="text-sm font-bold block text-slate-800 dark:text-slate-100">
+                    {locale === 'ja' ? 'ホーム画面にアプリ化' : locale === 'ru' ? 'Установить как приложение' : 'Install as App (PWA)'}
+                  </span>
+                </div>
+                {isInstalled && (
+                  <span className="flex items-center space-x-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? 'インストール済' : locale === 'ru' ? 'Установлено' : 'Installed'}</span>
+                  </span>
+                )}
+              </div>
+
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                {locale === 'ja'
+                  ? 'スマホのホーム画面にアイコンを追加すると、ブラウザの枠なしで全画面のアプリとして快適に利用できます。'
+                  : locale === 'ru'
+                  ? 'Добавьте иконку на главный экран, чтобы открывать помянник и календарь в полноэкранном режиме как обычное приложение.'
+                  : 'Add the app to your phone’s home screen for full-screen viewing and offline access.'}
+              </p>
+
+              {/* Install Button (if Android / Chrome install prompt is ready) */}
+              {isInstallable && !isInstalled && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await installApp();
+                  }}
+                  className="w-full py-2.5 px-4 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-dark text-orthodox-navy font-bold text-xs sm:text-sm shadow flex items-center justify-center space-x-2 transition-all"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>
+                    {locale === 'ja'
+                      ? 'Androidにアプリをインストール'
+                      : locale === 'ru'
+                      ? 'Установить на телефон'
+                      : 'Install App on Phone'}
+                  </span>
+                </button>
+              )}
+
+              {/* Instructions for Android & iPhone */}
+              <div className="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-750 text-xs">
+                {/* Android Steps */}
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-750/50 border border-slate-200 dark:border-slate-700 space-y-1">
+                  <div className="font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
+                    <span>🤖</span>
+                    <span>Android (Chrome / Samsung Internet)</span>
+                  </div>
+                  <ol className="list-decimal list-inside text-[11px] text-slate-600 dark:text-slate-400 space-y-0.5 leading-relaxed">
+                    <li>{locale === 'ja' ? 'ブラウザ右上のメニュー「︙」をタップ' : 'Tap browser menu [⋮] in top right'}</li>
+                    <li>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">
+                        {locale === 'ja' ? '「アプリをインストール」' : '“Install app”'}
+                      </span>
+                      {locale === 'ja' ? 'または「ホーム画面に追加」を選択' : ' or “Add to Home screen”'}
+                    </li>
+                    <li>{locale === 'ja' ? 'ホーム画面に大阪正教会のアイコンが追加されます' : 'The church app icon will appear on your home screen'}</li>
+                  </ol>
+                </div>
+
+                {/* iPhone Steps */}
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-750/50 border border-slate-200 dark:border-slate-700 space-y-1">
+                  <div className="font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
+                    <span>🍏</span>
+                    <span>iPhone / iPad (Safari)</span>
+                  </div>
+                  <ol className="list-decimal list-inside text-[11px] text-slate-600 dark:text-slate-400 space-y-0.5 leading-relaxed">
+                    <li>{locale === 'ja' ? '画面下の共有ボタン「⎋」をタップ' : 'Tap Share button [⎋] at bottom of Safari'}</li>
+                    <li>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">
+                        {locale === 'ja' ? '「ホーム画面に追加」' : '“Add to Home Screen”'}
+                      </span>
+                      {locale === 'ja' ? 'を選択' : ''}
+                    </li>
+                  </ol>
+                </div>
+              </div>
             </section>
           </div>
 

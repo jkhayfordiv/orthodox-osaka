@@ -3,11 +3,11 @@
 import React from 'react';
 import { useApp, AppTab } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
-import { Settings, Moon, Sun, Home, Calendar as CalendarIcon, Church, BookOpen } from 'lucide-react';
+import { Settings, Moon, Sun, Home, Calendar as CalendarIcon, Church, BookOpen, Download } from 'lucide-react';
 import { Locale } from '../../lib/types';
 
 export function Header() {
-  const { locale, setLocale, theme, setTheme, setSettingsOpen, activeTab, setActiveTab } = useApp();
+  const { locale, setLocale, theme, setTheme, setSettingsOpen, activeTab, setActiveTab, isInstallable, isInstalled, installApp } = useApp();
 
   const locales: { code: Locale; label: string; flag: string }[] = [
     { code: 'ja', label: '日本語', flag: '🇯🇵' },
@@ -113,6 +113,18 @@ export function Header() {
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
+
+          {/* Install App Button on supported mobile/desktop browsers */}
+          {isInstallable && !isInstalled && (
+            <button
+              onClick={installApp}
+              className="px-2.5 py-1.5 rounded-lg bg-orthodox-gold text-orthodox-navy font-bold text-xs hover:bg-orthodox-gold-dark transition-all flex items-center space-x-1 shadow-sm"
+              title={locale === 'ja' ? 'アプリをインストール' : locale === 'ru' ? 'Установить приложение' : 'Install App'}
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{locale === 'ja' ? 'アプリ化' : locale === 'ru' ? 'Скачать' : 'Install'}</span>
+            </button>
+          )}
 
           {/* Settings Button */}
           <button
