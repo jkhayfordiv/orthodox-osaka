@@ -37,6 +37,14 @@ export function SaintSearchCombobox({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Reset query and close dropdown when selectedSaintId is cleared externally
+  useEffect(() => {
+    if (!selectedSaintId) {
+      setQuery('');
+      setIsOpen(false);
+    }
+  }, [selectedSaintId]);
+
   // Filter saints with multilingual fuzzy matching
   const filteredSaints = React.useMemo(() => {
     const q = query.trim().toLowerCase();

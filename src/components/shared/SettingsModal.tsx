@@ -27,7 +27,7 @@ export function SettingsModal() {
   } = useApp();
 
   const [newMemberName, setNewMemberName] = useState('');
-  const [newMemberSaintId, setNewMemberSaintId] = useState(COMMON_NAME_DAYS[0]?.id || '');
+  const [newMemberSaintId, setNewMemberSaintId] = useState('');
 
   if (!settingsOpen) return null;
 
@@ -40,9 +40,10 @@ export function SettingsModal() {
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMemberName.trim()) {
+    if (newMemberName.trim() && newMemberSaintId) {
       addFamilyMember({ name: newMemberName.trim(), saintId: newMemberSaintId });
       setNewMemberName('');
+      setNewMemberSaintId('');
     }
   };
 
@@ -221,7 +222,13 @@ export function SettingsModal() {
               </span>
               <input
                 type="text"
-                placeholder={locale === 'ja' ? 'お名前（例: 太郎、Maria、Anna）' : locale === 'ru' ? 'Имя' : 'Name'}
+                placeholder={
+                  locale === 'ja'
+                    ? '俗名・本名（Birth name）'
+                    : locale === 'ru'
+                    ? 'Имя при рождении'
+                    : 'Birth name'
+                }
                 value={newMemberName}
                 onChange={(e) => setNewMemberName(e.target.value)}
                 className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs sm:text-sm focus:outline-none focus:border-orthodox-gold"
