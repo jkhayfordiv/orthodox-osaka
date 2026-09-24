@@ -226,33 +226,6 @@
   ],
   "items": [
     {
-      "id": "george_index",
-      "title": "ゲオルギイ「来て見てごらん」",
-      "titleEn": "ゲオルギイ「来て見てごらん」",
-      "titleRu": "ゲオルギイ「来て見てごらん」",
-      "section": "george",
-      "type": "article",
-      "url": "https://orthodox-jp.com/george/",
-      "relativePath": "index.html",
-      "category": "catechism",
-      "categoryLabel": {
-        "ja": "正教入門とＱ＆Ａ",
-        "en": "Catechism & Inquirers",
-        "ru": "Основы веры и вопросы"
-      },
-      "subTopic": "foundations",
-      "author": "司祭 ゲオルギイ 松島 雄一 (Fr. George Matsushima)",
-      "readTimeMinutes": 6,
-      "tags": [
-        "入門",
-        "聖体礼儀",
-        "祈り",
-        "大斎・復活祭"
-      ],
-      "snippet": "正教会を知りたい人のために 司祭ゲオルギイ松島雄一 大阪ハリストス正教会 最終更新日 2016 2/5 初めておいで下さった方は、まずここを E-mail 説教 配信お申し込みはここから ゲオルギイ神父の説教を毎週お届けします。 ◆正教会って何？正教入門編 子供た...",
-      "contentLength": 2583
-    },
-    {
       "id": "george_seikyoukaitoha",
       "title": "正教会とは（キリスト教の源流と東方正統信仰）",
       "titleEn": "What is the Orthodox Church? (Apostolic Origin & Faith)",
@@ -787,9 +760,9 @@
     },
     {
       "id": "george_kanashimi",
-      "title": "kanashimi",
-      "titleEn": "Orthodox Choir Score: kanashimi (PDF)",
-      "titleRu": "Православные ноты: kanashimi (PDF)",
+      "title": "悲しみと病から得る利益とその必要性について",
+      "titleEn": "On the Benefit and Necessity of Sorrows and Illness (Abbot Sava)",
+      "titleRu": "О пользе и необходимости скорбей и болезней (Схиигумен Савва)",
       "section": "george",
       "type": "pdf",
       "url": "https://orthodox-jp.com/george/kanashimi.pdf",
@@ -807,7 +780,7 @@
         "PDF",
         "奉神礼"
       ],
-      "snippet": "正教会聖歌楽譜 PDFファイル (24 KB)",
+      "snippet": "ロシア・プスコフ洞窟修道院のスヒマ典院サワによる霊的勧告。天に至る十字架の道と、試練における希望について説かれた珠玉の教話。",
       "size": 24612
     },
     {
