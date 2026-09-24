@@ -1,0 +1,12 @@
+# Raw camera photos and duplicate archive at repo root
+church photo/
+church photo
+archive/
+*.bat
+
+# Build and cloudflare artifacts
+.open-next/
+.wrangler/
+
+# Scripts
+scripts/
