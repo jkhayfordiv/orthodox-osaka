@@ -346,6 +346,38 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
         },
       },
       {
+        verse: 18,
+        text: {
+          ja: '彼等は智恵暗く、その内の無知と心の頑愚とに因りて、神の生命より隔たり、',
+          en: 'Having the understanding darkened, being alienated from the life of God through the ignorance that is in them, because of the blindness of their heart:',
+          ru: 'будучи помрачены в разуме, отчуждены от жизни Божией, по причине их невежества и ожесточения сердца их,',
+        },
+      },
+      {
+        verse: 19,
+        text: {
+          ja: '痛みを感ぜずして、自ら放蕩に任せ、貪りて総ての汚穢を行えり。',
+          en: 'Who being past feeling have given themselves over unto lasciviousness, to work all uncleanness with greediness.',
+          ru: 'они, дойдя до бесчувствия, предались распутству так, что делают всякую нечистоту с ненасытимостью.',
+        },
+      },
+      {
+        verse: 20,
+        text: {
+          ja: '然れど爾等はハリストスに就きて然る如く学ばざりき。',
+          en: 'But ye have not so learned Christ;',
+          ru: 'Но вы не так познали Христа;',
+        },
+      },
+      {
+        verse: 21,
+        text: {
+          ja: '爾等彼を聞き、また爾等の内の真理がイイススに在る如く、彼に於いて教えを受けたれば。',
+          en: 'If so be that ye have heard Him, and have been taught by Him, as the truth is in Jesus:',
+          ru: 'потому что вы слышали о Нем и в Нем научились, — так как истина во Иисусе,',
+        },
+      },
+      {
         verse: 22,
         text: {
           ja: '誘惑の欲に循いて壊るる前の行状の故き人を脱ぎ棄て、',
@@ -405,6 +437,54 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
           ja: '時に至りて一人の僕を農夫等に遣わし、葡萄園の果実を農夫等より受けんとせり。',
           en: 'And at the season he sent to the husbandmen a servant, that he might receive from the husbandmen of the fruit of the vineyard.',
           ru: 'И послал в свое время к виноградарям слугу — принять от виноградарей плодов из виноградника.',
+        },
+      },
+      {
+        verse: 3,
+        text: {
+          ja: '農夫等彼を捕えて打ち、手ぶらにて返せり。',
+          en: 'And they caught him, and beat him, and sent him away empty.',
+          ru: 'Они схватили его, прибили и отослали ни с чем.',
+        },
+      },
+      {
+        verse: 4,
+        text: {
+          ja: '又他の僕を遣わせり、彼等その頭を石にて打ち、辱めて帰せり。',
+          en: 'And again he sent unto them another servant; and at him they cast stones, and wounded him in the head, and sent him away shamefully handled.',
+          ru: 'Опять послал к ним другого слугу; и того камнями ранили в голову и отпустили с бесчестием.',
+        },
+      },
+      {
+        verse: 5,
+        text: {
+          ja: '又他の者を遣わせり、彼等之を殺せり、又更に多くの者を遣わせり、ある者を打ち、ある者を殺せり。',
+          en: 'And again he sent another; and him they killed, and many others; beating some, and killing some.',
+          ru: 'И опять иного послал: и того убили; и многих других то прибивали, то убивали.',
+        },
+      },
+      {
+        verse: 6,
+        text: {
+          ja: 'なお一人あり、彼の愛する子なり、最後に彼を彼等に遣わして言わく、「我が子を敬わんか」と。',
+          en: 'Having yet therefore one son, his wellbeloved, he sent him also last unto them, saying, They will reverence my son.',
+          ru: 'Имея же ещё одного сына, любезного ему, напоследок послал и его к ним, говоря: постыдятся сына моего.',
+        },
+      },
+      {
+        verse: 7,
+        text: {
+          ja: '然れど農夫等相語りて言わく、「是れ嗣子なり、来りて之を殺さん、然らば財産は我等のものとならん」と。',
+          en: 'But those husbandmen said among themselves, This is the heir; come, let us kill him, and the inheritance shall be ours.',
+          ru: 'Но виноградари сказали между собою: это наследник; пойдем, убьем его, и наследство будет наше.',
+        },
+      },
+      {
+        verse: 8,
+        text: {
+          ja: '彼等之を捕えて殺し、葡萄園の外に投げ出せり。',
+          en: 'And they took him, and killed him, and cast him out of the vineyard.',
+          ru: 'И, схватив его, убили и выбросили вон из виноградника.',
         },
       },
       {
@@ -470,11 +550,43 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
         },
       },
       {
+        verse: 23,
+        text: {
+          ja: 'イイスス彼に一言も答え給わず。弟子等来りて彼に願いて言わく、「彼女を去らしめ給え、我等の後に叫ぶなり。」',
+          en: 'But He answered her not a word. And His disciples came and besought Him, saying, Send her away; for she crieth after us.',
+          ru: 'Он же не отвечал ей ни слова. И ученики Его, приступив, просили Его: отпусти её, потому что кричит за нами.',
+        },
+      },
+      {
+        verse: 24,
+        text: {
+          ja: 'イイスス答えて言い給わく、「我はイスラエルの家の失いたる羊の外に、遣わさるることなし。」',
+          en: 'But He answered and said, I am not sent but unto the lost sheep of the house of Israel.',
+          ru: 'Он же сказал в ответ: Я послан только к погибшим овцам дома Израилева.',
+        },
+      },
+      {
         verse: 25,
         text: {
           ja: '女来りてイイススを拝して言わく、「主よ、我を助け給え。」',
           en: 'Then came she and worshipped Him, saying, Lord, help me.',
           ru: 'А она, подойдя, кланялась Ему и говорила: Господи! помоги мне.',
+        },
+      },
+      {
+        verse: 26,
+        text: {
+          ja: 'イイスス答えて言い給わく、「子等の食物を取りて小犬に投ぐるは善からず。」',
+          en: 'But He answered and said, It is not meet to take the children\u2019s bread, and to cast it to dogs.',
+          ru: 'Он же сказал в ответ: нехорошо взять хлеб у детей и бросить псам.',
+        },
+      },
+      {
+        verse: 27,
+        text: {
+          ja: '彼言わく、「然り、主よ、然れど小犬も主人の机より落つる屑を食らうなり。」',
+          en: 'And she said, Truth, Lord: yet the dogs eat of the crumbs which fall from their masters\u2019 table.',
+          ru: 'Она сказала: так, Господи! но и псы едят крохи, которые падают со стола господ их.',
         },
       },
       {
@@ -508,6 +620,22 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
         },
       },
       {
+        verse: 17,
+        text: {
+          ja: '是の故に主は言い給う、「彼等の中より出でて離れよ、不潔な者に触るるなかれ、然らば我爾等を受けん、」',
+          en: 'Wherefore come out from among them, and be ye separate, saith the Lord, and touch not the unclean thing; and I will receive you,',
+          ru: 'И потому выйдите из среды их и отделитесь, говорит Господь, и не прикасайтесь к нечистому; и Я прииму вас',
+        },
+      },
+      {
+        verse: 18,
+        text: {
+          ja: '「我爾等の父となり、爾等は我が子となり娘となるべし、と全能の主は言い給えり。」',
+          en: 'And will be a Father unto you, and ye shall be My sons and daughters, saith the Lord Almighty.',
+          ru: 'и буду вам Отцем, и вы будете Моими сынами и дщерями, говорит Господь Вседержитель.',
+        },
+      },
+      {
         verse: 1,
         text: {
           ja: '愛する者よ、我等此等の約束を有つが故に、自ら潔くして肉と神との総ての汚穢を離れ、神を懼れて聖を全うすべし。',
@@ -535,6 +663,38 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
           ja: '十字架の道は滅びる者には狂暴なれども、救わるる我等には神の力なり。',
           en: 'For the preaching of the cross is to them that perish foolishness; but unto us which are saved it is the power of God.',
           ru: 'Ибо слово о кресте для погибающих юродство есть, а для нас, спасаемых, — сила Божия.',
+        },
+      },
+      {
+        verse: 19,
+        text: {
+          ja: '録されたる「我は智者の智恵を滅ぼし、巧者の巧みを廃するべし」とある如くなり。',
+          en: 'For it is written, I will destroy the wisdom of the wise, and will bring to nothing the understanding of the prudent.',
+          ru: 'ибо написано: погублю мудрость мудрецов, и разум разумных отвергну.',
+        },
+      },
+      {
+        verse: 20,
+        text: {
+          ja: '智者は何処にあるや、学者は何処にあるや、此の世の弁論家は何処にあるや。神は此の世の智恵を愚かにされざりしや。',
+          en: 'Where is the wise? where is the scribe? where is the disputer of this world? hath not God made foolish the wisdom of this world?',
+          ru: 'Где мудрец? где книжник? где совопросник века сего? Не обратил ли Бог мудрость мира сего в безумие?',
+        },
+      },
+      {
+        verse: 21,
+        text: {
+          ja: '神の智恵に於いては、世は己の智恵を以て神を知らざりければ、神は宣教の愚かさを以て信ずる者を救うことを善しとされたり。',
+          en: 'For after that in the wisdom of God the world by wisdom knew not God, it pleased God by the foolishness of preaching to save them that believe.',
+          ru: 'Ибо когда мир своею мудростью не познал Бога в премудрости Божией, то благоугодно было Богу юродством проповеди спасти верующих.',
+        },
+      },
+      {
+        verse: 22,
+        text: {
+          ja: 'ユダ人は表徴を求め、ギリシャ人は智恵を求む。',
+          en: 'For the Jews require a sign, and the Greeks seek after wisdom:',
+          ru: 'Ибо и Иудеи требуют чудес, и Еллины ищут мудрости,',
         },
       },
       {
@@ -576,11 +736,163 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
         },
       },
       {
+        verse: 9,
+        text: {
+          ja: 'ピラト又官邸に入り、イイススに言わく、「爾は何処より来たれるや。」然れどイイスス彼に答え給わず。',
+          en: 'And went again into the judgment hall, and saith unto Jesus, Whence art Thou? But Jesus gave him no answer.',
+          ru: 'и опять вошел в преторию и сказал Иисусу: откуда Ты? Но Иисус не дал ему ответа.',
+        },
+      },
+      {
+        verse: 10,
+        text: {
+          ja: 'ピラト彼に言わく、「爾我に語らずや、我に爾を放つ権あり、爾を十字架に釘づくる権あるを知らずや。」',
+          en: 'Then saith Pilate unto Him, Speakest Thou not unto me? knowest Thou not that I have power to crucify Thee, and have power to release Thee?',
+          ru: 'Пилат говорит Ему: мне ли не отвечаешь? не знаешь ли, что я имею власть распять Тебя и власть имею отпустить Тебя?',
+        },
+      },
+      {
+        verse: 11,
+        text: {
+          ja: 'イイスス答え給わく、「神より与えられずば、爾我に対して権なし、是の故に我を爾に渡せし者の罪は更に大なり。」',
+          en: 'Jesus answered, Thou couldest have no power at all against Me, except it were given thee from above: therefore he that delivered Me unto thee hath the greater sin.',
+          ru: 'Иисус отвечал: ты не имел бы надо Мною никакой власти, если бы не было дано тебе свыше; посему более греха на том, кто предал Меня тебе.',
+        },
+      },
+      {
+        verse: 13,
+        text: {
+          ja: 'ピラト此の言を聞きて、イイススを連れ出し、敷石（ヘブル語ではガッファタ）と称する場所の裁判席に坐せり。',
+          en: 'When Pilate therefore heard that saying, he brought Jesus forth, and sat down in the judgment seat in a place that is called the Pavement, but in the Hebrew, Gabbatha.',
+          ru: 'Пилат, услышав это слово, вывел вон Иисуса и сел на судилище, на месте, называемом Лифостротон, а по-еврейски Гаввафа.',
+        },
+      },
+      {
+        verse: 14,
+        text: {
+          ja: '時は過越の備えの日、六時頃なりき、ピラト西人に言わく、「視よ、爾等の王なり。」',
+          en: 'And it was the preparation of the passover, and about the sixth hour: and he saith unto the Jews, Behold your King!',
+          ru: 'Тогда была пятница перед Пасхою, и час шестый. И сказал Пилат Иудеям: вот, Царь ваш!',
+        },
+      },
+      {
+        verse: 15,
+        text: {
+          ja: '彼等叫びて言わく、「取り去れ、取り去れ、彼を十字架に釘づけよ。」ピラト彼等に言わく、「我爾等の王を十字架に釘づくべきや。」祭司長等答えく、「カイサルの他に我等に王なし。」',
+          en: 'But they cried out, Away with Him, away with Him, crucify Him. Pilate saith unto them, Shall I crucify your King? The chief priests answered, We have no king but Caesar.',
+          ru: 'Но они закричали: возьми, возьми, распни Его! Пилат говорит им: Царя ли вашего распну? Первосвященники отвечали: нет у нас царя, кроме кесаря.',
+        },
+      },
+      {
+        verse: 16,
+        text: {
+          ja: 'かく彼等に渡し、十字架に釘づけられんとて去り給えり。彼等イイススを引き取り、',
+          en: 'Then delivered he Him therefore unto them to be crucified. And they took Jesus, and led Him away.',
+          ru: 'Тогда наконец он предал Его им на распятие. И взяли Иисуса и повели.',
+        },
+      },
+      {
+        verse: 17,
+        text: {
+          ja: '自ら十字架を負い、されこうべの場（ヘブル語ではゴルゴタ）と称する場所に出で給えり。',
+          en: 'And He bearing His cross went forth into a place called the place of a skull, which is called in the Hebrew Golgotha:',
+          ru: 'и, неся крест Свой, Он вышел на место, называемое Лобное, по-еврейски Голгофа;',
+        },
+      },
+      {
+        verse: 18,
+        text: {
+          ja: 'かしこにて彼等イイススを十字架に釘づけ、他の二人をも共に、一人はここに一人はかしこに、イイススを中央にして。',
+          en: 'Where they crucified Him, and two other with Him, on either side one, and Jesus in the midst.',
+          ru: 'там распяли Его и с Ним двух других, по ту и по другую сторону, а посреди Иисуса.',
+        },
+      },
+      {
+        verse: 19,
+        text: {
+          ja: 'ピラト、罪状書きを書きて十字架の上に掲げたり。書かれたるは「ナザレのイイスス、西人の王」なりき。',
+          en: 'And Pilate wrote a title, and put it on the cross. And the writing was, JESUS OF NAZARETH THE KING OF THE JEWS.',
+          ru: 'Пилат же написал и надпись, и поставил на кресте. Написано было: Иисус Назорей, Царь Иудейский.',
+        },
+      },
+      {
+        verse: 20,
+        text: {
+          ja: 'イイスス十字架に釘づけられし場は都の近くなりければ、多くの西人此の罪状書きを読めり。之はヘブル語、ラテン語、ギリシャ語にて書かれたり。',
+          en: 'This title then read many of the Jews: for the place where Jesus was crucified was nigh to the city: and it was written in Hebrew, and Greek, and Latin.',
+          ru: 'Эту надпись читали многие из Иудеев, потому что место, где был распят Иисус, было недалеко от города, и написано было по-еврейски, по-гречески, по-римски.',
+        },
+      },
+      {
+        verse: 25,
+        text: {
+          ja: 'イイススの十字架の傍には其の母、及び母の姉妹マリア・クロパの妻、及びマグダリンのマリアが立てり。',
+          en: 'Now there stood by the cross of Jesus His mother, and His mother\u2019s sister, Mary the wife of Cleophas, and Mary Magdalene.',
+          ru: 'При кресте Иисуса стояли Матерь Его и сестра Матери Его, Мария Клеопова, и Мария Магдалина.',
+        },
+      },
+      {
+        verse: 26,
+        text: {
+          ja: 'イイスス其の母及び側に立てる愛する弟子を見て、母に言い給わく、「婦人よ、視よ、爾の子なり。」',
+          en: 'When Jesus therefore saw His mother, and the disciple standing by, whom He loved, He saith unto His mother, Woman, behold thy son!',
+          ru: 'Иисус, увидев Матерь и ученика тут стоящего, которого любил, говорит Матери Своей: Жено! се, сын Твой.',
+        },
+      },
+      {
+        verse: 27,
+        text: {
+          ja: '次に弟子に言い給わく、「視よ、爾の母なり。」かの時よりして此の弟子彼女を自宅に引き取れり。',
+          en: 'Then saith He to the disciple, Behold thy mother! And from that hour that disciple took her unto his own home.',
+          ru: 'Потом говорит ученику: се, Матерь твоя! И с этого времени ученик сей взял Её к себе.',
+        },
+      },
+      {
+        verse: 28,
+        text: {
+          ja: '此の後イイスス総ての事は既に成し遂げられたりと知り給い、聖経が成就せんため言い給わく、「我渇く。」',
+          en: 'After this, Jesus knowing that all things were now accomplished, that the scripture might be fulfilled, saith, I thirst.',
+          ru: 'После того Иисус, зная, что уже всё совершилось, да сбудется Писание, говорит: жажду.',
+        },
+      },
+      {
         verse: 30,
         text: {
-          ja: 'イイスス酢を受け、言わく、「成し遂げられたり。」首を垂れて、神を付嘱し給えり。',
+          ja: 'イイスス酢を受け、言わく、「成し遂げられたり。」首を垂れて、霊を付嘱し給えり。',
           en: 'When Jesus therefore had received the vinegar, He said, It is finished: and He bowed His head, and gave up the ghost.',
           ru: 'Когда же Иисус вкусил уксуса, сказал: совершилось! И, преклонив главу, предал дух.',
+        },
+      },
+      {
+        verse: 31,
+        text: {
+          ja: '西人等はその日が備えの日なりしゆえ、安息日に死体を十字架に残しておかぬよう（その安息日は大なる日なりき）、ピラトに彼等の脛を折り、死体を取り除かん事を求めたり。',
+          en: 'The Jews therefore, because it was the preparation, that the bodies should not remain upon the cross on the sabbath day, (for that sabbath day was an high day,) besought Pilate that their legs might be broken, and that they might be taken away.',
+          ru: 'Но так как тогда была пятница, то Иудеи, дабы не оставить тел на кресте в субботу, ибо та суббота была день великий, просили Пилата, чтобы перебить у них голени и снять их.',
+        },
+      },
+      {
+        verse: 33,
+        text: {
+          ja: 'イイススの所に至りし時、彼は既に死し給えるを見て、その脛を折らざりき。',
+          en: 'But when they came to Jesus, and saw that He was dead already, they brake not His legs:',
+          ru: 'Но, придя к Иисусу, как увидели Его уже умершим, не перебили у Него голеней,',
+        },
+      },
+      {
+        verse: 34,
+        text: {
+          ja: '但し兵士の一人が槍を以て彼の脇腹を刺したり、即ち血と水とが流れ出でたり。',
+          en: 'But one of the soldiers with a spear pierced His side, and forthwith came there out blood and water.',
+          ru: 'но один из воинов копьём пронзил Ему ребра, и тотчас истекла кровь и вода.',
+        },
+      },
+      {
+        verse: 35,
+        text: {
+          ja: '見たる者が証しをなせり、その証は真なり、彼は自分が真の事を言うと知れり、爾等も信ぜんがためなり。',
+          en: 'And he that saw it bare record, and his record is true: and he knoweth that he saith true, that ye might believe.',
+          ru: 'И видевший засвидетельствовал, и истинно свидетельство его; он знает, что говорит истину, дабы вы поверили.',
         },
       },
     ],
@@ -613,6 +925,46 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
           ru: 'ибо устроена была скиния первая, в которой был светильник, и трапеза, и предложение хлебов, и которая называется Святое.',
         },
       },
+      {
+        verse: 3,
+        text: {
+          ja: '第二の幕の後には至聖所と称する幕屋あり。',
+          en: 'And after the second veil, the tabernacle which is called the Holiest of all;',
+          ru: 'За второю же завесою была скиния, называемая Святое Святых,',
+        },
+      },
+      {
+        verse: 4,
+        text: {
+          ja: 'その中には金の香炉と、四方を金にて蔽われたる契約の柩とあり、その中には金の壺にマナを入れたると、芽生えたるアロンの杖と、契約の板とあり。',
+          en: 'Which had the golden censer, and the ark of the covenant overlaid round about with gold, wherein was the golden pot that had manna, and Aaron\'s rod that budded, and the tables of the covenant;',
+          ru: 'имевшая золотую кадильницу и обложенный со всех сторон золотом ковчег завета, где были золотой сосуд с манною, жезл Ааронов расцветший и скрижали завета,',
+        },
+      },
+      {
+        verse: 5,
+        text: {
+          ja: '此の上には光栄のケルビムが贖罪の座を蔽い、是等の事に就きては今詳しく語ることを得ず。',
+          en: 'And over it the cherubims of glory shadowing the mercyseat; of which we cannot now speak particularly.',
+          ru: 'а над ним херувимы славы, осеняющие жертвенник примирения; о чем не нужно теперь говорить подробно.',
+        },
+      },
+      {
+        verse: 6,
+        text: {
+          ja: '此等の事如此く備えられたれば、祭司等は常に前の幕屋に入りて礼拝を行う。',
+          en: 'Now when these things were thus ordained, the priests went always into the first tabernacle, accomplishing the service of God.',
+          ru: 'При таком устройстве, в первую скинию всегда входят священники совершать Богослужение;',
+        },
+      },
+      {
+        verse: 7,
+        text: {
+          ja: '然れど第二の幕屋には大祭司のみが一年に一度入る、血なくして入らず、その血は自己と民の知らずして犯した罪のために献ぐ。',
+          en: 'But into the second went the high priest alone once every year, not without blood, which he offered for himself, and for the errors of the people:',
+          ru: 'а во вторую — однажды в год один только первосвященник, не без крови, которую приносит за себя и за грехи неведения народа.',
+        },
+      },
     ],
   },
 
@@ -633,6 +985,30 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
           ja: '彼等行く時、イイスス或る村に入り給えり。マルファという女、彼をその家に迎えたり。',
           en: 'Now it came to pass, as they went, that He entered into a certain village: and a certain woman named Martha received Him into her house.',
           ru: 'В продолжение пути их пришел Он в одно селение; здесь женщина, именем Марфа, приняла Его в дом свой;',
+        },
+      },
+      {
+        verse: 39,
+        text: {
+          ja: 'この女にマリアという妹ありて、主の足もとに坐して御言を聞きいたり。',
+          en: 'And she had a sister called Mary, which also sat at Jesus\u2019 feet, and heard His word.',
+          ru: 'у неё была сестра, называемая Мария, которая села у ног Иисуса и слушала слово Его.',
+        },
+      },
+      {
+        verse: 40,
+        text: {
+          ja: 'マルファは多くの奉仕にて気を散らし、側に来て言わく、「主よ、我が妹が奉仕を我のみにまかせておくを御覧じなさらぬか、彼女に言いつけ、我を助けさせ給え。」',
+          en: 'But Martha was cumbered about much serving, and came to Him, and said, Lord, dost Thou not care that my sister hath left me to serve alone? bid her therefore that she help me.',
+          ru: 'Марфа же заботилась о большом угощении и, подойдя, сказала: Господи! или Тебе нужды нет, что сестра моя одну меня оставила служить? скажи ей, чтобы помогла мне.',
+        },
+      },
+      {
+        verse: 41,
+        text: {
+          ja: 'イイスス答えて彼女に言い給わく、「マルファ、マルファ、爾は多くの事に心を労して惑えるなり。',
+          en: 'And Jesus answered and said unto her, Martha, Martha, thou art careful and troubled about many things:',
+          ru: 'Иисус же сказал ей в ответ: Марфа! Марфа! ты заботишься и суетишься о многом,',
         },
       },
       {
