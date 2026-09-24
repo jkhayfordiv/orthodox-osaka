@@ -43,7 +43,7 @@ export default function Home() {
 
       <BottomNav />
       <SettingsModal />
-      <OnboardingModal />
+      {!isWebsiteTab && <OnboardingModal />}
       <ScheduleAdminModal />
       <BackupModal />
     </div>

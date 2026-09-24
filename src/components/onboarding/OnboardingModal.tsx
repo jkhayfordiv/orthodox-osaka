@@ -6,11 +6,12 @@ import { Locale } from '../../lib/types';
 import { CheckCircle2, WifiOff, Calendar, ArrowRight } from 'lucide-react';
 
 export function OnboardingModal() {
-  const { hasCompletedOnboarding, completeOnboarding } = useApp();
+  const { hasCompletedOnboarding, completeOnboarding, activeTab } = useApp();
   const [selectedLang, setSelectedLang] = useState<Locale | null>(null);
   const [step, setStep] = useState<'language' | 'welcome'>('language');
 
-  if (hasCompletedOnboarding) return null;
+  const isWebsiteTab = ['home', 'history', 'orthodoxy', 'access', 'sermons'].includes(activeTab);
+  if (hasCompletedOnboarding || isWebsiteTab) return null;
 
   const handleSelectLanguage = (lang: Locale) => {
     setSelectedLang(lang);
