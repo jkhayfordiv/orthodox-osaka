@@ -337,10 +337,20 @@ export interface ConcertEventData {
     tel: string;
   };
   pdfFlyerUrl: string;
+  pdfFlyerUrls: {
+    ja: string;
+    en: string;
+    ru: string;
+  };
   pdfBackgroundUrl: string;
   flyerImages: {
     p1: string;
     p2: string;
+  };
+  flyerImagesByLocale: {
+    ja: { p1: string; p2: string };
+    en: { p1: string; p2: string };
+    ru: { p1: string; p2: string };
   };
 }
 
@@ -480,10 +490,29 @@ export const CONCERT_EVENT_DATA: ConcertEventData = {
     tel: '06-6288-4512',
   },
   pdfFlyerUrl: '/events/rachmaninoff-concert-2027.pdf',
+  pdfFlyerUrls: {
+    ja: '/events/rachmaninoff-concert-2027.pdf',
+    en: '/events/rachmaninoff-concert-2027-en.pdf',
+    ru: '/events/rachmaninoff-concert-2027-ru.pdf',
+  },
   pdfBackgroundUrl: '/events/rachmaninoff-concert-2027-background.pdf',
   flyerImages: {
     p1: '/events/rachmaninoff-flyer-p1.jpg',
     p2: '/events/rachmaninoff-flyer-p2.jpg',
+  },
+  flyerImagesByLocale: {
+    ja: {
+      p1: '/events/rachmaninoff-flyer-p1.jpg',
+      p2: '/events/rachmaninoff-flyer-p2.jpg',
+    },
+    en: {
+      p1: '/events/rachmaninoff-flyer-en-p1.jpg',
+      p2: '/events/rachmaninoff-flyer-en-p2.jpg',
+    },
+    ru: {
+      p1: '/events/rachmaninoff-flyer-ru-p1.jpg',
+      p2: '/events/rachmaninoff-flyer-ru-p2.jpg',
+    },
   },
 };
 

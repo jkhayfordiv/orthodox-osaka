@@ -14,20 +14,28 @@ import {
   Maximize2,
   X,
   Award,
-  BookOpen,
-  Bell,
-  Heart
+  BookOpen
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { CONCERT_EVENT_DATA, BELL_RESTORATION_PROGRESS } from '../../data/parishWebsiteData';
+import { CONCERT_EVENT_DATA } from '../../data/parishWebsiteData';
 
 export function ConcertEventSection() {
   const { locale } = useApp();
   const [activeFlyerPage, setActiveFlyerPage] = useState<1 | 2>(1);
+  const [flyerLocale, setFlyerLocale] = useState<'ja' | 'en' | 'ru'>(locale);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Sync flyer language when site language changes
+  React.useEffect(() => {
+    setFlyerLocale(locale);
+  }, [locale]);
+
   const event = CONCERT_EVENT_DATA;
-  const currentFlyerImage = activeFlyerPage === 1 ? event.flyerImages.p1 : event.flyerImages.p2;
+  const currentFlyerImage =
+    event.flyerImagesByLocale?.[flyerLocale]?.[activeFlyerPage === 1 ? 'p1' : 'p2'] ||
+    (activeFlyerPage === 1 ? event.flyerImages.p1 : event.flyerImages.p2);
+
+  const currentPdfUrl = event.pdfFlyerUrls?.[flyerLocale] || event.pdfFlyerUrl;
 
   const mailtoSubject = encodeURIComponent(
     locale === 'ja'
@@ -92,6 +100,48 @@ export function ConcertEventSection() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
         {/* Left 5 Cols: Visual Flyer Preview with Page Switcher & Download */}
         <div className="lg:col-span-5 space-y-4">
+          {/* Language Edition Selector Tabs for Flyer */}
+          <div className="flex items-center justify-between gap-1 p-1 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 text-2xs">
+            <span className="px-2 text-slate-500 dark:text-slate-400 font-medium">
+              {locale === 'ja' ? 'チラシ言語:' : locale === 'ru' ? 'Язык афиши:' : 'Flyer Language:'}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setFlyerLocale('ja')}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                  flyerLocale === 'ja'
+                    ? 'bg-orthodox-navy text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                日本語
+              </button>
+              <button
+                type="button"
+                onClick={() => setFlyerLocale('en')}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                  flyerLocale === 'en'
+                    ? 'bg-orthodox-navy text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                onClick={() => setFlyerLocale('ru')}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                  flyerLocale === 'ru'
+                    ? 'bg-orthodox-navy text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                Русский
+              </button>
+            </div>
+          </div>
+
           <div className="relative group rounded-2xl overflow-hidden border border-amber-200 dark:border-slate-800 bg-slate-900 shadow-md aspect-3/4">
             <img
               src={currentFlyerImage}
@@ -111,9 +161,14 @@ export function ConcertEventSection() {
               </button>
             </div>
 
-            {/* Page number pill badge */}
-            <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-xs text-white text-2xs font-mono">
-              Page {activeFlyerPage} / 2
+            {/* Page number and language pill badge */}
+            <div className="absolute bottom-3 left-3 flex items-center gap-2">
+              <span className="px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-xs text-white text-2xs font-mono">
+                Page {activeFlyerPage} / 2
+              </span>
+              <span className="px-2 py-0.5 rounded-md bg-orthodox-gold/90 text-orthodox-navy text-2xs font-bold uppercase">
+                {flyerLocale}
+              </span>
             </div>
           </div>
 
@@ -142,26 +197,60 @@ export function ConcertEventSection() {
           </div>
 
           {/* Download Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+          <div className="pt-2 space-y-2">
             <a
-              href={event.pdfFlyerUrl}
+              href={currentPdfUrl}
               target="_blank"
               rel="noreferrer noopener"
-              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs transition-colors shadow-xs"
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs transition-colors shadow-xs"
             >
               <Download className="w-3.5 h-3.5 text-orthodox-gold" />
-              <span>{locale === 'ja' ? '公式チラシPDF (印刷用)' : locale === 'ru' ? 'Скачать афишу (PDF)' : 'Official Flyer PDF'}</span>
+              <span>
+                {locale === 'ja'
+                  ? `チラシPDFをダウンロード (${flyerLocale.toUpperCase()}版)`
+                  : locale === 'ru'
+                  ? `Скачать афишу PDF (${flyerLocale.toUpperCase()})`
+                  : `Download Flyer PDF (${flyerLocale.toUpperCase()} Edition)`}
+              </span>
             </a>
-            <a
-              href={event.pdfBackgroundUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs transition-colors"
-              title="背景版PDF"
-            >
-              <span>{locale === 'ja' ? '背景版PDF' : 'Background PDF'}</span>
-              <ExternalLink className="w-3 h-3 opacity-70" />
-            </a>
+
+            {/* Direct download links for all editions */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-2xs text-slate-500 dark:text-slate-400">
+              <span className="font-medium">{locale === 'ja' ? '全版PDF:' : 'All Editions:'}</span>
+              <a
+                href={event.pdfFlyerUrls.ja}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-gold/20 text-slate-700 dark:text-slate-200 transition-colors"
+              >
+                🇯🇵 日本語
+              </a>
+              <a
+                href={event.pdfFlyerUrls.en}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-gold/20 text-slate-700 dark:text-slate-200 transition-colors"
+              >
+                🇬🇧 English
+              </a>
+              <a
+                href={event.pdfFlyerUrls.ru}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-gold/20 text-slate-700 dark:text-slate-200 transition-colors"
+              >
+                🇷🇺 Русский
+              </a>
+              <a
+                href={event.pdfBackgroundUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-gold/20 text-slate-700 dark:text-slate-200 transition-colors"
+                title="水彩背景のみの白紙版"
+              >
+                🎨 {locale === 'ja' ? '背景版' : 'Background'}
+              </a>
+            </div>
           </div>
         </div>
 
@@ -304,36 +393,6 @@ export function ConcertEventSection() {
         </div>
       </div>
 
-      {/* Bell Restoration Gratitude Progress Footer Note */}
-      <div className="relative z-10 pt-4 border-t border-amber-200/80 dark:border-slate-800">
-        <div className="rounded-2xl p-4 sm:p-5 bg-amber-100/60 dark:bg-amber-950/40 border border-amber-300/80 dark:border-amber-900/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-800 dark:text-amber-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Bell className="w-5 h-5 text-amber-700 dark:text-amber-400" />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
-                  {locale === 'ja' ? '大鐘・鐘楼修復基金のご報告' : locale === 'ru' ? 'Отчет о реставрации колокольни' : 'Belfry Restoration Fund Report'}
-                </span>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold text-2xs">
-                  {BELL_RESTORATION_PROGRESS.raisedAmount} / {BELL_RESTORATION_PROGRESS.targetAmount} (約{BELL_RESTORATION_PROGRESS.percent}%)
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                {BELL_RESTORATION_PROGRESS.recentDonationNote[locale]}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
-            <span className="text-2xs text-slate-500 dark:text-slate-400 font-serif italic">
-              {locale === 'ja' ? '心より感謝申し上げます' : 'With heartfelt gratitude'}
-            </span>
-            <Heart className="w-4 h-4 text-red-500 fill-red-500/30" />
-          </div>
-        </div>
-      </div>
 
       {/* Fullscreen Flyer Modal */}
       {modalOpen && (
@@ -381,13 +440,13 @@ export function ConcertEventSection() {
             <div className="p-3 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
               <span>{event.venue.name[locale]} · 2027.02.23</span>
               <a
-                href={event.pdfFlyerUrl}
+                href={currentPdfUrl}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="inline-flex items-center gap-1.5 text-orthodox-gold hover:underline font-semibold"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>{locale === 'ja' ? 'PDFをダウンロード' : 'Download PDF'}</span>
+                <span>{locale === 'ja' ? 'PDFをダウンロード' : locale === 'ru' ? 'Скачать PDF' : 'Download PDF'}</span>
               </a>
             </div>
           </div>
