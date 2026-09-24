@@ -3,11 +3,11 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
-import { BELL_RESTORATION_DATA } from '../../data/parishWebsiteData';
 import { PARISH_ANNOUNCEMENTS } from '../../data/bulletin';
 import { SERMONS_ARCHIVE } from '../../data/sermonsArchive';
 import { getDayInfo } from '../../lib/calendarEngine';
 import { PhotoGallerySection } from './PhotoGallerySection';
+import { ConcertEventSection } from './ConcertEventSection';
 import {
   Calendar,
   Clock,
@@ -27,6 +27,7 @@ import {
   Compass,
   ArrowUpRight,
   ShieldAlert,
+  Music,
 } from 'lucide-react';
 
 export function HomeWebsiteView() {
@@ -108,13 +109,13 @@ export function HomeWebsiteView() {
 
                 <button
                   onClick={() => {
-                    const el = document.getElementById('bell-appeal');
+                    const el = document.getElementById('concert-event');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-6 py-3 rounded-xl bg-red-600/90 hover:bg-red-600 text-white font-bold text-xs sm:text-sm backdrop-blur-xs border border-red-400/40 transition-all shadow-sm flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-light text-orthodox-navy font-bold text-xs sm:text-sm backdrop-blur-xs border border-amber-300 transition-all shadow-sm flex items-center gap-2"
                 >
-                  <Heart className="w-4 h-4 text-red-200" />
-                  <span>{locale === 'ja' ? '大鐘修復の支援' : locale === 'ru' ? 'Помощь колокольне' : 'Bell Restoration'}</span>
+                  <Music className="w-4 h-4 text-orthodox-navy" />
+                  <span>{locale === 'ja' ? '2027記念演奏会' : locale === 'ru' ? 'Концерт 2027' : '2027 Concert'}</span>
                 </button>
 
                 <button
@@ -193,114 +194,9 @@ export function HomeWebsiteView() {
       ======================================================== */}
       <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20 space-y-12">
         {/* ========================================================
-            FEATURE 1: BELL RESTORATION APPEAL (Modern Horizontal Editorial Card)
+            FEATURE 1: 2027 WINTER SEMINAR & RACHMANINOFF CONCERT
         ======================================================== */}
-        <section
-          id="bell-appeal"
-          className="rounded-3xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 p-6 sm:p-10 shadow-lg relative overflow-hidden"
-        >
-          {/* Subtle watermark background icon */}
-          <div className="absolute -top-12 -right-12 w-64 h-64 bg-red-600/5 rounded-full blur-2xl pointer-events-none" />
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Left 5 Columns: Dual Authentic Bell Photos */}
-            <div className="lg:col-span-5 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
-                  <img
-                    src="/photos/bell-timber-historic.jpg"
-                    alt="Historic Russian Bell on Timbers"
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
-                  <img
-                    src="/photos/bell-belfry-tower.jpg"
-                    alt="Belfry Tower and Hanging Bell"
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-serif italic px-1">
-                <span>
-                  {locale === 'ja' ? '① 落下した歴史的大鐘' : locale === 'ru' ? '① Старинный колокол' : '① Fallen Russian Bell'}
-                </span>
-                <span>
-                  {locale === 'ja' ? '② 鐘楼上部フレーム' : locale === 'ru' ? '② Звонница в ремонте' : '② Belfry Framework'}
-                </span>
-              </div>
-            </div>
-
-            {/* Right 7 Columns: Compelling Narrative & Donation Action */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">
-                  {BELL_RESTORATION_DATA.subtitle[locale]}
-                </span>
-                <span className="px-3 py-0.5 rounded-full bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-[11px] font-bold">
-                  {BELL_RESTORATION_DATA.status[locale]}
-                </span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 dark:text-white leading-snug">
-                {BELL_RESTORATION_DATA.title[locale]}
-              </h2>
-
-              <p className="font-serif text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                {BELL_RESTORATION_DATA.descriptionParagraphs[locale][0]}{' '}
-                {BELL_RESTORATION_DATA.descriptionParagraphs[locale][1]}
-              </p>
-
-              {/* Donation Info Box */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/80 dark:bg-slate-800/80 border border-amber-200 dark:border-amber-900/50 space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                      {locale === 'ja' ? '目標金額（工事総予算）' : locale === 'ru' ? 'Цель сбора' : 'Target Budget'}
-                    </div>
-                    <div className="text-xl sm:text-2xl font-serif font-bold text-orthodox-navy dark:text-amber-300">
-                      ¥4,570,000
-                    </div>
-                  </div>
-
-                  <a
-                    href={BELL_RESTORATION_DATA.creditCardUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md transform hover:-translate-y-0.5 flex-shrink-0"
-                  >
-                    <Heart className="w-4 h-4 text-white" />
-                    <span>
-                      {locale === 'ja'
-                        ? 'クレジットカードで寄付する'
-                        : locale === 'ru'
-                        ? 'Пожертвовать картой'
-                        : 'Donate via Credit Card'}
-                    </span>
-                    <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-                  </a>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-amber-200/60 dark:border-slate-700">
-                  <div className="text-slate-700 dark:text-slate-300">
-                    <span className="font-sans font-semibold block text-[11px] text-slate-500">
-                      {BELL_RESTORATION_DATA.bankInfo.bankName[locale]}
-                    </span>
-                    {BELL_RESTORATION_DATA.bankInfo.branch[locale]}
-                  </div>
-                  <div className="text-slate-700 dark:text-slate-300">
-                    <span className="font-sans font-semibold block text-[11px] text-slate-500">
-                      {locale === 'ja' ? '郵便振替:' : locale === 'ru' ? 'Почтовый перевод:' : 'Postal Account:'}
-                    </span>
-                    {BELL_RESTORATION_DATA.bankInfo.postalAccount}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ConcertEventSection />
 
         {/* ========================================================
             FEATURE 2: SIDE-BY-SIDE 2-COLUMN GRID

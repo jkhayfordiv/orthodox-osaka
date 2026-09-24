@@ -125,6 +125,17 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
     setDeletingItem(item);
   };
 
+  const handleLoadSampleNames = () => {
+    const samples: Omit<PrayerListItem, 'id'>[] = [
+      { type: 'living', name: 'ゲオルギイ神父', baptismalName: 'ゲオルギイ', relation: '霊父' },
+      { type: 'living', name: 'ステファン', baptismalName: 'ステファン', relation: '読経者' },
+      { type: 'living', name: 'アンナ', baptismalName: 'アンナ', relation: '家族' },
+      { type: 'departed', name: 'ニコライ大主教', baptismalName: 'ニコライ', relation: '光照者' },
+      { type: 'departed', name: 'セラフィム', baptismalName: 'セラフィム', relation: '親族' },
+    ];
+    samples.forEach(s => addPrayerItem(s));
+  };
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formName.trim()) return;
@@ -314,14 +325,35 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
 
             {/* Legible Grid / List of Names */}
             {livingList.length === 0 ? (
-              <div className="text-center py-6 text-slate-400 dark:text-slate-500 text-xs sm:text-sm">
-                <p>{locale === 'ja' ? '登録された生者の名前はまだありません。' : locale === 'ru' ? 'Список о здравии пуст.' : 'No living names added yet.'}</p>
-                <button
-                  onClick={() => handleOpenAdd('living')}
-                  className="mt-2 text-xs font-bold text-orthodox-gold underline"
-                >
-                  {locale === 'ja' ? '最初の名前を追加する' : locale === 'ru' ? 'Добавить первое имя' : 'Add your first name'}
-                </button>
+              <div className="text-center py-6 px-4 rounded-xl bg-white/60 dark:bg-slate-800/50 border border-dashed border-amber-300 dark:border-amber-800/60 space-y-3">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                  {locale === 'ja'
+                    ? '登録された生者の名前はまだありません。新しく追加するか、サンプル名簿を読み込むことができます。'
+                    : 'No living names registered yet. Add a name or load a sample list.'}
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <button
+                    onClick={() => handleOpenAdd('living')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orthodox-gold text-orthodox-navy font-bold text-xs shadow-xs hover:bg-orthodox-gold-light transition-all"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? '名前を追加' : 'Add Name'}</span>
+                  </button>
+                  <button
+                    onClick={handleLoadSampleNames}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 font-bold text-xs border border-amber-300/60 hover:bg-amber-200 transition-all"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? 'サンプル名簿を読み込む' : 'Load Samples'}</span>
+                  </button>
+                  <button
+                    onClick={() => setBackupModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs hover:bg-slate-200 transition-all"
+                  >
+                    <QrCode className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? 'ファイル/QRから復元' : 'Import Backup'}</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
@@ -436,14 +468,28 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
 
             {/* List of Departed */}
             {departedList.length === 0 ? (
-              <div className="text-center py-6 text-slate-400 dark:text-slate-500 text-xs sm:text-sm">
-                <p>{locale === 'ja' ? '登録された永眠者の名前はまだありません。' : locale === 'ru' ? 'Список о упокоении пуст.' : 'No departed names added yet.'}</p>
-                <button
-                  onClick={() => handleOpenAdd('departed')}
-                  className="mt-2 text-xs font-bold text-orthodox-gold underline"
-                >
-                  {locale === 'ja' ? '永眠者・先祖の名前を追加する' : locale === 'ru' ? 'Добавить первое имя' : 'Add departed loved ones'}
-                </button>
+              <div className="text-center py-6 px-4 rounded-xl bg-white/60 dark:bg-slate-800/50 border border-dashed border-indigo-300 dark:border-indigo-800/60 space-y-3">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                  {locale === 'ja'
+                    ? '登録された永眠者の名前はまだありません。新しく追加するか、サンプル名簿またはバックアップから復元できます。'
+                    : 'No departed names registered yet. Add a name or restore from backup.'}
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <button
+                    onClick={() => handleOpenAdd('departed')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orthodox-gold text-orthodox-navy font-bold text-xs shadow-xs hover:bg-orthodox-gold-light transition-all"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? '永眠者を追加' : 'Add Departed'}</span>
+                  </button>
+                  <button
+                    onClick={() => setBackupModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs hover:bg-slate-200 transition-all"
+                  >
+                    <QrCode className="w-3.5 h-3.5" />
+                    <span>{locale === 'ja' ? 'ファイル/QRから復元' : 'Import Backup'}</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">

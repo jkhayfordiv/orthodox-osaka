@@ -1,0 +1,310 @@
+# ST. NIKOLAI of JAPAN
+
+*Original URL: https://orthodox-jp.com/maria/Nikolai-JAPAN.htm*
+
+---
+
+### **ST. NIKOLAI of JAPAN **
+
+**and the Japanese Church Singing ** 
+Maria Junko MATSUSHIMA
+
+**Preface**
+
+Church singing in Japan began 150 years ago when the Church was established
+as a result of St. Nikolai’s mission. People say Vladyka Nikolai was very
+fond of church singing, and was very strict about it. In his diary, we
+find many comments on church singing. Thanks to his great efforts, most
+prayers had been translated and hymns were musically noted, and we can
+easily celebrate the liturgy in Japanese. It is not an exaggerating to
+say he prepared almost all the necessary things during the Meiji Era and
+we are still benefiting from his work.
+
+Being in charge of a choir in a parish church in Japan, I have been considering what we have received and what we will hand down.  I have come across questions and difficulties.  Some people say that no tradition should be changed.  However, for untrained ordinary participants, complicated melodies and harmonization brought embarrassment.  There are variations in translation when comparing the prayer book and the music book with each other.  
+
+Through this research, I would like to examing St. Nikolai’s work to establish Japanese singing, what traditions he aimed to establish here, and whether there is nothing to add to or revise in his work.
+
+Originally, I wrote this paper in Japanese for the Seikyo Jiho (the official magazine of the Orthodox Church in Japan, and it appeared serially from February to June 2002). The current English version has been completely edited for English-speaking readers. I would like to express my gratitude to all those who helped me, in paticular, Fr. John who gave me a chance to write and to see the primary sources, Fr. David who showed  very important materials at Church in Osaka. Ms. Marie Clappsaddle who checked my English, and my husband Fr. George who always encourages my studying. 
+
+**The beginning**
+
+In 1853, Japan became open to the world after 200 years of isolation.  The Japanese government signed a treaty of friendship and commerce with the United States, Britain, Holland and Russia.  Russia established its Consulate General in Hakodate in Hokkaido, an island in the north of Japan.  In 1858, the first consul-general Iosif Goshkevich arrived at his post.  He was born and raised in a priest’s family and studied at St. Petersburg Theological Academy, where he participated in an underground activity of printing a Russian Bible translated by professor Archpriest Gerasim Packskii(History of the Russian Bible, Cistovich, Japanese translation:Eiichi Kato.  After graduation, he joined the 12th Russian mission to China(1840－1849: leader Policalp Tukalinov).  
+
+The first two chaplains sent to the consulate, Ivan and Vasily Makhov, soon returned home.  Goshkevich requested the Holy Synod to send a young, gifted priest, emphasizing the great opportunities for missionary work in Japan.  He had foreseen St. Nikolai’s apostolic work. (K. Nakamura, Archbishop Nikolai and Japan in the Meiji era, Iwanami).
+
+A young 25-year-old hieromonk, Nikolai (Kasatkin), came to Hakodate on June 14, 1861.  Besides celebrating the liturgy at a chapel in the consulate, he spent much time preparing for missionary work by studying Japanese, religion, culture, and Chinese classical reading and writing, which would prove to be a great help in his translation work.  Still under the decree prohibiting Christianity, in 1868 he baptized the first three Japanese converts, Pavel Sawabe, Ioan Sakai and Iosiv Urano.
+
+**For worship in Japanese; translation-- an urgent task**
+
+The Orthodox Church generally uses the native language of the people for services.   Japanese prayer books, including the Bible, were strongly desired.  At first, Nikolai began to translate from Slavic and Chinese versions the minimum necessary texts for morning and evening prayer, Sunday Liturgy and Vigil.  
+
+Nikolai said in his letter to Bishop Innokenti[[1]](#1) in October 1868 that he had translated “Gospels,” “Acts,” “Epistles, ” “Brief Church History,” “Teaching,” “Q & A on Dogma,” and “Morning and Evening Prayer Handbook” from the Chinese version, and “Liturgy of Catechumen” and “Baptism ” [[2]](#2)from the Slavic ( op.cit..)
+
+In the early days, the Chinese version played an important role.  Most of Nikolai’s first disciples were from the samurai class, who understood Chinese classical reading and writing, so they could understand and translate Chinese text into Japanese with a special method (so-called Kanbun or Kanseki), which Nikolai also had mastered already.  
+
+As mentioned above, since Consul Goshkevich had been in charge of the mission in Peking, it could be assumed that some Chinese prayer books had been brought to Hakodate.  Unfortunately, the Hakodate church was destroyed in a fire, and no evidence was left to tell how many and what kind of Chinese prayer books there were.
+
+Later, Nikolai found the Chinese translation unreliable and re-translated, checking every text against the Russian, Slavic, Latin, English, and Greek versions and St. John Chrisostomos’ notes.[[3]](#3)
+
+**Printing prayer books**
+
+On his first return to Russia (1869-71), Nikolai bought a lithograph-printing machine and then started publishing aggressively in Tokyo. Bound hardcover prayer books had to wait until “The Book of Hours” was completed in 1884, but simple booklets for daily and Sunday prayers, including music sheets in Japanese were printed.[ [4]](#4)
+
+We can roughly divide Nikolai’s translation work into three periods. The first period is until 1880. During this period, he hastened to translate the minimum necessary texts for daily and Sunday services. The picture shown here is one of the oldest service book for Sunday vigil and Liturgy, “Kitou saibun” (Prayers for the service, 195 pages, at Osaka Orthodox Church. ) It contained minimum texts for Vigil and Sunday services with eight tone troparion, and is thought to have been published sometime between 1877 and 1880. [[5]](#5)The texts in this book were different from the later versions and compiled on the abridged style with some psalms omitted. An old Chinese writing specialist, Mayama from Sendai, whose style seems simpler and rather colloquial compared with the later translations, supposed to help with this translation. 
+
+The second period is from 1880 to 1889. In 1880, Nikolai was ordained Bishop and his missionary work accelerated. In 1882, his lifelong partner in translation, Pavel Nakai Tsugumaro was called to Tokyo.[[6]](#6) Texts were thoroughly checked and corrected. In 1894 and 1895, the first prayer books in hard cover were published, “Book of Hours”, “Abridged Octoechos”(1884) and “Psalmodie”(1885).[[7]](7) In this period, the basic style was decided. Later revision would be limited
+to details. This translation is more accurate, with full use of abundant
+Kanji (Chinese characters), which are ideographic.[[8]](#8) 
+
+The third period is until his death in 1912.  He published “Book for Service” (Liturgicon), “Psalmodie” second edition(1901), “Gospel” and “Epistles” (1905), three handbooks (1902) for the first week of Great Lent, the Passion Week and Paschal season, “Irmologion”(1909) complete ”Octoechos”(1909), “Festal Menaion”(1910), and “Lenten Triodion”(1911) and all the necessary books except “Pentecostarion” and “Menaion for Everyday.”  Comparing the Psalms and other prayers from this period with those from the second period, the revisions were not so many.  On the contrary, in case of hymns for the feasts, the texts were greatly revised from the first period.
+
+The example shown is “the Prayer of St. Symeon” from Vespers in all three periods. They show Nikolai’s continuing improvement (cf. appendix). He might have been looking for a more accurate and better translation until his death.[[9]](#9)
+
+Comparing texts of the music books with those in the prayer books, we can
+distinguish the approximate dates of musical setting. The music books often
+preserved the old translation, which shows that Nikolai’s prayer book
+revisions were not fully reflected in the church singing. W can even find
+old translations from the first period still present the music books we
+use today.[[10]](#10) 
+
+**Singing in Japanese**
+
+As translation work was still going on, singing in Japanese was started in certain parts of the services.  Pavel Sawabe, the first enlighter and the first priest later wrote in Church Magazine, that he first sang some hymns in Japanese in 1873 in Hakodate:
+
+At that time, public services had not yet started in Tokyo, but we did it in Hakodate. ---Since there were no Russian trained singers, it was I playing both roles, a reader and a singer.--- At first, we sang only “Shu awareme yo”(Lord have mercy) in Japanese.  As more texts were translated, we added Japanese songs one by one, so at last we became able to celebrate the whole service in Japanese. (the Seikyo-Shinpo, the Orthodox Church Magazine pp.318, 1894)
+
+Following Hakodate, the other parishes started singing in Japanese. [11]
+
+**Effort to establish Japanese singing**
+
+Roughly speaking, three projects had to be accomplished. The first was
+translation, as mentioned above. The second was musical settings for the
+translated texts using Russian melodies. The third was an educational program
+to teach people how to sing properly. Before teaching Orthodox Church singing,
+primary western music method had to be taught. It may seem strange to hear,
+but 150 years ago, music was seen completely differently from nowadays.
+For Japanese people, Russian melodies seemed nothing but a kind of western
+music. 
+
+To solve the latter two problems, a Russian musician, Iakov Tichai, Fr. Anatoli’s brother, was invited to Japan.  Little is known about Iakov’s personal history.  One source said he attended the music course at seminary (Pozninev), the other said he was an alumnus of Moscow or St. Petersburg Conservatory (Oonuma).  In either case, he had studied western music theory and was a musician.  He used a violin to teach singing.  He came to Hakodate in 1873, and soon moved to Tokyo to work under the direction of Bishop Nikolai.  Sawabe said in the above report, “Then Iakov-san (Tichai) came.  He set music to the texts and taught us real Orthodox church singing.”   
+
+Besides music class at seminary, Nikolai started “Church Singing School,”
+where Tichai served as dean.
+
+Looking at Nikolai’s work concerning church singing, we could find two approaches; one for local parish churches and the other for the Tokyo Cathedral Church. Those two approaches reflected the concrete plans for musical setting and education. For local parish churches, teachers and music books for simple unison singing were planned, while for the Tokyo Cathedral, well-trained four-voice choirs were planned. 
+
+Before discussing these approaches, we have to regard the peculiarity of
+Russian Church singing in the 19th century which was brought to Japan.
+Originally, Russian chants had had a different musical structure and theory,
+but after the 17th century, they were eventually transformed by the strong
+influence of western music, at first Italian, later German chorale. In
+addition to that, the Westernization policy of the Russian Court strongly
+encouraged this tendency. The style of the St. Petersburg Court Chapel
+dominated church singing in Russia. In the areas of musical notation, scale
+structure, and harmonization, it had become much closer to western modern
+music than the traditional Znameny chants in unison.
+
+Traditional Japanese music was completely different from western music,
+with unison singing tightly connected to words the same as other ethnic
+music. There are several modes, with which scales are based on 5 notes
+in an octave. 
+
+Thus, teaching people to sing “do” “re” “mi” using the western scale was quite a job. There is a story about a music lesson in Hakodate in the early days. (About Orthodox Church music, Yasuhiko Rakunai)
+
+Tichai asked his pupils to listen carefully to the major scale and imitate
+his singing the notes with the vowel sound “a,” “a,” “a”, “a”….
+Then he asked them to sing the scale with the sounds do re mi fa so… They
+kept silent for a while, and then they sang a---do, a---re, a---mi… They
+added “a?” to every note. They were not trying to be funny. They just
+could not understand what the teacher said and their ears were not trained.
+
+There is another interesting example, supposedly taken from the melody
+by Fr. Pavel Sawabe and harmonized by Tichai. He might try to sing Psalm
+103 in obichod but its melody was influenced by Japanese mode, and sounds
+like an old Japanese folk song. 
+
+Thus, considering the musical ability of parish churches, Nikolai decided
+simple unison singing was best in order to conduct services with a limited
+number of clergy. He sent graduates with music books from seminary and
+“Church Singing School” throughout Japan. They taught not only how to
+sing but also about Christianity. When he visited parish churches in north
+Japan in 1881, he wrote in his diary that the people sang well due to the
+efforts of Roman Chiba and other graduates.
+
+On the other hand, in the Cathedral in Tokyo, where young seminary students’ musical skills were developed, four-voice choirs were organized, modeled after the Russian Church. Besides church singing, upon request they could take instrumental lessons like violin or piano, and also harmonics, musical theory and composition, which was the highest level musical education at that time. At the end of 1875, the girl’s school was started to train descant (soprano) and alto parts singers (Nikolai’s report, 1878). In Russia, before Alchangeliskii, descant and alto parts were traditionally sung by boys, mainly from serfs before their voices changed. As this became a social problem in Russia, Nikolai began to have girls sing the higher parts. 
+
+**Musical setting**
+
+A series of music books published in the Meiji Era have been used until
+quite recently. They are generally called “Yokonaga,” which literally
+meant “long sideways” because of its shape (length 20cm x width 25 cm).
+They were lithograph printed and bound with a hard cover. We can still
+find copies of them in many churches.
+
+In Russia, most simple hymns were not written down with musical notation, because they can be sung looking only at the texts, following osmoglasia rules, but in the case of Japan, all hymns, even litanies, were wirtten with musical notation.
+
+Two kinds of music books were published.
+
+(1)	for unison singing (for parish churches): 
+
+1.	sheet music was printed for separate occasions: Sunday Vigil, Liturgy, baptism, major feasts etc. (year issued unknown ).
+
+2.	for Pascha (40 pages) (estimated before 1877)
+
+3. 1882, combined volume for Sunday Vigil (95 pages), Liturgy (23 pages), Service for the Dead (47 pages), [[12]](#12)
+
+4.	1891, for major feasts (120 pages)
+
+combined volume book existed without mention of the date issued, (89 pages for major feasts 40 pages for Pascha).
+
+5.	date issued unknown, combined volume for Lenten (50 pages) and Passion week (72 pages)service.
+
+(2)	for four-voice choir, divided into four parts; descant, alto, tenor, bass: 
+
+1.	Two-volume set, printed in 1893; vol.1 with 156 pages for Sunday Vigil, vol.2 with 136 pages for Liturgy including pontifical Liturgy and ordination. 
+
+Based on Livov-Bachmetev Obichod, new original composition by Tichai added.
+
+2.	Music book for Pascha, Ascension, Pentecost and other additional feasts, 1900.  For the other major feasts, another music book is assumed to have been published, but I have not seen yet.
+
+3. 1907 edition; new compositions (63 pages) [[13]](#13)
+
+Those music books became the foundation of church singing in Japan.  In the 20th century, they would be rewritten in modern full score style but the melodies and texts were largely unchanged and some new songs were added. 
+
+**Original melodies; “Osmoglasia” and “Obichod”**
+
+What kind of melodies or traditional melody group (rospev) are they based on?   I think there were two pillars; “Osmoglasia” singing in the St. Petersburg tradition and “Obichod.”  
+
+“Osmoglasia” singing, which is almost unknown in Japan, has been a basic skill for church singers including the clergy. Usually Stichera, Tropari, and other simple hymns, Russian singers sing without sheet music, looking only at the texts in the service book. They sing putting words into simple melody patterns which they remember by heart. It is no doubt that Nikolai and other Russian clergy mastered osmoglasia singing. They could make tropari and stichera, putting Japanese texts with Russian melodies they remembered. Comparing with the melodies from the St. Petersburg tradition, ours are almost the same with a little change to simplify melodies and to avoid half tones unfamiliar to Japanese. In the case of Stichera tone 1, the Japanese melody consists of only three melody sets (upper), on contrast to the original St. Petersburg’s consists of five sets(below). And from the first pattern, two notes were omitted.
+
+There were some other linguistic problems: Slavic and Japanese are very different languages in the number of syllables, the grammatical structure and intonation.  In general, Japanese phrases consist of a lot of syllables.  For example, in “С нами Бог” (God be with us) there are only three syllables, in Japanese, “Kami wa warera to tomo ni su” there are 11 syllables.  Grammatically, in Slavic and other European languages, the word at the end of the phrase often performs an important role; on the contrary, in Japanese the last word is usually something unimportant like an auxiliary verb or a suffix.  If one put Japanese text to a Russian melody, additional words like prepositions in English should be sung in melismatic. Another problem was how to manage “n.”  Nikolai told Pozninev how to sing “n,” telling that in Japanese prosody, “n” was an independent syllable but Nikolai and Tichai could not agree to sing a long note with “n” as one syllable. (Pozninev, translated by K. Nakamura, Archbishop Nikolai and Japan in Meiji Era) .
+
+Nikolai and Tichai made trial pieces, practiced them in the services, revised,
+and practiced them again and again. Compared to the songs for feasts, coming
+once a year, Sunday hymns which are sung weekly sound better. [[14]](#14)
+
+In the case of four-voice scores, it is no doubt they referred to Obichod.  The “Yokonaga” music book published in 1891, on the colophon, said in its proviso, “Over half of these scores are based on the scores for four voice by the famous composer Livov and Bachmetev, translated (musically set) by Iakov Tichai.”  Because of fires and disasters, we have not found the book that Tichai used, but another copy of the second volume of Bachmetev’s Obichod of 1869 was found in a church in Kobe.  Observing this Obichod, some interesting facts appeared.  
+
+Looking at cherubic hymns by Bortnyanskii, the framework of the melodies
+and harmony structures are almost the same in Slavic originals and in Japanese,
+but the same notes happened to repeat many times to fill the number of
+syllables in Japanese texts and the original triple time rhythm disappeared.
+
+In the case of Great Litany, the rhythm was maintained, but the harmony construction was replaced. Both the Obichod and Japanese take open harmony, whose interval between soprano and alto is a sixth. In the case
+of Japanese, the original soprano’s melody went to the alto one octave
+lower, the alto’s melody to the tenor, the tenor’s melody to soprano
+in one octave higher. In the Obichod of 1869, the first antiphon in Liturgy
+was in narrow harmony, however in Japanese, it is in open harmony. I do
+not know why Tichai made such a complicated change, but one conjecture
+is that he took into consideration the Japanese’ voice range.
+
+As a result of these changes, the principal melody was moved to the inner parts, and original notes from other parts were moved to the soprano. Therefore people became to think four-voice and unison had different principal melodies.[[15]](#15) In addition to the above, there are many cases where the unison’s melodies
+
+were taken automatically from the alto part, which sound very strange to sung alone. 
+
+Another point worthy of notice is that these music books contained many of Tichai’s new compositions.  However in Russia new composition had been strictly limited by censorship at that time.  Finally censorship in Russia stopped and a new Obichod was published in 1901 and many new compositions were introduced.  In Japan a new music book was published in 1907, which contained new songs by Tulchaninov, Orolov, Rostovskii etc.  As Tichai had already left Japan, this edition was compiled by his successor, Deacon Demitrii Livovskii, and Japanese musicians, Tokairin, Kisu, and Obara.  Russian Obichod 1901 used G-clef in notation for higher three parts, however Japan’s used C-Clef
+
+Generally speaking, Tichai’s work was very successful.  According to a report in 1878, Tokyo Cathedral had a well-trained four-voice choir consisting of the seminary and the girls’ school students.  The beautiful chorus became famous in Tokyo and even students from Tokyo Music Academy often visited to learn polyphonic singing.  
+
+At that time, Japanese were earnestly absorbing western culture, and Orthodox
+church singing was accepted as expression of the high-level western music
+and culture. Church members tended to evaluate their church singing as
+good music.
+
+Another unfortunate matter that hindered growing of real church singing was the low salaries for church-related work. Many graduates, not only from seminary and church singing school but also those who had had advanced study in academies in Russia, spent much time earning a living, and even worse, some left church work for government and companies. Generally speaking, many Japanese, even church members, misunderstood Christianity as a kind of developed culture from Europe. Nikolai reminisced his embarrassments for the gap with Japanese. Nikolai wanted to focus on bringing the true joy of the Gospel,but many Japanese people , even some clergy, became interested in Orthodoxy in order to receive western culture and its benefites. (Archpriest Prokl Ushimaru, “History of the Orthodox Church in Japan,” The Orthodox Church in Japan).
+
+**Nikolai's wish----True Japanese singing**
+
+Nikolai never wished to promote Russian tradition, but brought true Orthodoxy
+to Japan. There are some examples in his diary to show he was glad to see
+Japanized customs; April 6, 1901, he was so happy to see people taking
+blossoming cherry twigs for Palm Sunday; on June 4, 1892, when he visited
+Tokushima, he heard six girls sing in “very strange melodies in minor
+tone” and he loved it. He said, “It was clear unison. I wonder if I should
+send a singing teacher to correct their melodies…. No! How nice that an
+original melody has been born! Why do we try to make all music the same!”
+
+They say Nikolai sometimes scolded bad singing.  Looking at his diary, we see that he warned and advised when singing disturbed the service.  However, he never criticized their skill or compelled them to keep the original Russian melodies.  He was glad to hear Japanese melodies.  He just wanted people to gather and sing in one voice in Japanese.
+
+However, against his wish, melodies lost their flexibility for various
+reasons. First, the music was written in staff notation, so people thought
+they have to sing every note exactly as written, like western secular music,
+without concern for the texts. Also when Nikolai became a saint, people
+thought they must not change anything about the music that a saint had
+blessed. Another misunderstanding was that four-voice choirs had been praised
+too much, so many people felt bounded to keep Russian style choral singing
+as the only correct Orthodox traditional singing style. The kind of Japanese
+singing that Nikolai envisioned has not appeared yet. 
+
+**Conclusion**
+
+Looking over St. Nikolai’s life, we recognize how earnestly he did his best to plant Orthodoxy in Japan.  Because he knew the importance of singing in liturgy, he hastened to put Japanese singing into practice, and then, he added more step by step.  Many of us imagine St. Nikolai accomplished this all at once by some kind of super power when, in fact, it required a lot of effort and revision.  His biography says he continued translation until the very end of his life.  In other words, I think he always thought his work was not yet finished but still in progress.  
+
+Thanks to Nikolai and his colleagues’ efforts, we can pray in Japanese.
+It is a great gift but there are still many problems to be solved. I think,
+he might ask us to succeed his work and to develop our own tradition. Orthodox
+Tradition should not be just keeping past monuments. Since I am grateful
+to receive such a great heritage, I never expect drastic revision or radical
+reformation. However, just a little adjustment seems to be necessary. For
+example, with a little effort to pay attention to the texts and phrasing,
+and to adjust the musical setting to arrange for easier harmonization,
+we can make hymns more understandable and easier to sing for church members.
+
+In conclusion, I would like to introduce some words on church singing from St. Nikolai’s diary, which always encourages me:
+
+“In Church, clergy and choirs must read and sing well. If people who pray
+listen carefully to them, the teaching of Christianity will come into their
+soul like the sea, teaching dogma and radiating wisdom. By the holy poems
+(in prayers), they give life to the heart, encourage their will, and make
+them into holy examples… Our liturgical songs are bright, living, God-authorized
+sermons and prayers. Through the mouths of the churches all over the world,
+we sing with the voice of the Fathers, filled with the Holy Spirit.”(December
+24, 1904)
+
+1. St. Innokenti of Alaska. Young Nikolai met him in Kamchatska and received important advice.
+
+2. In the book I referred to, they are mentioned as “converts.” However as Japan was a non-Christian country, I suppose this refers to their baptisms.
+
+3. Christian Journal, Jan. 1869, St. Petersburg, Pozninev, translated by K. Nakamura, Archbishop Nikolai and Japan in the Meiji Era
+
+4. According to the Book List of the Meiji Era complied by Rev. Jude Nushiro (Metropolitan Daniel of Tokyo)1974, “Songs for Pascha” with 17 pages, size 22 x 30 cm. And “Vigil” with 52 pages were printed around Meiji 10 (1877).
+
+5. In Great Litany, Bishop Martian of Kamchatska(1877-85 at this post) was commemorated. 
+
+6. Pavel Nakai’s family had organized “Kaitoku-do,” a famous private school for Chinese classical reading, a predecessor of Faculty of Literature of Osaka University. At that time, Pavel worked for the mission around Osaka.
+
+7.In addition to the above, Gospel in Chinese with special marks to show the word order and additional letters in order to read Chinese according to Japanese grammar, “訓点新約” was published.
+
+8. More accurate translation was pursued but it was difficult to catch the meaning through the ears since much depended on ideographic letters.
+
+9.
+
+10 For example, in the funeral service, the Trisagion is sung “Sei Tenshu, Sei Yuki, Sei Joseinaru mono yo….” The standard text in Liturgy is “Seinaru Kami, Seinaru Yuki, Seinaru Joseino mono yo…”, which causes misunderstanding that the song for Funeral is different from the Trisagion in the Liturgy.
+
+11 In Sendai, in 1873, with musical scores in their hands, “the Trisagion” and “Only Begotten Son” were sung in Japanese (The Orthodox in Japan, “History of the Mission in Japan”, 1900)
+
+12. For these two books #3 and #4, advertisements in Church Magazine, “Seikyo Sinpo”
+
+13.Those books are owned by the Church in Nagoya. Besides the above, other kinds of music books may be found. Further research is necessary.
+
+14. In case of irmos of the feasts, there are many complicated songs whose origins are unknown. It is supposed that someone brought scores from Russia and added words automatically without concern for intonation. Texts phrases and melody phrase often do not coincide.
+
+15. It caused strange phenomena; soon other parish church in large cities wanted to sing in four-voice chorus like the Tokyo Cathedral.  Some choir became so accustomed to singing in four parts that they were unable to sing in unison. 
+
+Referenced books
+
+Обиход 1869
+
+Е.Кустовский и Н.Потемаина ≪Осмогласия≫
+1999 Православные Московскик Регентские
+крусы
+
+Text
+book for Osmoglasia of St. Petersburg Seminary, Regent course, 
+
+J. V. Gardner “Russian Church Singing” vol. 1 SVS
+
+V. Morosan “Choral Performance in Pre-Revolutionary Russia” Musica
+Russica
+
+Orthodox Church Music, OCA

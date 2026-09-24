@@ -17,9 +17,11 @@ import { SettingsModal } from '../components/shared/SettingsModal';
 import { OnboardingModal } from '../components/onboarding/OnboardingModal';
 import { ScheduleAdminModal } from '../components/admin/ScheduleAdminModal';
 import { BackupModal } from '../components/shared/BackupModal';
+import { SiteFooter } from '../components/shared/SiteFooter';
 
 export default function Home() {
   const { activeTab } = useApp();
+  const isWebsiteTab = ['home', 'history', 'orthodoxy', 'access', 'sermons'].includes(activeTab);
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
@@ -36,6 +38,8 @@ export default function Home() {
         {activeTab === 'parish' && <ParishView />}
         {activeTab === 'reader' && <ReaderView />}
       </main>
+
+      {isWebsiteTab && <SiteFooter />}
 
       <BottomNav />
       <SettingsModal />

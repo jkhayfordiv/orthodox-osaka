@@ -520,25 +520,100 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const importBackupJson = (jsonStr: string) => {
+    const raw = jsonStr.trim();
+    if (!raw) {
+      return { success: false, prayerCount: 0, error: 'Empty backup data' };
+    }
+
     try {
-      const data = JSON.parse(jsonStr.trim());
-      if (!data || typeof data !== 'object') {
-        return { success: false, prayerCount: 0, error: 'Invalid backup file format' };
+      let data: any = null;
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        // Fallback: parse plain text name lists (e.g. one name per line or comma-separated)
+        const lines = raw.split(/[\r\n]+/).map(l => l.trim()).filter(Boolean);
+        if (lines.length > 0) {
+          let currentType: 'living' | 'departed' = 'living';
+          const items: PrayerListItem[] = [];
+          for (const line of lines) {
+            const lower = line.toLowerCase();
+            if (lower.includes('永眠') || lower.includes('departed') || lower.includes('死者') || lower.includes('安息')) {
+              currentType = 'departed';
+              continue;
+            }
+            if (lower.includes('生者') || lower.includes('living') || lower.includes('健康') || lower.includes('救い')) {
+              currentType = 'living';
+              continue;
+            }
+            // Split line by comma if multiple names on one line
+            const names = line.split(/[,、\t]+/).map(n => n.trim()).filter(Boolean);
+            for (const n of names) {
+              if (n.length > 0) {
+                items.push({
+                  id: 'prayer-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+                  type: currentType,
+                  name: n,
+                  createdAt: new Date().toISOString(),
+                });
+              }
+            }
+          }
+
+          if (items.length > 0) {
+            setManualPrayerList(items);
+            try {
+              localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(items));
+            } catch {}
+            return { success: true, prayerCount: items.length };
+          }
+        }
+        return { success: false, prayerCount: 0, error: 'Could not parse JSON or text file' };
       }
 
       let importedCount = 0;
+      let rawList: any[] = [];
 
-      // Import prayer list
-      if (Array.isArray(data.prayerList)) {
-        setManualPrayerList(data.prayerList);
-        try {
-          localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(data.prayerList));
-        } catch {}
-        importedCount = data.prayerList.length;
+      if (Array.isArray(data)) {
+        // Direct array of items or names
+        rawList = data;
+      } else if (data && typeof data === 'object') {
+        if (Array.isArray(data.prayerList)) rawList = data.prayerList;
+        else if (Array.isArray(data.prayers)) rawList = data.prayers;
+        else if (Array.isArray(data.names)) rawList = data.names;
+        else if (Array.isArray(data.diptychs)) rawList = data.diptychs;
       }
 
-      // Import family members
-      if (Array.isArray(data.familyMembers)) {
+      if (rawList.length > 0) {
+        const validated: PrayerListItem[] = rawList.map((item, idx) => {
+          if (typeof item === 'string') {
+            return {
+              id: 'prayer-' + Date.now() + '-' + idx,
+              type: 'living',
+              name: item,
+              createdAt: new Date().toISOString(),
+            };
+          }
+          return {
+            id: item.id || 'prayer-' + Date.now() + '-' + idx,
+            type: item.type === 'departed' ? 'departed' : 'living',
+            name: item.name || '無名',
+            baptismalName: item.baptismalName,
+            saintId: item.saintId,
+            relation: item.relation,
+            notes: item.notes,
+            createdAt: item.createdAt || new Date().toISOString(),
+          };
+        });
+
+        setManualPrayerList(validated);
+        try {
+          localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(validated));
+        } catch {}
+        importedCount = validated.length;
+      }
+
+      // Import family members if present
+      if (data && Array.isArray(data.familyMembers)) {
         setFamilyMembers(data.familyMembers);
         try {
           localStorage.setItem('orthodox_family_members', JSON.stringify(data.familyMembers));
@@ -546,24 +621,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Import patron saint
-      if (typeof data.patronSaintId === 'string' || data.patronSaintId === null) {
+      if (data && (typeof data.patronSaintId === 'string' || data.patronSaintId === null)) {
         setPatronSaintId(data.patronSaintId);
       }
 
       // Import preferences if present
-      if (data.locale && ['ja', 'en', 'ru'].includes(data.locale)) {
+      if (data && data.locale && ['ja', 'en', 'ru'].includes(data.locale)) {
         setLocale(data.locale);
       }
-      if (data.theme && ['light', 'dark'].includes(data.theme)) {
+      if (data && data.theme && ['light', 'dark'].includes(data.theme)) {
         setTheme(data.theme);
       }
-      if (data.fontSize && ['sm', 'base', 'lg', 'xl'].includes(data.fontSize)) {
+      if (data && data.fontSize && ['sm', 'base', 'lg', 'xl'].includes(data.fontSize)) {
         setFontSize(data.fontSize);
       }
 
       return { success: true, prayerCount: importedCount };
     } catch (err: any) {
-      return { success: false, prayerCount: 0, error: err.message || 'Could not parse JSON' };
+      return { success: false, prayerCount: 0, error: err.message || 'Import error' };
     }
   };
 

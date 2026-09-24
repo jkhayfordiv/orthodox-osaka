@@ -293,3 +293,210 @@ export const RECENT_SERMONS: SermonItem[] = [
     },
   },
 ];
+
+// ----------------------------------------------------
+// 2027 Winter Seminar: Rachmaninoff & Orthodox Bells Concert
+// ----------------------------------------------------
+export interface ConcertEventData {
+  title: TrilingualText;
+  subtitle: TrilingualText;
+  themePoem: TrilingualText;
+  artist: {
+    name: TrilingualText;
+    title: TrilingualText;
+    awards: TrilingualText;
+    profile: TrilingualText;
+  };
+  program: {
+    title: TrilingualText;
+    opus: string;
+    key?: TrilingualText;
+  }[];
+  date: {
+    fullDisplay: TrilingualText;
+    isoDate: string;
+    dayOfWeek: TrilingualText;
+    time: TrilingualText;
+    doorsOpen: TrilingualText;
+  };
+  venue: {
+    name: TrilingualText;
+    address: TrilingualText;
+    access: TrilingualText;
+  };
+  admission: {
+    price: string;
+    seating: TrilingualText;
+  };
+  reservationInfo: {
+    reservationStartDate: TrilingualText;
+    announcementPeriod: TrilingualText;
+    method: TrilingualText;
+    paymentMethods: TrilingualText;
+    email: string;
+    tel: string;
+  };
+  pdfFlyerUrl: string;
+  pdfBackgroundUrl: string;
+  flyerImages: {
+    p1: string;
+    p2: string;
+  };
+}
+
+export const CONCERT_EVENT_DATA: ConcertEventData = {
+  title: {
+    ja: 'ピアノとトーク「ラフマニノフと正教会の鐘」',
+    en: 'Piano & Talk: "Rachmaninoff and the Orthodox Bells"',
+    ru: 'Фортепианный вечер и беседа «Рахманинов и колокольный звон Православной Церкви»',
+  },
+  subtitle: {
+    ja: '西日本主教教区 2027年冬季セミナー',
+    en: 'Western Japan Diocese 2027 Winter Seminar',
+    ru: 'Зимний семинар Западно-Японской епархии 2027 г.',
+  },
+  themePoem: {
+    ja: 'ラフマニノフは敬虔な正教徒であった。その作品には、永遠の神への希求、世界への慈しみと悲しみ、それゆえの苦悩、そして、喜びが溢れている。ラフマニノフを愛し、ともに正教を生きるピアニスト土田定克が愛といのちの喜びの詩を語り奏でる。',
+    en: 'Sergei Rachmaninoff was a devout Orthodox Christian. In his music dwells an ardent longing for the eternal God, compassion and sorrow for the world, deep trials, and an overflowing joy. Pianist Sadakatsu Tsuchida, who shares this Orthodox life of faith, speaks and plays these poems of love and life.',
+    ru: 'Сергей Рахманинов был благочестивым православным христианином. В его произведениях звучит стремление к Богу, сострадание к миру и ликующая пасхальная радость. Пианист Матофей Садакацу Цутида откроет слушателям поэзию любви и вечной жизни.',
+  },
+  artist: {
+    name: {
+      ja: 'マトフェイ 土田 定克（ピアニスト）',
+      en: 'Matfei Sadakatsu Tsuchida (Pianist)',
+      ru: 'Матофей Садакацу Цутида (Пианист)',
+    },
+    title: {
+      ja: '尚絅学院大学教授 / 宮城学院女子大学音楽科非常勤講師 / 仙台ハリストス正教会聖歌指揮者',
+      en: 'Professor at Shokei Gakuin University / Lecturer at Miyagi Gakuin Women\'s University / Choir Director at Sendai Orthodox Church',
+      ru: 'Профессор университета Сёкэй Гакуин / Регент хора Сендайского православного прихода',
+    },
+    awards: {
+      ja: '第3回ラフマニノフ国際ピアノコンクール第1位（2002年・ロシア）',
+      en: '1st Prize, 3rd International Rachmaninoff Piano Competition (2002, Russia)',
+      ru: '1-я премия III Международного конкурса пианистов им. Рахманинова (2002 г., Россия)',
+    },
+    profile: {
+      ja: '1975年東京生まれ。桐朋学園大学ソリスト・ディプロマコースを経てロシアに留学し、モスクワ音楽院卒業、同大学院修了。小西由紀子、兼松雅子、坂田晴美、A.ムンドヤンツ、V.メルジャノフに師事。2002年第3回ラフマニノフ国際ピアノコンクール第1位。V.フェドセーエフ指揮モスクワ放送交響楽団、三ツ橋敬子指揮東京フィルハーモニー交響楽団等と協演。CD「ラフマニノフ 24のプレリュード」リリース。著書『ラフマニノフを弾け』、ロシア語版『Рахманинов глазами русского музыканта』。',
+      en: 'Born in Tokyo in 1975. Studied at Toho Gakuen and graduated from the Moscow Conservatory. Studied under V. Merzhanov and A. Mndoyants. 1st prize at the 3rd International Rachmaninoff Piano Competition in 2002. Performed with the Moscow Tchaikovsky Symphony Orchestra under V. Fedoseyev, Tokyo Philharmonic, and orchestras worldwide. Author of "Playing Rachmaninoff" and multiple CD recordings.',
+      ru: 'Родился в Токио в 1975 году. Окончил Московскую государственную консерваторию им. Чайковского и аспирантуру. Ученик проф. В. К. Мержанова и А. А. Мндоянца. Победитель III Международного конкурса пианистов им. Рахманинова (2002). Выступал с Большим симфоническим оркестром им. Чайковского под управлением В. Федосеева. Автор книги «Играйте Рахманинова».',
+    },
+  },
+  program: [
+    {
+      title: {
+        ja: '前奏曲「鐘」',
+        en: 'Prelude "The Bells"',
+        ru: 'Прелюдия «Колокола»',
+      },
+      opus: 'Op. 3, No. 2',
+      key: { ja: '嬰ハ短調', en: 'C-sharp minor', ru: 'до-диез минор' },
+    },
+    {
+      title: {
+        ja: '6つの楽興の時',
+        en: 'Six Moments Musicaux',
+        ru: 'Шесть музыкальных моментов',
+      },
+      opus: 'Op. 16',
+    },
+    {
+      title: {
+        ja: 'ピアノソナタ第2番',
+        en: 'Piano Sonata No. 2',
+        ru: 'Соната для фортепиано № 2',
+      },
+      opus: 'Op. 36',
+      key: { ja: '変ロ短調', en: 'B-flat minor', ru: 'си-бемоль минор' },
+    },
+    {
+      title: {
+        ja: '音の絵（練習曲）',
+        en: 'Études-Tableaux',
+        ru: 'Этюды-картины',
+      },
+      opus: 'Op. 39, No. 9',
+      key: { ja: 'ニ長調', en: 'D major', ru: 'ре мажор' },
+    },
+  ],
+  date: {
+    fullDisplay: {
+      ja: '2027年 2月23日（火・祝）',
+      en: 'Tuesday, February 23, 2027 (National Holiday)',
+      ru: 'Вторник, 23 февраля 2027 г. (Праздничный день)',
+    },
+    isoDate: '2027-02-23',
+    dayOfWeek: { ja: '火・祝', en: 'Tue (Holiday)', ru: 'Вт (праздник)' },
+    time: { ja: '14:00 開演', en: '2:00 PM Starts', ru: 'Начало в 14:00' },
+    doorsOpen: { ja: '13:30 開場', en: '1:30 PM Doors Open', ru: 'Вход с 13:30' },
+  },
+  venue: {
+    name: {
+      ja: '大阪ハリストス正教会 聖堂',
+      en: 'Osaka Orthodox Church Sanctuary',
+      ru: 'Храм Покрова Пресвятой Богородицы в Осаке',
+    },
+    address: {
+      ja: '大阪府吹田市山手町1-8-15',
+      en: '1-8-15 Yamate-cho, Suita-shi, Osaka',
+      ru: '1-8-15 Яматэ-тё, Суита, Осака',
+    },
+    access: {
+      ja: '阪急千里線「豊津駅」より徒歩5分 / JR京都線「吹田駅」より徒歩15分',
+      en: '5 min walk from Hankyu Toyotsu Station / 15 min walk from JR Suita Station',
+      ru: '5 минут пешком от ст. Тоёцу (линия Ханкю) / 15 минут от ст. Суита (JR)',
+    },
+  },
+  admission: {
+    price: '¥1,500',
+    seating: {
+      ja: '全席自由（限定100席）',
+      en: 'General Admission (Limited to 100 seats)',
+      ru: 'Свободная рассадка (Ограничение 100 мест)',
+    },
+  },
+  reservationInfo: {
+    reservationStartDate: {
+      ja: '2026年 12月1日より予約受付開始',
+      en: 'Reservations Open: December 1, 2026',
+      ru: 'Начало бронирования: 1 декабря 2026 г.',
+    },
+    announcementPeriod: {
+      ja: '詳細案内は11月上旬頃に当サイトにて公開いたします',
+      en: 'Detailed program and reservation details will be published in early November',
+      ru: 'Подробная информация о бронировании будет опубликована в начале ноября',
+    },
+    method: {
+      ja: 'メールでのお申し込み受付',
+      en: 'Reservations accepted via email',
+      ru: 'Прием заявок по электронной почте',
+    },
+    paymentMethods: {
+      ja: '郵便振替またはキャッシュレス決済（オンライン献金）',
+      en: 'Postal transfer or cashless online donation',
+      ru: 'Почтовый перевод или онлайн-пожертвование картой',
+    },
+    email: 'osaka.orthodox.church@gmail.com',
+    tel: '06-6288-4512',
+  },
+  pdfFlyerUrl: '/events/rachmaninoff-concert-2027.pdf',
+  pdfBackgroundUrl: '/events/rachmaninoff-concert-2027-background.pdf',
+  flyerImages: {
+    p1: '/events/rachmaninoff-flyer-p1.jpg',
+    p2: '/events/rachmaninoff-flyer-p2.jpg',
+  },
+};
+
+// ----------------------------------------------------
+// Bell Restoration Fund Progress
+// ----------------------------------------------------
+export const BELL_RESTORATION_PROGRESS = {
+  raisedAmount: '¥3,500,000',
+  targetAmount: '¥4,570,000',
+  percent: 76,
+  recentDonationNote: {
+    ja: '皆さまの温かいご祈祷とご支援により、目標457万円に対し現在350万円のご寄付が集まりました（先月は米国からの信徒ご夫妻より15万円のご献金を賜りました）。心より御礼申し上げます。',
+    en: 'Thanks to heartfelt prayers and generous gifts—including a ¥150,000 ($1,000) donation last month from an American couple—we have reached ¥3.5M toward our ¥4.57M goal. We offer our deepest gratitude to all benefactors.',
+    ru: 'Благодаря святым молитвам и пожертвованиям собрано 3,5 млн иен из 4,57 млн необходимых (в прошлом месяце православная семья из США пожертвовала 150 000 иен). Искренне благодарим всех благотворителей.',
+  },
+};
