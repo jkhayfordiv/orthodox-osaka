@@ -329,10 +329,10 @@ export function SettingsModal() {
                   <Download className="w-4 h-4" />
                   <span>
                     {locale === 'ja'
-                      ? 'Androidにアプリをインストール'
+                      ? 'アプリをインストール'
                       : locale === 'ru'
-                      ? 'Установить на телефон'
-                      : 'Install App on Phone'}
+                      ? 'Установить приложение'
+                      : 'Install App'}
                   </span>
                 </button>
               )}

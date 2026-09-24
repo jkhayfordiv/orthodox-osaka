@@ -11,7 +11,6 @@ import {
   Calendar as CalendarIcon,
   Church,
   BookOpen,
-  Download,
   Menu,
   X,
   Compass,
@@ -32,9 +31,6 @@ export function Header() {
     setSettingsOpen,
     activeTab,
     setActiveTab,
-    isInstallable,
-    isInstalled,
-    installApp,
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -99,7 +95,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-orthodox-navy text-white shadow-md border-b border-orthodox-gold/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 flex items-center justify-between">
         {/* Left: Church Icon & Title */}
         <div
           onClick={() => handleNavClick('home')}
@@ -125,14 +121,14 @@ export function Header() {
         </div>
 
         {/* Center: Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+        <nav className="hidden lg:flex items-center space-x-1 xl:space-x-3">
           {websiteNavItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all select-none ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all select-none ${
                   isActive
                     ? 'bg-orthodox-gold text-orthodox-navy shadow-sm'
                     : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -216,17 +212,6 @@ export function Header() {
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
-          {/* Install App Button */}
-          {isInstallable && !isInstalled && (
-            <button
-              onClick={installApp}
-              className="px-2 py-1.5 rounded-lg bg-orthodox-gold text-orthodox-navy font-bold text-xs hover:bg-orthodox-gold-dark transition-all flex items-center space-x-1 shadow-sm"
-              title={locale === 'ja' ? 'アプリ化' : locale === 'ru' ? 'Скачать' : 'Install'}
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{locale === 'ja' ? 'アプリ化' : locale === 'ru' ? 'Скачать' : 'Install'}</span>
-            </button>
-          )}
 
           {/* Settings Button */}
           <button
