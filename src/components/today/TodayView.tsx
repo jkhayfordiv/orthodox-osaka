@@ -17,7 +17,7 @@ import {
   Languages,
 } from 'lucide-react';
 import { formatJulianDate } from '../../lib/paschalion';
-import { Locale } from '../../lib/types';
+import { Locale, DayInfo, ScriptureReading } from '../../lib/types';
 import { TONE_NAMES } from '../../data/terminology';
 import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifications';
 import { FastingGuideModal } from '../shared/FastingGuideModal';
@@ -50,6 +50,56 @@ export function TodayView() {
 
   // Compute information for selectedDate
   const dayInfo = getDayInfo(selectedDate, parishSchedule);
+  const [enrichedDayInfo, setEnrichedDayInfo] = useState<DayInfo>(dayInfo);
+
+  // Sync and enrich readings when selectedDate changes
+  useEffect(() => {
+    setEnrichedDayInfo(dayInfo);
+
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(selectedDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+
+    let isCancelled = false;
+    fetch(`/api/calendar/${dateStr}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
+        setEnrichedDayInfo((prev: DayInfo) => {
+          const updatedReadings = prev.readings.map((r: ScriptureReading, i: number) => {
+            const apiReading = data.readings[i];
+            if (r.verses && r.verses.length > 0) return r;
+            if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
+              return {
+                ...r,
+                reference: apiReading.reference || r.reference,
+                text: {
+                  ja: r.text.ja,
+                  en: apiReading.fullTextEn || r.text.en,
+                  ru: r.text.ru,
+                },
+                verses: apiReading.verses.map((v: { verse: number; content: string }) => ({
+                  verse: v.verse,
+                  text: {
+                    ja: v.content,
+                    en: v.content,
+                    ru: v.content,
+                  },
+                })),
+              };
+            }
+            return r;
+          });
+          return { ...prev, readings: updatedReadings };
+        });
+      })
+      .catch(() => {});
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [selectedDate]);
 
   // Navigate dates
   const handlePrevDay = () => {
@@ -307,13 +357,18 @@ export function TodayView() {
         </div>
 
         <div className="space-y-3.5">
-          {dayInfo.readings.map((reading, idx) => {
+          {enrichedDayInfo.readings.map((reading, idx) => {
             const isEpistle = reading.source === 'Epistle';
             const isExpanded = expandedReading === (isEpistle ? 'epistle' : 'gospel');
 
-            // Check if full verse passage exists in SCRIPTURE_DATABASE
-            const dbKey = isEpistle ? 'Ephesians 3.8-21' : 'Mark 11.22-26';
-            const fullPassage = SCRIPTURE_DATABASE[dbKey];
+            // Find full verse passage from reading.verses or SCRIPTURE_DATABASE
+            const normalizedRef = reading.reference.replace(/–/g, '-').trim();
+            const fullPassage =
+              reading.verses && reading.verses.length > 0
+                ? { verses: reading.verses }
+                : SCRIPTURE_DATABASE[reading.reference] ||
+                  SCRIPTURE_DATABASE[normalizedRef] ||
+                  null;
 
             return (
               <div

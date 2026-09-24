@@ -4,7 +4,7 @@ import { getFastingRule } from './fasting';
 import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
 import { TONE_NAMES } from '../data/terminology';
 import { DAILY_SAINTS_JULIAN } from '../data/dailySaints';
-import { SCRIPTURE_DATABASE } from '../data/scripturePassages';
+import { getOldCalendarReadings } from './orthodoxLectionary';
 
 export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInfo {
   const year = date.getUTCFullYear();
@@ -277,76 +277,8 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
     ];
   }
 
-  // Daily Scripture Readings (Epistle & Gospel from SCRIPTURE_DATABASE)
-  let readings: ScriptureReading[] = [];
-
-  const ephReading = SCRIPTURE_DATABASE['Ephesians 3.8-21'];
-  const mrkReading = SCRIPTURE_DATABASE['Mark 11.22-26'];
-
-  if (month === 9 && day === 23 && ephReading && mrkReading) {
-    readings = [
-      {
-        source: 'Epistle',
-        book: ephReading.book,
-        reference: ephReading.display,
-        pericopeTan: ephReading.pericopeTan,
-        text: {
-          ja: ephReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n'),
-          en: ephReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n'),
-          ru: ephReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n'),
-        },
-      },
-      {
-        source: 'Gospel',
-        book: mrkReading.book,
-        reference: mrkReading.display,
-        pericopeTan: mrkReading.pericopeTan,
-        text: {
-          ja: mrkReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n'),
-          en: mrkReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n'),
-          ru: mrkReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n'),
-        },
-      },
-    ];
-  } else {
-    // Default readings template
-    readings = [
-      {
-        source: 'Epistle',
-        book: { ja: '使徒経（エフェソ書）', en: 'Epistle (Ephesians)', ru: 'Апостол (К Ефесянам)' },
-        reference: 'Ephesians 3:8–21',
-        pericopeTan: 223,
-        text: {
-          ja: ephReading
-            ? ephReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n')
-            : '使徒経朗読全文',
-          en: ephReading
-            ? ephReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n')
-            : 'Epistle reading full passage.',
-          ru: ephReading
-            ? ephReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n')
-            : 'Полное чтение Апостола.',
-        },
-      },
-      {
-        source: 'Gospel',
-        book: { ja: '福音経（マルコ福音）', en: 'Holy Gospel (Mark)', ru: 'Евангелие от Марка' },
-        reference: 'Mark 11:22–26',
-        pericopeTan: 51,
-        text: {
-          ja: mrkReading
-            ? mrkReading.verses.map((v) => `${v.verse}. ${v.text.ja}`).join('\n')
-            : '福音経朗読全文',
-          en: mrkReading
-            ? mrkReading.verses.map((v) => `${v.verse}. ${v.text.en}`).join('\n')
-            : 'Gospel reading full passage.',
-          ru: mrkReading
-            ? mrkReading.verses.map((v) => `${v.verse}. ${v.text.ru}`).join('\n')
-            : 'Полное чтение Евангелия.',
-        },
-      },
-    ];
-  }
+  // Daily Scripture Readings according to Orthodox Old Calendar Lectionary
+  const readings: ScriptureReading[] = getOldCalendarReadings(date, cycle.pascha);
 
   // Match parish services for this specific date
   const scheduleSource = customSchedule && customSchedule.length > 0 ? customSchedule : PARISH_SCHEDULE_2026;

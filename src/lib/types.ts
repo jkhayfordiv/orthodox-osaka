@@ -38,6 +38,7 @@ export interface ScriptureReading {
   reference: string;
   pericopeTan?: number; // 端 (Tan / Зачало)
   text: TrilingualText;
+  verses?: { verse: number; text: TrilingualText }[];
 }
 
 export interface SaintCommemoration {
