@@ -21,8 +21,6 @@ import {
   Sparkles,
   Church,
   ChevronRight,
-  FileText,
-  Download,
   CalendarDays,
   Compass,
   ArrowUpRight,
@@ -199,143 +197,68 @@ export function HomeWebsiteView() {
         <ConcertEventSection />
 
         {/* ========================================================
-            FEATURE 2: SIDE-BY-SIDE 2-COLUMN GRID
-            (Left 6: Weekly Bulletin & Guide | Right 6: Latest Sermon with Gospel Icon)
+            FEATURE 2: LATEST SUNDAY SERMON WITH GOSPEL ICON
         ======================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* LEFT 6 COLS: Weekly Parish Bulletin & Guide */}
-          <div className="lg:col-span-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-orthodox-gold/20 text-orthodox-gold flex items-center justify-center">
-                    <FileText className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-orthodox-gold">
-                    {locale === 'ja' ? '教会報・公式パンフレット' : locale === 'ru' ? 'Приходской вестник' : 'Weekly Parish Bulletin'}
-                  </span>
-                </div>
-                <span className="text-xs text-slate-400 font-mono">PDF</span>
+        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 md:p-10 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-orthodox-gold/20 text-orthodox-gold flex items-center justify-center">
+                <BookOpen className="w-4 h-4" />
               </div>
-
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-                {locale === 'ja'
-                  ? '吹田聖堂の由来と今週の教会報'
-                  : locale === 'ru'
-                  ? 'Официальный буклет храма и расписание'
-                  : 'Parish Guide & Weekly Bulletin'}
-              </h3>
-
-              <p className="font-serif text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                {locale === 'ja'
-                  ? '聖堂の由来、奉神礼の流れ、信徒の心得が記載された総合案内パンフレットです。今週の信徒の集いや行事予定もご確認いただけます。'
-                  : locale === 'ru'
-                  ? 'Официальный буклет прихода с описанием богослужений, историей храма и актуальным расписанием.'
-                  : 'Comprehensive introductory booklet and weekly bulletin covering church history, liturgical service orders, and schedule.'}
-              </p>
-
-              {/* Preview Box */}
-              <div className="p-4 rounded-2xl bg-amber-50/60 dark:bg-slate-800/60 border border-amber-200/60 dark:border-slate-700 flex items-center gap-3.5">
-                <div className="w-12 h-16 rounded-lg bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 shadow-xs flex items-center justify-center text-amber-800 dark:text-amber-200 flex-shrink-0">
-                  <FileText className="w-7 h-7" />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white truncate">
-                    Osaka Orthodox Church Bulletin (English / Japanese)
-                  </div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                    PDF Document · 2.4 MB
-                  </div>
-                </div>
-              </div>
+              <span className="text-xs font-bold uppercase tracking-wider text-orthodox-gold">
+                {locale === 'ja' ? '最新の主日説教' : locale === 'ru' ? 'Слово пастыря' : 'Sunday Sermon & Gospel'}
+              </span>
             </div>
-
-            <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-              <a
-                href="https://orthodox-jp.com/osaka/wp-content/uploads/2025/05/English.pdf"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm flex-1"
-              >
-                <Download className="w-4 h-4 text-orthodox-gold" />
-                <span>{locale === 'ja' ? '教会報PDFを閲覧・保存' : locale === 'ru' ? 'Скачать PDF' : 'Download Guide & Bulletin'}</span>
-                <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-              </a>
-
-              <button
-                onClick={() => setActiveTab('access')}
-                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs sm:text-sm transition-colors text-center"
-              >
-                {locale === 'ja' ? '参祷マナーを見る' : locale === 'ru' ? 'Правила храма' : 'Visitor Guide'}
-              </button>
-            </div>
+            <span className="text-xs text-slate-400 font-mono font-medium">{latestSermon.date}</span>
           </div>
 
-          {/* RIGHT 6 COLS: Latest Sunday Sermon with Gospel Icon */}
-          <div className="lg:col-span-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-orthodox-gold/20 text-orthodox-gold flex items-center justify-center">
-                    <BookOpen className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-orthodox-gold">
-                    {locale === 'ja' ? '最新の主日説教' : locale === 'ru' ? 'Слово пастыря' : 'Sunday Sermon & Gospel'}
-                  </span>
-                </div>
-                <span className="text-xs text-slate-400 font-mono">{latestSermon.date}</span>
-              </div>
-
-              {/* Flex row with Icon + Title */}
-              <div className="flex items-start gap-4">
-                {latestSermon.iconImage && (
-                  <div className="w-24 sm:w-28 flex-shrink-0 rounded-2xl overflow-hidden shadow-md border border-amber-900/15 dark:border-amber-400/25 bg-amber-50 p-1">
-                    <img
-                      src={latestSermon.iconImage}
-                      alt={latestSermon.iconAlt || latestSermon.title}
-                      className="w-full h-auto object-cover rounded-xl"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-                <div className="min-w-0 space-y-1.5 flex-1">
-                  <h3 className="font-serif text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-snug">
-                    {latestSermon.title}
-                  </h3>
-                  <div className="text-[11px] font-serif italic text-orthodox-navy dark:text-amber-200">
-                    {locale === 'ja'
-                      ? '父と子と聖神の名によりて'
-                      : locale === 'ru'
-                      ? 'Во имя Отца и Сына и Святого Духа.'
-                      : 'In the Name of the Father, and of the Son, and of the Holy Spirit.'}
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center">
+            {latestSermon.iconImage && (
+              <div className="md:col-span-4 lg:col-span-3 flex justify-center">
+                <div className="w-40 sm:w-48 md:w-full rounded-2xl overflow-hidden shadow-md border border-amber-900/15 dark:border-amber-400/25 bg-amber-50 p-1">
+                  <img
+                    src={latestSermon.iconImage}
+                    alt={latestSermon.iconAlt || latestSermon.title}
+                    className="w-full h-auto object-cover rounded-xl"
+                    loading="lazy"
+                  />
                 </div>
               </div>
-
-              <p className="font-serif text-xs sm:text-sm text-slate-600 dark:text-slate-300 line-clamp-4 leading-relaxed">
+            )}
+            <div className={`${latestSermon.iconImage ? 'md:col-span-8 lg:col-span-9' : 'md:col-span-12'} space-y-3`}>
+              <h3 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white leading-snug">
+                {latestSermon.title}
+              </h3>
+              <div className="text-xs sm:text-sm font-serif italic text-orthodox-navy dark:text-amber-200">
+                {locale === 'ja'
+                  ? '父と子と聖神の名によりて'
+                  : locale === 'ru'
+                  ? 'Во имя Отца и Сына и Святого Духа.'
+                  : 'In the Name of the Father, and of the Son, and of the Holy Spirit.'}
+              </div>
+              <p className="font-serif text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-4">
                 {latestSermon.excerpt}
               </p>
-            </div>
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
+                <button
+                  onClick={() => setActiveTab('sermons')}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
+                >
+                  <BookOpen className="w-4 h-4 text-orthodox-gold" />
+                  <span>
+                    {locale === 'ja'
+                      ? '説教全文を読む（全495編）'
+                      : locale === 'ru'
+                      ? 'Читать полностью (Архив 495 бесед)'
+                      : 'Read Full Sermon & Archive (495)'}
+                  </span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
 
-            <div className="pt-2 flex items-center justify-between">
-              <button
-                onClick={() => setActiveTab('sermons')}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
-              >
-                <BookOpen className="w-4 h-4 text-orthodox-gold" />
-                <span>
-                  {locale === 'ja'
-                    ? '説教全文を読む（全495編）'
-                    : locale === 'ru'
-                    ? 'Читать полностью (Архив 495 бесед)'
-                    : 'Read Full Sermon & Archive (495)'}
+                <span className="text-xs text-slate-400 font-serif italic hidden sm:inline">
+                  {PARISH_INFO.name[locale]}
                 </span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-
-              <span className="text-xs text-slate-400 font-serif italic hidden sm:inline">
-                {PARISH_INFO.name[locale]}
-              </span>
+              </div>
             </div>
           </div>
         </div>

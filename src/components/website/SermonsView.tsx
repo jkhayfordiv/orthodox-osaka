@@ -8,8 +8,6 @@ import {
   BookOpen,
   ArrowLeft,
   Calendar,
-  FileText,
-  Download,
   Search,
   X,
   ExternalLink,
@@ -240,42 +238,6 @@ export function SermonsView() {
 
       {/* Main Content Area */}
       <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
-        {/* PDF Bulletin Banner */}
-        <div className="rounded-3xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/70 dark:bg-amber-950/20 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm backdrop-blur-xs">
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-orthodox-gold/20 text-orthodox-gold flex items-center justify-center flex-shrink-0">
-              <FileText className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white">
-                {locale === 'ja'
-                  ? '吹田聖堂 教会報・英語版パンフレット（PDF）'
-                  : locale === 'ru'
-                  ? 'Приходской буклет и расписание (PDF)'
-                  : 'Parish English Bulletin & Guide (PDF)'}
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                {locale === 'ja'
-                  ? '聖堂の由来、礼拝の流れ、信徒の心得が記載された公式案内です。'
-                  : locale === 'ru'
-                  ? 'Официальный буклет прихода с расписанием и описанием храма.'
-                  : 'Comprehensive introductory booklet and schedule.'}
-              </p>
-            </div>
-          </div>
-
-          <a
-            href="https://orthodox-jp.com/osaka/wp-content/uploads/2025/05/English.pdf"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs transition-colors shadow-sm flex-shrink-0"
-          >
-            <Download className="w-4 h-4" />
-            <span>{locale === 'ja' ? 'PDFダウンロード' : locale === 'ru' ? 'Скачать PDF' : 'Download PDF'}</span>
-            <ExternalLink className="w-3.5 h-3.5 opacity-80" />
-          </a>
-        </div>
-
         {/* Search & Filter Toolbar */}
         <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
