@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ImageIcon,
+  Clock,
 } from 'lucide-react';
 import { Locale } from '../../lib/types';
 
@@ -363,6 +364,18 @@ export function SermonsView() {
                     <span className="font-mono font-bold text-slate-700 dark:text-slate-300">
                       {activeSermon.date}
                     </span>
+                    {activeSermon.dateTime && new Date(activeSermon.dateTime).getTime() > Date.now() && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-200 text-2xs font-semibold border border-amber-300/40">
+                        <Clock className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                        <span>
+                          {locale === 'ja'
+                            ? '9月26日(土) 午前7:00 公開予定'
+                            : locale === 'ru'
+                            ? 'Публикация: 26 сентября в 7:00'
+                            : 'To be published: Saturday, Sep 26 at 7:00 AM'}
+                        </span>
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -393,16 +406,6 @@ export function SermonsView() {
                         loading="eager"
                         referrerPolicy="no-referrer"
                       />
-                    </div>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs text-amber-800/80 dark:text-orthodox-gold font-serif italic tracking-wide">
-                      <Sparkles className="w-3.5 h-3.5 text-orthodox-gold" />
-                      <span>
-                        {locale === 'ja'
-                          ? '主日福音イコン'
-                          : locale === 'ru'
-                          ? 'Икона воскресного Евангелия'
-                          : 'Holy Gospel Icon of the Day'}
-                      </span>
                     </div>
                   </div>
                 )}
@@ -530,7 +533,14 @@ export function SermonsView() {
                       {/* Info */}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-0.5">
-                          <span>{sermon.date}</span>
+                          <span className="flex items-center gap-1.5">
+                            <span>{sermon.date}</span>
+                            {sermon.dateTime && new Date(sermon.dateTime).getTime() > Date.now() && (
+                              <span className="px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[10px] font-sans font-medium">
+                                {locale === 'ja' ? '公開予定' : locale === 'ru' ? 'Запланировано' : 'Scheduled'}
+                              </span>
+                            )}
+                          </span>
                           <span className="uppercase text-[10px] font-bold text-orthodox-gold">
                             {sermon.language}
                           </span>
