@@ -15,6 +15,7 @@ import {
   Check,
   ChevronDown,
   Sparkles,
+  QrCode,
 } from 'lucide-react';
 
 interface DiptychsViewProps {
@@ -22,7 +23,15 @@ interface DiptychsViewProps {
 }
 
 export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
-  const { locale, prayerList, addPrayerItem, updatePrayerItem, removePrayerItem, allSaints } = useApp();
+  const {
+    locale,
+    prayerList,
+    addPrayerItem,
+    updatePrayerItem,
+    removePrayerItem,
+    allSaints,
+    setBackupModalOpen,
+  } = useApp();
 
   // 'prayer' = easy reading while chanting; 'manage' = adding/editing list
   const [activeView, setActiveView] = useState<'prayer' | 'manage'>('prayer');
@@ -210,6 +219,14 @@ export function DiptychsView({ embeddedMode = false }: DiptychsViewProps) {
               >
                 <Edit2 className="w-3.5 h-3.5" />
                 <span>{locale === 'ja' ? '名簿の編集' : locale === 'ru' ? 'Редактировать' : 'Manage'}</span>
+              </button>
+              <button
+                onClick={() => setBackupModalOpen(true)}
+                title={locale === 'ja' ? 'データの保存・端末引き継ぎ' : locale === 'ru' ? 'Резервная копия' : 'Backup & Transfer'}
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-orthodox-gold-light hover:text-white hover:bg-white/10 border-l border-slate-700 pl-2.5 ml-1"
+              >
+                <QrCode className="w-3.5 h-3.5 text-orthodox-gold" />
+                <span className="hidden sm:inline">{locale === 'ja' ? '引き継ぎ・保存' : locale === 'ru' ? 'Перенос' : 'Transfer'}</span>
               </button>
             </div>
           </div>

@@ -16,6 +16,7 @@ import { ReaderView } from '../components/reader/ReaderView';
 import { SettingsModal } from '../components/shared/SettingsModal';
 import { OnboardingModal } from '../components/onboarding/OnboardingModal';
 import { ScheduleAdminModal } from '../components/admin/ScheduleAdminModal';
+import { BackupModal } from '../components/shared/BackupModal';
 
 export default function Home() {
   const { activeTab } = useApp();
@@ -40,6 +41,7 @@ export default function Home() {
       <SettingsModal />
       <OnboardingModal />
       <ScheduleAdminModal />
+      <BackupModal />
     </div>
   );
 }

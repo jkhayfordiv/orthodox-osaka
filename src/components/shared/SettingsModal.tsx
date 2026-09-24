@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp, FontSize } from '../../context/AppContext';
-import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell, Smartphone, Download, CheckCircle, Calendar, ChevronRight } from 'lucide-react';
+import { X, Globe, Sun, Moon, Type, Award, Users, HelpCircle, Bell, Smartphone, Download, CheckCircle, Calendar, ChevronRight, QrCode } from 'lucide-react';
 import { Locale } from '../../lib/types';
 import { SaintSearchCombobox } from './SaintSearchCombobox';
 import { isNotificationSupported, getNotificationPermission } from '../../lib/notifications';
@@ -32,6 +32,8 @@ export function SettingsModal() {
     isInstalled,
     installApp,
     setAdminModalOpen,
+    setBackupModalOpen,
+    prayerList,
   } = useApp();
 
   const [newMemberName, setNewMemberName] = useState('');
@@ -372,6 +374,51 @@ export function SettingsModal() {
                   </ol>
                 </div>
               </div>
+            </section>
+
+            {/* 7. Data Backup & Device Transfer */}
+            <section className="p-3.5 bg-white dark:bg-slate-800 rounded-xl border border-orthodox-gold/40 shadow-xs space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <QrCode className="w-4 h-4 text-orthodox-gold" />
+                  <span className="text-sm font-bold block text-slate-800 dark:text-slate-100">
+                    {locale === 'ja'
+                      ? 'データの保存と端末引き継ぎ'
+                      : locale === 'ru'
+                      ? 'Резервная копия и перенос'
+                      : 'Data Backup & Transfer'}
+                  </span>
+                </div>
+                <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                  {prayerList.length} {locale === 'ja' ? '名' : 'names'}
+                </span>
+              </div>
+
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                {locale === 'ja'
+                  ? '機種変更や紛失に備えて、祈り名や聖名日をQRコードで新しい端末に転送したり、ファイルにバックアップできます（完全非公開・端末内完結）。'
+                  : locale === 'ru'
+                  ? 'Перенесите помянник на новый телефон по QR-коду или сохраните резервный файл без регистрации.'
+                  : 'Transfer your prayer list to a new phone via QR code or export a private backup file without creating an account.'}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSettingsOpen(false);
+                  setBackupModalOpen(true);
+                }}
+                className="w-full py-2.5 px-4 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm shadow-xs flex items-center justify-center space-x-2 transition-all"
+              >
+                <QrCode className="w-4 h-4 text-orthodox-gold" />
+                <span>
+                  {locale === 'ja'
+                    ? 'QR引き継ぎ・バックアップを開く'
+                    : locale === 'ru'
+                    ? 'Открыть меню переноса (QR/файл)'
+                    : 'Open QR Transfer & Backup'}
+                </span>
+              </button>
             </section>
 
             {/* Parish Schedule Admin Access */}

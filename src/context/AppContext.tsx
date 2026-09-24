@@ -68,6 +68,10 @@ interface AppContextType {
   resetParishSchedule: () => void;
   adminModalOpen: boolean;
   setAdminModalOpen: (open: boolean) => void;
+  backupModalOpen: boolean;
+  setBackupModalOpen: (open: boolean) => void;
+  exportBackupJson: () => string;
+  importBackupJson: (jsonStr: string) => { success: boolean; prayerCount: number; error?: string };
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -92,6 +96,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [showTooltips, setShowTooltipsState] = useState<boolean>(true);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
+  const [backupModalOpen, setBackupModalOpen] = useState<boolean>(false);
   const [customSchedule, setCustomSchedule] = useState<ParishService[]>([]);
   const [mounted, setMounted] = useState(false);
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
@@ -498,6 +503,70 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   };
 
+  const exportBackupJson = () => {
+    const backupData = {
+      app: 'orthodox-osaka',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      locale,
+      theme,
+      fontSize,
+      patronSaintId,
+      familyMembers,
+      prayerList: manualPrayerList,
+      notificationPrefs,
+    };
+    return JSON.stringify(backupData, null, 2);
+  };
+
+  const importBackupJson = (jsonStr: string) => {
+    try {
+      const data = JSON.parse(jsonStr.trim());
+      if (!data || typeof data !== 'object') {
+        return { success: false, prayerCount: 0, error: 'Invalid backup file format' };
+      }
+
+      let importedCount = 0;
+
+      // Import prayer list
+      if (Array.isArray(data.prayerList)) {
+        setManualPrayerList(data.prayerList);
+        try {
+          localStorage.setItem('orthodox_manual_prayer_list', JSON.stringify(data.prayerList));
+        } catch {}
+        importedCount = data.prayerList.length;
+      }
+
+      // Import family members
+      if (Array.isArray(data.familyMembers)) {
+        setFamilyMembers(data.familyMembers);
+        try {
+          localStorage.setItem('orthodox_family_members', JSON.stringify(data.familyMembers));
+        } catch {}
+      }
+
+      // Import patron saint
+      if (typeof data.patronSaintId === 'string' || data.patronSaintId === null) {
+        setPatronSaintId(data.patronSaintId);
+      }
+
+      // Import preferences if present
+      if (data.locale && ['ja', 'en', 'ru'].includes(data.locale)) {
+        setLocale(data.locale);
+      }
+      if (data.theme && ['light', 'dark'].includes(data.theme)) {
+        setTheme(data.theme);
+      }
+      if (data.fontSize && ['sm', 'base', 'lg', 'xl'].includes(data.fontSize)) {
+        setFontSize(data.fontSize);
+      }
+
+      return { success: true, prayerCount: importedCount };
+    } catch (err: any) {
+      return { success: false, prayerCount: 0, error: err.message || 'Could not parse JSON' };
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -544,6 +613,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         resetParishSchedule,
         adminModalOpen,
         setAdminModalOpen,
+        backupModalOpen,
+        setBackupModalOpen,
+        exportBackupJson,
+        importBackupJson,
       }}
     >
       <div
