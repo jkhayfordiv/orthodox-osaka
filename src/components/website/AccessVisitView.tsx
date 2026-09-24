@@ -8,7 +8,6 @@ import {
   Clock,
   Phone,
   Mail,
-  ArrowLeft,
   Navigation,
   Info,
   ExternalLink,
@@ -35,14 +34,6 @@ export function AccessVisitView() {
         <div className="absolute inset-0 bg-gradient-to-r from-orthodox-navy via-orthodox-navy/95 to-orthodox-navy/85 z-0" />
 
         <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto relative z-10">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-orthodox-gold hover:text-white mb-4 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>{locale === 'ja' ? 'トップページに戻る' : locale === 'ru' ? 'На главную' : 'Back to Home'}</span>
-          </button>
-
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orthodox-gold/20 border border-orthodox-gold/40 text-orthodox-gold-light text-xs font-semibold mb-3">
             <MapPin className="w-3.5 h-3.5" />
             <span>{locale === 'ja' ? '交通アクセス・参祷案内' : locale === 'ru' ? 'Адрес и визиты' : 'Location & Visiting Guide'}</span>

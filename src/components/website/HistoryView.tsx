@@ -4,7 +4,7 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { PARISH_HISTORY_DATA } from '../../data/parishWebsiteData';
 import { PARISH_INFO } from '../../data/terminology';
-import { Church, ArrowLeft, BookOpen, Clock, Award, Shield, Sparkles, MapPin } from 'lucide-react';
+import { Church, BookOpen, Clock, Award, Shield, Sparkles, MapPin } from 'lucide-react';
 
 export function HistoryView() {
   const { locale, setActiveTab } = useApp();
@@ -23,14 +23,6 @@ export function HistoryView() {
         <div className="absolute inset-0 bg-gradient-to-r from-orthodox-navy via-orthodox-navy/95 to-orthodox-navy/85 z-0" />
 
         <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto relative z-10">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-orthodox-gold hover:text-white mb-4 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>{locale === 'ja' ? 'トップページに戻る' : locale === 'ru' ? 'На главную' : 'Back to Home'}</span>
-          </button>
-
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orthodox-gold/20 border border-orthodox-gold/40 text-orthodox-gold-light text-xs font-semibold mb-3">
             <Award className="w-3.5 h-3.5" />
             <span>
@@ -208,15 +200,7 @@ export function HistoryView() {
         </div>
 
         {/* Bottom Navigation Ribbon */}
-        <div className="pt-4 flex items-center justify-between">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="text-xs font-semibold text-orthodox-gold hover:text-orthodox-gold-light inline-flex items-center gap-1.5"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>{locale === 'ja' ? 'トップページに戻る' : locale === 'ru' ? 'На главную' : 'Back to Home'}</span>
-          </button>
-
+        <div className="pt-4 flex items-center justify-end">
           <button
             onClick={() => setActiveTab('access')}
             className="px-5 py-2.5 rounded-xl bg-orthodox-gold text-orthodox-navy font-bold text-xs shadow-sm hover:bg-orthodox-gold-light transition-all"

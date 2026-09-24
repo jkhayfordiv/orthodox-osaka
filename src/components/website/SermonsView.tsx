@@ -6,7 +6,6 @@ import { SERMONS_ARCHIVE, ArchivedSermon, getSermonYears } from '../../data/serm
 import { PARISH_INFO } from '../../data/terminology';
 import {
   BookOpen,
-  ArrowLeft,
   Calendar,
   Search,
   X,
@@ -206,14 +205,6 @@ export function SermonsView() {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-orthodox-navy/75 z-0" />
 
         <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto w-full relative z-10">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center gap-2 text-xs font-bold text-orthodox-gold hover:text-white mb-4 px-3 py-1.5 rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{locale === 'ja' ? 'トップページに戻る' : locale === 'ru' ? 'На главную' : 'Back to Home'}</span>
-          </button>
-
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orthodox-gold/25 backdrop-blur-md border border-orthodox-gold/40 text-orthodox-gold-light text-xs font-semibold mb-3">
             <BookOpen className="w-3.5 h-3.5" />
             <span>
