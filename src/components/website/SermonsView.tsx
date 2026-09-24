@@ -45,6 +45,12 @@ export function SermonsView() {
   const [selectedYear, setSelectedYear] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Sync active language when site locale changes
+  React.useEffect(() => {
+    setActiveLang(locale);
+    setSelectedSermonId(null);
+  }, [locale]);
+
   // Available years from archive
   const years = useMemo(() => getSermonYears(), []);
 
@@ -79,10 +85,18 @@ export function SermonsView() {
   const activeSermon: ArchivedSermon | undefined = useMemo(() => {
     if (selectedSermonId !== null) {
       const found = SERMONS_ARCHIVE.find((s) => s.id === selectedSermonId);
-      if (found) return found;
+      // Strictly enforce that the active sermon must match the active language!
+      if (found && found.language === activeLang) {
+        return found;
+      }
+      // If language changed, try to find the counterpart sermon for the exact same date in the new language
+      if (found) {
+        const matchingSermon = filteredSermons.find((s) => s.date === found.date);
+        if (matchingSermon) return matchingSermon;
+      }
     }
-    return filteredSermons[0] || SERMONS_ARCHIVE[0];
-  }, [selectedSermonId, filteredSermons]);
+    return filteredSermons[0] || SERMONS_ARCHIVE.find((s) => s.language === activeLang) || SERMONS_ARCHIVE[0];
+  }, [selectedSermonId, filteredSermons, activeLang]);
 
   // Index of active sermon within currently filtered list for Prev/Next navigation
   const currentIndex = useMemo(() => {
@@ -97,6 +111,11 @@ export function SermonsView() {
     currentIndex >= 0 && currentIndex < filteredSermons.length - 1
       ? filteredSermons[currentIndex + 1]
       : null;
+
+  const handleSelectLanguage = (l: Locale) => {
+    setActiveLang(l);
+    setSelectedSermonId(null);
+  };
 
   const handleSelectSermon = (sermon: ArchivedSermon) => {
     setSelectedSermonId(sermon.id);
@@ -293,7 +312,7 @@ export function SermonsView() {
                 {(['ja', 'en', 'ru'] as Locale[]).map((l) => (
                   <button
                     key={l}
-                    onClick={() => setActiveLang(l)}
+                    onClick={() => handleSelectLanguage(l)}
                     className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
                       activeLang === l
                         ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useApp, AppTab } from '../../context/AppContext';
-import { Church, Sparkles, Calendar as CalendarIcon, CalendarDays, MapPin } from 'lucide-react';
+import { Church, Sparkles, Calendar as CalendarIcon, CalendarDays, ScrollText } from 'lucide-react';
 
 export function BottomNav() {
   const { activeTab, setActiveTab, locale } = useApp();
@@ -19,6 +19,11 @@ export function BottomNav() {
       label: { ja: '今日', en: 'Today', ru: 'Сегодня' },
     },
     {
+      id: 'sermons',
+      icon: <ScrollText className="w-5 h-5 sm:w-6 sm:h-6" />,
+      label: { ja: '説教', en: 'Sermons', ru: 'Проповеди' },
+    },
+    {
       id: 'calendar',
       icon: <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6" />,
       label: { ja: '聖暦', en: 'Calendar', ru: 'Календарь' },
@@ -27,11 +32,6 @@ export function BottomNav() {
       id: 'parish',
       icon: <CalendarDays className="w-5 h-5 sm:w-6 sm:h-6" />,
       label: { ja: '奉事日程', en: 'Schedule', ru: 'Службы' },
-    },
-    {
-      id: 'access',
-      icon: <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />,
-      label: { ja: '見学・交通', en: 'Visit', ru: 'Визит' },
     },
   ];
 

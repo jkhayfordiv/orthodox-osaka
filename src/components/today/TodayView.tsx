@@ -15,6 +15,7 @@ import {
   Award,
   Check,
   Languages,
+  ScrollText,
 } from 'lucide-react';
 import { formatJulianDate } from '../../lib/paschalion';
 import { Locale, DayInfo, ScriptureReading } from '../../lib/types';
@@ -34,6 +35,7 @@ export function TodayView() {
     notificationPrefs,
     fontSize,
     parishSchedule,
+    setActiveTab,
   } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
   const [copiedShare, setCopiedShare] = useState(false);
@@ -437,6 +439,42 @@ export function TodayView() {
               </div>
             );
           })}
+        </div>
+
+        {/* 4b. Dedicated Pastor's Sermon / Homily Link */}
+        <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800">
+          <button
+            onClick={() => setActiveTab('sermons')}
+            className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-xl bg-orthodox-candle/40 dark:bg-slate-800/80 border border-orthodox-gold/40 hover:border-orthodox-gold hover:bg-orthodox-candle/70 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 transition-all group shadow-xs"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-orthodox-gold text-orthodox-navy shadow-xs flex-shrink-0">
+                <ScrollText className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div className="text-left">
+                <div className="font-serif font-bold text-xs sm:text-sm text-orthodox-navy dark:text-orthodox-gold group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+                  {locale === 'ja'
+                    ? '松島神父の主日説教を読む'
+                    : locale === 'ru'
+                    ? 'Воскресная проповедь о. Георгия'
+                    : 'Read Fr. George’s Sunday Sermon'}
+                </div>
+                <div className="text-2xs sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  {locale === 'ja'
+                    ? '本日の福音書・祝日に寄せる説教と司牧メッセージ'
+                    : locale === 'ru'
+                    ? 'Толкование сегодняшнего Евангелия и пастырское слово'
+                    : 'Gospel commentary and pastoral reflection for the day'}
+                </div>
+              </div>
+            </div>
+            <span className="text-orthodox-gold group-hover:translate-x-1 transition-transform text-xs font-bold flex items-center gap-1 flex-shrink-0">
+              <span className="hidden sm:inline">
+                {locale === 'ja' ? '説教集へ' : locale === 'ru' ? 'К проповедям' : 'To Sermons'}
+              </span>
+              <span>➔</span>
+            </span>
+          </button>
         </div>
       </div>
     </div>

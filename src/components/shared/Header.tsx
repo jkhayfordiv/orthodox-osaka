@@ -19,6 +19,7 @@ import {
   Sparkles,
   ChevronDown,
   Navigation,
+  ScrollText,
 } from 'lucide-react';
 import { Locale } from '../../lib/types';
 
@@ -80,9 +81,15 @@ export function Header() {
       label: { ja: '祈祷書・聖体礼儀', en: 'Prayers & Liturgy', ru: 'Молитвослов' },
       desc: { ja: '朝夕の祈り、聖体礼儀、ディプティフ', en: 'Daily prayers, Liturgy & diptychs', ru: 'Утренние/вечерние молитвы, Литургия' },
     },
+    {
+      id: 'sermons',
+      icon: <ScrollText className="w-4 h-4 text-amber-300" />,
+      label: { ja: '主日説教・教会報', en: 'Sunday Sermons', ru: 'Воскресные проповеди' },
+      desc: { ja: '松島神父による主日説教集・アーカイブ', en: 'Weekly homilies & pastoral reflections', ru: 'Проповеди о. Георгия и архив' },
+    },
   ];
 
-  const isAppTabActive = ['today', 'calendar', 'parish', 'reader'].includes(activeTab);
+  const isAppTabActive = ['today', 'calendar', 'parish', 'reader', 'sermons'].includes(activeTab);
 
   const handleNavClick = (tabId: AppTab) => {
     setActiveTab(tabId);
