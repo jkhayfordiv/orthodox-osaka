@@ -4,20 +4,68 @@ import { PRECOMPILED_TRANSLATIONS } from '../../../../data/articleTranslations';
 // In-memory cache for translations to avoid redundant network calls
 const translationCache = new Map<string, string>();
 
+/**
+ * Splits Japanese text into safe, short chunks (≤ 160 characters)
+ * to respect translation service constraints and prevent query length limits.
+ */
+function splitIntoSafeChunks(text: string, maxChunkLength: number = 160): string[] {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const chunks: string[] = [];
+  let current = '';
+
+  for (const line of lines) {
+    if (line.length <= maxChunkLength) {
+      if ((current + '\n' + line).length <= maxChunkLength && current) {
+        current += '\n' + line;
+      } else {
+        if (current) chunks.push(current);
+        current = line;
+      }
+    } else {
+      if (current) {
+        chunks.push(current);
+        current = '';
+      }
+      // Split long lines by Japanese punctuation (。, ！, ？)
+      const sentences = line.split(/(?<=[。！？])/g).filter(Boolean);
+      for (const s of sentences) {
+        if ((current + s).length <= maxChunkLength && current) {
+          current += s;
+        } else {
+          if (current) chunks.push(current);
+          if (s.length <= maxChunkLength) {
+            current = s;
+          } else {
+            // Cut long unbroken text cleanly
+            for (let i = 0; i < s.length; i += maxChunkLength) {
+              chunks.push(s.slice(i, i + maxChunkLength).trim());
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (current) chunks.push(current);
+  return chunks;
+}
+
 async function translateChunk(text: string, targetLang: 'en' | 'ru'): Promise<string> {
-  if (!text || text.trim().length === 0) return '';
-  const cacheKey = `${targetLang}:${text.trim().slice(0, 100)}`;
+  const clean = text.trim();
+  if (!clean) return '';
+
+  const cacheKey = `${targetLang}:${clean}`;
   if (translationCache.has(cacheKey)) {
     return translationCache.get(cacheKey)!;
   }
 
   try {
     const langpair = `ja|${targetLang}`;
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.trim())}&langpair=${langpair}`;
-    
-    // 3.5s timeout per chunk to prevent long hangs
+    // Using verified church contact email for extended 10,000 word/day quota
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(clean)}&langpair=${langpair}&de=orthodox.osaka.contact@gmail.com`;
+
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
 
     const res = await fetch(url, {
       signal: controller.signal,
@@ -25,14 +73,29 @@ async function translateChunk(text: string, targetLang: 'en' | 'ru'): Promise<st
     });
     clearTimeout(timeoutId);
 
-    if (!res.ok) throw new Error('Status ' + res.status);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const translated = data?.responseData?.translatedText || text;
+    const translated = data?.responseData?.translatedText;
+
+    // Strict sanitization: reject ANY query length or quota error messages
+    if (
+      !translated ||
+      typeof translated !== 'string' ||
+      translated.toUpperCase().includes('QUERY LENGTH LIMIT EXCEEDED') ||
+      translated.toUpperCase().includes('MYMEMORY WARNING') ||
+      translated.toUpperCase().includes('YOU USED ALL AVAILABLE') ||
+      translated.toUpperCase().includes('NO QUERY SPECIFIED') ||
+      data?.responseStatus !== 200
+    ) {
+      // Discard error strings and fall back cleanly without corrupting the text
+      return clean;
+    }
+
     translationCache.set(cacheKey, translated);
     return translated;
-  } catch (err) {
-    // If translation service times out or errors, return original gracefully
-    return text;
+  } catch {
+    // If translation service is unreachable or times out, return original cleanly
+    return clean;
   }
 }
 
@@ -40,9 +103,18 @@ export async function POST(req: NextRequest) {
   try {
     const { text, targetLang, articleId } = await req.json();
 
+    // 1. Direct return if original Japanese is requested
+    if (targetLang === 'ja') {
+      return NextResponse.json({
+        translatedText: text || '',
+        targetLang: 'ja',
+        isPrecompiled: true
+      });
+    }
+
     const lang: 'en' | 'ru' = targetLang === 'ru' ? 'ru' : 'en';
 
-    // 1. Instant return for pre-compiled high-quality translations (0ms latency)
+    // 2. Instant return for pre-compiled high-quality translations (0ms latency)
     if (articleId && PRECOMPILED_TRANSLATIONS[articleId]) {
       const pre = PRECOMPILED_TRANSLATIONS[articleId];
       return NextResponse.json({
@@ -60,28 +132,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing text parameter' }, { status: 400 });
     }
 
-    // 2. Parallel chunk translation for other articles (splits into max 5 major chunks)
-    const paragraphs = text.split('\n\n').filter(p => p.trim());
-    const chunks: string[] = [];
-    let currentChunk = '';
+    // 3. Safe chunk translation with sentence boundary checks
+    const chunks = splitIntoSafeChunks(text, 160);
+    // Limit to first 12 safe chunks to prevent hangs on huge 100kb essays
+    const chunksToTranslate = chunks.slice(0, 12);
 
-    for (const p of paragraphs) {
-      if ((currentChunk + '\n\n' + p).length > 400 && currentChunk) {
-        chunks.push(currentChunk.trim());
-        currentChunk = p;
-        if (chunks.length >= 6) break; // Limit to first 6 blocks for speed and rate limits
-      } else {
-        currentChunk = currentChunk ? `${currentChunk}\n\n${p}` : p;
-      }
-    }
-    if (currentChunk && chunks.length < 6) {
-      chunks.push(currentChunk.trim());
-    }
-
-    // Run all chunks in parallel!
     const translatedChunks = await Promise.all(
-      chunks.map(chunk => translateChunk(chunk, lang))
+      chunksToTranslate.map(chunk => translateChunk(chunk, lang))
     );
+
+    // If there were remaining chunks beyond the limit, append the rest
+    if (chunks.length > 12) {
+      translatedChunks.push(...chunks.slice(12));
+    }
 
     const result = translatedChunks.join('\n\n');
 

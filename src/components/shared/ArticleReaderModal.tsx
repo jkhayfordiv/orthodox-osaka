@@ -33,8 +33,8 @@ export function ArticleReaderModal({ item, onClose }: ArticleReaderModalProps) {
     }
 
     setLoading(true);
-    const initialLang = (locale === 'en' || locale === 'ru') ? locale : 'ja';
-    setActiveLang(initialLang);
+    // As requested: ALWAYS show the authentic Japanese original first, regardless of site locale.
+    setActiveLang('ja');
 
     const cleanMdPath = item.relativePath.replace(/\.[^/.]+$/, '.md');
     fetch(`/archive/${item.section}/${cleanMdPath}`)
@@ -55,19 +55,16 @@ export function ArticleReaderModal({ item, onClose }: ArticleReaderModalProps) {
           text = text.replace(/^---\n+/, '');
           // Remove dead internal index and navigation links
           text = text.replace(/\[\s*(?:TOP PAGE|TOP|index|目次|TOPPAGE)?\s*\]\([^\)]+\)/gi, '');
-          text = text.replace(/\[\s*\]\([^\)]+\)/gi, '');
+          text = text.replace(/\[\s*\]\([^\)]*\)/gi, '');
           text = text.replace(/\[(?:index\.html|top|toppage|page)\]/gi, '');
+          // Clean up star separators and stray navigation markers
+          text = text.replace(/^★\s*$/gm, '');
           // Clean up internal anchor links like [降誕](#koutan)
           text = text.replace(/\[([^\]]+)\]\(#[^\)]+\)/gi, '$1');
           text = text.replace(/\[([^\]]+)\]\([^\)]+\)/gi, '$1');
           // Clean repeated blank lines
           text = text.replace(/\n{3,}/g, '\n\n').trim();
           setOriginalContent(text);
-
-          // If site is in English or Russian, trigger translation immediately
-          if (initialLang !== 'ja') {
-            fetchTranslation(text, initialLang, item.id);
-          }
         } else {
           setOriginalContent(item.snippet || '本文を読み込めませんでした。');
         }
@@ -78,7 +75,7 @@ export function ArticleReaderModal({ item, onClose }: ArticleReaderModalProps) {
       .finally(() => {
         setLoading(false);
       });
-  }, [item, locale]);
+  }, [item]);
 
   const fetchTranslation = async (text: string, targetLang: 'en' | 'ru', articleId?: string) => {
     if (translatedContent[targetLang]) return;

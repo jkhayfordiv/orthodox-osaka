@@ -197,6 +197,122 @@ In Orthodox ecclesiology, the Church is not an administrative pyramid or legal i
     }
   },
 
+  george_ohanashiindex: {
+    title: {
+      en: "Children's Guide to the Divine Liturgy (Series Index & Introduction)",
+      ru: 'Беседы о Божественной Литургии для детей (Оглавление и введение)'
+    },
+    content: {
+      en: `Children's Guide to the Divine Liturgy
+(Series Index & Introduction)
+
+"Stories of the Divine Liturgy" is an illustrated liturgical commentary originally prepared by the Orthodox Church in America for children and youth, translated into Japanese and published as a booklet by the Tokyo Archbishopric of the Orthodox Church in Japan in 1976.
+
+Although designed with children in mind, this guide is exceptionally beneficial for inquirers experiencing Orthodox worship for the first time, as well as lifelong believers, by conveying the deep spiritual essence of the Divine Liturgy in simple, accessible, and profound terms.
+
+Table of Contents (24 Chapters):
+
+1. Let Us Go to Church
+2. About the Church Temple: The House of God
+3. The Holy Sanctuary (Altar)
+4. The Liturgy of Preparation (Proskomedia)
+5. Journey into the Kingdom of God
+6. The Prayers of the Faithful: The Litany (Ektenia)
+7. Songs of Blessedness: The Antiphons
+8. The Second Antiphon
+9. Rule of Blessed Life: The Beatitudes
+10. The Procession of Christ: The Little Entrance
+11. Preparation to Hear the Word of God
+12. The Gospel and Epistle Books: Saint Paul the Apostle
+13. The Good News: The Holy Gospel
+14. The Great Entrance: Liturgy of the Faithful
+15. Preparation for Holy Communion: Concerning Love
+16. Preparation for Holy Communion: Confession of Faith (The Creed)
+17. The Offering of Thanksgiving (Anaphora)
+18. The Gifts of Christ: The Holy Eucharist
+19. Commemoration of the Mother of God (Theotokos) and All Saints
+20. The Lord's Prayer ("Our Father")
+21. The Holy Gifts: Receiving Communion
+22. Peace and Thanksgiving: The Conclusion of the Liturgy
+23. Review and Reflection
+24. Becoming "Little Christs" in the World`,
+      ru: `Беседы о Божественной Литургии для детей
+(Оглавление и введение)
+
+«Рассказы о Божественной Литургии» — это пособие по литургике, первоначально созданное Православной Церковью в Америке для детей и юношества, переведенное на японский язык и изданное в виде брошюры Токийской архиепископией Японской Православной Церкви в 1976 году.
+
+Хотя руководство обращено к детям, оно исключительно полезно и для тех, кто впервые знакомится с православным богослужением, и для христиан, с детства пребывающих в Церкви, поскольку просто, наглядно и глубоко раскрывает самую суть Божественной Литургии.
+
+Оглавление (24 главы):
+
+1. Пойдем в храм
+2. О Доме Божием — святом храме
+3. Алтарь (Святая Святых)
+4. Проскомидия (Чин приготовления)
+5. Путешествие в Царство Божие
+6. Молитва верных: Ектении
+7. Песнопения блаженства: Антифоны
+8. Второй антифон
+9. Закон блаженной жизни: Заповеди блаженства
+10. Шествие Христово: Малый вход
+11. Приготовление к слушанию Слова Божия
+12. Евангелие и Апостол: О святом апостоле Павле
+13. Благая весть: Святое Евангелие
+14. Великий вход: Литургия верных
+15. Приготовление ко Причащению: О любви
+16. Приготовление ко Причащению: Символ веры
+17. Евхаристическое благодарение (Анафора)
+18. Дары Христовы: Пресуществление Таинств
+19. Воспоминание Божией Матери и всех святых
+20. Молитва Господня («Отче наш»)
+21. Святые Дары: Причащение Святых Таин
+22. Мир и благодарение: Окончание Литургии
+23. Повторение пройденного
+24. Станем «малыми христами» в мире`
+    }
+  },
+
+  george_paisiindex: {
+    title: {
+      en: 'Dialogues with St. Paisios of Mount Athos (Index & Guide)',
+      ru: 'Поучения преподобного Паисия Святогорца (Оглавление)'
+    },
+    content: {
+      en: `Teachings of Saint Paisios of Mount Athos
+Introduction by Priest George Yuichi Matsushima
+(Translated into Japanese by Olga, a Japanese Orthodox believer in Ukraine)
+
+Saint Paisios of Mount Athos (1924–1994) is one of the most beloved and revered spiritual fathers of modern Orthodoxy. This collection presents his pastoral wisdom on everyday Christian life:
+
+Chapter 1: How to Overcome Spiritual Faults
+Chapter 2: What is Self-Love?
+Chapter 3: Understanding Spiritual Weakness
+Chapter 4: True Joy is Found Where Christ Dwells
+Chapter 5: Keeping a Vigilant and Sober Heart
+Chapter 6: The True Meaning of Fasting
+Chapter 7: When the Heart is Troubled
+Chapter 8: Flattery and Praise: Sweet to the Ears, Poison to the Soul
+
+Also included: The Life and Ascetic Labors of Saint Paisios the Athonite (translated by faithful in Tokyo).`,
+      ru: `Поучения преподобного Паисия Святогорца
+Введение священника Георгия Юичи Мацусима
+(Перевод на японский язык выполнен православной христианкой Ольгой из Украины)
+
+Преподобный Паисий Святогорец (1924–1994) — один из наиболее почитаемых и любимых духовных наставников современного Православия. В этом собрании представлены его пастырские беседы:
+
+Глава 1: Как освободиться от духовных недостатков
+Глава 2: Что такое себялюбие (эгоизм)
+Глава 3: В чем сущность духовной немощи
+Глава 4: Истинная радость — там, где пребывает Христос
+Глава 5: С трезвенным сердцем
+Глава 6: Что такое истинный пост
+Глава 7: Когда смущается сердце
+Глава 8: Сладкая для слуха похвала
+
+Также доступно: Жизнеописание преподобного Паисия Святогорца (в переводе токийских прихожан).`
+    }
+  },
+
   george_khomiakov: {
     title: {
       en: 'Khomiakov on Sobornost & Orthodox Ecclesiology',
