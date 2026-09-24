@@ -22,6 +22,7 @@ import { Locale, DayInfo, ScriptureReading } from '../../lib/types';
 import { TONE_NAMES } from '../../data/terminology';
 import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifications';
 import { FastingGuideModal } from '../shared/FastingGuideModal';
+import { getEffectiveSundaySermon } from '../../lib/sermonSchedule';
 
 export function TodayView() {
   const {
@@ -36,6 +37,8 @@ export function TodayView() {
     fontSize,
     parishSchedule,
     setActiveTab,
+    sermons,
+    setTargetSermonId,
   } = useApp();
   const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
   const [copiedShare, setCopiedShare] = useState(false);
@@ -49,6 +52,18 @@ export function TodayView() {
       : fontSize === 'xl'
       ? 'text-lg sm:text-xl'
       : 'text-sm sm:text-base';
+
+  // Effective Sunday Sermon (points back to previous Sunday until Sunday 10:00 AM JST)
+  const effectiveSermon = React.useMemo(() => {
+    return getEffectiveSundaySermon(sermons, locale);
+  }, [sermons, locale]);
+
+  const handleOpenSermon = () => {
+    if (effectiveSermon) {
+      setTargetSermonId(effectiveSermon.id);
+    }
+    setActiveTab('sermons');
+  };
 
   // Compute information for selectedDate
   const dayInfo = getDayInfo(selectedDate, parishSchedule);
@@ -385,7 +400,7 @@ export function TodayView() {
                         : locale === 'ja' ? '聖福音経' : locale === 'ru' ? 'Евангелие' : 'The Gospel'}
                     </span>
                     <h4 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">
-                      {reading.book[locale]} {reading.reference.replace(/^[A-Za-z0-9\s]+(\d+:\d+.*)$/, '$1')}
+                      {reading.book[locale]} {reading.reference.replace(/^.*?\b(?=\d+:)/, '').trim()}
                       {reading.pericopeTan && (
                         <span className="text-xs font-normal text-slate-500 ml-1.5">
                           （{locale === 'ja' ? `端${reading.pericopeTan}` : locale === 'ru' ? `Зач. ${reading.pericopeTan}` : `Pericope ${reading.pericopeTan}`}）
@@ -444,33 +459,42 @@ export function TodayView() {
         {/* 4b. Dedicated Pastor's Sermon / Homily Link */}
         <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800">
           <button
-            onClick={() => setActiveTab('sermons')}
+            onClick={handleOpenSermon}
             className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-xl bg-orthodox-candle/40 dark:bg-slate-800/80 border border-orthodox-gold/40 hover:border-orthodox-gold hover:bg-orthodox-candle/70 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 transition-all group shadow-xs"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               <div className="p-2 sm:p-2.5 rounded-xl bg-orthodox-gold text-orthodox-navy shadow-xs flex-shrink-0">
                 <ScrollText className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div className="text-left">
-                <div className="font-serif font-bold text-xs sm:text-sm text-orthodox-navy dark:text-orthodox-gold group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-                  {locale === 'ja'
-                    ? '松島神父の主日説教を読む'
-                    : locale === 'ru'
-                    ? 'Воскресная проповедь о. Георгия'
-                    : 'Read Fr. George’s Sunday Sermon'}
+              <div className="text-left min-w-0 flex-1">
+                <div className="font-serif font-bold text-xs sm:text-sm text-orthodox-navy dark:text-orthodox-gold group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors flex items-center gap-1.5 flex-wrap">
+                  <span>
+                    {locale === 'ja'
+                      ? '松島神父の主日説教を読む'
+                      : locale === 'ru'
+                      ? 'Воскресная проповедь о. Георгия'
+                      : 'Read Fr. George’s Sunday Sermon'}
+                  </span>
+                  {effectiveSermon && (
+                    <span className="font-mono font-normal text-slate-500 dark:text-slate-400 text-2xs px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-700">
+                      {effectiveSermon.date}
+                    </span>
+                  )}
                 </div>
-                <div className="text-2xs sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {locale === 'ja'
-                    ? '本日の福音書・祝日に寄せる説教と司牧メッセージ'
-                    : locale === 'ru'
-                    ? 'Толкование сегодняшнего Евангелия и пастырское слово'
-                    : 'Gospel commentary and pastoral reflection for the day'}
+                <div className="text-2xs sm:text-xs text-slate-600 dark:text-slate-300 mt-0.5 line-clamp-1 font-serif">
+                  {effectiveSermon ? effectiveSermon.title : (
+                    locale === 'ja'
+                      ? '本日の福音書・祝日に寄せる説教と司牧メッセージ'
+                      : locale === 'ru'
+                      ? 'Толкование сегодняшнего Евангелия и пастырское слово'
+                      : 'Gospel commentary and pastoral reflection for the day'
+                  )}
                 </div>
               </div>
             </div>
-            <span className="text-orthodox-gold group-hover:translate-x-1 transition-transform text-xs font-bold flex items-center gap-1 flex-shrink-0">
+            <span className="text-orthodox-gold group-hover:translate-x-1 transition-transform text-xs font-bold flex items-center gap-1 flex-shrink-0 ml-2">
               <span className="hidden sm:inline">
-                {locale === 'ja' ? '説教集へ' : locale === 'ru' ? 'К проповедям' : 'To Sermons'}
+                {locale === 'ja' ? '説教を読む' : locale === 'ru' ? 'Читать' : 'Read'}
               </span>
               <span>➔</span>
             </span>

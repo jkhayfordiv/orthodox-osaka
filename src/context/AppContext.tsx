@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Locale, NameDayEntry, NotificationPreferences, PrayerListItem, ParishService } from '../lib/types';
 import { COMMON_NAME_DAYS } from '../data/nameDays';
 import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
+import { SERMONS_ARCHIVE, ArchivedSermon } from '../data/sermonsArchive';
 import { requestNotificationPermission as requestPerm } from '../lib/notifications';
 
 export type FontSize = 'sm' | 'base' | 'lg' | 'xl';
@@ -72,6 +73,15 @@ interface AppContextType {
   setBackupModalOpen: (open: boolean) => void;
   exportBackupJson: () => string;
   importBackupJson: (jsonStr: string) => { success: boolean; prayerCount: number; error?: string };
+  sermons: ArchivedSermon[];
+  updateSermon: (sermon: ArchivedSermon) => void;
+  addSermon: (sermon: Omit<ArchivedSermon, 'id'>) => number;
+  deleteSermon: (id: number) => void;
+  resetSermonsToDefault: () => void;
+  isSermonAdmin: boolean;
+  setIsSermonAdmin: (val: boolean) => void;
+  targetSermonId: number | null;
+  setTargetSermonId: (id: number | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -98,6 +108,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [adminModalOpen, setAdminModalOpen] = useState<boolean>(false);
   const [backupModalOpen, setBackupModalOpen] = useState<boolean>(false);
   const [customSchedule, setCustomSchedule] = useState<ParishService[]>([]);
+  const [customSermons, setCustomSermons] = useState<ArchivedSermon[]>([]);
+  const [isSermonAdmin, setIsSermonAdminState] = useState<boolean>(false);
+  const [targetSermonId, setTargetSermonId] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
@@ -154,6 +167,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         try {
           setCustomSchedule(JSON.parse(sched));
         } catch {}
+      }
+
+      const storedSermons = localStorage.getItem('orthodox_custom_sermons');
+      if (storedSermons) {
+        try {
+          setCustomSermons(JSON.parse(storedSermons));
+        } catch {}
+      }
+
+      const adminAuth =
+        sessionStorage.getItem('orthodox_sermon_admin') ||
+        localStorage.getItem('orthodox_sermon_admin');
+      if (adminAuth === 'true') {
+        setIsSermonAdminState(true);
       }
 
       const notif = localStorage.getItem('orthodox_notification_prefs');
@@ -642,6 +669,83 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const sermons = React.useMemo(() => {
+    if (!customSermons || customSermons.length === 0) {
+      return SERMONS_ARCHIVE;
+    }
+    const customMap = new Map(customSermons.map((s) => [s.id, s]));
+    const result: ArchivedSermon[] = [];
+    const addedIds = new Set<number>();
+
+    // Custom sermons that are new (not in original SERMONS_ARCHIVE)
+    for (const cs of customSermons) {
+      if (!SERMONS_ARCHIVE.some((orig) => orig.id === cs.id)) {
+        result.push(cs);
+        addedIds.add(cs.id);
+      }
+    }
+    // Original sermons with custom edits merged
+    for (const orig of SERMONS_ARCHIVE) {
+      if (customMap.has(orig.id)) {
+        result.push(customMap.get(orig.id)!);
+        addedIds.add(orig.id);
+      } else {
+        result.push(orig);
+      }
+    }
+    return result;
+  }, [customSermons]);
+
+  const saveCustomSermons = (nextList: ArchivedSermon[]) => {
+    setCustomSermons(nextList);
+    try {
+      localStorage.setItem('orthodox_custom_sermons', JSON.stringify(nextList));
+    } catch {}
+  };
+
+  const updateSermon = (updated: ArchivedSermon) => {
+    const existingIdx = customSermons.findIndex((s) => s.id === updated.id);
+    let next: ArchivedSermon[];
+    if (existingIdx >= 0) {
+      next = customSermons.map((s) => (s.id === updated.id ? updated : s));
+    } else {
+      next = [updated, ...customSermons];
+    }
+    saveCustomSermons(next);
+  };
+
+  const addSermon = (newS: Omit<ArchivedSermon, 'id'>): number => {
+    const newId = Date.now();
+    const sermon: ArchivedSermon = { ...newS, id: newId };
+    saveCustomSermons([sermon, ...customSermons]);
+    return newId;
+  };
+
+  const deleteSermon = (id: number) => {
+    const next = customSermons.filter((s) => s.id !== id);
+    saveCustomSermons(next);
+  };
+
+  const resetSermonsToDefault = () => {
+    setCustomSermons([]);
+    try {
+      localStorage.removeItem('orthodox_custom_sermons');
+    } catch {}
+  };
+
+  const setIsSermonAdmin = (val: boolean) => {
+    setIsSermonAdminState(val);
+    try {
+      if (val) {
+        sessionStorage.setItem('orthodox_sermon_admin', 'true');
+        localStorage.setItem('orthodox_sermon_admin', 'true');
+      } else {
+        sessionStorage.removeItem('orthodox_sermon_admin');
+        localStorage.removeItem('orthodox_sermon_admin');
+      }
+    } catch {}
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -692,6 +796,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setBackupModalOpen,
         exportBackupJson,
         importBackupJson,
+        sermons,
+        updateSermon,
+        addSermon,
+        deleteSermon,
+        resetSermonsToDefault,
+        isSermonAdmin,
+        setIsSermonAdmin,
+        targetSermonId,
+        setTargetSermonId,
       }}
     >
       <div

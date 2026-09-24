@@ -305,7 +305,7 @@ export function CalendarView() {
                         {reading.source}
                       </span>
                       <h5 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100">
-                        {reading.book[locale]} {reading.reference}
+                        {reading.book[locale]} {reading.reference.replace(/^.*?\b(?=\d+:)/, '').trim()}
                       </h5>
                     </div>
                     <button

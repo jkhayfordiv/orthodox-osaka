@@ -4,8 +4,8 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
 import { PARISH_ANNOUNCEMENTS } from '../../data/bulletin';
-import { SERMONS_ARCHIVE } from '../../data/sermonsArchive';
 import { getDayInfo } from '../../lib/calendarEngine';
+import { filterVisibleSermons } from '../../lib/sermonSchedule';
 import { PhotoGallerySection } from './PhotoGallerySection';
 import { ConcertEventSection } from './ConcertEventSection';
 import {
@@ -29,12 +29,17 @@ import {
 } from 'lucide-react';
 
 export function HomeWebsiteView() {
-  const { locale, setActiveTab, parishSchedule } = useApp();
+  const { locale, setActiveTab, parishSchedule, sermons, isSermonAdmin, setTargetSermonId } = useApp();
   const dayInfo = getDayInfo(new Date(), parishSchedule);
+
+  // Available sermons respecting Saturday morning public release
+  const availableSermons = React.useMemo(() => {
+    return filterVisibleSermons(sermons, isSermonAdmin);
+  }, [sermons, isSermonAdmin]);
 
   // Latest sermon for active language
   const latestSermon =
-    SERMONS_ARCHIVE.find((s) => s.language === locale) || SERMONS_ARCHIVE[0];
+    availableSermons.find((s) => s.language === locale) || availableSermons[0] || sermons[0];
 
   // Upcoming services
   const todayStr = new Date().toISOString().split('T')[0];
@@ -241,7 +246,12 @@ export function HomeWebsiteView() {
               </p>
               <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
                 <button
-                  onClick={() => setActiveTab('sermons')}
+                  onClick={() => {
+                    if (latestSermon) {
+                      setTargetSermonId(latestSermon.id);
+                    }
+                    setActiveTab('sermons');
+                  }}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
                 >
                   <BookOpen className="w-4 h-4 text-orthodox-gold" />
