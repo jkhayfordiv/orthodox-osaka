@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { getDayInfo } from '../../lib/calendarEngine';
 import { getFastingSeasons } from '../../lib/fastingPeriods';
+import { DayInfo, ScriptureReading } from '../../lib/types';
 import {
   ChevronLeft,
   ChevronRight,
@@ -107,7 +108,56 @@ export function CalendarView() {
 
   // Fasting seasons data
   const fastingSeasons = getFastingSeasons(currentYear, selectedDate);
-  const inspectDayInfo = getDayInfo(inspectDate, parishSchedule);
+  const [inspectDayInfo, setInspectDayInfo] = useState<DayInfo>(() => getDayInfo(inspectDate, parishSchedule));
+
+  useEffect(() => {
+    setInspectDayInfo(getDayInfo(inspectDate, parishSchedule));
+
+    const year = inspectDate.getFullYear();
+    const month = String(inspectDate.getMonth() + 1).padStart(2, '0');
+    const day = String(inspectDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+
+    let isCancelled = false;
+    fetch(`/api/calendar/${dateStr}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
+        setInspectDayInfo((prev: DayInfo) => {
+          const updatedReadings = prev.readings.map((r: ScriptureReading, i: number) => {
+            const apiReading = data.readings[i];
+            if (r.verses && r.verses.length > 0 && r.pericopeTan) return r;
+            if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
+              return {
+                ...r,
+                book: apiReading.book || r.book,
+                reference: apiReading.reference || r.reference,
+                text: {
+                  ja: apiReading.book?.ja ? `【${apiReading.source === 'Gospel' ? '福音経' : '使徒経'}】${apiReading.book.ja} ${apiReading.reference}` : r.text.ja,
+                  en: apiReading.fullTextEn || r.text.en,
+                  ru: apiReading.book?.ru ? `【${apiReading.source === 'Gospel' ? 'Евангелие' : 'Апостол'}】${apiReading.book.ru} ${apiReading.reference}` : r.text.ru,
+                },
+                verses: apiReading.verses.map((v: { verse: number; content: string }) => ({
+                  verse: v.verse,
+                  text: {
+                    ja: v.content,
+                    en: v.content,
+                    ru: v.content,
+                  },
+                })),
+              };
+            }
+            return r;
+          });
+          return { ...prev, readings: updatedReadings };
+        });
+      })
+      .catch(() => {});
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [inspectDate, parishSchedule]);
 
   const userPatronSaint = patronSaintId ? allSaints.find((s) => s.id === patronSaintId) : null;
 

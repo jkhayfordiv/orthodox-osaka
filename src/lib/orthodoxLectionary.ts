@@ -269,13 +269,67 @@ export function getOldCalendarReadings(civilDate: Date, paschaDate: Date): Scrip
     }
 
     // Default Sunday fallback for higher Pentecost weeks
-    if (dayOfWeek === 0) {
-      const defaultSunday = PENTECOST_CYCLE_READINGS[17][0];
-      return buildReadings(defaultSunday);
+    if (dayOfWeek === 0 && weekMap && weekMap[0]) {
+      return buildReadings(weekMap[0]);
     }
+
+    // Week 17 explicit readings
+    if (weekAfterPentecost === 17 && PENTECOST_CYCLE_READINGS[17][dayOfWeek]) {
+      return buildReadings(PENTECOST_CYCLE_READINGS[17][dayOfWeek]);
+    }
+
+    // For weeks >= 18 (Luke cycle in autumn/winter), Gospel is St. Luke
+    if (weekAfterPentecost >= 18) {
+      return [
+        {
+          source: 'Epistle',
+          book: { ja: '使徒書', en: 'Epistle', ru: 'Апостол' },
+          reference: `Week ${weekAfterPentecost} after Pentecost`,
+          text: {
+            ja: `【使徒経】五旬祭後第${weekAfterPentecost}週の日課使徒書`,
+            en: `【Epistle】Daily Epistle reading for Week ${weekAfterPentecost} after Pentecost`,
+            ru: `【Апостол】Рядовое зачало ${weekAfterPentecost}-й седмицы по Пятидесятнице`,
+          },
+        },
+        {
+          source: 'Gospel',
+          book: LECTIONARY_BOOKS['LUK'],
+          reference: `Luke (Week ${weekAfterPentecost})`,
+          text: {
+            ja: `【福音経】ルカに因る聖福音（五旬祭後第${weekAfterPentecost}週日課）`,
+            en: `【Gospel】Holy Gospel According to St. Luke (Week ${weekAfterPentecost})`,
+            ru: `【Евангелие】Евангелие от Луки (${weekAfterPentecost}-я седмица по Пятидесятнице)`,
+          },
+        },
+      ];
+    }
+
+    // Weeks < 18 (Matthew cycle in summer)
+    return [
+      {
+        source: 'Epistle',
+        book: { ja: '使徒書', en: 'Epistle', ru: 'Апостол' },
+        reference: `Week ${weekAfterPentecost} after Pentecost`,
+        text: {
+          ja: `【使徒経】五旬祭後第${weekAfterPentecost}週の日課使徒書`,
+          en: `【Epistle】Daily Epistle reading for Week ${weekAfterPentecost} after Pentecost`,
+          ru: `【Апостол】Рядовое зачало ${weekAfterPentecost}-й седмицы по Пятидесятнице`,
+        },
+      },
+      {
+        source: 'Gospel',
+        book: LECTIONARY_BOOKS['MAT'],
+        reference: `Matthew (Week ${weekAfterPentecost})`,
+        text: {
+          ja: `【福音経】マトフェイに因る聖福音（五旬祭後第${weekAfterPentecost}週日課）`,
+          en: `【Gospel】Holy Gospel According to St. Matthew (Week ${weekAfterPentecost})`,
+          ru: `【Евангелие】Евангелие от Матфея (${weekAfterPentecost}-я седмица по Пятидесятнице)`,
+        },
+      },
+    ];
   }
 
-  // 3. Fallback to today's active pericope
+  // 3. Fallback for current week
   const todayEntry = PENTECOST_CYCLE_READINGS[17][dayOfWeek] || PENTECOST_CYCLE_READINGS[17][4];
   return buildReadings(todayEntry);
 }

@@ -86,15 +86,16 @@ export function TodayView() {
         setEnrichedDayInfo((prev: DayInfo) => {
           const updatedReadings = prev.readings.map((r: ScriptureReading, i: number) => {
             const apiReading = data.readings[i];
-            if (r.verses && r.verses.length > 0) return r;
+            if (r.verses && r.verses.length > 0 && r.pericopeTan) return r;
             if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
               return {
                 ...r,
+                book: apiReading.book || r.book,
                 reference: apiReading.reference || r.reference,
                 text: {
-                  ja: r.text.ja,
+                  ja: apiReading.book?.ja ? `【${apiReading.source === 'Gospel' ? '福音経' : '使徒経'}】${apiReading.book.ja} ${apiReading.reference}` : r.text.ja,
                   en: apiReading.fullTextEn || r.text.en,
-                  ru: r.text.ru,
+                  ru: apiReading.book?.ru ? `【${apiReading.source === 'Gospel' ? 'Евангелие' : 'Апостол'}】${apiReading.book.ru} ${apiReading.reference}` : r.text.ru,
                 },
                 verses: apiReading.verses.map((v: { verse: number; content: string }) => ({
                   verse: v.verse,
