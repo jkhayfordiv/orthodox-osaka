@@ -81,17 +81,10 @@ export async function GET(
     const month = parseInt(parts[1], 10);
     const day = parseInt(parts[2], 10);
 
-    const gregorianDate = new Date(Date.UTC(year, month - 1, day));
-
-    // Convert Gregorian to Julian (subtract 13 days for 1900–2099)
-    const julianDate = new Date(gregorianDate.getTime());
-    julianDate.setUTCDate(julianDate.getUTCDate() - 13);
-    const jYear = julianDate.getUTCFullYear();
-    const jMonth = julianDate.getUTCMonth() + 1;
-    const jDay = julianDate.getUTCDate();
-
-    // Call Orthocal Julian API endpoint with the Julian calendar date
-    const orthocalUrl = `https://orthocal.info/api/julian/${jYear}/${jMonth}/${jDay}/`;
+    // Call Orthocal Julian endpoint with the civil (Gregorian) date.
+    // Orthocal calculates the Julian calendar offset (subtracts 13 days) internally
+    // and returns the corresponding Old Calendar commemoration and pericopes.
+    const orthocalUrl = `https://orthocal.info/api/julian/${year}/${month}/${day}/`;
     const res = await fetch(orthocalUrl, {
       next: { revalidate: 86400 }, // Cache on edge for 24 hours
     });

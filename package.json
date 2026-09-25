@@ -8,7 +8,8 @@
     "build": "next build && opennextjs-cloudflare build --skipBuild",
     "build:next": "next build",
     "deploy": "opennextjs-cloudflare build && wrangler deploy",
-    "start": "next start"
+    "start": "next start",
+    "test": "node --test tests/lectionary.test.mjs"
   },
   "keywords": [],
   "author": "",
