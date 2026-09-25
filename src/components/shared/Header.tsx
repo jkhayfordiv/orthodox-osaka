@@ -44,7 +44,7 @@ export function Header() {
 
   // Public Website Primary Tabs
   const websiteNavItems: { id: AppTab; label: { ja: string; en: string; ru: string } }[] = [
-    { id: 'home', label: { ja: 'ホーム', en: 'Home', ru: 'Главная' } },
+    { id: 'home', label: { ja: '教会案内', en: 'Our Parish', ru: 'О приходе' } },
     { id: 'history', label: { ja: '教会の歴史', en: 'History', ru: 'История' } },
     { id: 'orthodoxy', label: { ja: '正教会とは？', en: 'Orthodoxy', ru: 'О вере' } },
     { id: 'access', label: { ja: '交通・見学', en: 'Visit & Access', ru: 'Визит и адрес' } },
@@ -56,26 +56,20 @@ export function Header() {
     {
       id: 'today',
       icon: <Sparkles className="w-4 h-4 text-orthodox-gold" />,
-      label: { ja: '今日（斎と聖人）', en: 'Today’s Fast & Saints', ru: 'Сегодня: Пост и святые' },
+      label: { ja: '今日（斎・聖人・日課）', en: 'Today’s Fast & Saints', ru: 'Сегодня: Пост и святые' },
       desc: { ja: '本日の祭日、斎の規則、聖書通読', en: 'Daily feast, fasting rule & readings', ru: 'Праздник дня, устав поста, чтения' },
-    },
-    {
-      id: 'calendar',
-      icon: <CalendarIcon className="w-4 h-4 text-indigo-400" />,
-      label: { ja: '年間聖暦カレンダー', en: 'Liturgical Calendar', ru: 'Церковный календарь' },
-      desc: { ja: '正教会暦、十二大祭、パスハリオ記', en: 'Feasts, Paschalion & fasting cycles', ru: 'Праздники, пасхалия, посты' },
-    },
-    {
-      id: 'parish',
-      icon: <Church className="w-4 h-4 text-amber-400" />,
-      label: { ja: '2026年 奉事当番表', en: 'Parish Schedule & Duties', ru: 'Расписание служб' },
-      desc: { ja: '吹田聖堂の礼拝日程、当番組、お知らせ', en: 'Suita service hours & rosters', ru: 'Богослужения и послушания' },
     },
     {
       id: 'reader',
       icon: <BookOpen className="w-4 h-4 text-emerald-400" />,
       label: { ja: '祈祷書・聖体礼儀', en: 'Prayers & Liturgy', ru: 'Молитвослов' },
       desc: { ja: '朝夕の祈り、聖体礼儀、ディプティフ', en: 'Daily prayers, Liturgy & diptychs', ru: 'Утренние/вечерние молитвы, Литургия' },
+    },
+    {
+      id: 'calendar',
+      icon: <CalendarIcon className="w-4 h-4 text-indigo-400" />,
+      label: { ja: '聖暦・奉事日程', en: 'Schedule & Calendar', ru: 'Расписание и календарь' },
+      desc: { ja: '吹田礼拝日程、当番表、年間聖暦', en: 'Suita services, duties & liturgical calendar', ru: 'Службы, послушания и церковный календарь' },
     },
     {
       id: 'sermons',
@@ -98,8 +92,9 @@ export function Header() {
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 flex items-center justify-between">
         {/* Left: Church Icon & Title */}
         <div
-          onClick={() => handleNavClick('home')}
+          onClick={() => handleNavClick('today')}
           className="flex items-center space-x-2.5 cursor-pointer group select-none"
+          title={locale === 'ja' ? '今日（ホーム）' : 'Today (Home)'}
         >
           <img
             src="/brand/church-seal-round.png"

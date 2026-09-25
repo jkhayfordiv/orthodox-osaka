@@ -48,8 +48,13 @@ export function SiteFooter() {
               </div>
               <ul className="space-y-1.5">
                 <li>
+                  <button onClick={() => setActiveTab('today')} className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold">
+                    {locale === 'ja' ? '今日（日課・斎・聖人）' : 'Today’s Fast & Saints'}
+                  </button>
+                </li>
+                <li>
                   <button onClick={() => setActiveTab('home')} className="hover:text-orthodox-gold transition-colors">
-                    {locale === 'ja' ? 'ホーム' : 'Home'}
+                    {locale === 'ja' ? '教会案内' : 'Our Parish'}
                   </button>
                 </li>
                 <li>

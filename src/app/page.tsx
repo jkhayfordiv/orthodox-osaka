@@ -10,8 +10,7 @@ import { AboutOrthodoxyView } from '../components/website/AboutOrthodoxyView';
 import { AccessVisitView } from '../components/website/AccessVisitView';
 import { SermonsView } from '../components/website/SermonsView';
 import { TodayView } from '../components/today/TodayView';
-import { CalendarView } from '../components/calendar/CalendarView';
-import { ParishView } from '../components/parish/ParishView';
+import { CalendarScheduleView } from '../components/calendar/CalendarScheduleView';
 import { ReaderView } from '../components/reader/ReaderView';
 import { SettingsModal } from '../components/shared/SettingsModal';
 import { OnboardingModal } from '../components/onboarding/OnboardingModal';
@@ -34,8 +33,8 @@ export default function Home() {
         {activeTab === 'access' && <AccessVisitView />}
         {activeTab === 'sermons' && <SermonsView />}
         {activeTab === 'today' && <TodayView />}
-        {activeTab === 'calendar' && <CalendarView />}
-        {activeTab === 'parish' && <ParishView />}
+        {activeTab === 'calendar' && <CalendarScheduleView initialSubTab="calendar" />}
+        {activeTab === 'parish' && <CalendarScheduleView initialSubTab="schedule" />}
         {activeTab === 'reader' && <ReaderView />}
       </main>
 
