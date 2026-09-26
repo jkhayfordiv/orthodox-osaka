@@ -2,6 +2,38 @@ import { BulletinAnnouncement } from '../lib/types';
 
 export const PARISH_ANNOUNCEMENTS: BulletinAnnouncement[] = [
   {
+    id: 'ann-concert-lp',
+    date: '2026-12-02',
+    category: 'event',
+    important: true,
+    title: {
+      ja: 'LPで聴く名曲喫茶コンサート、チャイコフスキー「くるみ割り人形」',
+      en: 'LP Record Concert: Tchaikovsky "The Nutcracker"',
+      ru: 'Концерт классической музыки с виниловых пластинок: П.И. Чайковский «Щелкунчик»',
+    },
+    content: {
+      ja: '12月2日（水）14:00より、大阪教会会館にて「LPで聴く名曲喫茶コンサート」を開催いたします。温かみのあるアナログレコードの音色で、チャイコフスキーの名作バレエ音楽「くるみ割り人形」を鑑賞します。どなたでもお気軽にご参加ください。',
+      en: 'On Wednesday, December 2 at 2:00 PM, we will host an LP Record Classical Music Concert at the church hall. Enjoy the rich analog sound of Tchaikovsky’s beloved ballet masterpiece "The Nutcracker". Everyone is warmly welcome to join us!',
+      ru: 'В среду, 2 декабря в 14:00 в приходском зале состоится концерт классической музыки с виниловых пластинок. Мы будем слушать бессмертный балет П.И. Чайковского «Щелкунчик» в теплом аналоговом звучании. Сердечно приглашаем всех желающих!',
+    },
+  },
+  {
+    id: 'ann-cemetery-panihida',
+    date: '2026-11-08',
+    category: 'event',
+    important: false,
+    title: {
+      ja: '露軍兵士墓地パニヒダ（泉大津）',
+      en: 'Memorial Service at Russian Soldiers’ Cemetery (Izumiotsu)',
+      ru: 'Панихида на кладбище российских солдат в Идзумиоцу',
+    },
+    content: {
+      ja: '11月8日（日）16:00より、泉大津市のロシア兵墓地にて永眠者のためのパニヒダ（追悼祈祷）を捧げます。',
+      en: 'On Sunday, November 8 at 4:00 PM, a memorial service (Panikhida) will be held at the Russian Soldiers’ Cemetery in Izumiotsu for the repose of the departed.',
+      ru: 'В воскресенье, 8 ноября в 16:00 на кладбище российских солдат в г. Идзумиоцу будет совершена панихида об упокоении душ усопших воинов.',
+    },
+  },
+  {
     id: 'ann-1',
     date: '2026-10-11',
     category: 'event',

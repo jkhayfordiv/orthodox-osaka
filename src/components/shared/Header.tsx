@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useApp, AppTab } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
@@ -38,6 +38,26 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appDropdownOpen, setAppDropdownOpen] = useState(false);
   const [portalsDropdownOpen, setPortalsDropdownOpen] = useState(false);
+
+  const appDropdownRef = useRef<HTMLDivElement>(null);
+  const portalsDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent | PointerEvent | TouchEvent) {
+      const target = event.target as Node;
+      if (appDropdownRef.current && !appDropdownRef.current.contains(target)) {
+        setAppDropdownOpen(false);
+      }
+      if (portalsDropdownRef.current && !portalsDropdownRef.current.contains(target)) {
+        setPortalsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => {
+      document.removeEventListener('pointerdown', handleClickOutside);
+    };
+  }, []);
 
   const locales: { code: Locale; label: string; flag: string }[] = [
     { code: 'ja', label: '日本語', flag: '🇯🇵' },
@@ -166,11 +186,10 @@ export function Header() {
           })}
 
           {/* Parish App Dropdown Trigger */}
-          <div className="relative">
+          <div className="relative" ref={appDropdownRef}>
             <button
               onClick={() => setAppDropdownOpen(!appDropdownOpen)}
-              onBlur={() => setTimeout(() => setAppDropdownOpen(false), 200)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none cursor-pointer touch-manipulation active:scale-95 ${
                 isAppTabActive
                   ? 'bg-orthodox-gold-dark/40 border-orthodox-gold text-orthodox-gold-light shadow-sm'
                   : 'bg-white/5 border-orthodox-gold/30 text-slate-200 hover:text-white hover:bg-white/10'
@@ -178,7 +197,7 @@ export function Header() {
             >
               <Sparkles className="w-3.5 h-3.5 text-orthodox-gold" />
               <span>{locale === 'ja' ? '信徒アプリ' : locale === 'ru' ? 'Церковная жизнь' : 'Parish App'}</span>
-              <ChevronDown className={`w-3 h-3 transition-transform ${appDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${appDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {/* Dropdown Menu */}
@@ -191,7 +210,7 @@ export function Header() {
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`w-full px-3 py-2 text-left flex items-start gap-2.5 hover:bg-white/10 transition-colors ${
+                    className={`w-full px-3 py-2 text-left flex items-start gap-2.5 hover:bg-white/10 active:bg-white/20 transition-colors cursor-pointer touch-manipulation select-none ${
                       activeTab === item.id ? 'bg-white/15 text-orthodox-gold' : 'text-slate-200'
                     }`}
                   >
@@ -207,28 +226,28 @@ export function Header() {
           </div>
 
           {/* Portals & Diocese Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={portalsDropdownRef}>
             <button
               onClick={() => setPortalsDropdownOpen(!portalsDropdownOpen)}
-              onBlur={() => setTimeout(() => setPortalsDropdownOpen(false), 200)}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none bg-white/5 border-orthodox-gold/30 text-slate-200 hover:text-white hover:bg-white/10"
-              title={locale === 'ja' ? '研究ポータル群・西日本主教区' : 'Orthodox Portals & Diocese'}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none cursor-pointer touch-manipulation active:scale-95 bg-white/5 border-orthodox-gold/30 text-slate-200 hover:text-white hover:bg-white/10"
+              title={locale === 'ja' ? '研究ポータル群・西日本主教教区' : 'Orthodox Portals & Diocese'}
             >
               <ScrollText className="w-3.5 h-3.5 text-orthodox-gold" />
-              <span>{locale === 'ja' ? 'ポータル・教区' : locale === 'ru' ? 'Архивы и епархия' : 'Portals & Diocese'}</span>
-              <ChevronDown className={`w-3 h-3 transition-transform ${portalsDropdownOpen ? 'rotate-180' : ''}`} />
+              <span>{locale === 'ja' ? 'ポータル' : locale === 'ru' ? 'Порталы' : 'Portals'}</span>
+              <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${portalsDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {portalsDropdownOpen && (
               <div className="absolute right-0 mt-2 w-72 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
                 <div className="px-3 py-1.5 text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider border-b border-orthodox-gold/20">
-                  {locale === 'ja' ? '神学・聖歌・奉神礼・教区' : 'Portals & Western Diocese'}
+                  {locale === 'ja' ? '研究ポータル群・西日本主教教区' : 'Portals & Western Diocese'}
                 </div>
                 {portalNavItems.map((item, idx) => (
                   <Link
                     key={idx}
                     href={item.href}
-                    className="w-full px-3 py-2 text-left flex items-start gap-2.5 hover:bg-white/10 transition-colors text-slate-200"
+                    onClick={() => setPortalsDropdownOpen(false)}
+                    className="w-full px-3 py-2 text-left flex items-start gap-2.5 hover:bg-white/10 active:bg-white/20 transition-colors text-slate-200 cursor-pointer touch-manipulation select-none"
                   >
                     <div className="mt-0.5">{item.icon}</div>
                     <div>
