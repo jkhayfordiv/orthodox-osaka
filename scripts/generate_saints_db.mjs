@@ -1656,7 +1656,7 @@ const SAINTS = [
     id: 'nd-anna-mother',
     name: { ja: 'アンナ', en: 'Anna', ru: 'Анна' },
     saint: {
-      ja: '聖生神女の母義人聖アンナ（就寝祭）',
+      ja: '至聖生神女の母義人聖アンナ（就寝祭）',
       en: 'Righteous Anna, Mother of the Most Holy Theotokos (Falling Asleep)',
       ru: 'Успение праведной Анны, матери Пресвятой Богородицы',
     },
@@ -2356,7 +2356,7 @@ const SAINTS = [
     id: 'nd-joachim-righteous',
     name: { ja: 'イオアキム', en: 'Joachim', ru: 'Иоаким' },
     saint: {
-      ja: '聖生神女の父義人聖イオアキム',
+      ja: '至聖生神女の父義人聖イオアキム',
       en: 'Righteous Joachim, Father of the Most Holy Theotokos',
       ru: 'Святой праведный Иоаким, богоотец',
     },

@@ -263,7 +263,7 @@ export function ReaderView() {
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-200 drop-shadow line-clamp-1">
                   {locale === 'ja'
-                    ? '聖生神女庇護聖堂にて捧げられる全17章の式順と祈祷文（日本正教会訳）'
+                    ? '生神女庇護聖堂にて捧げられる全17章の式順と祈祷文（日本正教会訳）'
                     : locale === 'ru'
                     ? 'Полный чин Литургии из 17 последовательных частей с японским, церковнославянским и английским текстами'
                     : 'Complete text and rubrics for all 17 parts as served at Holy Protection Temple'}
@@ -550,7 +550,7 @@ export function ReaderView() {
             </span>
             <h3 className="text-base sm:text-xl font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light">
               {locale === 'ja'
-                ? '聖生神女庇護祭 & 亜使徒日本の大主教聖ニコライ'
+                ? '生神女庇護祭 & 亜使徒日本の大主教聖ニコライ'
                 : locale === 'ru'
                 ? 'Покров Пресвятой Богородицы и свт. Николай Японский'
                 : 'Holy Protection (Pokrov) & St. Nicholas of Japan'}
@@ -569,7 +569,7 @@ export function ReaderView() {
             <div className="flex items-center space-x-2 border-b border-orthodox-gold/30 pb-2">
               <Shield className="w-4 h-4 text-orthodox-gold flex-shrink-0" />
               <h4 className="font-serif font-bold text-sm sm:text-base text-orthodox-navy dark:text-orthodox-gold-light">
-                {locale === 'ja' ? '聖生神女庇護祭（大阪教会 守護）' : locale === 'ru' ? 'Покров Пресвятой Богородицы (Храм в Осаке)' : 'Holy Protection of the Theotokos (Pokrov)'}
+                {locale === 'ja' ? '生神女庇護祭（大阪教会 守護）' : locale === 'ru' ? 'Покров Пресвятой Богородицы (Храм в Осаке)' : 'Holy Protection of the Theotokos (Pokrov)'}
               </h4>
             </div>
 

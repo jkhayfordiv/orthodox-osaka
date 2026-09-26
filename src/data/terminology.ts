@@ -2,7 +2,7 @@ import { TrilingualText } from '../lib/types';
 
 export const PARISH_INFO = {
   name: {
-    ja: '大阪ハリストス正教会 聖生神女庇護聖堂',
+    ja: '大阪ハリストス正教会 生神女庇護聖堂',
     en: 'The Holy Protection Church in Osaka',
     ru: 'Храм Покрова Пресвятой Богородицы в Осаке',
   },

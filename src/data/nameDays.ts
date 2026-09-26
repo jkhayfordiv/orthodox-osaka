@@ -2718,7 +2718,7 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "ru": "Анна"
     },
     "saint": {
-      "ja": "聖生神女の母義人聖アンナ（就寝祭）",
+      "ja": "至聖生神女の母義人聖アンナ（就寝祭）",
       "en": "Righteous Anna, Mother of the Most Holy Theotokos (Falling Asleep)",
       "ru": "Успение праведной Анны, матери Пресвятой Богородицы"
     },
@@ -3902,7 +3902,7 @@ export const COMMON_NAME_DAYS: NameDayEntry[] = [
       "ru": "Иоаким"
     },
     "saint": {
-      "ja": "聖生神女の父義人聖イオアキム",
+      "ja": "至聖生神女の父義人聖イオアキム",
       "en": "Righteous Joachim, Father of the Most Holy Theotokos",
       "ru": "Святой праведный Иоаким, богоотец"
     },

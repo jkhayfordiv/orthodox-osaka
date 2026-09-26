@@ -107,7 +107,7 @@ export function Header() {
             </h1>
             <p className="text-[10px] sm:text-[11px] text-slate-300 font-sans tracking-tight">
               {locale === 'ja'
-                ? '聖生神女庇護聖堂'
+                ? '生神女庇護聖堂'
                 : locale === 'ru'
                 ? 'Храм Покрова Пресвятой Богородицы'
                 : 'Holy Protection Temple'}

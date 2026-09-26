@@ -12,7 +12,7 @@ export const PARISH_ANNOUNCEMENTS: BulletinAnnouncement[] = [
       ru: 'Престольный праздник и традиционное приходское барбекю',
     },
     content: {
-      ja: '10月11日（日）は当教会の聖堂名（聖生神女庇護）に由来する最大の祝日典礼です。10:00からの聖体礼儀の後、教会の庭にて恒例のバーベキュー親睦会を開催いたします。皆さまご家族・ご友人お誘い合わせの上、ぜひご参加ください！',
+      ja: '10月11日（日）は当教会の聖堂名（生神女庇護）に由来する最大の祝日典礼です。10:00からの聖体礼儀の後、教会の庭にて恒例のバーベキュー親睦会を開催いたします。皆さまご家族・ご友人お誘い合わせの上、ぜひご参加ください！',
       en: 'Sunday, October 11 is the celebration day for our temple\'s name: The Feast of the Holy Protection of the Virgin Mary. Following the 10:00 AM Divine Liturgy, we will hold our annual celebratory Barbecue Party in the church garden. All parishioners, families, and guests are warmly invited!',
       ru: 'В воскресенье, 11 октября — престольный праздник нашего храма (в честь Покрова Пресвятой Богородицы). После Божественной литургии в 10:00 в саду при храме состоится традиционное праздничное барбекю. Приглашаем всех прихожан, друзей и гостей!',
     },

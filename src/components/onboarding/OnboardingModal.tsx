@@ -107,7 +107,7 @@ export function OnboardingModal() {
                   </h3>
                   <p className="text-[11px] text-slate-200">
                     {selectedLang === 'ja'
-                      ? '聖生神女庇護聖堂（大阪府吹田市）'
+                      ? '生神女庇護聖堂（大阪府吹田市）'
                       : selectedLang === 'ru'
                       ? 'Храм Покрова Пресвятой Богородицы'
                       : 'Holy Protection Orthodox Temple, Osaka'}

@@ -428,7 +428,7 @@ export function ParishView() {
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                 {locale === 'ja'
-                  ? '日本ハリストス正教会 西日本主教教区 聖生神女庇護聖堂'
+                  ? '日本ハリストス正教会 西日本主教教区 生神女庇護聖堂'
                   : locale === 'ru'
                   ? 'Храм Покрова Пресвятой Богородицы, Осака'
                   : 'Holy Protection Temple, Western Diocese, Osaka'}
@@ -852,7 +852,7 @@ export function ParishView() {
                   </h3>
                   <p className="text-xs sm:text-sm text-orthodox-burgundy dark:text-orthodox-gold font-serif mt-0.5 font-bold">
                     {locale === 'ja'
-                      ? '聖生神女庇護聖堂（大阪ハリストス正教会）'
+                      ? '生神女庇護聖堂（大阪ハリストス正教会）'
                       : locale === 'ru'
                       ? 'Храм Покрова Пресвятой Богородицы в Осаке'
                       : 'Holy Protection Temple, Osaka'}
@@ -952,7 +952,7 @@ export function ParishView() {
 
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                   {locale === 'ja'
-                    ? '大阪ハリストス正教会は、聖生神女の温かい庇護のもと、祈りと愛を分かち合う神の家族です。信仰をお持ちの方はもちろん、キリスト教に関心をお持ちの方、祈りの静けさをお求めの方、人生のご相談など、どなたでも歓迎いたします。土曜の徹夜祷や日曜の聖体礼儀にお気軽にお越しください。'
+                    ? '大阪ハリストス正教会は、生神女の温かい庇護のもと、祈りと愛を分かち合う神の家族です。信仰をお持ちの方はもちろん、キリスト教に関心をお持ちの方、祈りの静けさをお求めの方、人生のご相談など、どなたでも歓迎いたします。土曜の徹夜祷や日曜の聖体礼儀にお気軽にお越しください。'
                     : locale === 'ru'
                     ? 'Храм Покрова Пресвятой Богородицы в Осаке — это молитвенный дом и духовная семья под материнским кровом Божией Матери. Мы рады приветствовать прихожан, соотечественников в Японии, гостей и всех, кто интересуется православием. Приходите на субботнюю вечерню и воскресную Литургию!'
                     : 'The Holy Protection Church in Osaka is a spiritual family praying together under the maternal protection of the Mother of God. Whether you are a lifelong Orthodox Christian, exploring the faith, or simply in need of prayer and peace, you are warmly invited to join us for Saturday Vigil and Sunday Divine Liturgy.'}

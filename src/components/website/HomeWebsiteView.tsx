@@ -81,7 +81,7 @@ export function HomeWebsiteView() {
                 </h1>
                 <p className="font-serif text-base sm:text-xl text-amber-200/90 font-light italic">
                   {locale === 'ja'
-                    ? '聖生神女庇護祭（ポクロフ）の聖堂 · 吹田市山手町'
+                    ? '生神女庇護祭（ポクロフ）の聖堂 · 吹田市山手町'
                     : locale === 'ru'
                     ? 'Храм Покрова Пресвятой Богородицы в Осаке (Суита)'
                     : 'Holy Protection Temple in Suita, Osaka'}
