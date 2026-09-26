@@ -77,14 +77,26 @@ export function HomeWebsiteView() {
               {/* Grand Main Title */}
               <div className="space-y-2">
                 <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
-                  {PARISH_INFO.name[locale]}
+                  {locale === 'ja' ? (
+                    <>
+                      <span className="inline-block">大阪ハリストス正教会</span>{' '}
+                      <span className="inline-block">生神女<wbr />庇護聖堂</span>
+                    </>
+                  ) : (
+                    PARISH_INFO.name[locale]
+                  )}
                 </h1>
                 <p className="font-serif text-base sm:text-xl text-amber-200/90 font-light italic">
-                  {locale === 'ja'
-                    ? '生神女庇護祭（ポクロフ）の聖堂 · 吹田市山手町'
-                    : locale === 'ru'
-                    ? 'Храм Покрова Пресвятой Богородицы в Осаке (Суита)'
-                    : 'Holy Protection Temple in Suita, Osaka'}
+                  {locale === 'ja' ? (
+                    <>
+                      <span className="inline-block">生神女<wbr />庇護祭（ポクロフ）の聖堂</span> ·{' '}
+                      <span className="inline-block">吹田市<wbr />山手町</span>
+                    </>
+                  ) : locale === 'ru' ? (
+                    'Храм Покрова Пресвятой Богородицы в Осаке (Суита)'
+                  ) : (
+                    'Holy Protection Temple in Suita, Osaka'
+                  )}
                 </p>
               </div>
 

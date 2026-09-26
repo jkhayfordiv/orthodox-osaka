@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useApp, AppTab } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
 import {
@@ -19,6 +20,7 @@ import {
   ChevronDown,
   Navigation,
   ScrollText,
+  Music,
 } from 'lucide-react';
 import { Locale } from '../../lib/types';
 
@@ -35,6 +37,7 @@ export function Header() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appDropdownOpen, setAppDropdownOpen] = useState(false);
+  const [portalsDropdownOpen, setPortalsDropdownOpen] = useState(false);
 
   const locales: { code: Locale; label: string; flag: string }[] = [
     { code: 'ja', label: '日本語', flag: '🇯🇵' },
@@ -76,6 +79,34 @@ export function Header() {
       icon: <ScrollText className="w-4 h-4 text-amber-300" />,
       label: { ja: '主日説教・教会報', en: 'Sunday Sermons', ru: 'Воскресные проповеди' },
       desc: { ja: '松島神父による主日説教集・アーカイブ', en: 'Weekly homilies & pastoral reflections', ru: 'Проповеди о. Георгия и архив' },
+    },
+  ];
+
+  // Dedicated Portals List
+  const portalNavItems = [
+    {
+      href: '/george',
+      icon: <BookOpen className="w-4 h-4 text-orthodox-gold" />,
+      label: { ja: '司祭ゲオルギイ松島雄一 神学', en: 'Fr. George Archive', ru: 'О. Георгий Мацусима' },
+      desc: { ja: '要理・聖師父・信仰問答Q&A', en: 'Catechism & Theology', ru: 'Богословие и ответы' },
+    },
+    {
+      href: '/maria',
+      icon: <Music className="w-4 h-4 text-indigo-300" />,
+      label: { ja: 'マリア松島純子 聖歌譜', en: 'Matushka Maria Scores', ru: 'Церковные ноты Марии' },
+      desc: { ja: '主日八調・大式全曲譜・聖歌論', en: 'Choral Scores & History', ru: 'Партитуры и история' },
+    },
+    {
+      href: '/liturgy',
+      icon: <ScrollText className="w-4 h-4 text-rose-300" />,
+      label: { ja: '日本正教会 奉神礼・祈祷文集', en: 'Liturgical Texts', ru: 'Богослужебные тексты' },
+      desc: { ja: '聖体礼儀式文・時課・PDF冊子', en: 'Services & Rubrics', ru: 'Чинопоследования' },
+    },
+    {
+      href: '/westjapan',
+      icon: <Compass className="w-4 h-4 text-amber-300" />,
+      label: { ja: '西日本主教教区 案内', en: 'Western Diocese', ru: 'Западно-Японская епархия' },
+      desc: { ja: '東海・近畿・中国・四国・九州', en: 'Parishes in West Japan', ru: 'Храмы епархии' },
     },
   ];
 
@@ -174,6 +205,51 @@ export function Header() {
               </div>
             )}
           </div>
+
+          {/* Portals Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setPortalsDropdownOpen(!portalsDropdownOpen)}
+              onBlur={() => setTimeout(() => setPortalsDropdownOpen(false), 200)}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none bg-white/5 border-orthodox-gold/30 text-slate-200 hover:text-white hover:bg-white/10"
+              title={locale === 'ja' ? '正教研究ポータル群' : 'Orthodox Portals'}
+            >
+              <ScrollText className="w-3.5 h-3.5 text-orthodox-gold" />
+              <span>{locale === 'ja' ? '研究ポータル' : locale === 'ru' ? 'Архивы' : 'Portals'}</span>
+              <ChevronDown className={`w-3 h-3 transition-transform ${portalsDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {portalsDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-72 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                <div className="px-3 py-1.5 text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider border-b border-orthodox-gold/20">
+                  {locale === 'ja' ? '神学・聖歌・奉神礼ポータル' : 'Portals & Research Archives'}
+                </div>
+                {portalNavItems.map((item, idx) => (
+                  <Link
+                    key={idx}
+                    href={item.href}
+                    className="w-full px-3 py-2 text-left flex items-start gap-2.5 hover:bg-white/10 transition-colors text-slate-200"
+                  >
+                    <div className="mt-0.5">{item.icon}</div>
+                    <div>
+                      <div className="text-xs font-semibold text-white">{item.label[locale]}</div>
+                      <div className="text-[10px] text-slate-400">{item.desc[locale]}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* West Japan Diocese Page Link */}
+          <Link
+            href="/westjapan"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-orthodox-gold-light hover:text-white bg-white/5 hover:bg-white/10 border border-orthodox-gold/30 shadow-xs"
+            title={locale === 'ja' ? '西日本主教教区・各地の教会' : 'Western Diocese of Japan'}
+          >
+            <Compass className="w-3.5 h-3.5 text-orthodox-gold" />
+            <span>{locale === 'ja' ? '西日本主教区' : locale === 'ru' ? 'Епархия' : 'Diocese'}</span>
+          </Link>
         </nav>
 
         {/* Right: Quick Language Switcher, Theme & Settings */}
@@ -250,6 +326,38 @@ export function Header() {
                 >
                   {item.label[locale]}
                 </button>
+              ))}
+              <Link
+                href="/westjapan"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-xs font-bold text-left transition-colors bg-orthodox-gold/15 text-orthodox-gold-light border border-orthodox-gold/40 flex items-center gap-1.5"
+              >
+                <Compass className="w-3.5 h-3.5 text-orthodox-gold" />
+                <span>{locale === 'ja' ? '西日本主教区' : locale === 'ru' ? 'Епархия' : 'Diocese'}</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Portals Section */}
+          <div className="pt-2 border-t border-orthodox-gold/20">
+            <div className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <ScrollText className="w-3.5 h-3.5 text-orthodox-gold" />
+              <span>{locale === 'ja' ? '正教研究ポータル群' : 'Orthodox Portals'}</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {portalNavItems.map((item, idx) => (
+                <Link
+                  key={idx}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2 rounded-lg text-xs text-left flex items-center gap-2.5 transition-colors bg-white/5 text-slate-200 hover:bg-white/10 hover:text-white"
+                >
+                  <div>{item.icon}</div>
+                  <div>
+                    <div className="font-semibold text-white">{item.label[locale]}</div>
+                    <div className="text-[10px] text-slate-400">{item.desc[locale]}</div>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>

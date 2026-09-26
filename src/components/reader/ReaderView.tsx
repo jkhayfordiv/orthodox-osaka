@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useApp } from '../../context/AppContext';
 import { PRAYERS_DATA } from '../../data/prayers';
 import { LITURGY_CHRYSOSTOM } from '../../data/liturgy';
@@ -19,22 +20,17 @@ import {
   ChevronUp,
   Scroll,
   Music,
-  Download,
-  Search,
-  FileText,
+  ExternalLink,
 } from 'lucide-react';
 import { PrayingHandsIcon } from '../shared/PrayingHandsIcon';
 import { DiptychsView } from './DiptychsView';
 import { Locale } from '../../lib/types';
-import { LIBRARY_DATA, LibraryItem } from '../../data/libraryCatalog';
 
 export function ReaderView() {
   const { locale, selectedDate, fontSize, setFontSize } = useApp();
 
-  // Top-level category: Scripture | Liturgy | Prayer Book | Patronal Hymns | Choir Scores
-  const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal' | 'scores'>('scripture');
-  const [scoreSearch, setScoreSearch] = useState('');
-  const [scoreFilter, setScoreFilter] = useState<'all' | 'octoechos' | 'liturgy' | 'lent'>('all');
+  // Top-level category: Scripture | Liturgy | Prayer Book | Patronal Hymns
+  const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal'>('scripture');
 
   // Sub-category under Prayer Book: Daily Prayers (Morning/Evening) | Communion | Meals/Travel | Diptychs
   const [prayerSubCategory, setPrayerSubCategory] = useState<'daily' | 'communion' | 'meals' | 'diptychs'>('daily');
@@ -73,11 +69,6 @@ export function ReaderView() {
       id: 'patronal' as const,
       icon: <Shield className="w-4 h-4" />,
       label: { ja: '守護聖歌', en: 'Patronal', ru: 'Покров' },
-    },
-    {
-      id: 'scores' as const,
-      icon: <Music className="w-4 h-4" />,
-      label: { ja: '聖歌楽譜', en: 'Choir Scores', ru: 'Ноты' },
     },
   ];
 
@@ -333,6 +324,39 @@ export function ReaderView() {
                   </div>
                 );
               })}
+            </div>
+
+            {/* Link to Dedicated Choral Scores & Liturgy Portals */}
+            <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-amber-50/70 dark:bg-slate-900 border border-orthodox-gold/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <span className="text-2xs font-bold text-orthodox-gold uppercase tracking-wider">
+                  {locale === 'ja' ? '聖歌楽譜・奉神礼ポータル' : 'Sacred Music & Liturgy Portals'}
+                </span>
+                <h4 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+                  {locale === 'ja' ? 'マリア松島純子 聖歌ポータル & 奉神礼集' : 'Matushka Maria Sacred Music & Liturgy'}
+                </h4>
+                <p className="text-xs text-slate-600 dark:text-slate-300">
+                  {locale === 'ja'
+                    ? '大式聖体礼儀、主日八調、三歌斎の合唱楽譜（PDF）や研究文献は専用ポータルで閲覧・ダウンロードいただけます。'
+                    : 'Access full choral scores (Daishiki Liturgy, Octoechos, Triodion PDFs) on the dedicated sacred music portal.'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <Link
+                  href="/maria"
+                  className="px-4 py-2 rounded-xl bg-orthodox-gold text-orthodox-navy font-bold text-xs hover:bg-orthodox-gold-light transition-all shadow-xs flex items-center gap-1.5"
+                >
+                  <Music className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '聖歌ポータルへ' : 'Music Portal'}</span>
+                </Link>
+                <Link
+                  href="/liturgy"
+                  className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-750 transition-all flex items-center gap-1.5"
+                >
+                  <Church className="w-3.5 h-3.5" />
+                  <span>{locale === 'ja' ? '奉神礼集へ' : 'Full Liturgy'}</span>
+                </Link>
+              </div>
             </div>
           </div>
         )}
@@ -676,283 +700,6 @@ export function ReaderView() {
         </div>
       )}
 
-      {/* Choir Scores PDF Library */}
-      {mainCategory === 'scores' && (
-        <div className="space-y-6">
-          {/* Header Banner */}
-          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 text-xs font-semibold">
-                  <Music className="w-3.5 h-3.5" />
-                  <span>{locale === 'ja' ? '奉神礼聖歌楽譜アーカイブ' : locale === 'ru' ? 'Архив церковных нот' : 'Choir Scores Archive'}</span>
-                </div>
-                <h3 className="font-serif font-bold text-xl sm:text-2xl text-slate-900 dark:text-white">
-                  {locale === 'ja' ? '正教会 聖歌譜面・八調PDF' : locale === 'ru' ? 'Богослужебные ноты и партитуры' : 'Orthodox Liturgical Sheet Music'}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-                  {locale === 'ja'
-                    ? '西日本主教区・大阪教会で長年保存されてきた主日八調、聖体礼儀、大斎三歌斎などの合唱用PDF楽譜（240点以上）を閲覧・保存できます。'
-                    : 'Over 240 printable choral scores including Sunday Octoechos Tones 1-8, Divine Liturgy, and Triodion.'}
-                </p>
-              </div>
-
-              <div className="flex-shrink-0">
-                <span className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300">
-                  {LIBRARY_DATA.scoresCount} {locale === 'ja' ? '件の楽譜' : 'scores'}
-                </span>
-              </div>
-            </div>
-
-            {/* Search & Filter Controls */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <div className="relative flex-1">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={scoreSearch}
-                  onChange={e => setScoreSearch(e.target.value)}
-                  placeholder={locale === 'ja' ? '調や曲名で検索（例: 第1調, 聖体礼儀, Pascha）...' : 'Search by tone or title (e.g. Tone 1, Liturgy)...'}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orthodox-gold"
-                />
-              </div>
-
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-                {[
-                  { id: 'all' as const, label: locale === 'ja' ? 'すべて' : 'All' },
-                  { id: 'octoechos' as const, label: locale === 'ja' ? '主日八調' : 'Octoechos' },
-                  { id: 'liturgy' as const, label: locale === 'ja' ? '聖体礼儀' : 'Divine Liturgy' },
-                  { id: 'lent' as const, label: locale === 'ja' ? '大斎・三歌斎' : 'Lent / Triodion' },
-                ].map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setScoreFilter(tab.id)}
-                    className={`px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
-                      scoreFilter === tab.id
-                        ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* 1. Curated Octoechos 8-Tones Showcase (Shown in All & Octoechos) */}
-          {(scoreFilter === 'all' || scoreFilter === 'octoechos') && !scoreSearch.trim() && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-orthodox-gold" />
-                  <h4 className="font-serif font-bold text-base sm:text-lg text-slate-900 dark:text-white">
-                    {locale === 'ja' ? '主日八調 聖歌楽譜（第1調〜第8調）' : 'Sunday Octoechos (Tones 1–8)'}
-                  </h4>
-                </div>
-                <span className="text-2xs text-slate-400">PDF譜面</span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map(tone => {
-                  const score = LIBRARY_DATA.items.find(i => i.type === 'pdf' && i.relativePath.toLowerCase().includes(`octoechos_sun_${tone}.pdf`));
-                  return (
-                    <div
-                      key={tone}
-                      className="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs hover:border-orthodox-gold transition-all flex flex-col justify-between space-y-2.5"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="w-7 h-7 rounded-xl bg-orthodox-gold/20 text-orthodox-navy dark:text-orthodox-gold font-bold text-xs flex items-center justify-center">
-                            #{tone}
-                          </span>
-                          <span className="text-2xs text-slate-400">
-                            {score?.size ? `${Math.round(score.size / 1024)} KB` : 'PDF'}
-                          </span>
-                        </div>
-                        <h5 className="font-serif font-bold text-sm text-slate-900 dark:text-white mt-1.5">
-                          {locale === 'ja' ? `主日 第${tone}調 聖歌` : `Sunday Tone ${tone}`}
-                        </h5>
-                      </div>
-
-                      {score && (
-                        <a
-                          href={`/${score.section}/${score.relativePath}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-orthodox-gold text-orthodox-navy hover:bg-orthodox-gold-light text-xs font-bold transition-colors w-full shadow-2xs"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>{locale === 'ja' ? '楽譜を開く' : 'Open PDF'}</span>
-                        </a>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Gospels & Exapostilarion */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                {LIBRARY_DATA.items.filter(i => i.type === 'pdf' && (i.relativePath.includes('Gospel') || i.relativePath.includes('Exapostilarion'))).map(item => (
-                  <div
-                    key={item.id}
-                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 flex items-center justify-between gap-3"
-                  >
-                    <div>
-                      <h5 className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
-                        {item.title}
-                      </h5>
-                      <span className="text-2xs text-slate-400">
-                        {item.size ? `${Math.round(item.size / 1024)} KB` : 'PDF'}
-                      </span>
-                    </div>
-                    <a
-                      href={`/${item.section}/${item.relativePath}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 py-1.5 px-3 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-orthodox-gold hover:text-orthodox-navy transition-colors flex-shrink-0"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>{locale === 'ja' ? '開く' : 'Open'}</span>
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 2. Divine Liturgy Highlight (Shown in All & Liturgy) */}
-          {(scoreFilter === 'all' || scoreFilter === 'liturgy') && !scoreSearch.trim() && (
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-orthodox-burgundy dark:bg-orthodox-gold" />
-                  <h4 className="font-serif font-bold text-base sm:text-lg text-slate-900 dark:text-white">
-                    {locale === 'ja' ? '聖体礼儀 全曲譜 & 基本聖歌' : 'Divine Liturgy Scores'}
-                  </h4>
-                </div>
-              </div>
-
-              {/* Featured Daishiki Card */}
-              {(() => {
-                const daishiki = LIBRARY_DATA.items.find(i => i.relativePath.includes('Daishiki.pdf'));
-                return (
-                  <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-850 border-2 border-orthodox-gold/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <span className="px-2.5 py-0.5 rounded-full bg-orthodox-gold/30 text-orthodox-navy dark:text-amber-200 text-2xs font-bold uppercase">
-                        Master Score
-                      </span>
-                      <h4 className="font-serif font-bold text-base sm:text-lg text-slate-900 dark:text-white">
-                        {locale === 'ja' ? '大式聖体礼儀 聖歌楽譜（全曲集）' : 'Full Divine Liturgy Choral Score (Daishiki)'}
-                      </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-300">
-                        {locale === 'ja'
-                          ? '聖金口イオアン聖体礼儀の全合唱パート譜を1冊にまとめた大式譜面です。'
-                          : 'Complete choral score of the Divine Liturgy of St. John Chrysostom.'}
-                      </p>
-                    </div>
-
-                    {daishiki && (
-                      <a
-                        href={`/${daishiki.section}/${daishiki.relativePath}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-light text-orthodox-navy font-bold text-xs sm:text-sm shadow-md transition-all flex-shrink-0"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>{locale === 'ja' ? '全曲譜を開く (PDF)' : 'Open Full Score'}</span>
-                      </a>
-                    )}
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-
-          {/* 3. Searchable & Filtered Scores List */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-              <h4 className="font-serif font-bold text-sm sm:text-base text-slate-900 dark:text-white">
-                {scoreSearch.trim()
-                  ? (locale === 'ja' ? `検索結果: "${scoreSearch}"` : `Search Results for "${scoreSearch}"`)
-                  : (locale === 'ja' ? '全楽譜アーカイブ一覧' : 'All Archived Scores')}
-              </h4>
-              <span className="text-2xs text-slate-400">
-                {
-                  LIBRARY_DATA.items
-                    .filter(item => item.type === 'pdf')
-                    .filter(item => {
-                      if (scoreFilter === 'octoechos') return item.relativePath.toLowerCase().includes('octoechos');
-                      if (scoreFilter === 'liturgy') return item.relativePath.toLowerCase().includes('liturgy') || item.title.includes('大式');
-                      if (scoreFilter === 'lent') return item.relativePath.toLowerCase().includes('triodion') || item.title.includes('三歌斎');
-                      return true;
-                    })
-                    .filter(item => {
-                      if (!scoreSearch.trim()) return true;
-                      const q = scoreSearch.toLowerCase();
-                      return item.title.toLowerCase().includes(q) || item.relativePath.toLowerCase().includes(q);
-                    }).length
-                } 件
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {LIBRARY_DATA.items
-                .filter(item => item.type === 'pdf')
-                .filter(item => {
-                  if (scoreFilter === 'octoechos') return item.relativePath.toLowerCase().includes('octoechos');
-                  if (scoreFilter === 'liturgy') return item.relativePath.toLowerCase().includes('liturgy') || item.title.includes('大式');
-                  if (scoreFilter === 'lent') return item.relativePath.toLowerCase().includes('triodion') || item.title.includes('三歌斎');
-                  return true;
-                })
-                .filter(item => {
-                  if (!scoreSearch.trim()) return true;
-                  const q = scoreSearch.toLowerCase();
-                  return item.title.toLowerCase().includes(q) || item.relativePath.toLowerCase().includes(q);
-                })
-                .slice(0, scoreSearch.trim() || scoreFilter !== 'all' ? 100 : 24)
-                .map(score => (
-                  <div
-                    key={score.id}
-                    className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-xs flex flex-col justify-between hover:border-orthodox-gold/60 transition-all group"
-                  >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 font-bold text-2xs">
-                          PDF
-                        </span>
-                        {score.size && (
-                          <span className="text-2xs text-slate-400">
-                            {Math.round(score.size / 1024)} KB
-                          </span>
-                        )}
-                      </div>
-
-                      <h4 className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white line-clamp-2 group-hover:text-orthodox-gold transition-colors">
-                        {score.title}
-                      </h4>
-                    </div>
-
-                    <div className="pt-2.5 mt-2.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                      <span className="text-2xs text-slate-400 truncate max-w-[130px]">
-                        {score.relativePath.split('/').pop()}
-                      </span>
-                      <a
-                        href={`/${score.section}/${score.relativePath}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-gold hover:text-orthodox-navy text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                      >
-                        <Download className="w-3 h-3" />
-                        <span>{locale === 'ja' ? '開く' : 'Open'}</span>
-                      </a>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

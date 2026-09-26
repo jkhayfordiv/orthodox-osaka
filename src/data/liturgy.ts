@@ -7,7 +7,10 @@ export interface LiturgySection {
   celebrant: 'Priest' | 'Deacon' | 'Choir' | 'People' | 'All';
   rubric?: TrilingualText;
   text: TrilingualText;
+  section?: string;
 }
+
+export type LiturgyPart = LiturgySection;
 
 export const LITURGY_CHRYSOSTOM: LiturgySection[] = [
   // 1. Opening Blessing

@@ -3,6 +3,7 @@ import './globals.css';
 import { AppProvider } from '../context/AppContext';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://orthodox-jp.com'),
   title: '大阪ハリストス正教会 / Osaka Orthodox Church',
   description: '大阪ハリストス正教会 生神女庇護聖堂 聖暦カレンダー・奉事日程・祈祷書 (The Holy Protection Orthodox Church in Osaka)',
   manifest: '/manifest.json',
