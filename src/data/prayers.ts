@@ -243,7 +243,7 @@ Then shall they offer bullocks upon Thine altar.`,
     category: 'morning',
     sequenceNumber: 4,
     title: {
-      ja: '信経（ニケア・コンスタンティノープル信条）',
+      ja: '信経（ニケヤ・コンスタンチノポリ信経）',
       en: 'The Symbol of Faith (The Nicene Creed)',
       ru: 'Символ веры (Верую)',
     },
@@ -253,22 +253,22 @@ Then shall they offer bullocks upon Thine altar.`,
       ru: 'Исповедание Православной веры',
     },
     text: {
-      ja: `我、唯一の神・父・全能者、天と地、見ゆると見えざる万物の創造主を信ず。
+      ja: `我信ず、一の神、父、全能者、天と地、見ゆると見えざる万物を造りし主を。
 
-又、唯一の主イイスス・ハリストス、神の独生の子、万世の前に父より生まれ、光よりの光、真の神よりの真の神、生まれし者にて造られしに非ず、父と一体にして、万物彼によりて造られたるを信ず。
+又信ず、一の主イイスス・ハリストス、神の独生の子、万世の前に父より生まれ、光よりの光、真の神よりの真の神、生まれし者にて、造られしに非ず、父と一体にして、万物彼に造られ、
 
-彼我ら人類の為、又我らの救いの為に天より降り、聖神及び童女マリヤより身を取りて人となり、
-我らの為にポンティイ・ピラトの時に十字架に釘うたれ、苦しみを受け、葬られ、
-聖書にかなうて三日目に復活し、
-天に昇り、父の右に坐し、
-光栄を顕して生ける者と死せし者を審判する為に再び来たり、その国終りなかるべしを信ず。
+我等人々の為、又我等の救いの為に天より降り、聖神及び童貞女マリヤより身を取り、人となり、
+我等の為にポンティイ・ピラトの時十字架に釘うたれ、苦しみを受け、葬られ、
+第三日に聖書に応ひて復活し、
+天に升り、父の右に座し、
+光栄を顕して生ける者と死せし者とを審判する為に還来たり、その国終りなからんを。
 
-又、聖神、主、生命を施す者、父より出で、父及び子と共に拝まれ讃美せられ、預言者を以てかつて語りしを信ず。
+又信ず、聖神、主、生命を施す者、父より出で、父及び子と共に拝まれ讃められ、預言者を以て嘗て言ひしを。
 
-又、唯一の聖なる公なる使徒の教会を信ず。
-我、罪の赦しを得る唯一の洗礼を言い表す。
-我、死者の復活、
-並びに来世の生命を望む。アミン。`,
+又信ず、一の聖なる公なる使徒の教会を。
+我認む、一の洗礼、以て罪の赦しを得るを。
+我望む、死者の復活、
+並びに来世の生命を。アミン。`,
       en: `I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible.
 
 And in one Lord Jesus Christ, the Son of God, the Only-begotten, begotten of the Father before all ages; Light of Light, true God of true God; begotten, not made; of one essence with the Father, by Whom all things were made;

@@ -3,13 +3,14 @@ import { TrilingualText } from '../lib/types';
 export interface ParishPhotoItem {
   id: string;
   src: string;
-  category: 'exterior' | 'interior' | 'services' | 'community' | 'bells';
+  category: 'exterior' | 'interior' | 'services' | 'community';
   title: TrilingualText;
   caption: TrilingualText;
   featured?: boolean;
 }
 
 export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
+  // --- 1. Exterior & Belfry (聖堂外観・鐘楼) ---
   {
     id: 'photo-panorama',
     src: '/church-photos/osaka-church-panoramic.jpg',
@@ -43,6 +44,40 @@ export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
     },
   },
   {
+    id: 'photo-belfry-bells',
+    src: '/photos/bell-belfry-tower.jpg',
+    category: 'exterior',
+    featured: true,
+    title: {
+      ja: '鐘楼と帝政ロシアの大鐘',
+      en: 'The Belfry & Historic Russian Bell',
+      ru: 'Колокольня и исторический русский колокол',
+    },
+    caption: {
+      ja: '1世紀以上にわたり吹田の街に福音を響かせてきた伝統の鐘。現在修復工事中。',
+      en: 'Historic master bell echoing the Gospel over Suita for over a century.',
+      ru: 'Старинный колокол, благовествующий над Суитой уже более ста лет.',
+    },
+  },
+  {
+    id: 'photo-bell-timber',
+    src: '/photos/bell-timber-historic.jpg',
+    category: 'exterior',
+    featured: false,
+    title: {
+      ja: '鐘楼の歴史的木組み構造',
+      en: 'Historic Timber Structure of the Belfry',
+      ru: 'Историческая деревянная конструкция колокольни',
+    },
+    caption: {
+      ja: '伝統的な木造建築の技法で大鐘を支える堅牢な鐘楼内部の梁。',
+      en: 'Traditional timber joinery supporting the heavy liturgical bells.',
+      ru: 'Традиционные деревянные балки, несущие свод и колокола.',
+    },
+  },
+
+  // --- 2. Interior & Icons (聖堂内部・聖像) ---
+  {
     id: 'photo-royal-doors',
     src: '/church-photos/royal-doors-iconostasis.jpg',
     category: 'interior',
@@ -59,6 +94,22 @@ export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
     },
   },
   {
+    id: 'photo-sanctuary-details',
+    src: '/church-photos/20190427175.jpg',
+    category: 'interior',
+    featured: true,
+    title: {
+      ja: '祭壇の装飾と聖障のイコン',
+      en: 'Sanctuary Iconostasis & Royal Doors',
+      ru: 'Алтарь, иконостас и Царские Врата',
+    },
+    caption: {
+      ja: '王門の前にて聖杯を掲げる松島ゲオルギイ神父と黄金の聖障。',
+      en: 'Fr. George with the Holy Chalice at the Royal Doors before the iconostasis.',
+      ru: 'Отец Георгий со святой чашей у Царских Врат перед иконостасом.',
+    },
+  },
+  {
     id: 'photo-altar-light',
     src: '/church-photos/church-altar-light.jpg',
     category: 'interior',
@@ -69,27 +120,29 @@ export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
       ru: 'Молитвенный свет в алтаре',
     },
     caption: {
-      ja: '蝋燭の炎と自然光が調和する聖なる空間。',
+      ja: '蝋燭の炎と自然光が調和する聖なる礼拝空間。',
       en: 'Soft candlelight and sunlight filling the nave and sanctuary.',
       ru: 'Теплый свет свечей и естественные лучи в храмовом пространстве.',
     },
   },
   {
-    id: 'photo-vespers',
-    src: '/church-photos/vespers-candlelight.jpg',
-    category: 'services',
-    featured: true,
+    id: 'photo-temple-interior',
+    src: '/photos/church-interior.jpg',
+    category: 'interior',
+    featured: false,
     title: {
-      ja: '土曜徹夜祷の祈り',
-      en: 'Saturday All-Night Vigil',
-      ru: 'Субботнее Всенощное бдение',
+      ja: '聖堂内部全景とシャンデリア',
+      en: 'Temple Nave & Chandelier',
+      ru: 'Интерьер храма и паникадило',
     },
     caption: {
-      ja: '夕刻のほの暗い聖堂に響く無伴奏の聖歌と灯火の祈り。',
-      en: 'Choral singing and prayer in the soft evening candlelight.',
-      ru: 'Хоровое пение и благоговейная молитва при мерцании лампад.',
+      ja: '天井から吊り下げられたシャンデリアと、祈りの静けさに満ちた会堂。',
+      en: 'The main nave adorned with traditional chandelier and iconography.',
+      ru: 'Храмовое пространство с паникадилом и святыми образами.',
     },
   },
+
+  // --- 3. Services & Pascha (奉神礼・復活大祭) ---
   {
     id: 'photo-pascha-procession',
     src: '/church-photos/20190427001.jpg',
@@ -107,40 +160,74 @@ export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
     },
   },
   {
-    id: 'photo-pascha-feast',
+    id: 'photo-candles-prayers',
     src: '/church-photos/20190427051.jpg',
     category: 'services',
-    featured: false,
+    featured: true,
     title: {
-      ja: '復活祭の祝祷と信徒の参祷',
-      en: 'Pascha Divine Liturgy',
-      ru: 'Праздничная Пасхальная Литургия',
+      ja: '献香と蝋燭の祈り',
+      en: 'Incense & Paschal Blessing',
+      ru: 'Каждение и пасхальное благословение',
     },
     caption: {
-      ja: '白と金の祭服に包まれた祭壇と祈りを共にする信徒たち。',
-      en: 'The festive white and gold vestments worn for the Resurrection of Christ.',
-      ru: 'Бело-золотые облачения и радостная молитва прихожан.',
+      ja: '白銀の祭服に身を包み、香炉と三本蝋燭を手に祈りを捧げる司祭。',
+      en: 'Fr. George in festive vestments holding the censer and Paschal trikirion.',
+      ru: 'Отец Георгий в праздничном облачении с кадилом и пасхальным трехсвечником.',
     },
   },
   {
-    id: 'photo-belfry-bells',
-    src: '/church-photos/img-0686.jpg',
-    category: 'bells',
+    id: 'photo-eucharist',
+    src: '/church-photos/20190427165.jpg',
+    category: 'services',
     featured: true,
     title: {
-      ja: '鐘楼と帝政ロシアの大鐘',
-      en: 'The Belfry & Master Bells',
-      ru: 'Колокольня и исторические колокола',
+      ja: '主日の聖体機密（領聖）',
+      en: 'The Holy Eucharist (Communion)',
+      ru: 'Таинство Святого Причащения',
     },
     caption: {
-      ja: '1世紀以上にわたり吹田の街に福音を響かせてきた伝統の鐘。現在修復工事中。',
-      en: 'Historic master bell echoing the Gospel over Suita for over a century.',
-      ru: 'Старинный колокол, благовествующий уже более ста лет.',
+      ja: '信徒一人ひとりに主の尊体血が授けられる、礼拝の最も尊い機密。',
+      en: 'Parishioners receiving the Holy Mysteries of Christ’s Body and Blood.',
+      ru: 'Причащение Святых Христовых Таин на Божественной Литургии.',
+    },
+  },
+  {
+    id: 'photo-vespers',
+    src: '/church-photos/vespers-candlelight.jpg',
+    category: 'services',
+    featured: false,
+    title: {
+      ja: '夕刻徹夜祷の祈り',
+      en: 'Evening All-Night Vigil',
+      ru: 'Субботнее Всенощное бдение',
+    },
+    caption: {
+      ja: '夕刻のほの暗い聖堂に響く無伴奏の聖歌と灯火の祈り。',
+      en: 'Choral singing and prayer in the soft evening candlelight.',
+      ru: 'Хоровое пение и благоговейная молитва при мерцании лампад.',
+    },
+  },
+
+  // --- 4. Community & Grounds (信徒の集い・境内) ---
+  {
+    id: 'photo-congregation',
+    src: '/church-photos/20190427186.jpg',
+    category: 'community',
+    featured: true,
+    title: {
+      ja: '聖堂に集う信徒の交わり',
+      en: 'Parishioners Gathered in Fellowship',
+      ru: 'Приходская община в храме',
+    },
+    caption: {
+      ja: '聖堂を満たす老若男女、多国籍の信徒たちが心を合わせて祈りを捧げます。',
+      en: 'Our diverse international community uniting in faith and fellowship.',
+      ru: 'Многонациональная община верующих, объединенная в молитве.',
     },
   },
   {
     id: 'photo-community-garden',
-    src: '/church-photos/img-0249.jpg',
+    src: '/church-photos/img_0249.jpg',
     category: 'community',
     featured: false,
     title: {
@@ -149,57 +236,25 @@ export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
       ru: 'Церковный сад и двор',
     },
     caption: {
-      ja: '四季折々の花々が咲き、礼拝後にはお茶や親睦会が開かれる庭園。',
+      ja: '四季折々の草花が咲き、礼拝後にはお茶や親睦会が開かれる庭園。',
       en: 'Peaceful seasonal flora where parishioners gather for tea after Liturgy.',
       ru: 'Уютный сад при храме, где прихожане собираются после службы.',
     },
   },
   {
-    id: 'photo-parish-fellowship',
-    src: '/church-photos/20190427165.jpg',
+    id: 'photo-daylight',
+    src: '/photos/osaka-church-daylight.jpg',
     category: 'community',
-    featured: true,
-    title: {
-      ja: '信徒の親睦とアガペ祝宴',
-      en: 'Agape Fellowship & Celebration',
-      ru: 'Братская трапеза и общение',
-    },
-    caption: {
-      ja: '多国籍の信徒が集い、心温まる笑顔で食卓を囲むひととき。',
-      en: 'Parishioners from Japan and around the world sharing a fellowship meal.',
-      ru: 'Многонациональная община храма за праздничной трапезой.',
-    },
-  },
-  {
-    id: 'photo-sanctuary-details',
-    src: '/church-photos/dsc00464.jpg',
-    category: 'interior',
     featured: false,
     title: {
-      ja: '祭壇の装飾とイコン',
-      en: 'Sacred Iconography & Ornaments',
-      ru: 'Святые иконы и богослужебная утварь',
+      ja: '四季折々の吹田の境内',
+      en: 'Temple Grounds in Suita',
+      ru: 'Приходская территория в Суите',
     },
     caption: {
-      ja: '厳粛な祈りを支える伝統的な正教会の聖具と装飾。',
-      en: 'Traditional Orthodox liturgical vessels and ornate holy icons.',
-      ru: 'Богослужебная утварь и образа, украшающие храм.',
-    },
-  },
-  {
-    id: 'photo-candles-prayers',
-    src: '/church-photos/dsc00590.jpg',
-    category: 'services',
-    featured: false,
-    title: {
-      ja: '献香と蝋燭の祈り',
-      en: 'Incense & Candlelight Prayers',
-      ru: 'Каждение и возжжение свечей',
-    },
-    caption: {
-      ja: '主の前に捧げられる信徒たちの祈りの灯火。',
-      en: 'The warm glow of beeswax candles offered in devotion before the icons.',
-      ru: 'Живой свет восковых свечей, возносимый пред святыми иконами.',
+      ja: '四季の移ろいとともに祈りの時を刻む吹田山手の境内。',
+      en: 'The peaceful grounds of Osaka Orthodox Church in every season.',
+      ru: 'Мирная атмосфера храмового двора в любое время года.',
     },
   },
 ];

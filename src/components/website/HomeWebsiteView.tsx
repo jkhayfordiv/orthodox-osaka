@@ -130,7 +130,7 @@ export function HomeWebsiteView() {
                   className="px-6 py-3 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-light text-orthodox-navy font-bold text-xs sm:text-sm backdrop-blur-xs border border-amber-300 transition-all shadow-sm flex items-center gap-2"
                 >
                   <Music className="w-4 h-4 text-orthodox-navy" />
-                  <span>{locale === 'ja' ? '2027記念演奏会' : locale === 'ru' ? 'Концерт 2027' : '2027 Concert'}</span>
+                  <span>{locale === 'ja' ? '近日中の特別演奏会' : locale === 'ru' ? 'Ближайший концерт' : 'Upcoming Concert'}</span>
                 </button>
 
                 <button
@@ -333,7 +333,7 @@ export function HomeWebsiteView() {
             <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  {locale === 'ja' ? '土曜日 夕暮れ' : locale === 'ru' ? 'Суббота вечер' : 'Saturday Evening'}
+                  {locale === 'ja' ? '夕方' : locale === 'ru' ? 'Вечер' : 'Evening'}
                 </span>
                 <Clock className="w-5 h-5 text-orthodox-gold" />
               </div>

@@ -241,15 +241,6 @@ export function ConcertEventSection() {
               >
                 🇷🇺 Русский
               </a>
-              <a
-                href={event.pdfBackgroundUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-orthodox-gold/20 text-slate-700 dark:text-slate-200 transition-colors"
-                title="水彩背景のみの白紙版"
-              >
-                🎨 {locale === 'ja' ? '背景版' : 'Background'}
-              </a>
             </div>
           </div>
         </div>
@@ -358,7 +349,7 @@ export function ConcertEventSection() {
             <p className="text-2xs sm:text-xs text-slate-500 dark:text-slate-400">
               {event.artist.title[locale]}
             </p>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans line-clamp-3 pt-1">
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans pt-1">
               {event.artist.profile[locale]}
             </p>
           </div>

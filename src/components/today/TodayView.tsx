@@ -24,6 +24,34 @@ import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifica
 import { FastingGuideModal } from '../shared/FastingGuideModal';
 import { getEffectiveSundaySermon } from '../../lib/sermonSchedule';
 
+function formatScriptureTitle(reading: ScriptureReading, locale: Locale): string {
+  const bookName = reading.book[locale] || '';
+  const ref = reading.reference || '';
+
+  // Check for week fallback patterns like "Week 18 after Pentecost" or "Luke (Week 18)"
+  const weekMatch = ref.match(/(?:Week\s*(\d+)(?:\s*after\s*Pentecost)?|\b(?:Luke|Matthew|Mark|John)\s*\(Week\s*(\d+)\))/i);
+  if (weekMatch) {
+    const weekNum = weekMatch[1] || weekMatch[2];
+    if (locale === 'ja') {
+      return `${bookName}（五旬祭後第${weekNum}週日課）`;
+    }
+    if (locale === 'ru') {
+      return `${bookName} (${weekNum}-я седмица по Пятидесятнице)`;
+    }
+    return `${bookName} (Week ${weekNum} after Pentecost)`;
+  }
+
+  // Chapter and verse pattern like "15:21–28" or "Ephesians 4:14–19"
+  const cvMatch = ref.match(/\b\d+:\d+(?:[–\-]\d+(?::\d+)?)?/);
+  if (cvMatch) {
+    return `${bookName} ${cvMatch[0]}`;
+  }
+
+  // Clean reference without redundant book names
+  const cleanRef = ref.replace(/^.*?\b(?=\d+:)/, '').trim();
+  return cleanRef ? `${bookName} ${cleanRef}` : bookName;
+}
+
 export function TodayView() {
   const {
     locale,
@@ -401,7 +429,7 @@ export function TodayView() {
                         : locale === 'ja' ? '聖福音経' : locale === 'ru' ? 'Евангелие' : 'The Gospel'}
                     </span>
                     <h4 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">
-                      {reading.book[locale]} {reading.reference.replace(/^.*?\b(?=\d+:)/, '').trim()}
+                      {formatScriptureTitle(reading, locale)}
                       {reading.pericopeTan && (
                         <span className="text-xs font-normal text-slate-500 ml-1.5">
                           （{locale === 'ja' ? `端${reading.pericopeTan}` : locale === 'ru' ? `Зач. ${reading.pericopeTan}` : `Pericope ${reading.pericopeTan}`}）

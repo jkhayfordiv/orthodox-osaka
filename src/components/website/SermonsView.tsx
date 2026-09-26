@@ -39,6 +39,9 @@ function sanitizeSermonHtml(rawHtml: string): string {
     .replace(/<\/div>\s*$/i, '')
     // Remove empty comment paragraphs
     .replace(/<p>\s*<!--[^>]*-->\s*<\/p>/gi, '')
+    // Remove isolated Amen / アミン / Аминь callout boxes
+    .replace(/(?:<!--[^>]*-->\s*)?<div[^>]*style="[^"]*background-color:\s*#eef2f5[^"]*"[^>]*>\s*<p[^>]*>\s*(?:アミン|Amen\.?|Аминь\.?)\s*<\/p>\s*<\/div>/gi, '')
+    .replace(/<div[^>]*>\s*<p[^>]*>\s*(?:アミン|Amen\.?|Аминь\.?)\s*<\/p>\s*<\/div>/gi, '')
     .replace(/<!--[^>]*-->/gi, '')
     // Clean redundant empty paragraphs
     .replace(/<p>\s*(&nbsp;)?\s*<\/p>/gi, '')

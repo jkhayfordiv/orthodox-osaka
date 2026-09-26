@@ -13,7 +13,6 @@ import { TodayView } from '../components/today/TodayView';
 import { CalendarScheduleView } from '../components/calendar/CalendarScheduleView';
 import { ReaderView } from '../components/reader/ReaderView';
 import { SettingsModal } from '../components/shared/SettingsModal';
-import { OnboardingModal } from '../components/onboarding/OnboardingModal';
 import { ScheduleAdminModal } from '../components/admin/ScheduleAdminModal';
 import { BackupModal } from '../components/shared/BackupModal';
 import { SiteFooter } from '../components/shared/SiteFooter';
@@ -42,7 +41,6 @@ export default function Home() {
 
       <BottomNav />
       <SettingsModal />
-      {!isWebsiteTab && <OnboardingModal />}
       <ScheduleAdminModal />
       <BackupModal />
     </div>

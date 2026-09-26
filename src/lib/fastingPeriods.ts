@@ -40,7 +40,7 @@ export function getFastingSeasons(year: number, currentDate: Date = new Date()):
     {
       id: 'great_lent',
       name: {
-        ja: '大斎（大四旬節・受難週）',
+        ja: '大斎（受難週間を含む）',
         en: 'Great Lent & Holy Week',
         ru: 'Великий Пост и Страстная Седмица',
       },

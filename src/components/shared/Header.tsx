@@ -206,23 +206,23 @@ export function Header() {
             )}
           </div>
 
-          {/* Portals Dropdown */}
+          {/* Portals & Diocese Dropdown */}
           <div className="relative">
             <button
               onClick={() => setPortalsDropdownOpen(!portalsDropdownOpen)}
               onBlur={() => setTimeout(() => setPortalsDropdownOpen(false), 200)}
               className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none bg-white/5 border-orthodox-gold/30 text-slate-200 hover:text-white hover:bg-white/10"
-              title={locale === 'ja' ? '正教研究ポータル群' : 'Orthodox Portals'}
+              title={locale === 'ja' ? '研究ポータル群・西日本主教区' : 'Orthodox Portals & Diocese'}
             >
               <ScrollText className="w-3.5 h-3.5 text-orthodox-gold" />
-              <span>{locale === 'ja' ? '研究ポータル' : locale === 'ru' ? 'Архивы' : 'Portals'}</span>
+              <span>{locale === 'ja' ? 'ポータル・教区' : locale === 'ru' ? 'Архивы и епархия' : 'Portals & Diocese'}</span>
               <ChevronDown className={`w-3 h-3 transition-transform ${portalsDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {portalsDropdownOpen && (
               <div className="absolute right-0 mt-2 w-72 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
                 <div className="px-3 py-1.5 text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider border-b border-orthodox-gold/20">
-                  {locale === 'ja' ? '神学・聖歌・奉神礼ポータル' : 'Portals & Research Archives'}
+                  {locale === 'ja' ? '神学・聖歌・奉神礼・教区' : 'Portals & Western Diocese'}
                 </div>
                 {portalNavItems.map((item, idx) => (
                   <Link
@@ -240,16 +240,6 @@ export function Header() {
               </div>
             )}
           </div>
-
-          {/* West Japan Diocese Page Link */}
-          <Link
-            href="/westjapan"
-            className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-orthodox-gold-light hover:text-white bg-white/5 hover:bg-white/10 border border-orthodox-gold/30 shadow-xs"
-            title={locale === 'ja' ? '西日本主教教区・各地の教会' : 'Western Diocese of Japan'}
-          >
-            <Compass className="w-3.5 h-3.5 text-orthodox-gold" />
-            <span>{locale === 'ja' ? '西日本主教区' : locale === 'ru' ? 'Епархия' : 'Diocese'}</span>
-          </Link>
         </nav>
 
         {/* Right: Quick Language Switcher, Theme & Settings */}
@@ -311,14 +301,14 @@ export function Header() {
           {/* Website Section */}
           <div>
             <div className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider mb-2">
-              {locale === 'ja' ? '教会公式案内' : locale === 'ru' ? 'О приходе' : 'Church Information'}
+              {locale === 'ja' ? '教会案内・公式情報' : locale === 'ru' ? 'О приходе' : 'Church Information'}
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-col space-y-1.5">
               {websiteNavItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-3 py-2 rounded-lg text-xs font-semibold text-left transition-colors ${
+                  className={`w-full px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-colors ${
                     activeTab === item.id
                       ? 'bg-orthodox-gold text-orthodox-navy font-bold'
                       : 'bg-white/5 text-slate-200 hover:bg-white/10'
@@ -327,30 +317,22 @@ export function Header() {
                   {item.label[locale]}
                 </button>
               ))}
-              <Link
-                href="/westjapan"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-lg text-xs font-bold text-left transition-colors bg-orthodox-gold/15 text-orthodox-gold-light border border-orthodox-gold/40 flex items-center gap-1.5"
-              >
-                <Compass className="w-3.5 h-3.5 text-orthodox-gold" />
-                <span>{locale === 'ja' ? '西日本主教区' : locale === 'ru' ? 'Епархия' : 'Diocese'}</span>
-              </Link>
             </div>
           </div>
 
-          {/* Portals Section */}
+          {/* Portals & Diocese Section */}
           <div className="pt-2 border-t border-orthodox-gold/20">
             <div className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <ScrollText className="w-3.5 h-3.5 text-orthodox-gold" />
-              <span>{locale === 'ja' ? '正教研究ポータル群' : 'Orthodox Portals'}</span>
+              <span>{locale === 'ja' ? '研究ポータル群・教区' : 'Orthodox Portals & Diocese'}</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="flex flex-col space-y-1.5">
               {portalNavItems.map((item, idx) => (
                 <Link
                   key={idx}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-lg text-xs text-left flex items-center gap-2.5 transition-colors bg-white/5 text-slate-200 hover:bg-white/10 hover:text-white"
+                  className="px-3.5 py-2.5 rounded-lg text-xs text-left flex items-center gap-2.5 transition-colors bg-white/5 text-slate-200 hover:bg-white/10 hover:text-white"
                 >
                   <div>{item.icon}</div>
                   <div>

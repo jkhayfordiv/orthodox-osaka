@@ -442,8 +442,8 @@ export const CONCERT_EVENT_DATA: ConcertEventData = {
   },
   venue: {
     name: {
-      ja: '大阪ハリストス正教会 聖堂',
-      en: 'Osaka Orthodox Church Sanctuary',
+      ja: '大阪ハリストス正教会',
+      en: 'Osaka Orthodox Church',
       ru: 'Храм Покрова Пресвятой Богородицы в Осаке',
     },
     address: {
@@ -460,7 +460,7 @@ export const CONCERT_EVENT_DATA: ConcertEventData = {
   admission: {
     price: '¥1,500',
     seating: {
-      ja: '全席自由（限定100席）',
+      ja: '全席自由',
       en: 'General Admission (Limited to 100 seats)',
       ru: 'Свободная рассадка (Ограничение 100 мест)',
     },
@@ -487,7 +487,7 @@ export const CONCERT_EVENT_DATA: ConcertEventData = {
       ru: 'Почтовый перевод или онлайн-пожертвование картой',
     },
     email: 'osaka.orthodox.church@gmail.com',
-    tel: '06-6288-4512',
+    tel: '06-6388-4512',
   },
   pdfFlyerUrl: '/events/rachmaninoff-concert-2027.pdf',
   pdfFlyerUrls: {

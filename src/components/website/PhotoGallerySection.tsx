@@ -7,16 +7,15 @@ import { Camera, X, ChevronLeft, ChevronRight, Maximize2, Sparkles, Filter } fro
 
 export function PhotoGallerySection() {
   const { locale } = useApp();
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'exterior' | 'interior' | 'services' | 'community' | 'bells'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'exterior' | 'interior' | 'services' | 'community'>('all');
   const [activeModalPhoto, setActiveModalPhoto] = useState<ParishPhotoItem | null>(null);
 
   const categories: { id: typeof selectedCategory; label: { ja: string; en: string; ru: string } }[] = [
     { id: 'all', label: { ja: 'すべて', en: 'All Photos', ru: 'Все фотографии' } },
-    { id: 'exterior', label: { ja: '聖堂外観', en: 'Architecture', ru: 'Храм и территория' } },
+    { id: 'exterior', label: { ja: '聖堂外観・鐘楼', en: 'Temple & Belfry', ru: 'Храм и колокольня' } },
     { id: 'interior', label: { ja: '聖堂内部・聖像', en: 'Interior & Icons', ru: 'Интерьер и иконы' } },
-    { id: 'services', label: { ja: '礼拝・復活大祭', en: 'Services & Pascha', ru: 'Службы и Пасха' } },
-    { id: 'community', label: { ja: '信徒の集い・庭園', en: 'Community & Gardens', ru: 'Приходская жизнь' } },
-    { id: 'bells', label: { ja: '鐘楼と鐘', en: 'Belfry & Bells', ru: 'Колокольня' } },
+    { id: 'services', label: { ja: '奉神礼・祈り', en: 'Services & Worship', ru: 'Богослужения' } },
+    { id: 'community', label: { ja: '信徒の集い・境内', en: 'Community & Grounds', ru: 'Приходская жизнь' } },
   ];
 
   const filteredPhotos = selectedCategory === 'all'

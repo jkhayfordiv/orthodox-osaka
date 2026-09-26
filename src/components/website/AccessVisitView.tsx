@@ -90,7 +90,7 @@ export function AccessVisitView() {
                 <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1 flex flex-col justify-between">
                   <div>
                     <div className="font-bold text-slate-900 dark:text-white text-xs">
-                      {locale === 'ja' ? '土曜日 徹夜祷（晩祷）' : locale === 'ru' ? 'Суббота: Всенощная' : 'Saturday All-Night Vigil'}
+                      {locale === 'ja' ? '夕方 徹夜祷（晩祷）' : locale === 'ru' ? 'Вечер: Всенощная' : 'Evening All-Night Vigil'}
                     </div>
                     <div className="text-slate-700 dark:text-slate-300 font-mono text-base font-bold mt-1">17:00 〜</div>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">

@@ -123,6 +123,32 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const savedLocale = localStorage.getItem('orthodox_locale') as Locale | null;
       if (savedLocale && ['ja', 'en', 'ru'].includes(savedLocale)) {
         setLocaleState(savedLocale);
+      } else {
+        // Automatically detect browser language for first-time visitors
+        try {
+          const browserLangs = (typeof navigator !== 'undefined' && (navigator.languages || [navigator.language])) || [];
+          let detected: Locale = 'ja';
+          for (const lang of browserLangs) {
+            if (!lang) continue;
+            const lower = lang.toLowerCase();
+            if (lower.startsWith('ru') || lower.startsWith('uk') || lower.startsWith('be')) {
+              detected = 'ru';
+              break;
+            }
+            if (lower.startsWith('en')) {
+              detected = 'en';
+              break;
+            }
+            if (lower.startsWith('ja')) {
+              detected = 'ja';
+              break;
+            }
+          }
+          setLocaleState(detected);
+          localStorage.setItem('orthodox_locale', detected);
+        } catch {
+          // fallback default 'ja'
+        }
       }
 
       const savedTheme = localStorage.getItem('orthodox_theme') as 'light' | 'dark' | null;
@@ -145,10 +171,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const savedFontSize = localStorage.getItem('orthodox_font_size') as FontSize | null;
       if (savedFontSize) setFontSizeState(savedFontSize);
 
-      const onboarding = localStorage.getItem('orthodox_onboarding');
-      if (!onboarding) {
-        setHasCompletedOnboarding(false);
-      }
+      // Onboarding popups disabled in favor of automatic language detection
+      setHasCompletedOnboarding(true);
 
       const saint = localStorage.getItem('orthodox_patron_saint');
       if (saint) setPatronSaintIdState(saint);

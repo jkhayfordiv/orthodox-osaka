@@ -74,7 +74,7 @@ export function HistoryView() {
                   <span className="w-9 h-9 rounded-2xl bg-orthodox-navy text-orthodox-gold-light flex items-center justify-center font-bold text-sm font-serif shadow-xs">
                     {idx + 1}
                   </span>
-                  <h2 className="text-base sm:text-lg font-serif font-bold text-slate-900 dark:text-white leading-snug">
+                  <h2 className="text-base sm:text-lg font-serif font-bold text-slate-900 dark:text-white leading-snug break-words sm:break-keep">
                     {section.title[locale]}
                   </h2>
                 </div>
@@ -99,7 +99,7 @@ export function HistoryView() {
               <h2 className="font-serif font-bold text-xl sm:text-2xl text-slate-900 dark:text-white mt-1 flex items-center gap-2">
                 <Church className="w-6 h-6 text-orthodox-gold" />
                 <span>
-                  {locale === 'ja' ? '受け継がれる祈りの空間' : locale === 'ru' ? 'Храмовое пространство и святыни' : 'The Sacred Temple Space'}
+                  {locale === 'ja' ? '受け継がれる祈りの空間と文化財' : locale === 'ru' ? 'Храмовое пространство и святыни' : 'The Sacred Temple & Heritage'}
                 </span>
               </h2>
             </div>
@@ -109,6 +109,7 @@ export function HistoryView() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {/* Card 1: Royal Doors & Iconostasis */}
             <div className="space-y-2.5">
               <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
                 <img
@@ -123,18 +124,19 @@ export function HistoryView() {
                 </h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   {locale === 'ja'
-                    ? '至聖所への入口である金色の王門。'
+                    ? '天国と地上の交わりを象徴する金色の王門と至聖所の聖障。'
                     : locale === 'ru'
-                    ? 'Врата, ведущие к святому престолу.'
-                    : 'The gilded entrance to the holy altar.'}
+                    ? 'Врата, ведущие к святому престолу, и благолепный иконостас.'
+                    : 'The gilded Royal Doors and sacred iconostasis.'}
                 </p>
               </div>
             </div>
 
+            {/* Card 2: Historic Bell */}
             <div className="space-y-2.5">
               <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
                 <img
-                  src="/church-photos/img-0686.jpg"
+                  src="/photos/bell-belfry-tower.jpg"
                   alt="Historic Russian Bell"
                   className="w-full h-full object-cover"
                 />
@@ -145,54 +147,56 @@ export function HistoryView() {
                 </h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   {locale === 'ja'
-                    ? '革命前のロシアで鋳造された祈りの大鐘。'
+                    ? '革命前のロシアで鋳造され、1世紀以上響き続ける祈りの大鐘。'
                     : locale === 'ru'
-                    ? 'Колокол дореволюционного литья.'
-                    : 'Cast in pre-revolutionary Russia.'}
+                    ? 'Колокол дореволюционного литья, благовествующий более ста лет.'
+                    : 'Cast in pre-revolutionary Russia, proclaiming the Gospel for over a century.'}
                 </p>
               </div>
             </div>
 
+            {/* Card 3: Rin Yamashita Iconography */}
+            <div className="space-y-2.5">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
+                <img
+                  src="/images/westjapan/church/Osakaiconos07.jpg"
+                  alt="Rin Yamashita Icons"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                  {locale === 'ja' ? '山下りんの聖像画' : locale === 'ru' ? 'Иконы Ирины Ямаситы' : 'Icons by Rin Yamashita'}
+                </h3>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  {locale === 'ja'
+                    ? 'ペテルブルクで学んだ日本初の女性洋画家・山下りんによる聖像。'
+                    : locale === 'ru'
+                    ? 'Образа кисти первой японской иконописицы Ирины (Рин) Ямаситы.'
+                    : 'Sacred icons painted by Rin Yamashita, trained in St. Petersburg.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4: Nakai Tsugumaro & Monument */}
             <div className="space-y-2.5">
               <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
                 <img
                   src="/church-photos/church-altar-light.jpg"
-                  alt="Altar Light"
+                  alt="Nakai Tsugumaro Heritage"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
-                  {locale === 'ja' ? '至聖所の祈りの光' : locale === 'ru' ? 'Свет в алтаре' : 'Sanctuary Light'}
+                  {locale === 'ja' ? '中井木菟麻呂の訳経と顕彰碑' : locale === 'ru' ? 'Павел Накаи и памятник' : 'Paul Nakai & Monument'}
                 </h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   {locale === 'ja'
-                    ? '蝋燭の灯火に満ちる聖なる礼拝空間。'
+                    ? '懐徳堂の学統を継ぎ全祈祷文・聖書を翻訳した木菟麻呂の顕彰碑。'
                     : locale === 'ru'
-                    ? 'Благоговейная атмосфера молитвы.'
-                    : 'The warm glow of candlelight in prayer.'}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-2.5">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm aspect-4/3 bg-slate-900">
-                <img
-                  src="/church-photos/osaka-church-panoramic.jpg"
-                  alt="Church Panoramic"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="font-serif font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
-                  {locale === 'ja' ? '吹田の聖堂全景' : locale === 'ru' ? 'Вид храма в Суите' : 'Panoramic Temple View'}
-                </h3>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                  {locale === 'ja'
-                    ? '緑の木々に囲まれた美しい八端十字架。'
-                    : locale === 'ru'
-                    ? 'Уютный храмовый комплекс в зелени.'
-                    : 'The serene temple grounds and greenery.'}
+                    ? 'Памятный знак в честь переводчика богослужебных книг Павла Накаи.'
+                    : 'Monument honoring translator Paul Nakai from Kaitokudo.'}
                 </p>
               </div>
             </div>

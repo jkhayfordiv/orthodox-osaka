@@ -117,7 +117,7 @@ export function LiturgyPortalView() {
       title: { ja: '各時課（一時・三時・六時・九時課）', en: 'The Little Hours (1st, 3rd, 6th, 9th)', ru: 'Часы (1-й, 3-й, 6-й, 9-й)' },
       subtitle: { ja: '一日の時刻を聖化する詩篇の祈祷', en: 'Sanctifying the hours of the day with sacred Psalms', ru: 'Освящение времени суток молитвой и псалмами' },
       desc: {
-        ja: '一時課（朝）、三時課（聖霊降臨）、六時課（十字架刑）、九時課（キリストの死）の各時刻に合わせ、特定の詩篇3編と祈祷文を唱えます。',
+        ja: '一時課（朝）、三時課（聖神降臨）、六時課（十字架刑）、九時課（ハリストスの受難と死）の各時刻に合わせ、特定の詩篇3編と祈祷文を唱えます。',
         en: 'Commemorates Christ’s passion and Pentecost: 1st (Dawn), 3rd (Descent of Holy Spirit), 6th (Crucifixion), 9th (Christ’s death on the Cross).',
         ru: 'Воспоминание сошествия Святого Духа (3-й), Распятия (6-й) и смерти Спасителя на Кресте (9-й).',
       },
@@ -142,14 +142,14 @@ export function LiturgyPortalView() {
       items: [
         {
           name: { ja: '洗礼機密・傅膏機密', en: 'Holy Baptism & Chrismation', ru: 'Таинство Крещения и Миропомазания' },
-          desc: { ja: '水に三度浸す古代の正統な洗礼と、聖霊の賜物を受ける傅膏機密。', en: 'Triple immersion baptism and the gift of the Holy Spirit.', ru: 'Троекратное погружение в купель и печать дара Духа Святого.' },
+          desc: { ja: '水に三度浸す古代の正統な洗礼と、聖神の賜物を受ける傅膏機密。', en: 'Triple immersion baptism and the gift of the Holy Spirit.', ru: 'Троекратное погружение в купель и печать дара Духа Святого.' },
         },
         {
-          name: { ja: '痛悔機密（告白）', en: 'Holy Confession & Repentance', ru: 'Таинство Покаяния (Исповедь)' },
-          desc: { ja: '福音経と十字架の前でキリストに罪を告白し、赦宣を受ける機密。', en: 'Confession before Christ with the priest as witness, receiving absolution.', ru: 'Исповедь перед Крестом и Евангелием и разрешение грехов.' },
+          name: { ja: '痛悔機密（告白）', en: 'Holy Confession & Repentance', ru: 'Таインство Покаяния (Исповедь)' },
+          desc: { ja: '福音経と十字架の前でハリストスに罪を告白し、赦宣を受ける機密。', en: 'Confession before Christ with the priest as witness, receiving absolution.', ru: 'Исповедь перед Крестом и Евангелием и разрешение грехов.' },
         },
         {
-          name: { ja: '戴冠機密（婚姻）', en: 'Holy Matrimony (Crowning)', ru: 'Таинство Брака (Венчание)' },
+          name: { ja: '婚配機密（婚姻・戴冠）', en: 'Holy Matrimony (Crowning)', ru: 'Таинство Брака (Венчание)' },
           desc: { ja: '冠を戴き、愛と信仰によって二人が一つの体となる神聖な機密。', en: 'Crowning of the bride and groom into an eternal spiritual union.', ru: 'Венчание жениха и невесты во образ союза Христа и Церкви.' },
         },
         {
@@ -163,7 +163,7 @@ export function LiturgyPortalView() {
       items: [
         {
           name: { ja: 'パニヒダ・埋葬式（永眠者記念）', en: 'Panikhida & Funeral Service', ru: 'Панихида и Чин погребения' },
-          desc: { ja: '永眠した信徒の魂の永遠の安息と記憶を願う祈祷（コノビヤの祝福）。', en: 'Solemn memorial prayers for the repose and eternal memory of departed Christians.', ru: 'Заупокойное богослужение о упокоении душ усопших рабов Божиих.' },
+          desc: { ja: '永眠した信徒の魂の永遠の安息と記憶を願う祈祷（コリワの祝福）。', en: 'Solemn memorial prayers for the repose and eternal memory of departed Christians.', ru: 'Заупокойное богослужение о упокоении душ усопших рабов Божиих.' },
         },
         {
           name: { ja: '水祈祷（小・大聖水式）', en: 'Blessing of Waters (Agiasmos)', ru: 'Водоосвящение (малое и великое)' },

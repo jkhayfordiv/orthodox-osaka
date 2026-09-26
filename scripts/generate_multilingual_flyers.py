@@ -132,7 +132,7 @@ def build_multilingual_flyers():
             check_box(
                 page0, pymupdf.Rect(238, 786, 570, 832),
                 "Inquiries & Reservations: Osaka Orthodox Church\n"
-                "Tel. 06-6288-4512   osaka.orthodox.church@gmail.com",
+                "Tel. 06-6388-4512   osaka.orthodox.church@gmail.com",
                 fontname='f-geo', fontsize=10.0, color=COLOR_WHITE, align=0
             )
 
@@ -236,7 +236,7 @@ def build_multilingual_flyers():
             check_box(
                 page0, pymupdf.Rect(238, 786, 570, 832),
                 "Справки и бронирование: Осакский православный храм\n"
-                "Тел. 06-6288-4512   osaka.orthodox.church@gmail.com",
+                "Тел. 06-6388-4512   osaka.orthodox.church@gmail.com",
                 fontname='f-geo', fontsize=9.5, color=COLOR_WHITE, align=0
             )
 

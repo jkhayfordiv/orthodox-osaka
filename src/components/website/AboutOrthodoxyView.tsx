@@ -16,10 +16,40 @@ import {
   Scroll,
   Info,
   ExternalLink,
+  Compass,
+  Play,
 } from 'lucide-react';
 
 export function AboutOrthodoxyView() {
   const { locale, setActiveTab } = useApp();
+  const [activeVideoId, setActiveVideoId] = React.useState('BYsQ1FnrY2o');
+
+  const chantVideos = [
+    {
+      id: 'BYsQ1FnrY2o',
+      title: { ja: '「聖なる神」（トリサギオン・三聖頌）', en: 'Trisagion Hymn (Holy God)', ru: 'Трисвятое на японском' },
+      desc: { ja: '日本正教会で歌い継がれる荘厳な四声無伴奏聖歌', en: 'Four-part a cappella singing in the Orthodox Church in Japan', ru: 'Торжественное четырехголосное пение а капелла' },
+      badge: { ja: '聖体礼儀 聖歌', en: 'Liturgy Chant', ru: 'Литургия' },
+    },
+    {
+      id: 'I1tIuh10S5U',
+      title: { ja: '「ハリストス復活」（復活祭・パスハ讃詞）', en: 'Christ is Risen (Paschal Troparion)', ru: 'Христос Воскресе!' },
+      desc: { ja: '「ハリストス死より復活し、死を以て死を滅ぼし…」歓喜の賛美歌', en: 'The joyous Paschal hymn proclaiming Christ’s victory over death', ru: 'Праздничный пасхальный тропарь на японском языке' },
+      badge: { ja: '復活大祭 祝讃詞', en: 'Pascha', ru: 'Пасха' },
+    },
+    {
+      id: 'waDRy9zzNOU',
+      title: { ja: '大阪教会 鐘楼の響き「歓びの鐘」', en: 'Osaka Church Belfry Bells', ru: 'Колокольный звон в Осаке' },
+      desc: { ja: '吹田の空に福音を告げる帝政ロシア大鐘の打鐘', en: 'The historic bells chiming over Suita from the belfry', ru: 'Праздничный благовест с колокольни в Суите' },
+      badge: { ja: '大阪教会 鐘楼', en: 'Belfry Bells', ru: 'Колокола' },
+    },
+    {
+      id: '8T1sQuKT4rE',
+      title: { ja: '松島ゲオルギイ神父 説教アーカイブ', en: 'Fr. George Homily Archive', ru: 'Проповедь о. Георгия' },
+      desc: { ja: '福音書の教えと正教の霊性を語る主日説教の映像', en: 'Sunday homily and reflection on Orthodox spirituality', ru: 'Слово священника о духовной жизни и Евангелии' },
+      badge: { ja: '司祭説教', en: 'Homily', ru: 'Проповедь' },
+    },
+  ];
 
   const visitorGuidelines = [
     {
@@ -33,7 +63,7 @@ export function AboutOrthodoxyView() {
     {
       title: { ja: '蝋燭の献灯と祈り', en: 'Lighting Candles', ru: 'Поставление свечей' },
       desc: {
-        ja: '聖堂入口にある蝋燭台で献灯し、キリストや生神女のイコンの前で静かに祈りを捧げることができます（蝋燭代はお志）。',
+        ja: '聖堂入口にある蝋燭台で献灯し、ハリストスや生神女のイコンの前で静かに祈りを捧げることができます（蝋燭代はお志）。',
         en: 'You may light a beeswax candle at the candle stands before holy icons as a symbol of prayer and offering.',
         ru: 'При входе в храм можно возжечь свечу перед иконами Спасителя и Богородицы в знак горячей молитвы к Богу.',
       },
@@ -41,7 +71,7 @@ export function AboutOrthodoxyView() {
     {
       title: { ja: '聖体拝領（領聖）について', en: 'Holy Communion', ru: 'О Причащении' },
       desc: {
-        ja: '聖体拝領（パンと葡萄酒によるキリストの体と血）は正教会で洗礼を受けた信徒のみが行いますが、礼拝の最後に司祭から祝福パン（アンティドル）が参祷者全員にお分かちされます。',
+        ja: '聖体拝領（領聖：パンと葡萄酒によるハリストスの尊体と尊血）は正教会で洗礼を受けた信徒のみが行いますが、礼拝の最後に司祭から祝福パン（アンティドル）が参祷者全員にお分かちされます。',
         en: 'Holy Communion is reserved for baptized Orthodox Christians. However, blessed bread (antidoron) is shared with all visitors at the conclusion of the Liturgy.',
         ru: 'Святое Причастие преподается крещеным православным христианам. В конце Литургии всем молящимся раздается благословенный антидор.',
       },
@@ -111,7 +141,7 @@ export function AboutOrthodoxyView() {
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               {locale === 'ja'
-                ? '「オーソドックス」とはギリシャ語で「正しく神を讃美する」ことを意味します。後世の教理的変更を行わず、キリストと使徒たちの教えをそのまま今日まで守り伝えています。'
+                ? '「オーソドックス」とはギリシャ語で「正しく神を讃美する」ことを意味します。後世の教理的変更を行わず、ハリストスと使徒たちの教えをそのまま今日まで守り伝えています。'
                 : locale === 'ru'
                 ? 'Слово «Православие» означает правильное славление Бога. Церковь сохранила неповрежденным учение Христа Спасителя и апостолов сквозь века.'
                 : 'From the Greek "orthos" (right) and "doxa" (glory/belief). The Church has faithfully kept the faith of the Ecumenical Councils without novel alterations.'}
@@ -127,7 +157,7 @@ export function AboutOrthodoxyView() {
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               {locale === 'ja'
-                ? 'オルガン等の楽器を用いず、神が創造されたもっとも尊い「人間の生きた声」の調和によって賛美歌を歌います。日本語の祈祷文の豊かなリズムが聖堂に響きます。'
+                ? 'オルガン等の楽器を用いず、神が創造されたもっとも尊い「人間の生きた声」の調和によって聖歌を歌います。日本語の祈祷文の豊かなリズムが聖堂に響きます。'
                 : locale === 'ru'
                 ? 'Богослужебное пение совершается исключительно человеческими голосами без механических инструментов, отражая чистоту молитвы ангельских чинов.'
                 : 'Orthodox services feature choral vocal harmony without musical instruments, uniting the congregation in prayer like the angels before God.'}
@@ -151,24 +181,128 @@ export function AboutOrthodoxyView() {
           </div>
         </div>
 
+        {/* Sacred A Cappella Chant & Video Experience */}
+        <div className="rounded-3xl border border-indigo-200/80 dark:border-indigo-900/50 bg-gradient-to-br from-indigo-50/70 via-white to-amber-50/40 dark:from-slate-900 dark:via-indigo-950/20 dark:to-slate-900 p-6 sm:p-8 lg:p-10 shadow-sm space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-indigo-100 dark:border-indigo-900/40 pb-5">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/80 text-indigo-900 dark:text-indigo-300 text-xs font-semibold mb-2">
+                <Music className="w-3.5 h-3.5" />
+                <span>{locale === 'ja' ? '無伴奏聖歌の祈り' : 'Orthodox Sacred Singing'}</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-slate-900 dark:text-white">
+                {locale === 'ja' ? '無伴奏の聖歌（ア・カペラ）を聴く' : 'Experience A Cappella Liturgical Chant'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                {locale === 'ja'
+                  ? 'オルガン等の楽器を用いず、人間の生きた声の調和によって神を讃美する日本正教会の伝統聖歌と、吹田の空に響く大鐘の音色を映像でお聴きいただけます。'
+                  : 'Listen to authentic Japanese Orthodox four-part liturgical singing and the historic bells of Osaka Church.'}
+              </p>
+            </div>
+
+            {/* Official YouTube Channel Link */}
+            <a
+              href="https://www.youtube.com/@%E5%A4%A7%E9%98%AA%E3%83%8F%E3%83%AA%E3%82%B9%E3%83%88%E3%82%B9%E6%AD%A3%E6%95%99%E4%BC%9A"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm transition-all hover:scale-102 flex-shrink-0"
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              <span>{locale === 'ja' ? '公式YouTubeチャンネル' : 'Official YouTube Channel'}</span>
+              <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Embedded YouTube Player (7 Cols) */}
+            <div className="lg:col-span-7">
+              <div className="rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-800 bg-black aspect-video relative">
+                <iframe
+                  key={activeVideoId}
+                  src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?rel=0`}
+                  title="Osaka Orthodox Church Chant and Liturgy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full border-0"
+                />
+              </div>
+            </div>
+
+            {/* Video Playlist Selector (5 Cols) */}
+            <div className="lg:col-span-5 space-y-2.5">
+              <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">
+                {locale === 'ja' ? '再生する動画・聖歌を選択' : 'Select Video or Chant'}
+              </div>
+              {chantVideos.map((vid) => {
+                const isActive = vid.id === activeVideoId;
+                return (
+                  <button
+                    key={vid.id}
+                    onClick={() => setActiveVideoId(vid.id)}
+                    className={`w-full p-3.5 rounded-2xl text-left transition-all border flex items-start gap-3 ${
+                      isActive
+                        ? 'bg-orthodox-navy text-white border-orthodox-gold shadow-md'
+                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-orthodox-gold/60 text-slate-800 dark:text-slate-200'
+                    }`}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                        isActive
+                          ? 'bg-orthodox-gold text-orthodox-navy font-bold'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                      }`}
+                    >
+                      <Play className="w-4 h-4 fill-current ml-0.5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-serif font-bold text-xs sm:text-sm leading-snug">
+                          {vid.title[locale]}
+                        </span>
+                        <span
+                          className={`text-[10px] px-1.5 py-0.2 rounded font-semibold ${
+                            isActive
+                              ? 'bg-orthodox-gold/20 text-orthodox-gold-light'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
+                          }`}
+                        >
+                          {vid.badge[locale]}
+                        </span>
+                      </div>
+                      <p
+                        className={`text-[11px] mt-1 line-clamp-1 ${
+                          isActive ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
+                        }`}
+                      >
+                        {vid.desc[locale]}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
         {/* Dedicated Research & Resource Portals */}
         <div className="space-y-6 pt-4">
           <div className="border-b border-slate-200 dark:border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-orthodox-gold mb-1">
                 <Scroll className="w-3.5 h-3.5" />
-                <span>{locale === 'ja' ? '正教研究・文献ポータル' : 'Dedicated Archives & Portals'}</span>
+                <span>{locale === 'ja' ? '正教研究・文献ポータル・教区' : 'Dedicated Archives, Portals & Diocese'}</span>
               </div>
               <h2 className="font-serif font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white">
-                {locale === 'ja' ? '専門アーカイブ・研究サイトのご案内' : 'Orthodox Portals & Archives'}
+                {locale === 'ja' ? '専門アーカイブ・研究サイト・主教区のご案内' : 'Orthodox Portals & Diocese'}
               </h2>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              {locale === 'ja' ? '司祭ゲオルギイ松島雄一、マリア松島純子による神学・聖歌研究の専門サイト' : 'Specialized websites curated by Fr. George & Matushka Maria'}
+              {locale === 'ja' ? '神学・聖歌研究・奉神礼文集・西日本主教教区の総合ポータル' : 'Portals curated by Fr. George, Matushka Maria, and the Western Diocese'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* 1. Fr. George Portal */}
             <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm flex flex-col justify-between hover:border-orthodox-gold transition-all group">
               <div className="space-y-3">
@@ -177,18 +311,18 @@ export function AboutOrthodoxyView() {
                     <Feather className="w-5 h-5 text-orthodox-burgundy dark:text-orthodox-gold" />
                   </div>
                   <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-2xs font-semibold">
-                    150+ {locale === 'ja' ? '編の神学論文' : 'articles'}
+                    150+ {locale === 'ja' ? '編の論文' : 'articles'}
                   </span>
                 </div>
 
                 <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white group-hover:text-orthodox-gold transition-colors">
-                  {locale === 'ja' ? '司祭ゲオルギイ松島雄一 神学・教理アーカイブ' : 'Fr. George Matsushima Theological Library'}
+                  {locale === 'ja' ? '司祭ゲオルギイ松島雄一 神学アーカイブ' : 'Fr. George Matsushima Library'}
                 </h3>
 
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                   {locale === 'ja'
-                    ? '正教信仰の基礎、教会論、アトスの聖パイシイ対話録、上海とサンフランシスコの聖イオアン主日講話、信徒のQ&A質問箱を網羅した神学ポータルです。'
-                    : 'Systematic theological essays, patristic writings, Elder Paisios dialogues, and comprehensive pastoral Q&A.'}
+                    ? '正教信仰の基礎、教会論、アトスの聖パイシイ対話録、上海の聖イオアン講話、信仰問答Q&A。'
+                    : 'Systematic theological essays, patristic writings, Elder Paisios dialogues, and pastoral Q&A.'}
                 </p>
               </div>
 
@@ -216,13 +350,13 @@ export function AboutOrthodoxyView() {
                 </div>
 
                 <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white group-hover:text-orthodox-gold transition-colors">
-                  {locale === 'ja' ? 'マリア松島純子 聖歌ポータル' : 'Matushka Maria Sacred Music Portal'}
+                  {locale === 'ja' ? 'マリア松島純子 聖歌ポータル' : 'Matushka Maria Sacred Music'}
                 </h3>
 
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                   {locale === 'ja'
-                    ? '大式聖体礼儀全曲譜、主日八調合唱譜、大祭・三歌斎の楽譜アーカイブと、日本正教会聖歌の歴史、ヨハン・フォン・ガードナーの教会聖歌論を収録しています。'
-                    : 'Choral scores (Daishiki Liturgy, Sunday Octoechos, Lent PDFs) alongside studies on Japanese Orthodox chant history and J. von Gardner.'}
+                    ? '大式聖体礼儀全曲譜、主日八調合唱譜、大祭・三歌斎楽譜と聖歌の歴史論考。'
+                    : 'Choral scores (Daishiki Liturgy, Sunday Octoechos, Lent PDFs) and studies on chant history.'}
                 </p>
               </div>
 
@@ -250,13 +384,13 @@ export function AboutOrthodoxyView() {
                 </div>
 
                 <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white group-hover:text-orthodox-gold transition-colors">
-                  {locale === 'ja' ? '日本正教会 奉神礼・祈祷文ポータル' : 'Orthodox Liturgy & Service Orders'}
+                  {locale === 'ja' ? '日本正教会 奉神礼・祈祷文ポータル' : 'Orthodox Liturgy & Services'}
                 </h3>
 
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                   {locale === 'ja'
-                    ? '聖金口イオアン・聖大ワシリイ聖体礼儀式文、晩課・早課・時課の式順、諸機密祈祷文、220点以上の奉神礼小冊子PDFを整理したポータルです。'
-                    : 'The Divine Liturgies of St. John Chrysostom and St. Basil, Daily Office, Sacramental orders, and over 220 liturgical service booklets.'}
+                    ? '聖金口イオアン聖体礼儀式文、晩課・早課・時課、諸機密祈祷文、220点以上の奉神礼小冊子PDF。'
+                    : 'The Divine Liturgies, Daily Office, Sacramental orders, and over 220 liturgical service booklets.'}
                 </p>
               </div>
 
@@ -266,6 +400,40 @@ export function AboutOrthodoxyView() {
                   className="inline-flex items-center justify-between w-full px-4 py-2.5 rounded-xl bg-orthodox-gold/15 hover:bg-orthodox-gold text-orthodox-navy dark:text-orthodox-gold-light hover:dark:text-orthodox-navy font-bold text-xs transition-colors"
                 >
                   <span>{locale === 'ja' ? '奉神礼ポータルを開く' : 'Open Liturgy Portal'}</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* 4. Western Japan Diocese Portal */}
+            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm flex flex-col justify-between hover:border-orthodox-gold transition-all group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 flex items-center justify-center font-serif font-bold">
+                    <Compass className="w-5 h-5 text-amber-700 dark:text-amber-300" />
+                  </div>
+                  <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-2xs font-semibold">
+                    {locale === 'ja' ? '教区聖堂案内' : 'Parish Network'}
+                  </span>
+                </div>
+
+                <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white group-hover:text-orthodox-gold transition-colors">
+                  {locale === 'ja' ? '日本正教会 西日本主教教区 案内' : 'Western Japan Diocese Guide'}
+                </h3>
+
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {locale === 'ja'
+                    ? '京都生神女福音大聖堂をはじめ、大阪・神戸・名古屋・広島・福岡など西日本各地の正教会聖堂案内。'
+                    : 'Information on Orthodox parishes across Western Japan—Kyoto, Osaka, Kobe, Nagoya, Hiroshima, and Kyushu.'}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+                <Link
+                  href="/westjapan"
+                  className="inline-flex items-center justify-between w-full px-4 py-2.5 rounded-xl bg-orthodox-gold/15 hover:bg-orthodox-gold text-orthodox-navy dark:text-orthodox-gold-light hover:dark:text-orthodox-navy font-bold text-xs transition-colors"
+                >
+                  <span>{locale === 'ja' ? '教区案内を開く' : 'Open Diocese Portal'}</span>
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>

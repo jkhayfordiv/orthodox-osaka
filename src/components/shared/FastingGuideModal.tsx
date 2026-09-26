@@ -218,7 +218,7 @@ export function FastingGuideModal({ isOpen, onClose }: FastingGuideModalProps) {
               <p>
                 <strong>{locale === 'ja' ? '十字架挙栄祭（9月27日 / 旧9月14日）: ' : locale === 'ru' ? 'Воздвижение Креста Господня (27 сентября): ' : 'Exaltation of the Holy Cross (Sept 27): '}</strong>
                 {locale === 'ja'
-                  ? '我らの救いのためにキリストが架けられた尊い十字架の苦難を追憶し、厳斎を守ります。'
+                  ? '我らの救いのためにハリストスが架けられた尊い十字架の苦難を追憶し、厳斎を守ります。'
                   : locale === 'ru'
                   ? 'День строгого поста в воспоминание спасительных страданий Господа на Честном Древе Креста.'
                   : 'Observed as a strict fast in solemn remembrance of the Lord’s sufferings upon the Cross for our salvation.'}
