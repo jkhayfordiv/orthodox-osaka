@@ -1,4 +1,4 @@
-import { ScriptureReading, TrilingualText } from './types';
+import { ScriptureReading, TrilingualText, CalendarStyle } from './types';
 import { gregorianToJulian } from './paschalion';
 import { SCRIPTURE_DATABASE } from '../data/scripturePassages';
 
@@ -244,14 +244,22 @@ const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> 
 };
 
 /**
- * Calculates accurate Old Calendar scripture readings for any date
+ * Calculates accurate Orthodox scripture readings for any date based on calendar style
  */
-export function getOldCalendarReadings(civilDate: Date, paschaDate: Date): ScriptureReading[] {
+export function getOldCalendarReadings(
+  civilDate: Date,
+  paschaDate: Date,
+  calendarStyle: CalendarStyle = 'old'
+): ScriptureReading[] {
   const julian = gregorianToJulian(civilDate);
   const julianKey = `${String(julian.month).padStart(2, '0')}-${String(julian.day).padStart(2, '0')}`;
+  const civilMonth = civilDate.getUTCMonth() + 1;
+  const civilDay = civilDate.getUTCDate();
+  const civilKey = `${String(civilMonth).padStart(2, '0')}-${String(civilDay).padStart(2, '0')}`;
 
-  // 1. Check Julian Fixed Feast
-  const feastEntry = JULIAN_FIXED_FEASTS[julianKey];
+  // 1. Check Fixed Feast (Old Calendar matches on Julian date, New Calendar matches on civil date)
+  const keyToUse = calendarStyle === 'old' ? julianKey : civilKey;
+  const feastEntry = JULIAN_FIXED_FEASTS[keyToUse];
   if (feastEntry) {
     return buildReadings(feastEntry);
   }

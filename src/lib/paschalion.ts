@@ -129,6 +129,36 @@ export function formatJulianDate(civilDate: Date, locale: 'ja' | 'en' | 'ru'): s
 }
 
 /**
+ * Formats liturgical calendar date according to calendar style ('old' vs 'new')
+ */
+export function formatLiturgicalDate(
+  civilDate: Date,
+  locale: 'ja' | 'en' | 'ru',
+  calendarStyle: 'old' | 'new' = 'old'
+): string {
+  if (calendarStyle === 'old') {
+    return formatJulianDate(civilDate, locale);
+  }
+  const m = civilDate.getMonth() + 1;
+  const d = civilDate.getDate();
+  if (locale === 'ja') {
+    return `新暦 ${m}月${d}日`;
+  }
+  if (locale === 'ru') {
+    const monthsRu = [
+      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    return `${d} ${monthsRu[m - 1]} (нов.ст.)`;
+  }
+  const monthsEn = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  return `${monthsEn[m - 1]} ${d} (New Style)`;
+}
+
+/**
  * Calculates tone (1-8) for a given Sunday based on distance from Pascha
  */
 export function calculateTone(date: Date, paschaDate: Date): number {

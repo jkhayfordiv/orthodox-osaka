@@ -1,7 +1,7 @@
-import { FastingInfo, FastingLevel, FastingPeriod, TrilingualText } from './types';
+import { FastingInfo, FastingLevel, FastingPeriod, TrilingualText, CalendarStyle } from './types';
 import { getMoveableCycle } from './paschalion';
 
-export function getFastingRule(date: Date): FastingInfo {
+export function getFastingRule(date: Date, calendarStyle: CalendarStyle = 'old'): FastingInfo {
   const year = date.getUTCFullYear();
   const cycle = getMoveableCycle(year);
   const time = date.getTime();
@@ -10,8 +10,12 @@ export function getFastingRule(date: Date): FastingInfo {
   const day = date.getUTCDate();
   const dayOfWeek = date.getUTCDay(); // 0 = Sun, 1 = Mon, ... 6 = Sat
 
-  // --- 1. Christmastide (Jan 7 - Jan 17): Fast-Free ---
-  if (month === 1 && day >= 7 && day <= 17) {
+  // --- 1. Christmastide: Fast-Free ---
+  // Old Calendar: Jan 7 - Jan 17; New Calendar: Dec 25 - Jan 4
+  const isChristmastide = calendarStyle === 'old'
+    ? (month === 1 && day >= 7 && day <= 17)
+    : ((month === 12 && day >= 25) || (month === 1 && day <= 4));
+  if (isChristmastide) {
     return {
       level: 'no_fast',
       period: 'none',
@@ -25,8 +29,12 @@ export function getFastingRule(date: Date): FastingInfo {
     };
   }
 
-  // --- 2. Eve of Theophany (Jan 18): Strict Fast ---
-  if (month === 1 && day === 18) {
+  // --- 2. Eve of Theophany: Strict Fast ---
+  // Old Calendar: Jan 18; New Calendar: Jan 5
+  const isTheophanyEve = calendarStyle === 'old'
+    ? (month === 1 && day === 18)
+    : (month === 1 && day === 5);
+  if (isTheophanyEve) {
     return {
       level: 'strict',
       period: 'none',
@@ -77,8 +85,11 @@ export function getFastingRule(date: Date): FastingInfo {
   const lentStart = cycle.greatLentBegins.getTime();
   const palmSun = cycle.palmSunday.getTime();
   if (time >= lentStart && time < palmSun) {
-    // Annunciation (April 7 civil / Mar 25 Julian) in Lent: Fish allowed
-    if (month === 4 && day === 7) {
+    // Annunciation in Lent: Fish allowed (April 7 on Old Calendar, March 25 on New Calendar)
+    const isAnnunciation = calendarStyle === 'old'
+      ? (month === 4 && day === 7)
+      : (month === 3 && day === 25);
+    if (isAnnunciation) {
       return {
         level: 'fish',
         period: 'great_lent',
@@ -218,9 +229,12 @@ export function getFastingRule(date: Date): FastingInfo {
     };
   }
 
-  // --- 10. Apostles Fast (Day after All Saints to July 11) ---
+  // --- 10. Apostles Fast ---
+  // Old Calendar: Day after All Saints to July 11; New Calendar: Day after All Saints to June 28
   const apostlesFastStart = cycle.apostlesFastBegins.getTime();
-  const apostlesFastEnd = new Date(Date.UTC(year, 6, 11)).getTime(); // July 11
+  const apostlesFastEnd = calendarStyle === 'old'
+    ? new Date(Date.UTC(year, 6, 11)).getTime() // July 11
+    : new Date(Date.UTC(year, 5, 28)).getTime(); // June 28
   if (time >= apostlesFastStart && time <= apostlesFastEnd) {
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
     const isTuesdayThursday = dayOfWeek === 2 || dayOfWeek === 4;
@@ -254,10 +268,15 @@ export function getFastingRule(date: Date): FastingInfo {
     };
   }
 
-  // --- 11. Dormition Fast (August 14 to August 27 civil) ---
-  if (month === 8 && day >= 14 && day <= 27) {
-    // Transfiguration of the Lord (Aug 19 civil / Aug 6 Julian): Fish allowed
-    if (day === 19) {
+  // --- 11. Dormition Fast ---
+  // Old Calendar: Aug 14 to Aug 27; New Calendar: Aug 1 to Aug 14
+  const isDormitionFast = calendarStyle === 'old'
+    ? (month === 8 && day >= 14 && day <= 27)
+    : (month === 8 && day >= 1 && day <= 14);
+  if (isDormitionFast) {
+    // Transfiguration of the Lord: Fish allowed (Aug 19 on Old, Aug 6 on New)
+    const isTransfiguration = calendarStyle === 'old' ? (day === 19) : (day === 6);
+    if (isTransfiguration) {
       return {
         level: 'fish',
         period: 'dormition_fast',
@@ -301,8 +320,12 @@ export function getFastingRule(date: Date): FastingInfo {
     };
   }
 
-  // --- 12. Beheading of St. John the Baptist (Sept 11 civil / Aug 29 Julian): Strict Fast ---
-  if (month === 9 && day === 11) {
+  // --- 12. Beheading of St. John the Baptist: Strict Fast ---
+  // Old Calendar: Sept 11; New Calendar: Aug 29
+  const isBeheading = calendarStyle === 'old'
+    ? (month === 9 && day === 11)
+    : (month === 8 && day === 29);
+  if (isBeheading) {
     return {
       level: 'strict',
       period: 'none',
@@ -316,8 +339,12 @@ export function getFastingRule(date: Date): FastingInfo {
     };
   }
 
-  // --- 13. Exaltation of the Holy Cross (Sept 27 civil / Sept 14 Julian): Strict Fast ---
-  if (month === 9 && day === 27) {
+  // --- 13. Exaltation of the Holy Cross: Strict Fast ---
+  // Old Calendar: Sept 27; New Calendar: Sept 14
+  const isCross = calendarStyle === 'old'
+    ? (month === 9 && day === 27)
+    : (month === 9 && day === 14);
+  if (isCross) {
     return {
       level: 'strict',
       period: 'none',
@@ -331,11 +358,17 @@ export function getFastingRule(date: Date): FastingInfo {
     };
   }
 
-  // --- 14. Nativity Fast (Nov 28 to Jan 6 civil) ---
-  const isNativityFast = (month === 11 && day >= 28) || month === 12 || (month === 1 && day <= 6);
+  // --- 14. Nativity Fast (Philip's Fast) ---
+  // Old Calendar: Nov 28 - Jan 6; New Calendar: Nov 15 - Dec 24
+  const isNativityFast = calendarStyle === 'old'
+    ? ((month === 11 && day >= 28) || month === 12 || (month === 1 && day <= 6))
+    : ((month === 11 && day >= 15) || (month === 12 && day <= 24));
   if (isNativityFast) {
-    // St. Nicholas the Wonderworker (Dec 19 civil): Fish allowed
-    if (month === 12 && day === 19) {
+    // St. Nicholas the Wonderworker (Dec 19 on Old, Dec 6 on New): Fish allowed
+    const isStNicholas = calendarStyle === 'old'
+      ? (month === 12 && day === 19)
+      : (month === 12 && day === 6);
+    if (isStNicholas) {
       return {
         level: 'fish',
         period: 'nativity_fast',
@@ -350,8 +383,8 @@ export function getFastingRule(date: Date): FastingInfo {
       };
     }
 
-    // New Calendar Christmas (Dec 25): Osaka parish blessing
-    if (month === 12 && day === 25) {
+    // New Calendar Christmas (Dec 25): for Old Calendar users celebrating in Osaka
+    if (calendarStyle === 'old' && month === 12 && day === 25) {
       return {
         level: 'fish',
         period: 'nativity_fast',
@@ -366,8 +399,12 @@ export function getFastingRule(date: Date): FastingInfo {
       };
     }
 
-    // Final week before Nativity (Jan 2 - Jan 6): Stricter fasting
-    if (month === 1 && day >= 2 && day <= 6) {
+    // Final days before Nativity: Stricter fasting
+    // Old Calendar: Jan 2 - Jan 6; New Calendar: Dec 20 - Dec 24
+    const isNativityForefeastStrict = calendarStyle === 'old'
+      ? (month === 1 && day >= 2 && day <= 6)
+      : (month === 12 && day >= 20 && day <= 24);
+    if (isNativityForefeastStrict) {
       return {
         level: 'strict',
         period: 'nativity_fast',

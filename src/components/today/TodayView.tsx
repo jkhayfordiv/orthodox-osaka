@@ -17,7 +17,7 @@ import {
   Languages,
   ScrollText,
 } from 'lucide-react';
-import { formatJulianDate } from '../../lib/paschalion';
+import { formatJulianDate, formatLiturgicalDate } from '../../lib/paschalion';
 import { Locale, DayInfo, ScriptureReading } from '../../lib/types';
 import { TONE_NAMES } from '../../data/terminology';
 import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifications';
@@ -55,6 +55,7 @@ function formatScriptureTitle(reading: ScriptureReading, locale: Locale): string
 export function TodayView() {
   const {
     locale,
+    calendarStyle,
     selectedDate,
     setSelectedDate,
     patronSaintId,
@@ -94,7 +95,7 @@ export function TodayView() {
   };
 
   // Compute information for selectedDate
-  const dayInfo = getDayInfo(selectedDate, parishSchedule);
+  const dayInfo = getDayInfo(selectedDate, parishSchedule, calendarStyle);
   const [enrichedDayInfo, setEnrichedDayInfo] = useState<DayInfo>(dayInfo);
 
   // Sync and enrich readings when selectedDate changes
@@ -107,7 +108,7 @@ export function TodayView() {
     const dateStr = `${year}-${month}-${day}`;
 
     let isCancelled = false;
-    fetch(`/api/calendar/${dateStr}`)
+    fetch(`/api/calendar/${dateStr}?calendar=${calendarStyle}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
@@ -145,7 +146,7 @@ export function TodayView() {
     return () => {
       isCancelled = true;
     };
-  }, [selectedDate]);
+  }, [selectedDate, calendarStyle]);
 
   // Navigate dates
   const handlePrevDay = () => {
@@ -193,8 +194,14 @@ export function TodayView() {
     selectedDate.getDate()
   ).padStart(2, '0')}`;
 
+  const isMatchingNameDay = (saint: { feastDateCivil: string; feastDateJulian: string } | null | undefined) => {
+    if (!saint) return false;
+    const matchDate = calendarStyle === 'old' ? saint.feastDateCivil : saint.feastDateJulian;
+    return matchDate === currentMonthDay;
+  };
+
   const userPatronSaint = (patronSaintId ? allSaints.find((s) => s.id === patronSaintId) : null) || null;
-  const isUserPatronSaintToday = userPatronSaint ? userPatronSaint.feastDateCivil === currentMonthDay : false;
+  const isUserPatronSaintToday = isMatchingNameDay(userPatronSaint);
 
   const celebratingFamilyMembers = familyMembers
     .map((m) => ({
@@ -203,7 +210,7 @@ export function TodayView() {
     }))
     .filter(
       (x): x is { member: typeof familyMembers[0]; saint: (typeof allSaints)[0] } =>
-        Boolean(x.saint && x.saint.feastDateCivil === currentMonthDay)
+        Boolean(x.saint && isMatchingNameDay(x.saint))
     );
 
   // Trigger web notification if today is user's or family member's name day or daily readings are due
@@ -245,7 +252,7 @@ export function TodayView() {
   // Share functionality
   const handleShare = async () => {
     const saintTitle = dayInfo.saints[0]?.name[locale] || 'Saints of the Day';
-    const textToShare = `☦ ${formatCivilDate(selectedDate)} (${formatJulianDate(selectedDate, locale)})\n${saintTitle}\n${dayInfo.fasting.badgeText[locale]}\n\n大阪ハリストス正教会 (Holy Protection Orthodox Church in Osaka)`;
+    const textToShare = `☦ ${formatCivilDate(selectedDate)} (${formatLiturgicalDate(selectedDate, locale, calendarStyle)})\n${saintTitle}\n${dayInfo.fasting.badgeText[locale]}\n\n大阪ハリストス正教会 (Holy Protection Orthodox Church in Osaka)`;
 
     if (navigator.share) {
       try {
@@ -283,7 +290,7 @@ export function TodayView() {
               {formatCivilDate(selectedDate)}
             </h2>
             <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              <span className="font-medium">{formatJulianDate(selectedDate, locale)}</span>
+              <span className="font-medium">{formatLiturgicalDate(selectedDate, locale, calendarStyle)}</span>
               {dayInfo.tone > 0 && (
                 <>
                   <span>•</span>
@@ -394,7 +401,17 @@ export function TodayView() {
           <div className="flex items-center space-x-2">
             <BookOpen className="w-4 h-4 text-orthodox-gold" />
             <h3 className="font-serif font-bold text-base sm:text-lg text-orthodox-navy dark:text-orthodox-gold-light">
-              {locale === 'ja' ? '本日の聖書朗読（旧暦日課）' : locale === 'ru' ? 'Дневные чтения (ст.ст.)' : 'Daily Scripture Readings (Old Cal.)'}
+              {locale === 'ja'
+                ? calendarStyle === 'old'
+                  ? '本日の聖書朗読（旧暦日課）'
+                  : '本日の聖書朗読（新暦日課）'
+                : locale === 'ru'
+                ? calendarStyle === 'old'
+                  ? 'Дневные чтения (ст.ст.)'
+                  : 'Дневные чтения (нов.ст.)'
+                : calendarStyle === 'old'
+                ? 'Daily Scripture Readings (Old Cal.)'
+                : 'Daily Scripture Readings (New Cal.)'}
             </h3>
           </div>
           <span className="text-xs text-slate-400 font-serif">

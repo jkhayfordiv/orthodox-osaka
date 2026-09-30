@@ -2,6 +2,22 @@ import { BulletinAnnouncement } from '../lib/types';
 
 export const PARISH_ANNOUNCEMENTS: BulletinAnnouncement[] = [
   {
+    id: 'ann-tour-change',
+    date: '2027-01-03',
+    category: 'event',
+    important: true,
+    title: {
+      ja: '大聖堂見学時間変更のお知らせ（15:00～16:00）',
+      en: 'Cathedral Tour Time Change (15:00–16:00) starting Jan 3',
+      ru: 'Изменено время экскурсии по собору (15:00–16:00) с 3 января',
+    },
+    content: {
+      ja: '1月3日から大聖堂の見学時間が午後3時から4時に変更になります。皆様のご来訪をお待ちしております。',
+      en: 'Starting January 3, the cathedral tour will be held from 3 PM to 4 PM. We look forward to your visit.',
+      ru: 'Начиная с 3 января экскурсия по собору будет проходить с 15:00 до 16:00. Ждём вас!',
+    },
+  },
+  {
     id: 'ann-concert-lp',
     date: '2026-12-02',
     category: 'event',

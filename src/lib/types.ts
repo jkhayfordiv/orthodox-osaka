@@ -1,4 +1,5 @@
 export type Locale = 'ja' | 'en' | 'ru';
+export type CalendarStyle = 'old' | 'new'; // 'old' = Julian (旧暦), 'new' = Revised Julian (新暦)
 
 export interface TrilingualText {
   ja: string;
@@ -133,5 +134,6 @@ export interface DayInfo {
   readings: ScriptureReading[];
   parishServices: ParishService[];
   daysToPascha?: number;
+  calendarStyle?: CalendarStyle;
 }
 

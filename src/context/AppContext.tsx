@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Locale, NameDayEntry, NotificationPreferences, PrayerListItem, ParishService } from '../lib/types';
+import { Locale, NameDayEntry, NotificationPreferences, PrayerListItem, ParishService, CalendarStyle } from '../lib/types';
 import { COMMON_NAME_DAYS } from '../data/nameDays';
 import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
 import { SERMONS_ARCHIVE, ArchivedSermon } from '../data/sermonsArchive';
@@ -32,6 +32,8 @@ interface AppContextType {
   setTheme: (theme: 'light' | 'dark') => void;
   fontSize: FontSize;
   setFontSize: (size: FontSize) => void;
+  calendarStyle: CalendarStyle;
+  setCalendarStyle: (style: CalendarStyle) => void;
   activeTab: AppTab;
   setActiveTab: (tab: AppTab) => void;
   selectedDate: Date;
@@ -90,6 +92,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('ja');
   const [theme, setThemeState] = useState<'light' | 'dark'>('light');
   const [fontSize, setFontSizeState] = useState<FontSize>('base');
+  const [calendarStyle, setCalendarStyleState] = useState<CalendarStyle>('old');
   const [activeTab, setActiveTab] = useState<AppTab>('today');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(true); // default true for SSR, checked in useEffect
@@ -120,6 +123,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
     // Load from localStorage
     try {
+      const savedCalendarStyle = localStorage.getItem('orthodox_calendar_style') as CalendarStyle | null;
+      if (savedCalendarStyle && (savedCalendarStyle === 'old' || savedCalendarStyle === 'new')) {
+        setCalendarStyleState(savedCalendarStyle);
+      }
       const savedLocale = localStorage.getItem('orthodox_locale') as Locale | null;
       if (savedLocale && ['ja', 'en', 'ru'].includes(savedLocale)) {
         setLocaleState(savedLocale);
@@ -291,6 +298,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       } else {
         document.documentElement.classList.remove('dark');
       }
+    } catch {}
+  };
+
+  const setCalendarStyle = (newStyle: CalendarStyle) => {
+    setCalendarStyleState(newStyle);
+    try {
+      localStorage.setItem('orthodox_calendar_style', newStyle);
     } catch {}
   };
 
@@ -779,6 +793,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setTheme,
         fontSize,
         setFontSize,
+        calendarStyle,
+        setCalendarStyle,
         activeTab,
         setActiveTab,
         selectedDate,

@@ -29,8 +29,8 @@ import {
 } from 'lucide-react';
 
 export function HomeWebsiteView() {
-  const { locale, setActiveTab, parishSchedule, sermons, isSermonAdmin, setTargetSermonId } = useApp();
-  const dayInfo = getDayInfo(new Date(), parishSchedule);
+  const { locale, calendarStyle, setActiveTab, parishSchedule, sermons, isSermonAdmin, setTargetSermonId } = useApp();
+  const dayInfo = getDayInfo(new Date(), parishSchedule, calendarStyle);
 
   // Available sermons respecting Saturday morning public release
   const availableSermons = React.useMemo(() => {

@@ -1,4 +1,4 @@
-import { TrilingualText } from './types';
+import { TrilingualText, CalendarStyle } from './types';
 import { getMoveableCycle, addDays } from './paschalion';
 
 export interface FastingSeasonInfo {
@@ -15,7 +15,7 @@ export interface FastingSeasonInfo {
   icon: string;
 }
 
-export function getFastingSeasons(year: number, currentDate: Date = new Date()): FastingSeasonInfo[] {
+export function getFastingSeasons(year: number, currentDate: Date = new Date(), calendarStyle: CalendarStyle = 'old'): FastingSeasonInfo[] {
   const cycle = getMoveableCycle(year);
   const now = new Date(currentDate);
   now.setHours(0, 0, 0, 0);
@@ -24,17 +24,33 @@ export function getFastingSeasons(year: number, currentDate: Date = new Date()):
   const lentStart = cycle.greatLentBegins;
   const lentEnd = addDays(cycle.pascha, -1);
 
-  // 2. Apostles' Fast (Day after All Saints to July 11 civil)
+  // 2. Apostles' Fast (Day after All Saints to Peter & Paul Eve)
+  // Old Calendar: Ends July 11 (Peter & Paul is July 12)
+  // New Calendar: Ends June 28 (Peter & Paul is June 29)
   const apostlesStart = cycle.apostlesFastBegins;
-  const apostlesEnd = new Date(Date.UTC(year, 6, 11)); // July 11
+  const apostlesEnd = calendarStyle === 'old'
+    ? new Date(Date.UTC(year, 6, 11)) // July 11
+    : new Date(Date.UTC(year, 5, 28)); // June 28
 
-  // 3. Dormition Fast (August 14 to August 27 civil)
-  const dormitionStart = new Date(Date.UTC(year, 7, 14)); // Aug 14
-  const dormitionEnd = new Date(Date.UTC(year, 7, 27));   // Aug 27
+  // 3. Dormition Fast
+  // Old Calendar: August 14 to August 27
+  // New Calendar: August 1 to August 14
+  const dormitionStart = calendarStyle === 'old'
+    ? new Date(Date.UTC(year, 7, 14)) // Aug 14
+    : new Date(Date.UTC(year, 7, 1));  // Aug 1
+  const dormitionEnd = calendarStyle === 'old'
+    ? new Date(Date.UTC(year, 7, 27)) // Aug 27
+    : new Date(Date.UTC(year, 7, 14)); // Aug 14
 
-  // 4. Nativity Fast (November 28 to January 6 next year civil)
-  const nativityStart = new Date(Date.UTC(year, 10, 28)); // Nov 28
-  const nativityEnd = new Date(Date.UTC(year + 1, 0, 6));  // Jan 6 next year
+  // 4. Nativity Fast
+  // Old Calendar: November 28 to January 6 next year
+  // New Calendar: November 15 to December 24
+  const nativityStart = calendarStyle === 'old'
+    ? new Date(Date.UTC(year, 10, 28)) // Nov 28
+    : new Date(Date.UTC(year, 10, 15)); // Nov 15
+  const nativityEnd = calendarStyle === 'old'
+    ? new Date(Date.UTC(year + 1, 0, 6)) // Jan 6 next year
+    : new Date(Date.UTC(year, 11, 24));   // Dec 24
 
   const rawSeasons = [
     {

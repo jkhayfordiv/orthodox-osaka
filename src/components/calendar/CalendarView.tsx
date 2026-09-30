@@ -17,13 +17,14 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { formatJulianDate, gregorianToJulian } from '../../lib/paschalion';
+import { formatJulianDate, formatLiturgicalDate, gregorianToJulian } from '../../lib/paschalion';
 import { TONE_NAMES } from '../../data/terminology';
 import { FastingGuideModal } from '../shared/FastingGuideModal';
 
 export function CalendarView() {
   const {
     locale,
+    calendarStyle,
     selectedDate,
     setSelectedDate,
     setActiveTab,
@@ -107,11 +108,11 @@ export function CalendarView() {
   ];
 
   // Fasting seasons data
-  const fastingSeasons = getFastingSeasons(currentYear, selectedDate);
-  const [inspectDayInfo, setInspectDayInfo] = useState<DayInfo>(() => getDayInfo(inspectDate, parishSchedule));
+  const fastingSeasons = getFastingSeasons(currentYear, selectedDate, calendarStyle);
+  const [inspectDayInfo, setInspectDayInfo] = useState<DayInfo>(() => getDayInfo(inspectDate, parishSchedule, calendarStyle));
 
   useEffect(() => {
-    setInspectDayInfo(getDayInfo(inspectDate, parishSchedule));
+    setInspectDayInfo(getDayInfo(inspectDate, parishSchedule, calendarStyle));
 
     const year = inspectDate.getFullYear();
     const month = String(inspectDate.getMonth() + 1).padStart(2, '0');
@@ -119,7 +120,7 @@ export function CalendarView() {
     const dateStr = `${year}-${month}-${day}`;
 
     let isCancelled = false;
-    fetch(`/api/calendar/${dateStr}`)
+    fetch(`/api/calendar/${dateStr}?calendar=${calendarStyle}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
@@ -157,7 +158,7 @@ export function CalendarView() {
     return () => {
       isCancelled = true;
     };
-  }, [inspectDate, parishSchedule]);
+  }, [inspectDate, parishSchedule, calendarStyle]);
 
   const userPatronSaint = patronSaintId ? allSaints.find((s) => s.id === patronSaintId) : null;
 
@@ -167,7 +168,13 @@ export function CalendarView() {
       date.getUTCDate()
     ).padStart(2, '0')}`;
 
-    const isUserPatron = userPatronSaint?.feastDateCivil === monthDay;
+    const isMatch = (s: { feastDateCivil: string; feastDateJulian: string } | undefined | null) => {
+      if (!s) return false;
+      const target = calendarStyle === 'old' ? s.feastDateCivil : s.feastDateJulian;
+      return target === monthDay;
+    };
+
+    const isUserPatron = isMatch(userPatronSaint);
     const celebratingFamily = familyMembers
       .map((m) => ({
         member: m,
@@ -175,7 +182,7 @@ export function CalendarView() {
       }))
       .filter(
         (x): x is { member: typeof familyMembers[0]; saint: (typeof allSaints)[0] } =>
-          Boolean(x.saint && x.saint.feastDateCivil === monthDay)
+          Boolean(x.saint && isMatch(x.saint))
       );
 
     return {
@@ -208,7 +215,7 @@ export function CalendarView() {
         <div className="flex items-start justify-between border-b border-orthodox-gold/30 pb-3 gap-2">
           <div>
             <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold">
-              <span>{formatJulianDate(inspectDate, locale)}</span>
+              <span>{formatLiturgicalDate(inspectDate, locale, calendarStyle)}</span>
               {inspectDayInfo.tone > 0 && (
                 <>
                   <span>•</span>
@@ -613,7 +620,7 @@ export function CalendarView() {
                   return <div key={`empty-${index}`} className="min-h-[56px] sm:min-h-[68px] lg:min-h-[85px]" />;
                 }
 
-                const info = getDayInfo(d, parishSchedule);
+                const info = getDayInfo(d, parishSchedule, calendarStyle);
                 const isSelected =
                   inspectDate &&
                   inspectDate.getUTCFullYear() === d.getUTCFullYear() &&
@@ -700,6 +707,11 @@ export function CalendarView() {
 
                     <span className="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 scale-90">
                       {(() => {
+                        if (calendarStyle === 'new') {
+                          if (locale === 'ja') return `新${d.getUTCDate()}`;
+                          if (locale === 'ru') return `н.${d.getUTCDate()}`;
+                          return `NS ${d.getUTCDate()}`;
+                        }
                         const j = gregorianToJulian(d);
                         if (locale === 'ja') return `旧${j.day}`;
                         if (locale === 'ru') return `ст.${j.day}`;
@@ -726,7 +738,7 @@ export function CalendarView() {
             {daysArray
               .filter((d): d is Date => d !== null)
               .map((d) => {
-                const info = getDayInfo(d, parishSchedule);
+                const info = getDayInfo(d, parishSchedule, calendarStyle);
                 const nameDayStatus = getNameDaysForDate(d);
                 const isSelected =
                   inspectDate &&

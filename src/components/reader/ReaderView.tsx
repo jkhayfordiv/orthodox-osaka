@@ -27,7 +27,7 @@ import { DiptychsView } from './DiptychsView';
 import { Locale } from '../../lib/types';
 
 export function ReaderView() {
-  const { locale, selectedDate, fontSize, setFontSize } = useApp();
+  const { locale, calendarStyle, selectedDate, fontSize, setFontSize } = useApp();
 
   // Top-level category: Scripture | Liturgy | Prayer Book | Patronal Hymns
   const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal'>('scripture');
@@ -40,7 +40,7 @@ export function ReaderView() {
   const [parallelLang, setParallelLang] = useState<Locale | 'none'>('none');
   const [expandedLiturgyPart, setExpandedLiturgyPart] = useState<string | null>(null);
 
-  const dayInfo = getDayInfo(selectedDate);
+  const dayInfo = getDayInfo(selectedDate, undefined, calendarStyle);
 
   const fontSizeClasses = {
     sm: 'text-xs sm:text-sm leading-relaxed',
@@ -190,7 +190,17 @@ export function ReaderView() {
           <div className="bg-white dark:bg-slate-900 border border-orthodox-gold/30 rounded-2xl p-5 sm:p-6 shadow-sm">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
               <h3 className="text-base sm:text-xl font-serif font-bold text-orthodox-navy dark:text-orthodox-gold-light mb-1">
-                {locale === 'ja' ? '本日の聖書朗読（日課）' : locale === 'ru' ? 'Дневные чтения' : "Today's Scripture Readings"}
+                {locale === 'ja'
+                  ? calendarStyle === 'old'
+                    ? '本日の聖書朗読（旧暦日課）'
+                    : '本日の聖書朗読（新暦日課）'
+                  : locale === 'ru'
+                  ? calendarStyle === 'old'
+                    ? 'Дневные чтения (ст.ст.)'
+                    : 'Дневные чтения (нов.ст.)'
+                  : calendarStyle === 'old'
+                  ? "Today's Scripture Readings (Old Cal.)"
+                  : "Today's Scripture Readings (New Cal.)"}
               </h3>
               <p className="text-xs sm:text-sm text-slate-500">
                 {dayInfo.civilDate.toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', {

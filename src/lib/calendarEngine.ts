@@ -1,4 +1,4 @@
-import { DayInfo, FeastDay, SaintCommemoration, ScriptureReading, ParishService } from './types';
+import { DayInfo, FeastDay, SaintCommemoration, ScriptureReading, ParishService, CalendarStyle } from './types';
 import { calculateOrthodoxPascha, formatJulianDate, getMoveableCycle, gregorianToJulian, calculateTone } from './paschalion';
 import { getFastingRule } from './fasting';
 import { PARISH_SCHEDULE_2026 } from '../data/parishSchedule2026';
@@ -6,7 +6,11 @@ import { TONE_NAMES } from '../data/terminology';
 import { DAILY_SAINTS_JULIAN } from '../data/dailySaints';
 import { getOldCalendarReadings } from './orthodoxLectionary';
 
-export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInfo {
+export function getDayInfo(
+  date: Date,
+  customSchedule?: ParishService[],
+  calendarStyle: CalendarStyle = 'old'
+): DayInfo {
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth() + 1; // 1-12
   const day = date.getUTCDate();
@@ -15,13 +19,17 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
   const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const julian = gregorianToJulian(date);
   const julianKey = `${String(julian.month).padStart(2, '0')}-${String(julian.day).padStart(2, '0')}`;
-  const julianString = `${julian.month}月${julian.day}日 (旧暦)`;
+  const civilKey = `${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+  const julianString = calendarStyle === 'old'
+    ? `${julian.month}月${julian.day}日 (旧暦)`
+    : `${month}月${day}日 (新暦)`;
 
   const cycle = getMoveableCycle(year);
   const tone = calculateTone(date, cycle.pascha);
 
   // Fasting rule
-  const fasting = getFastingRule(date);
+  const fasting = getFastingRule(date, calendarStyle);
 
   // Feasts determination
   const feasts: FeastDay[] = [];
@@ -31,7 +39,7 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
     d1.getUTCMonth() === d2.getUTCMonth() &&
     d1.getUTCDate() === d2.getUTCDate();
 
-  // Moveable Feasts
+  // Moveable Feasts (Identical in Old and New Calendar under Alexandrian Paschalion)
   if (isSameDay(date, cycle.pascha)) {
     feasts.push({
       title: {
@@ -74,28 +82,35 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
     });
   }
 
-  // Fixed Feasts
-  if (month === 1 && day === 7) {
+  // Fixed Feasts target month & day (Old Calendar aligns on Julian date, New Calendar on civil date)
+  const targetMonth = calendarStyle === 'old' ? julian.month : month;
+  const targetDay = calendarStyle === 'old' ? julian.day : day;
+
+  // 1. Nativity of Christ
+  if (targetMonth === 12 && targetDay === 25) {
     feasts.push({
       title: {
-        ja: '主の降誕祭（旧暦降誕大祭）',
-        en: 'Nativity of Christ (Old Calendar Great Feast)',
-        ru: 'Рождество Христово (Юлианский календарь)',
+        ja: calendarStyle === 'old' ? '主の降誕祭（旧暦降誕大祭）' : '主の降誕祭（降誕大祭）',
+        en: calendarStyle === 'old' ? 'Nativity of Christ (Old Calendar Great Feast)' : 'Nativity of Christ (Great Feast)',
+        ru: calendarStyle === 'old' ? 'Рождество Христово (Юлианский календарь)' : 'Рождество Христово',
       },
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 12 && day === 25) {
+  } else if (calendarStyle === 'old' && month === 12 && day === 25) {
     feasts.push({
       title: {
         ja: '新暦主の降誕祭（大阪正教会祝祭）',
         en: 'Nativity of Christ (New Calendar Celebration at Osaka)',
-        ru: 'Рождество Христово (Новоюлианский праздник)',
+        ru: 'Рождество Христово (Новоюлианский праздник в Осаке)',
       },
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 1 && day === 19) {
+  }
+
+  // 2. Theophany (Baptism of the Lord) - Jan 6
+  if (targetMonth === 1 && targetDay === 6) {
     feasts.push({
       title: {
         ja: '主の神現祭（洗礼祭）',
@@ -105,7 +120,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 2 && day === 15) {
+  }
+
+  // 3. Meeting of the Lord (迎接祭) - Feb 2
+  if (targetMonth === 2 && targetDay === 2) {
     feasts.push({
       title: {
         ja: '主の迎接祭',
@@ -115,7 +133,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 2 && day === 16) {
+  }
+
+  // 4. St. Nicholas of Japan - Feb 3
+  if (targetMonth === 2 && targetDay === 3) {
     feasts.push({
       title: {
         ja: '日本の亜使徒大主教聖ニコライ祭',
@@ -125,7 +146,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'polyeleos',
       isMovable: false,
     });
-  } else if (month === 4 && day === 7) {
+  }
+
+  // 5. Annunciation (生神女福音祭) - Mar 25
+  if (targetMonth === 3 && targetDay === 25) {
     feasts.push({
       title: {
         ja: '生神女福音祭',
@@ -135,7 +159,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 7 && day === 7) {
+  }
+
+  // 6. Nativity of St. John the Baptist - June 24
+  if (targetMonth === 6 && targetDay === 24) {
     feasts.push({
       title: {
         ja: '前駆授洗イオアン誕生祭',
@@ -145,7 +172,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'polyeleos',
       isMovable: false,
     });
-  } else if (month === 7 && day === 12) {
+  }
+
+  // 7. Apostles Peter & Paul - June 29
+  if (targetMonth === 6 && targetDay === 29) {
     feasts.push({
       title: {
         ja: '首座使徒ペトル・パエル祭',
@@ -155,7 +185,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'polyeleos',
       isMovable: false,
     });
-  } else if (month === 8 && day === 19) {
+  }
+
+  // 8. Transfiguration - Aug 6
+  if (targetMonth === 8 && targetDay === 6) {
     feasts.push({
       title: {
         ja: '主の変容祭',
@@ -165,7 +198,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 8 && day === 28) {
+  }
+
+  // 9. Dormition of the Theotokos - Aug 15
+  if (targetMonth === 8 && targetDay === 15) {
     feasts.push({
       title: {
         ja: '生神女就寝祭',
@@ -175,7 +211,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 9 && day === 11) {
+  }
+
+  // 10. Beheading of St. John the Baptist - Aug 29
+  if (targetMonth === 8 && targetDay === 29) {
     feasts.push({
       title: {
         ja: '前駆授洗イオアン斬首祭',
@@ -185,7 +224,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'polyeleos',
       isMovable: false,
     });
-  } else if (month === 9 && day === 21) {
+  }
+
+  // 11. Nativity of the Theotokos - Sept 8
+  if (targetMonth === 9 && targetDay === 8) {
     feasts.push({
       title: {
         ja: '生神女誕生祭',
@@ -195,7 +237,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 9 && day === 27) {
+  }
+
+  // 12. Elevation of the Precious Cross - Sept 14
+  if (targetMonth === 9 && targetDay === 14) {
     feasts.push({
       title: {
         ja: '十字架挙栄祭',
@@ -205,7 +250,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 10 && day === 8) {
+  }
+
+  // 13. St. Sergius of Radonezh - Sept 25
+  if (targetMonth === 9 && targetDay === 25) {
     feasts.push({
       title: {
         ja: 'ラドネジの奇跡者聖セルギイ祭',
@@ -215,7 +263,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'polyeleos',
       isMovable: false,
     });
-  } else if (month === 10 && day === 14) {
+  }
+
+  // 14. Protection of the Theotokos (Pokrov — Osaka Patronal Feast) - Oct 1
+  if (targetMonth === 10 && targetDay === 1) {
     feasts.push({
       title: {
         ja: '生神女庇護祭（大阪教会 堂祭・守護祝日）',
@@ -225,7 +276,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 11 && day === 21) {
+  }
+
+  // 15. Synaxis of Archangel Michael - Nov 8
+  if (targetMonth === 11 && targetDay === 8) {
     feasts.push({
       title: {
         ja: '天軍主ミハイル及び諸天軍の会現祭',
@@ -235,7 +289,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'polyeleos',
       isMovable: false,
     });
-  } else if (month === 12 && day === 4) {
+  }
+
+  // 16. Entry of the Theotokos into the Temple - Nov 21
+  if (targetMonth === 11 && targetDay === 21) {
     feasts.push({
       title: {
         ja: '生神女進堂祭',
@@ -245,7 +302,10 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
       rank: 'great',
       isMovable: false,
     });
-  } else if (month === 12 && day === 19) {
+  }
+
+  // 17. St. Nicholas the Wonderworker - Dec 6
+  if (targetMonth === 12 && targetDay === 6) {
     feasts.push({
       title: {
         ja: 'ミラ・リキヤの奇跡者聖ニコライ大祭',
@@ -258,7 +318,8 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
   }
 
   // Saints for the day (from rich Julian calendar Menologion)
-  let saints: SaintCommemoration[] = DAILY_SAINTS_JULIAN[julianKey] || [];
+  const saintsKey = calendarStyle === 'old' ? julianKey : civilKey;
+  let saints: SaintCommemoration[] = DAILY_SAINTS_JULIAN[saintsKey] || [];
 
   if (saints.length === 0) {
     saints = [
@@ -269,7 +330,9 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
           ru: 'Память святых угодников Божиих',
         },
         bio: {
-          ja: '正教会聖暦（ユリウス暦）に従い、神の御前に祈る諸聖人を記念します。',
+          ja: calendarStyle === 'old'
+            ? '正教会聖暦（ユリウス暦）に従い、神の御前に祈る諸聖人を記念します。'
+            : '正教会聖暦（修正ユリウス暦・新暦）に従い、神の御前に祈る諸聖人を記念します。',
           en: 'According to the church menologion, we honor the holy saints who intercede for us.',
           ru: 'По церковному календарю чтится память святых угодников Божиих.',
         },
@@ -277,8 +340,8 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
     ];
   }
 
-  // Daily Scripture Readings according to Orthodox Old Calendar Lectionary
-  const readings: ScriptureReading[] = getOldCalendarReadings(date, cycle.pascha);
+  // Daily Scripture Readings according to Orthodox Lectionary
+  const readings: ScriptureReading[] = getOldCalendarReadings(date, cycle.pascha, calendarStyle);
 
   // Match parish services for this specific date
   const scheduleSource = customSchedule && customSchedule.length > 0 ? customSchedule : PARISH_SCHEDULE_2026;
@@ -301,6 +364,7 @@ export function getDayInfo(date: Date, customSchedule?: ParishService[]): DayInf
     civilDate: date,
     dateString,
     julianDateString: julianString,
+    calendarStyle,
     tone,
     sundayTitle,
     feasts,

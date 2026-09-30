@@ -17,6 +17,8 @@ export function SettingsModal() {
     setTheme,
     fontSize,
     setFontSize,
+    calendarStyle,
+    setCalendarStyle,
     patronSaintId,
     setPatronSaintId,
     familyMembers,
@@ -132,6 +134,85 @@ export function SettingsModal() {
                 >
                   <Moon className="w-4 h-4" />
                   <span>{locale === 'ja' ? 'ダーク（夜・祈祷用）' : locale === 'ru' ? 'Тёмная' : 'Dark'}</span>
+                </button>
+              </div>
+            </section>
+
+            {/* Calendar Tradition Selection (Old Calendar vs New Calendar) */}
+            <section className="space-y-2 p-3.5 bg-white dark:bg-slate-800 rounded-xl border border-orthodox-gold/40 shadow-sm">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-bold flex items-center space-x-2 text-slate-800 dark:text-slate-200">
+                  <Calendar className="w-4 h-4 text-orthodox-gold" />
+                  <span>
+                    {locale === 'ja'
+                      ? '聖暦の方式（旧暦／新暦）'
+                      : locale === 'ru'
+                      ? 'Церковный календарь'
+                      : 'Calendar Tradition'}
+                  </span>
+                </label>
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-orthodox-gold/20 text-orthodox-navy dark:text-orthodox-gold-light border border-orthodox-gold/30">
+                  {calendarStyle === 'old'
+                    ? (locale === 'ja' ? 'ユリウス暦（旧暦）' : locale === 'ru' ? 'Юлианский' : 'Old Style')
+                    : (locale === 'ja' ? '修正ユリウス暦（新暦）' : locale === 'ru' ? 'Новоюлианский' : 'New Style')}
+                </span>
+              </div>
+
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {locale === 'ja'
+                  ? '日課聖書朗読、聖人記憶、斎（精進）、および固定祝日の計算基準を切り替えます。'
+                  : locale === 'ru'
+                  ? 'Переключение чтений, памяти святых, постов и праздников.'
+                  : 'Switch daily lectionary readings, commemorated saints, fasting rules, and fixed feast dates.'}
+              </p>
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setCalendarStyle('old')}
+                  className={`p-2.5 rounded-xl border text-left transition-all ${
+                    calendarStyle === 'old'
+                      ? 'border-orthodox-gold bg-orthodox-gold/15 dark:bg-orthodox-gold/20 ring-1 ring-orthodox-gold'
+                      : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                  }`}
+                >
+                  <div className="flex items-center space-x-1.5">
+                    <span className="text-base">☦</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                      {locale === 'ja' ? 'ユリウス暦（旧暦）' : locale === 'ru' ? 'Юлианский (старый)' : 'Old Calendar (Julian)'}
+                    </span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-tight">
+                    {locale === 'ja'
+                      ? '日本正教会の伝統・標準（降誕祭1月7日）'
+                      : locale === 'ru'
+                      ? 'Традиция Японской Церкви (Рождество 7 янв)'
+                      : 'Traditional Japan Orthodox (Nativity Jan 7)'}
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCalendarStyle('new')}
+                  className={`p-2.5 rounded-xl border text-left transition-all ${
+                    calendarStyle === 'new'
+                      ? 'border-orthodox-gold bg-orthodox-gold/15 dark:bg-orthodox-gold/20 ring-1 ring-orthodox-gold'
+                      : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                  }`}
+                >
+                  <div className="flex items-center space-x-1.5">
+                    <span className="text-base">🏛</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                      {locale === 'ja' ? '修正ユリウス暦（新暦）' : locale === 'ru' ? 'Новоюлианский (новый)' : 'New Calendar (Revised)'}
+                    </span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-tight">
+                    {locale === 'ja'
+                      ? '民暦一致・ギリシャ等（降誕祭12月25日）'
+                      : locale === 'ru'
+                      ? 'Греческая и др. традиции (Рождество 25 дек)'
+                      : 'Civil alignment / Greek (Nativity Dec 25)'}
+                  </p>
                 </button>
               </div>
             </section>
