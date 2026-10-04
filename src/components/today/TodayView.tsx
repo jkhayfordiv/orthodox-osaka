@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { getDayInfo } from '../../lib/calendarEngine';
 import { SCRIPTURE_DATABASE } from '../../data/scripturePassages';
@@ -23,36 +24,10 @@ import { TONE_NAMES } from '../../data/terminology';
 import { notifyDailyReadingIfDue, notifyNameDaysIfDue } from '../../lib/notifications';
 import { FastingGuideModal } from '../shared/FastingGuideModal';
 import { getEffectiveSundaySermon } from '../../lib/sermonSchedule';
-
-function formatScriptureTitle(reading: ScriptureReading, locale: Locale): string {
-  const bookName = reading.book[locale] || '';
-  const ref = reading.reference || '';
-
-  // Check for week fallback patterns like "Week 18 after Pentecost" or "Luke (Week 18)"
-  const weekMatch = ref.match(/(?:Week\s*(\d+)(?:\s*after\s*Pentecost)?|\b(?:Luke|Matthew|Mark|John)\s*\(Week\s*(\d+)\))/i);
-  if (weekMatch) {
-    const weekNum = weekMatch[1] || weekMatch[2];
-    if (locale === 'ja') {
-      return `${bookName}（五旬祭後第${weekNum}週日課）`;
-    }
-    if (locale === 'ru') {
-      return `${bookName} (${weekNum}-я седмица по Пятидесятнице)`;
-    }
-    return `${bookName} (Week ${weekNum} after Pentecost)`;
-  }
-
-  // Chapter and verse pattern like "15:21–28" or "Ephesians 4:14–19"
-  const cvMatch = ref.match(/\b\d+:\d+(?:[–\-]\d+(?::\d+)?)?/);
-  if (cvMatch) {
-    return `${bookName} ${cvMatch[0]}`;
-  }
-
-  // Clean reference without redundant book names
-  const cleanRef = ref.replace(/^.*?\b(?=\d+:)/, '').trim();
-  return cleanRef ? `${bookName} ${cleanRef}` : bookName;
-}
+import { formatScriptureTitle } from '../../lib/orthodoxLectionary';
 
 export function TodayView() {
+  const router = useRouter();
   const {
     locale,
     calendarStyle,
@@ -92,6 +67,7 @@ export function TodayView() {
       setTargetSermonId(effectiveSermon.id);
     }
     setActiveTab('sermons');
+    router.push('/app/sermons');
   };
 
   // Compute information for selectedDate
@@ -113,9 +89,14 @@ export function TodayView() {
       .then((data) => {
         if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
         setEnrichedDayInfo((prev: DayInfo) => {
-          const updatedReadings = prev.readings.map((r: ScriptureReading, i: number) => {
-            const apiReading = data.readings[i];
+          const apiEpistle = data.readings.find((r: { source: string }) => r.source === 'Epistle');
+          const apiGospel = data.readings.find((r: { source: string }) => r.source === 'Gospel');
+
+          const updatedReadings = prev.readings.map((r: ScriptureReading) => {
+            // If local calculation already has verified liturgical Japanese text and pericope, keep it
             if (r.verses && r.verses.length > 0 && r.pericopeTan) return r;
+
+            const apiReading = r.source === 'Gospel' ? apiGospel : apiEpistle;
             if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
               return {
                 ...r,

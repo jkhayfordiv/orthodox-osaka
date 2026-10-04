@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { PRAYERS_DATA } from '../../data/prayers';
 import { LITURGY_CHRYSOSTOM } from '../../data/liturgy';
@@ -26,11 +27,14 @@ import { PrayingHandsIcon } from '../shared/PrayingHandsIcon';
 import { DiptychsView } from './DiptychsView';
 import { Locale } from '../../lib/types';
 
-export function ReaderView() {
+type ReaderCategory = 'scripture' | 'liturgy' | 'prayers' | 'patronal';
+
+export function ReaderView({ initialCategory = 'scripture' }: { initialCategory?: ReaderCategory }) {
+  const router = useRouter();
   const { locale, calendarStyle, selectedDate, fontSize, setFontSize } = useApp();
 
   // Top-level category: Scripture | Liturgy | Prayer Book | Patronal Hymns
-  const [mainCategory, setMainCategory] = useState<'scripture' | 'liturgy' | 'prayers' | 'patronal'>('scripture');
+  const [mainCategory, setMainCategory] = useState<ReaderCategory>(initialCategory);
 
   // Sub-category under Prayer Book: Daily Prayers (Morning/Evening) | Communion | Meals/Travel | Diptychs
   const [prayerSubCategory, setPrayerSubCategory] = useState<'daily' | 'communion' | 'meals' | 'diptychs'>('daily');
@@ -98,13 +102,18 @@ export function ReaderView() {
   return (
     <div className="space-y-4 pb-24 md:pb-12 max-w-5xl xl:max-w-6xl mx-auto px-3 sm:px-6 pt-3 sm:pt-4">
       {/* 1. Main Category Navigation (No horizontal scrolling! Fits cleanly on any screen) */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2.5 bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-2xl p-1.5 sm:p-2 shadow-sm">
+      <div role="tablist" aria-label={locale === 'ja' ? '祈祷書の区分' : 'Reader sections'} className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2.5 bg-white dark:bg-slate-900 border border-orthodox-gold/40 rounded-2xl p-1.5 sm:p-2 shadow-sm">
         {mainCategories.map((c) => {
           const isActive = mainCategory === c.id;
           return (
             <button
               key={c.id}
-              onClick={() => setMainCategory(c.id)}
+              onClick={() => {
+                setMainCategory(c.id);
+                router.push(c.id === 'scripture' ? '/app/prayers' : `/app/prayers/${c.id}`);
+              }}
+              role="tab"
+              aria-selected={isActive}
               className={`py-2 px-1 sm:py-2.5 sm:px-3 rounded-xl text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 transition-all select-none ${
                 isActive
                   ? 'bg-orthodox-gold text-orthodox-navy shadow-md'

@@ -8,7 +8,7 @@ import { TokushohoModal } from './TokushohoModal';
 import { Church, ShieldCheck, FileText, Phone, Mail, MapPin, Heart } from 'lucide-react';
 
 export function SiteFooter() {
-  const { locale, setActiveTab } = useApp();
+  const { locale } = useApp();
   const [isTokushohoOpen, setIsTokushohoOpen] = useState(false);
 
   return (
@@ -57,36 +57,12 @@ export function SiteFooter() {
                 {locale === 'ja' ? '教会案内・参祷' : 'Parish Navigation'}
               </div>
               <ul className="space-y-1.5">
-                <li>
-                  <button onClick={() => setActiveTab('today')} className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold">
-                    {locale === 'ja' ? '今日（日課・斎・聖人）' : 'Today’s Fast & Saints'}
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setActiveTab('home')} className="hover:text-orthodox-gold transition-colors">
-                    {locale === 'ja' ? '教会案内トップ' : 'Our Parish'}
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setActiveTab('orthodoxy')} className="hover:text-orthodox-gold transition-colors">
-                    {locale === 'ja' ? '正教会とは（入門手引）' : 'About Orthodoxy'}
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setActiveTab('history')} className="hover:text-orthodox-gold transition-colors">
-                    {locale === 'ja' ? '教会の歴史・文化財' : 'Parish History'}
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setActiveTab('access')} className="hover:text-orthodox-gold transition-colors">
-                    {locale === 'ja' ? '礼拝案内・アクセス' : 'Visit & Service Times'}
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setActiveTab('sermons')} className="hover:text-orthodox-gold transition-colors">
-                    {locale === 'ja' ? '主日説教アーカイブ' : 'Sermon Archive'}
-                  </button>
-                </li>
+                <li><Link href="/app" className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold">{locale === 'ja' ? '今日（日課・斎・聖人）' : 'Today’s Fast & Saints'}</Link></li>
+                <li><Link href="/" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '教会案内トップ' : 'Our Parish'}</Link></li>
+                <li><Link href="/orthodoxy" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '正教会とは（入門手引）' : 'About Orthodoxy'}</Link></li>
+                <li><Link href="/history" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '教会の歴史・文化財' : 'Parish History'}</Link></li>
+                <li><Link href="/visit" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '礼拝案内・アクセス' : 'Visit & Service Times'}</Link></li>
+                <li><Link href="/sermons" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '主日説教アーカイブ' : 'Sermon Archive'}</Link></li>
               </ul>
             </div>
 

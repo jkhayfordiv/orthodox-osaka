@@ -1,11 +1,18 @@
 'use client';
 
 import React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { useApp, AppTab } from '../../context/AppContext';
 import { Church, Sparkles, BookOpen, CalendarDays, ScrollText } from 'lucide-react';
 
 export function BottomNav() {
-  const { activeTab, setActiveTab, locale } = useApp();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { setActiveTab, locale } = useApp();
+  const routes: Record<AppTab, string> = {
+    home: '/', history: '/history', orthodoxy: '/orthodoxy', access: '/visit', sermons: '/app/sermons',
+    today: '/app', reader: '/app/prayers', calendar: '/app/calendar', parish: '/app/schedule',
+  };
 
   const tabs: { id: AppTab; icon: React.ReactNode; label: { ja: string; en: string; ru: string } }[] = [
     {
@@ -39,12 +46,16 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-30 bg-orthodox-navy border-t border-orthodox-gold/40 shadow-2xl safe-area-bottom lg:hidden">
       <div className="max-w-4xl mx-auto flex items-center justify-around h-16 sm:h-18 px-1">
         {tabs.map((tab) => {
-          const isActive = activeTab === tab.id || (tab.id === 'calendar' && activeTab === 'parish');
+          const isActive = pathname === routes[tab.id] || (tab.id === 'calendar' && pathname === '/app/schedule');
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex flex-col items-center justify-center py-1 transition-all h-full min-h-[56px] focus:outline-none select-none ${
+              onClick={() => {
+                setActiveTab(tab.id);
+                router.push(routes[tab.id]);
+              }}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex-1 flex flex-col items-center justify-center py-1 transition-all h-full min-h-[56px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-orthodox-gold select-none ${
                 isActive
                   ? 'text-orthodox-gold font-bold scale-105'
                   : 'text-slate-400 hover:text-slate-200'

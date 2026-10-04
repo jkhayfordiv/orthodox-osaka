@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
 import { PARISH_ANNOUNCEMENTS } from '../../data/bulletin';
@@ -29,6 +30,7 @@ import {
 } from 'lucide-react';
 
 export function HomeWebsiteView() {
+  const router = useRouter();
   const { locale, calendarStyle, setActiveTab, parishSchedule, sermons, isSermonAdmin, setTargetSermonId } = useApp();
   const dayInfo = getDayInfo(new Date(), parishSchedule, calendarStyle);
 
@@ -134,7 +136,7 @@ export function HomeWebsiteView() {
                 </button>
 
                 <button
-                  onClick={() => setActiveTab('sermons')}
+                  onClick={() => { setActiveTab('sermons'); router.push('/sermons'); }}
                   className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm backdrop-blur-md border border-white/20 transition-all flex items-center gap-2"
                 >
                   <BookOpen className="w-4 h-4 text-orthodox-gold-light" />
@@ -191,7 +193,7 @@ export function HomeWebsiteView() {
                     </div>
                   </div>
                   <button
-                    onClick={() => setActiveTab('access')}
+                    onClick={() => { setActiveTab('access'); router.push('/visit'); }}
                     className="p-2 rounded-xl bg-orthodox-gold text-orthodox-navy hover:bg-white transition-colors"
                     title="Map & Access"
                   >
@@ -263,6 +265,7 @@ export function HomeWebsiteView() {
                       setTargetSermonId(latestSermon.id);
                     }
                     setActiveTab('sermons');
+                    router.push('/sermons');
                   }}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm transition-colors shadow-sm"
                 >

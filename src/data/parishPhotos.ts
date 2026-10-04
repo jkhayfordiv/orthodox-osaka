@@ -54,9 +54,9 @@ export const CURATED_PARISH_PHOTOS: ParishPhotoItem[] = [
       ru: 'Колокольня и исторический русский колокол',
     },
     caption: {
-      ja: '1世紀以上にわたり吹田の街に福音を響かせてきた伝統の鐘。現在修復工事中。',
-      en: 'Historic master bell echoing the Gospel over Suita for over a century.',
-      ru: 'Старинный колокол, благовествующий над Суитой уже более ста лет.',
+      ja: '吹田の街に福音を響かせてきた大鐘。現在修復工事中。',
+      en: 'The church bell that carries the call to worship across Suita, currently undergoing restoration.',
+      ru: 'Церковный колокол, созывающий верующих на богослужение в Суите; сейчас он реставрируется.',
     },
   },
   {

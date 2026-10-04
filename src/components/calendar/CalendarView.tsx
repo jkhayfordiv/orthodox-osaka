@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { getDayInfo } from '../../lib/calendarEngine';
 import { getFastingSeasons } from '../../lib/fastingPeriods';
@@ -20,8 +21,10 @@ import {
 import { formatJulianDate, formatLiturgicalDate, gregorianToJulian } from '../../lib/paschalion';
 import { TONE_NAMES } from '../../data/terminology';
 import { FastingGuideModal } from '../shared/FastingGuideModal';
+import { formatScriptureTitle } from '../../lib/orthodoxLectionary';
 
 export function CalendarView() {
+  const router = useRouter();
   const {
     locale,
     calendarStyle,
@@ -125,9 +128,13 @@ export function CalendarView() {
       .then((data) => {
         if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
         setInspectDayInfo((prev: DayInfo) => {
-          const updatedReadings = prev.readings.map((r: ScriptureReading, i: number) => {
-            const apiReading = data.readings[i];
+          const apiEpistle = data.readings.find((r: { source: string }) => r.source === 'Epistle');
+          const apiGospel = data.readings.find((r: { source: string }) => r.source === 'Gospel');
+
+          const updatedReadings = prev.readings.map((r: ScriptureReading) => {
             if (r.verses && r.verses.length > 0 && r.pericopeTan) return r;
+
+            const apiReading = r.source === 'Gospel' ? apiGospel : apiEpistle;
             if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
               return {
                 ...r,
@@ -242,6 +249,7 @@ export function CalendarView() {
             onClick={() => {
               setSelectedDate(inspectDate);
               setActiveTab('today');
+              router.push('/app');
             }}
             className="py-1.5 px-3 rounded-xl bg-orthodox-gold text-orthodox-navy text-xs font-bold hover:bg-orthodox-gold-dark shadow transition-all active:scale-95 flex-shrink-0"
           >
@@ -362,7 +370,7 @@ export function CalendarView() {
                         {reading.source}
                       </span>
                       <h5 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100">
-                        {reading.book[locale]} {reading.reference.replace(/^.*?\b(?=\d+:)/, '').trim()}
+                        {formatScriptureTitle(reading, locale)}
                       </h5>
                     </div>
                     <button

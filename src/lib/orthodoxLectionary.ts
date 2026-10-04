@@ -1,6 +1,44 @@
-import { ScriptureReading, TrilingualText, CalendarStyle } from './types';
+import { ScriptureReading, TrilingualText, CalendarStyle, Locale } from './types';
 import { gregorianToJulian } from './paschalion';
 import { SCRIPTURE_DATABASE } from '../data/scripturePassages';
+
+/**
+ * Format scripture reading title without duplicating book names (e.g. avoiding "Luke Luke 4.37-44")
+ */
+export function formatScriptureTitle(reading: ScriptureReading, locale: Locale): string {
+  const bookName = reading.book[locale] || '';
+  const ref = reading.reference || '';
+
+  // 1. Check for week fallback patterns like "Week 18 after Pentecost" or "Luke (Week 18)"
+  const weekMatch = ref.match(/(?:Week\s*(\d+)(?:\s*after\s*Pentecost)?|\b(?:Luke|Matthew|Mark|John)\s*\(Week\s*(\d+)\))/i);
+  if (weekMatch) {
+    const weekNum = weekMatch[1] || weekMatch[2];
+    if (locale === 'ja') {
+      return `${bookName}（五旬祭後第${weekNum}週日課）`;
+    }
+    if (locale === 'ru') {
+      return `${bookName} (${weekNum}-я седмица по Пятидесятнице)`;
+    }
+    return `${bookName} (Week ${weekNum} after Pentecost)`;
+  }
+
+  // 2. Extract chapter and verse numbers (e.g. "2.12-16", "2:12-16", "10:38–42, 11:27–28")
+  // Matches the first chapter number followed by a dot or colon and verse numbers
+  const cvMatch = ref.match(/\b\d+[\.:]\d+.*$/);
+  if (cvMatch) {
+    // Standardize dot chapter separators to colons and hyphens to en-dashes
+    const cleanCv = cvMatch[0]
+      .replace(/(\d+)\.(\d+)/g, '$1:$2')
+      .replace(/-/g, '–');
+    return `${bookName} ${cleanCv}`.trim();
+  }
+
+  // 3. Fallback: if ref doesn't match chapter/verse, only append if not already containing book name
+  if (ref && !ref.includes(bookName) && !bookName.includes(ref)) {
+    return `${bookName} ${ref}`.trim();
+  }
+  return bookName;
+}
 
 interface BookTranslation {
   ja: string;
@@ -115,11 +153,123 @@ const JULIAN_FIXED_FEASTS: Record<string, LectionaryEntry> = {
  * Each week has 7 days: 0 = Sun, 1 = Mon, 2 = Tue, 3 = Wed, 4 = Thu, 5 = Fri, 6 = Sat
  */
 const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> = {
+  // 1st Sunday after Pentecost (All Saints)
+  1: {
+    0: {
+      epistle: { bookCode: 'HEB', reference: 'Hebrews 11:33–12:2', pericopeTan: 330, dbKey: 'Hebrews 11.33-12.2' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 10:32–33, 37–38, 19:27–30', pericopeTan: 38, dbKey: 'Matthew 10.32-38' },
+    },
+  },
+  // 2nd Sunday after Pentecost (All Saints of Russia / Athos)
+  2: {
+    0: {
+      epistle: { bookCode: 'ROM', reference: 'Romans 2:10–16', pericopeTan: 81, dbKey: 'Romans 2.10-16' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 4:18–23', pericopeTan: 9, dbKey: 'Matthew 4.18-23' },
+    },
+  },
+  // 3rd Sunday after Pentecost
+  3: {
+    0: {
+      epistle: { bookCode: 'ROM', reference: 'Romans 5:1–10', pericopeTan: 88, dbKey: 'Romans 5.1-10' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 6:22–33', pericopeTan: 18, dbKey: 'Matthew 6.22-33' },
+    },
+  },
+  // 4th Sunday after Pentecost (Centurion)
+  4: {
+    0: {
+      epistle: { bookCode: 'ROM', reference: 'Romans 6:18–23', pericopeTan: 93, dbKey: 'Romans 6.18-23' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 8:5–13', pericopeTan: 25, dbKey: 'Matthew 8.5-13' },
+    },
+  },
+  // 5th Sunday after Pentecost (Gadarene demoniacs)
+  5: {
+    0: {
+      epistle: { bookCode: 'ROM', reference: 'Romans 10:1–10', pericopeTan: 103, dbKey: 'Romans 10.1-10' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 8:28–9:1', pericopeTan: 28, dbKey: 'Matthew 8.28-9.1' },
+    },
+  },
+  // 6th Sunday after Pentecost (Paralytic)
+  6: {
+    0: {
+      epistle: { bookCode: 'ROM', reference: 'Romans 12:6–14', pericopeTan: 110, dbKey: 'Romans 12.6-14' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 9:1–8', pericopeTan: 29, dbKey: 'Matthew 9.1-8' },
+    },
+  },
+  // 7th Sunday after Pentecost (Two blind men)
+  7: {
+    0: {
+      epistle: { bookCode: 'ROM', reference: 'Romans 15:1–7', pericopeTan: 116, dbKey: 'Romans 15.1-7' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 9:27–35', pericopeTan: 33, dbKey: 'Matthew 9.27-35' },
+    },
+  },
+  // 8th Sunday after Pentecost (Feeding 5000)
+  8: {
+    0: {
+      epistle: { bookCode: '1CO', reference: '1 Corinthians 1:10–18', pericopeTan: 124, dbKey: '1 Corinthians 1.10-18' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 14:14–22', pericopeTan: 58, dbKey: 'Matthew 14.14-22' },
+    },
+  },
+  // 9th Sunday after Pentecost (Walking on water)
+  9: {
+    0: {
+      epistle: { bookCode: '1CO', reference: '1 Corinthians 3:9–17', pericopeTan: 128, dbKey: '1 Corinthians 3.9-17' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 14:22–34', pericopeTan: 59, dbKey: 'Matthew 14.22-34' },
+    },
+  },
+  // 10th Sunday after Pentecost (Lunatic boy)
+  10: {
+    0: {
+      epistle: { bookCode: '1CO', reference: '1 Corinthians 4:9–16', pericopeTan: 131, dbKey: '1 Corinthians 4.9-16' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 17:14–23', pericopeTan: 72, dbKey: 'Matthew 17.14-23' },
+    },
+  },
+  // 11th Sunday after Pentecost (Unforgiving servant)
+  11: {
+    0: {
+      epistle: { bookCode: '1CO', reference: '1 Corinthians 9:2–12', pericopeTan: 141, dbKey: '1 Corinthians 9.2-12' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 18:23–35', pericopeTan: 77, dbKey: 'Matthew 18.23-35' },
+    },
+  },
+  // 12th Sunday after Pentecost (Rich young man)
+  12: {
+    0: {
+      epistle: { bookCode: '1CO', reference: '1 Corinthians 15:1–11', pericopeTan: 158, dbKey: '1 Corinthians 15.1-11' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 19:16–26', pericopeTan: 79, dbKey: 'Matthew 19.16-26' },
+    },
+  },
+  // 13th Sunday after Pentecost (Wicked vinedressers)
+  13: {
+    0: {
+      epistle: { bookCode: '1CO', reference: '1 Corinthians 16:13–24', pericopeTan: 166, dbKey: '1 Corinthians 16.13-24' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 21:33–42', pericopeTan: 87, dbKey: 'Matthew 21.33-42' },
+    },
+  },
+  // 14th Sunday after Pentecost (Wedding banquet)
+  14: {
+    0: {
+      epistle: { bookCode: '2CO', reference: '2 Corinthians 1:21–2:4', pericopeTan: 170, dbKey: '2 Corinthians 1.21-2.4' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 22:1–14', pericopeTan: 89, dbKey: 'Matthew 22.1-14' },
+    },
+  },
+  // 15th Sunday after Pentecost (Greatest commandment)
+  15: {
+    0: {
+      epistle: { bookCode: '2CO', reference: '2 Corinthians 4:6–15', pericopeTan: 176, dbKey: '2 Corinthians 4.6-15' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 22:35–46', pericopeTan: 92, dbKey: 'Matthew 22.35-46' },
+    },
+  },
+  // 16th Sunday after Pentecost (Talents)
+  16: {
+    0: {
+      epistle: { bookCode: '2CO', reference: '2 Corinthians 6:1–10', pericopeTan: 181, dbKey: '2 Corinthians 6.1-10' },
+      gospel: { bookCode: 'MAT', reference: 'Matthew 25:14–30', pericopeTan: 105, dbKey: 'Matthew 25.14-30' },
+    },
+  },
   // 17th Week after Pentecost (Current week!)
   17: {
     // Sunday: 17th Sunday after Pentecost (Canaanite Woman)
     0: {
-      epistle: { bookCode: '2CO', reference: '2 Corinthians 6:16–7:1', pericopeTan: 181, dbKey: '2 Corinthians 6.16-7.1' },
+      epistle: { bookCode: '2CO', reference: '2 Corinthians 6:16–7:1', pericopeTan: 182, dbKey: '2 Corinthians 6.16-7.1' },
       gospel: { bookCode: 'MAT', reference: 'Matthew 15:21–28', pericopeTan: 62, dbKey: 'Matthew 15.21-28' },
     },
     // Monday
@@ -156,6 +306,7 @@ const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> 
 
   // 18th Week after Pentecost (Luke cycle starts)
   18: {
+    // 18th Sunday after Pentecost (Miraculous catch of fish)
     0: {
       epistle: { bookCode: '2CO', reference: '2 Corinthians 9:6–11', pericopeTan: 188, dbKey: '2 Corinthians 9.6-11' },
       gospel: { bookCode: 'LUK', reference: 'Luke 5:1–11', pericopeTan: 17, dbKey: 'Luke 5.1-11' },
@@ -186,7 +337,7 @@ const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> 
     },
   },
 
-  // 19th Week after Pentecost
+  // 19th Week after Pentecost (Love your enemies)
   19: {
     0: {
       epistle: { bookCode: '2CO', reference: '2 Corinthians 11:31–12:9', pericopeTan: 194, dbKey: '2 Corinthians 11.31-12.9' },
@@ -194,7 +345,7 @@ const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> 
     },
   },
 
-  // 20th Week after Pentecost
+  // 20th Week after Pentecost (Widow of Nain)
   20: {
     0: {
       epistle: { bookCode: 'GAL', reference: 'Galatians 1:11–19', pericopeTan: 200, dbKey: 'Galatians 1.11-19' },
@@ -218,7 +369,7 @@ const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> 
     },
   },
 
-  // 23rd Week after Pentecost
+  // 23rd Week after Pentecost (Gadarene demoniac)
   23: {
     0: {
       epistle: { bookCode: 'EPH', reference: 'Ephesians 2:4–10', pericopeTan: 220, dbKey: 'Ephesians 2.4-10' },
@@ -239,6 +390,70 @@ const PENTECOST_CYCLE_READINGS: Record<number, Record<number, LectionaryEntry>> 
     0: {
       epistle: { bookCode: 'EPH', reference: 'Ephesians 4:1–6', pericopeTan: 224, dbKey: 'Ephesians 4.1-6' },
       gospel: { bookCode: 'LUK', reference: 'Luke 10:25–37', pericopeTan: 53, dbKey: 'Luke 10.25-37' },
+    },
+  },
+
+  // 26th Week after Pentecost (Rich Fool)
+  26: {
+    0: {
+      epistle: { bookCode: 'EPH', reference: 'Ephesians 5:9–19', pericopeTan: 229, dbKey: 'Ephesians 5.9-19' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 12:16–21', pericopeTan: 66, dbKey: 'Luke 12.16-21' },
+    },
+  },
+
+  // 27th Week after Pentecost (Woman bowed together)
+  27: {
+    0: {
+      epistle: { bookCode: 'EPH', reference: 'Ephesians 6:10–17', pericopeTan: 233, dbKey: 'Ephesians 6.10-17' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 13:10–17', pericopeTan: 71, dbKey: 'Luke 13.10-17' },
+    },
+  },
+
+  // 28th Week after Pentecost (Holy Forefathers)
+  28: {
+    0: {
+      epistle: { bookCode: 'COL', reference: 'Colossians 1:12–18', pericopeTan: 250, dbKey: 'Colossians 1.12-18' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 14:16–24', pericopeTan: 76, dbKey: 'Luke 14.16-24' },
+    },
+  },
+
+  // 29th Week after Pentecost (Ten Lepers)
+  29: {
+    0: {
+      epistle: { bookCode: 'COL', reference: 'Colossians 3:4–11', pericopeTan: 257, dbKey: 'Colossians 3.4-11' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 17:12–19', pericopeTan: 85, dbKey: 'Luke 17.12-19' },
+    },
+  },
+
+  // 30th Week after Pentecost (Rich Young Ruler)
+  30: {
+    0: {
+      epistle: { bookCode: 'COL', reference: 'Colossians 3:12–16', pericopeTan: 258, dbKey: 'Colossians 3.12-16' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 18:18–27', pericopeTan: 91, dbKey: 'Luke 18.18-27' },
+    },
+  },
+
+  // 31st Week after Pentecost (Blind Man of Jericho)
+  31: {
+    0: {
+      epistle: { bookCode: '1TI', reference: '1 Timothy 1:15–17', pericopeTan: 280, dbKey: '1 Timothy 1.15-17' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 18:35–43', pericopeTan: 93, dbKey: 'Luke 18.35-43' },
+    },
+  },
+
+  // 32nd Week after Pentecost (Zacchaeus)
+  32: {
+    0: {
+      epistle: { bookCode: '1TI', reference: '1 Timothy 4:9–15', pericopeTan: 285, dbKey: '1 Timothy 4.9-15' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 19:1–10', pericopeTan: 94, dbKey: 'Luke 19.1-10' },
+    },
+  },
+
+  // 33rd Week after Pentecost (Publican & Pharisee)
+  33: {
+    0: {
+      epistle: { bookCode: '2TI', reference: '2 Timothy 3:10–15', pericopeTan: 296, dbKey: '2 Timothy 3.10-15' },
+      gospel: { bookCode: 'LUK', reference: 'Luke 18:10–14', pericopeTan: 89, dbKey: 'Luke 18.10-14' },
     },
   },
 };
@@ -270,13 +485,19 @@ export function getOldCalendarReadings(
   const dayOfWeek = civilDate.getUTCDay();
 
   if (diffDays >= 0) {
-    const weekAfterPentecost = Math.floor(diffDays / 7) + 1;
+    // Liturgical week calculation:
+    // On Sundays (dayOfWeek === 0), week number is diffDays / 7 (e.g. 7 days -> 1st Sun, 126 days -> 18th Sun)
+    // On weekdays (dayOfWeek 1-6), week number is Math.floor(diffDays / 7) + 1
+    const weekAfterPentecost = dayOfWeek === 0
+      ? Math.max(1, Math.round(diffDays / 7))
+      : Math.floor(diffDays / 7) + 1;
+
     const weekMap = PENTECOST_CYCLE_READINGS[weekAfterPentecost];
     if (weekMap && weekMap[dayOfWeek]) {
       return buildReadings(weekMap[dayOfWeek]);
     }
 
-    // Default Sunday fallback for higher Pentecost weeks
+    // Sunday fallback from weekMap[0]
     if (dayOfWeek === 0 && weekMap && weekMap[0]) {
       return buildReadings(weekMap[0]);
     }

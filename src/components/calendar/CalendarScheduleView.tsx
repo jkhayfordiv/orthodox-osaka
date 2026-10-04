@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { CalendarView } from './CalendarView';
 import { ParishView } from '../parish/ParishView';
@@ -11,18 +12,10 @@ interface CalendarScheduleViewProps {
 }
 
 export function CalendarScheduleView({ initialSubTab = 'schedule' }: CalendarScheduleViewProps) {
-  const { locale, activeTab } = useApp();
-  const [subTab, setSubTab] = useState<'schedule' | 'calendar'>(
-    activeTab === 'calendar' ? 'calendar' : initialSubTab
-  );
-
-  useEffect(() => {
-    if (activeTab === 'calendar') {
-      setSubTab('calendar');
-    } else if (activeTab === 'parish') {
-      setSubTab('schedule');
-    }
-  }, [activeTab]);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { locale } = useApp();
+  const subTab = pathname === '/app/calendar' ? 'calendar' : initialSubTab;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 pb-20">
@@ -71,7 +64,7 @@ export function CalendarScheduleView({ initialSubTab = 'schedule' }: CalendarSch
           {/* Sub-tab Pill Switcher */}
           <div className="flex bg-white/10 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 text-xs shadow-inner self-stretch sm:self-auto justify-center">
             <button
-              onClick={() => setSubTab('schedule')}
+              onClick={() => router.push('/app/schedule')}
               className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-bold transition-all flex-1 sm:flex-initial select-none ${
                 subTab === 'schedule'
                   ? 'bg-orthodox-gold text-orthodox-navy shadow-md scale-102'
@@ -82,7 +75,7 @@ export function CalendarScheduleView({ initialSubTab = 'schedule' }: CalendarSch
               <span>{locale === 'ja' ? '奉事日程・当番表' : locale === 'ru' ? 'Расписание служб' : 'Parish Schedule'}</span>
             </button>
             <button
-              onClick={() => setSubTab('calendar')}
+              onClick={() => router.push('/app/calendar')}
               className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-bold transition-all flex-1 sm:flex-initial select-none ${
                 subTab === 'calendar'
                   ? 'bg-orthodox-gold text-orthodox-navy shadow-md scale-102'

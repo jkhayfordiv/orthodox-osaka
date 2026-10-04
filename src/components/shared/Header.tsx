@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useApp, AppTab } from '../../context/AppContext';
 import { PARISH_INFO } from '../../data/terminology';
 import {
@@ -25,6 +26,8 @@ import {
 import { Locale } from '../../lib/types';
 
 export function Header() {
+  const pathname = usePathname();
+  const router = useRouter();
   const {
     locale,
     setLocale,
@@ -53,9 +56,19 @@ export function Header() {
       }
     }
 
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setAppDropdownOpen(false);
+        setPortalsDropdownOpen(false);
+      }
+    }
+
     document.addEventListener('pointerdown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('pointerdown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
@@ -130,22 +143,40 @@ export function Header() {
     },
   ];
 
-  const isAppTabActive = ['today', 'calendar', 'parish', 'reader', 'sermons'].includes(activeTab);
+  const tabRoutes: Record<AppTab, string> = {
+    home: '/',
+    history: '/history',
+    orthodoxy: '/orthodoxy',
+    access: '/visit',
+    sermons: '/sermons',
+    today: '/app',
+    calendar: '/app/calendar',
+    parish: '/app/schedule',
+    reader: '/app/prayers',
+  };
+  const routeTabs = Object.entries(tabRoutes) as [AppTab, string][];
+  const routeTab = routeTabs.find(([, href]) => href === pathname)?.[0];
+  const currentTab = pathname === '/app/sermons' ? 'sermons' : routeTab || activeTab;
+  const isAppTabActive = pathname.startsWith('/app');
 
-  const handleNavClick = (tabId: AppTab) => {
+  const navigateTo = (tabId: AppTab, href = tabRoutes[tabId]) => {
     setActiveTab(tabId);
+    router.push(href);
     setMobileMenuOpen(false);
     setAppDropdownOpen(false);
+    setPortalsDropdownOpen(false);
   };
+
+  const handleNavClick = (tabId: AppTab) => navigateTo(tabId);
 
   return (
     <header className="sticky top-0 z-40 bg-orthodox-navy text-white shadow-md border-b border-orthodox-gold/30">
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 flex items-center justify-between">
         {/* Left: Church Icon & Title */}
         <div
-          onClick={() => handleNavClick('today')}
+          onClick={() => handleNavClick('home')}
           className="flex items-center space-x-2.5 cursor-pointer group select-none"
-          title={locale === 'ja' ? '今日（ホーム）' : 'Today (Home)'}
+          title={locale === 'ja' ? '教会案内トップ' : 'Parish home'}
         >
           <img
             src="/brand/church-seal-round.png"
@@ -169,12 +200,13 @@ export function Header() {
         {/* Center: Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1 xl:space-x-3">
           {websiteNavItems.map((item) => {
-            const isActive = activeTab === item.id;
+            const isActive = currentTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all select-none ${
+                aria-current={isActive ? 'page' : undefined}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orthodox-gold ${
                   isActive
                     ? 'bg-orthodox-gold text-orthodox-navy shadow-sm'
                     : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -189,6 +221,8 @@ export function Header() {
           <div className="relative" ref={appDropdownRef}>
             <button
               onClick={() => setAppDropdownOpen(!appDropdownOpen)}
+              aria-expanded={appDropdownOpen}
+              aria-controls="parish-app-menu"
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none cursor-pointer touch-manipulation active:scale-95 ${
                 isAppTabActive
                   ? 'bg-orthodox-gold-dark/40 border-orthodox-gold text-orthodox-gold-light shadow-sm'
@@ -202,16 +236,17 @@ export function Header() {
 
             {/* Dropdown Menu */}
             {appDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-64 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+              <div id="parish-app-menu" className="absolute right-0 mt-2 w-64 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
                 <div className="px-3 py-1.5 text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider border-b border-orthodox-gold/20">
                   {locale === 'ja' ? '日々の祈祷・教会暦機能' : locale === 'ru' ? 'Ежедневные богослужебные разделы' : 'Daily Liturgical Life'}
                 </div>
                 {appNavItems.map((item) => (
                   <button
                     key={item.id}
-                    onClick={() => handleNavClick(item.id)}
+                    onClick={() => navigateTo(item.id, item.id === 'sermons' ? '/app/sermons' : tabRoutes[item.id])}
+                    aria-current={currentTab === item.id ? 'page' : undefined}
                     className={`w-full px-3 py-2 text-left flex items-start gap-2.5 hover:bg-white/10 active:bg-white/20 transition-colors cursor-pointer touch-manipulation select-none ${
-                      activeTab === item.id ? 'bg-white/15 text-orthodox-gold' : 'text-slate-200'
+                      currentTab === item.id ? 'bg-white/15 text-orthodox-gold' : 'text-slate-200'
                     }`}
                   >
                     <div className="mt-0.5">{item.icon}</div>
@@ -229,6 +264,8 @@ export function Header() {
           <div className="relative" ref={portalsDropdownRef}>
             <button
               onClick={() => setPortalsDropdownOpen(!portalsDropdownOpen)}
+              aria-expanded={portalsDropdownOpen}
+              aria-controls="portals-menu"
               className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border select-none cursor-pointer touch-manipulation active:scale-95 bg-white/5 border-orthodox-gold/30 text-slate-200 hover:text-white hover:bg-white/10"
               title={locale === 'ja' ? '研究ポータル群・西日本主教教区' : 'Orthodox Portals & Diocese'}
             >
@@ -238,7 +275,7 @@ export function Header() {
             </button>
 
             {portalsDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-72 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+              <div id="portals-menu" className="absolute right-0 mt-2 w-72 rounded-xl bg-orthodox-navy-dark border border-orthodox-gold/40 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
                 <div className="px-3 py-1.5 text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider border-b border-orthodox-gold/20">
                   {locale === 'ja' ? '研究ポータル群・西日本主教教区' : 'Portals & Western Diocese'}
                 </div>
@@ -306,6 +343,8 @@ export function Header() {
           {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
             className="p-1.5 sm:p-2 rounded-lg bg-orthodox-navy-dark/70 text-orthodox-gold-light hover:text-white border border-orthodox-gold/30 lg:hidden transition-colors"
             aria-label="Toggle navigation menu"
           >
@@ -316,7 +355,7 @@ export function Header() {
 
       {/* Mobile Slide-Over Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-orthodox-navy-dark border-t border-orthodox-gold/30 shadow-2xl px-4 py-4 space-y-4 animate-in fade-in slide-in-from-top-2">
+        <div id="mobile-navigation" className="lg:hidden bg-orthodox-navy-dark border-t border-orthodox-gold/30 shadow-2xl px-4 py-4 space-y-4 animate-in fade-in slide-in-from-top-2">
           {/* Website Section */}
           <div>
             <div className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider mb-2">
@@ -328,7 +367,7 @@ export function Header() {
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
                   className={`w-full px-3.5 py-2.5 rounded-lg text-xs font-semibold text-left transition-colors ${
-                    activeTab === item.id
+                    currentTab === item.id
                       ? 'bg-orthodox-gold text-orthodox-navy font-bold'
                       : 'bg-white/5 text-slate-200 hover:bg-white/10'
                   }`}
@@ -364,7 +403,7 @@ export function Header() {
           </div>
 
           {/* App Section */}
-          <div className="pt-2 border-t border-orthodox-gold/20">
+          <div className="hidden">
             <div className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-orthodox-gold" />
               <span>{locale === 'ja' ? '信徒・参祷者アプリ' : locale === 'ru' ? 'Приложение для прихожан' : 'Parish Daily App'}</span>
@@ -373,9 +412,9 @@ export function Header() {
               {appNavItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleNavClick(item.id)}
+                  onClick={() => navigateTo(item.id, item.id === 'sermons' ? '/app/sermons' : tabRoutes[item.id])}
                   className={`px-3 py-2.5 rounded-lg text-xs text-left flex items-center gap-2.5 transition-colors ${
-                    activeTab === item.id
+                    currentTab === item.id
                       ? 'bg-orthodox-gold text-orthodox-navy font-bold'
                       : 'bg-white/5 text-slate-200 hover:bg-white/10'
                   }`}

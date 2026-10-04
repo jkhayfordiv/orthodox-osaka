@@ -1,12 +1,14 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { PARISH_HISTORY_DATA } from '../../data/parishWebsiteData';
 import { PARISH_INFO } from '../../data/terminology';
 import { Church, BookOpen, Clock, Award, Shield, Sparkles, MapPin } from 'lucide-react';
 
 export function HistoryView() {
+  const router = useRouter();
   const { locale, setActiveTab } = useApp();
 
   return (
@@ -147,10 +149,10 @@ export function HistoryView() {
                 </h3>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   {locale === 'ja'
-                    ? '革命前のロシアで鋳造され、1世紀以上響き続ける祈りの大鐘。'
+                    ? 'ロシアで鋳造され、礼拝の時を告げてきた祈りの大鐘。'
                     : locale === 'ru'
-                    ? 'Колокол дореволюционного литья, благовествующий более ста лет.'
-                    : 'Cast in pre-revolutionary Russia, proclaiming the Gospel for over a century.'}
+                    ? 'Отлитый в России большой колокол, созывающий верующих на богослужение.'
+                    : 'A large bell cast in Russia that calls the faithful to worship.'}
                 </p>
               </div>
             </div>
@@ -206,7 +208,7 @@ export function HistoryView() {
         {/* Bottom Navigation Ribbon */}
         <div className="pt-4 flex items-center justify-end">
           <button
-            onClick={() => setActiveTab('access')}
+            onClick={() => { setActiveTab('access'); router.push('/visit'); }}
             className="px-5 py-2.5 rounded-xl bg-orthodox-gold text-orthodox-navy font-bold text-xs shadow-sm hover:bg-orthodox-gold-light transition-all"
           >
             {locale === 'ja' ? '聖堂を見学する（参祷案内）' : locale === 'ru' ? 'Посетить храм' : 'Plan a Visit'}

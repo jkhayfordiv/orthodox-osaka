@@ -1037,4 +1037,340 @@ export const SCRIPTURE_DATABASE: Record<string, FullScripturePassage> = {
       },
     ],
   },
+
+  // 18th Sunday after Pentecost (Pericope 188 / 2 Corinthians 9:6–11)
+  '2 Corinthians 9.6-11': {
+    display: '2 Corinthians 9:6–11',
+    source: 'Epistle',
+    book: {
+      ja: '聖使徒パウェルのコリンフ人に致す後書（コリンフ後書）',
+      en: 'The Second Epistle of St. Paul to the Corinthians',
+      ru: 'Второе послание святого апостола Павла к Коринфянам',
+    },
+    pericopeTan: 188,
+    verses: [
+      {
+        verse: 6,
+        text: {
+          ja: '兄弟よ、惜しみて蒔く者は惜しみて刈り、惜しまずして蒔く者は惜しまずして刈るべし。',
+          en: 'Brethren: He which soweth sparingly shall reap also sparingly; and he which soweth bountifully shall reap also bountifully.',
+          ru: 'Братия: кто сеет скупо, тот скупо и пожнет; а кто сеет щедро, тот щедро и пожнет.',
+        },
+      },
+      {
+        verse: 7,
+        text: {
+          ja: '各々その心に定むる所に随いて行え、憂いを懐きて為す勿れ、強いて為す勿れ、神は歓び施す者を愛し給えばなり。',
+          en: 'Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.',
+          ru: 'Каждый уделяй по расположению сердца, не с огорчением и не с принуждением; ибо доброхотно дающего любит Бог.',
+        },
+      },
+      {
+        verse: 8,
+        text: {
+          ja: '神は凡ての恵みを爾等に満たす能う、爾等をして常に諸事足りて、凡て諸の善き業を饒ならしめんが為なり。',
+          en: 'And God is able to make all grace abound toward you; that ye, always having all sufficiency in all things, may abound to every good work:',
+          ru: 'Бог же силен обогатить вас всякою благодатью, чтобы вы, всегда и во всем имея всякое довольство, были богаты на всякое доброе дело,',
+        },
+      },
+      {
+        verse: 9,
+        text: {
+          ja: '録して「彼散らして貧民に施せり、その義は世々絶えじ」とあるが如し。',
+          en: 'As it is written, He hath dispersed abroad; he hath given to the poor: his righteousness remaineth for ever.',
+          ru: 'как написано: расточил, раздал нищим; правда его пребывает в век.',
+        },
+      },
+      {
+        verse: 10,
+        text: {
+          ja: '種蒔く者に種と食する糧とを与え給う者は、爾等の種をも与え、之を殖やし、爾等の義の結実を益し給わん。',
+          en: 'Now he that ministereth seed to the sower both minister bread for your food, and multiply your seed sown, and increase the fruits of your righteousness;',
+          ru: 'Дарующий же семя сеющему и хлеб в пищу подаст обилие семени вашему и умножит плоды правды вашей,',
+        },
+      },
+      {
+        verse: 11,
+        text: {
+          ja: '爾等諸事饒かにして、甚だ篤く施さば、我等に由りて神の感謝を致さしめん。',
+          en: 'Being enriched in every thing to all bountifulness, which causeth through us thanksgiving to God.',
+          ru: 'так чтобы вы всем богаты были на всякую щедрость, которая через нас производит благодарение Богу.',
+        },
+      },
+    ],
+  },
+
+  // 18th Sunday after Pentecost (Pericope 17 / Luke 5:1–11)
+  'Luke 5.1-11': {
+    display: 'Luke 5:1–11',
+    source: 'Gospel',
+    book: {
+      ja: 'ルカに因る聖福音（ルカ福音経）',
+      en: 'The Holy Gospel According to St. Luke',
+      ru: 'Святое Евангелие от Луки',
+    },
+    pericopeTan: 17,
+    verses: [
+      {
+        verse: 1,
+        text: {
+          ja: '群衆イイススに迫りて神の言を聞かんとする時、イイススはゲンニサレト湖の辺に立ち給いき。',
+          en: 'At that time, as the people pressed upon Jesus to hear the word of God, He stood by the lake of Gennesaret,',
+          ru: 'В то время народ теснился к Иисусу, чтобы слышать слово Божие, а Он стоял у озера Геннисаретского.',
+        },
+      },
+      {
+        verse: 2,
+        text: {
+          ja: '湖の辺に二隻の舟の停れるを見給う。漁人らは舟より降りて網を洗いたり。',
+          en: 'And saw two ships standing by the lake: but the fishermen were gone out of them, and were washing their nets.',
+          ru: 'И увидел две лодки, стоящие на озере; а рыболовы, выйдя из них, вымывали сети.',
+        },
+      },
+      {
+        verse: 3,
+        text: {
+          ja: '其の一隻シモンの舟に登り、之に岸を少しく離れんことを乞い、舟に坐して群衆を教え給いき。',
+          en: 'And He entered into one of the ships, which was Simon\u2019s, and prayed him that he would thrust out a little from the land. And He sat down, and taught the people out of the ship.',
+          ru: 'Войдя в одну лодку, которая была Симонова, Он просил его отплыть немного от берега и, сев, учил народ из лодки.',
+        },
+      },
+      {
+        verse: 4,
+        text: {
+          ja: '語り止みてシモンに宣給わく、「深き処に進みて、網を下して漁せよ。」',
+          en: 'Now when He had left speaking, He said unto Simon, Launch out into the deep, and let down your nets for a draught.',
+          ru: 'Когда же перестал учить, сказал Симону: отплыви на глубину и закиньте сети свои для лова.',
+        },
+      },
+      {
+        verse: 5,
+        text: {
+          ja: 'シモン答えて曰く、「師よ、我等夜もすがら労したれども、獲る所なし。然れども爾の言葉に因りて網を下さん。」',
+          en: 'And Simon answering said unto Him, Master, we have toiled all the night, and have taken nothing: nevertheless at Thy word I will let down the net.',
+          ru: 'Симон сказал Ему в ответ: Наставник! мы трудились всю ночь и ничего не поймали, но по слову Твоему закину сеть.',
+        },
+      },
+      {
+        verse: 6,
+        text: {
+          ja: '已にして魚を獲ること甚だ多く、網裂けんとす。',
+          en: 'And when they had this done, they inclosed a great multitude of fishes: and their net brake.',
+          ru: 'Сделав это, они поймали великое множество рыбы, и даже сеть у них прорывалась.',
+        },
+      },
+      {
+        verse: 7,
+        text: {
+          ja: '乃ち他の一隻にある侶に合図して、来り助けんことを求む。彼等至りて両舟を満たし、舟沈まんとせり。',
+          en: 'And they beckoned unto their partners, which were in the other ship, that they should come and help them. And they came, and filled both the ships, so that they began to sink.',
+          ru: 'И дали знак товарищам, находившимся на другой лодке, чтобы пришли помочь им; и пришли, и наполнили обе лодки, так что они начинали тонуть.',
+        },
+      },
+      {
+        verse: 8,
+        text: {
+          ja: 'シモン・ペトル之を見て、イイススの膝下に伏して曰く、「主よ、我を離れ給え、我は罪人なり。」',
+          en: 'When Simon Peter saw it, he fell down at Jesus\u2019 knees, saying, Depart from me; for I am a sinful man, O Lord.',
+          ru: 'Увидев это, Симон Петр припал к коленям Иисуса и сказал: выйди от меня, Господи! потому что я человек грешный.',
+        },
+      },
+      {
+        verse: 9,
+        text: {
+          ja: '彼及び彼と共に居る凡ての人、その獲し所の魚の多きに因りて驚懼を懐けばなり。',
+          en: 'For he was astonished, and all that were with him, at the draught of the fishes which they had taken:',
+          ru: 'Ибо ужас объял его и всех, бывших с ним, от этого лова рыб, ими пойманных;',
+        },
+      },
+      {
+        verse: 10,
+        text: {
+          ja: 'シモンの侶なるゼベデイの子イアコフとイオアンも亦然り。イイスス、シモンに宣給わく、「懼る勿れ、今より爾は人を漁る者とならん。」',
+          en: 'And so was also James, and John, the sons of Zebedee, which were partners with Simon. And Jesus said unto Simon, Fear not; from henceforth thou shalt catch men.',
+          ru: 'также и Иакова и Иоанна, сыновей Зеведеевых, бывших товарищами Симону. И сказал Симону Иисус: не бойся; отныне будешь уловлять человеков.',
+        },
+      },
+      {
+        verse: 11,
+        text: {
+          ja: '彼等舟を岸に著け、凡てを棄てて彼に従えり。',
+          en: 'And when they had brought their ships to land, they forsook all, and followed Him.',
+          ru: 'И, вытащив обе лодки на берег, оставили всё и последовали за Ним.',
+        },
+      },
+    ],
+  },
+
+  // 19th Sunday after Pentecost (Pericope 194 / 2 Corinthians 11:31–12:9)
+  '2 Corinthians 11.31-12.9': {
+    display: '2 Corinthians 11:31–12:9',
+    source: 'Epistle',
+    book: {
+      ja: '聖使徒パウェルのコリンフ人に致す後書（コリンフ後書）',
+      en: 'The Second Epistle of St. Paul to the Corinthians',
+      ru: 'Второе послание святого апостола Павла к Коринфянам',
+    },
+    pericopeTan: 194,
+    verses: [
+      {
+        verse: 31,
+        text: {
+          ja: '主イイスス・ハリストスの神にして父、世々に讃美せらるる者は、我の虚言せざるを知る。',
+          en: 'Brethren: The God and Father of our Lord Jesus Christ, which is blessed for evermore, knoweth that I lie not.',
+          ru: 'Братия: Бог и Отец Господа нашего Иисуса Христа, благословенный во веки, знает, что я не обманываю.',
+        },
+      },
+      {
+        verse: 32,
+        text: {
+          ja: 'ダマスクに於てアレタ王の代官、我を捕えんとてダマスク人の城を守りしかど、',
+          en: 'In Damascus the governor under Aretas the king kept the city of the Damascenes with a garrison, desirous to apprehend me:',
+          ru: 'В Дамаске областной правитель царя Ареты стерег город Дамаск, чтобы уловить меня;',
+        },
+      },
+      {
+        verse: 33,
+        text: {
+          ja: '我は籠に入れられ、城壁の窓より釣下されて、その手を免れたり。',
+          en: 'And through a window in a basket was I let down by the wall, and escaped his hands.',
+          ru: 'и я в корзине был спущен из окна по стене и избежал его рук.',
+        },
+      },
+      {
+        verse: 1,
+        text: {
+          ja: '誇るは我に益なし、然れども我は主の顕現と黙示とに及ばん。',
+          en: 'It is not expedient for me doubtless to glory. I will come to visions and revelations of the Lord.',
+          ru: 'Не полезно хвалиться мне, ибо я приду к видениям и откровениям Господним.',
+        },
+      },
+      {
+        verse: 2,
+        text: {
+          ja: '我ハリストスに在る一人を知る、十四年の前、第三の天に至るまで携え去られたり（身の内にか、身の外にか、我は知らず、神之を知る）。',
+          en: 'I knew a man in Christ above fourteen years ago, (whether in the body, I cannot tell; or whether out of the body, I cannot tell: God knoweth;) such an one caught up to the third heaven.',
+          ru: 'Знаю человека во Христе, который назад тому четырнадцать лет (в теле ли — не знаю, вне ли тела — не знаю: Бог знает) восхищен был до третьего неба.',
+        },
+      },
+      {
+        verse: 3,
+        text: {
+          ja: '我此の人を知る（身の内にか、身の外にか、我は知らず、神之を知る）、',
+          en: 'And I knew such a man, (whether in the body, or out of the body, I cannot tell: God knoweth;)',
+          ru: 'И знаю о таком человеке (только не знаю — в теле, или вне тела: Бог знает),',
+        },
+      },
+      {
+        verse: 4,
+        text: {
+          ja: '楽園に携え去られて、言説すべからず、人の語るべからざる言を聞けり。',
+          en: 'How that he was caught up into paradise, and heard unspeakable words, which it is not lawful for a man to utter.',
+          ru: 'что он был восхищен в рай и слышал неизреченные слова, которых человеку нельзя пересказать.',
+        },
+      },
+      {
+        verse: 5,
+        text: {
+          ja: '我此の人の為には誇らん、然れども己の為には、我が弱きを除くの外、誇らじ。',
+          en: 'Of such an one will I glory: yet of myself I will not glory, but in mine infirmities.',
+          ru: 'Таким человеком могу хвалиться; собою же не похвалюсь, разве только немощами моими.',
+        },
+      },
+      {
+        verse: 6,
+        text: {
+          ja: '蓋し我誇らんと欲するとも狂妄の人とはならじ、真実を語らん故なり。然れども我自ら止む、恐らくは人、我を見る所と我に聞く所とに踰えて、我を思わん。',
+          en: 'For though I would desire to glory, I shall not be a fool; for I will say the truth: but now I forbear, lest any man should think of me above that which he seeth me to be, or that he heareth of me.',
+          ru: 'Впрочем, если захочу хвалиться, не буду неразумен, потому что скажу истину; но я удерживаюсь, чтобы кто не подумал о мне более, нежели сколько во мне видит или слышит от меня.',
+        },
+      },
+      {
+        verse: 7,
+        text: {
+          ja: '黙示の甚だしきに因りて自ら高ぶること無からん為に、肉体にとげ、即ちサタナの使を賜われり、是れ我を撃ちて自ら高ぶらざらしめんが為なり。',
+          en: 'And lest I should be exalted above measure through the abundance of the revelations, there was given to me a thorn in the flesh, the messenger of Satan to buffet me, lest I should be exalted above measure.',
+          ru: 'И чтоб я не превозносился чрезвычайностью откровений, дано мне жало в плоть, ангел сатаны, удручать меня, чтобы я не превозносился.',
+        },
+      },
+      {
+        verse: 8,
+        text: {
+          ja: '此の為に、我之を我を離れしめんことを三度主に祈り求めたり。',
+          en: 'For this thing I besought the Lord thrice, that it might depart from me.',
+          ru: 'Трижды молил я Господа о том, чтобы удалил его от меня.',
+        },
+      },
+      {
+        verse: 9,
+        text: {
+          ja: '主、我に宣給わく、「我が恵みは爾に足れり、我が力は弱きに全うせらるればなり。」',
+          en: 'And He said unto me, My grace is sufficient for thee: for My strength is made perfect in weakness.',
+          ru: 'Но Господь сказал мне: «довольно для тебя благодати Моей, ибо сила Моя совершается в немощи».',
+        },
+      },
+    ],
+  },
+
+  // 19th Sunday after Pentecost (Pericope 26 / Luke 6:31–36)
+  'Luke 6.31-36': {
+    display: 'Luke 6:31–36',
+    source: 'Gospel',
+    book: {
+      ja: 'ルカに因る聖福音（ルカ福音経）',
+      en: 'The Holy Gospel According to St. Luke',
+      ru: 'Святое Евангелие от Луки',
+    },
+    pericopeTan: 26,
+    verses: [
+      {
+        verse: 31,
+        text: {
+          ja: '爾等の人に為されんと欲する如く、人にも亦其の如くせよ。',
+          en: 'The Lord said: As ye would that men should do to you, do ye also to them likewise.',
+          ru: 'Сказал Господь: как хотите, чтобы с вами поступали люди, так и вы поступайте с ними.',
+        },
+      },
+      {
+        verse: 32,
+        text: {
+          ja: '爾等若し己を愛する者を愛せば、何の恩をか得ん。罪人も亦己を愛する者を愛す。',
+          en: 'For if ye love them which love you, what thank have ye? for sinners also love those that love them.',
+          ru: 'И если любите любящих вас, какая вам за то благодарность? ибо и грешники любящих их любят.',
+        },
+      },
+      {
+        verse: 33,
+        text: {
+          ja: '爾等若し己に善を為す者に善を為さば、何の恩をか得ん。罪人も亦其の如くす。',
+          en: 'And if ye do good to them which do good to you, what thank have ye? for sinners also do even the same.',
+          ru: 'И если делаете добро тем, которые вам делают добро, какая вам за то благодарность? ибо и грешники то же делают.',
+        },
+      },
+      {
+        verse: 34,
+        text: {
+          ja: '爾等若し償を受くべき人に貸さば、何の恩をか得ん。罪人も亦同額の償を受くる為に罪人に貸す。',
+          en: 'And if ye lend to them of whom ye hope to receive, what thank have ye? for sinners also lend to sinners, to receive as much again.',
+          ru: 'И если взаймы даете тем, от которых надеетесь получить обратно, какая вам за то благодарность? ибо и грешники дают взаймы грешникам, чтобы получить обратно столько же.',
+        },
+      },
+      {
+        verse: 35,
+        text: {
+          ja: '然れども爾等は仇を愛し、善を為し、何の望をも懐かずして貸せ、然らば爾等の報は大きく、爾等は至高者の子とならん、至高者は恩を知らぬ者と悪しき者とにも慈悲あるが故なり。',
+          en: 'But love ye your enemies, and do good, and lend, hoping for nothing again; and your reward shall be great, and ye shall be the children of the Highest: for He is kind unto the unthankful and to the evil.',
+          ru: 'Но вы любите врагов ваших, и благотворите, и взаймы давайте, не ожидая ничего; и будет вам награда великая, и будете сынами Всевышнего; ибо Он благ и к неблагодарным и злым.',
+        },
+      },
+      {
+        verse: 36,
+        text: {
+          ja: '爾等の父の慈悲深きが如く、爾等も亦慈悲深かれ。',
+          en: 'Be ye therefore merciful, as your Father also is merciful.',
+          ru: 'Итак, будьте милосерды, как и Отец ваш милосерд.',
+        },
+      },
+    ],
+  },
 };

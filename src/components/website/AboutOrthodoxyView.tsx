@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../context/AppContext';
 import { ABOUT_ORTHODOXY_DATA } from '../../data/parishWebsiteData';
 import {
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react';
 
 export function AboutOrthodoxyView() {
+  const router = useRouter();
   const { locale, setActiveTab } = useApp();
   const [activeVideoId, setActiveVideoId] = React.useState('BYsQ1FnrY2o');
 
@@ -530,7 +532,7 @@ export function AboutOrthodoxyView() {
           </div>
 
           <button
-            onClick={() => setActiveTab('reader')}
+            onClick={() => { setActiveTab('reader'); router.push('/app/prayers'); }}
             className="px-6 py-3 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-light text-orthodox-navy font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2.5 flex-shrink-0"
           >
             <BookOpen className="w-4 h-4" />

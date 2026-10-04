@@ -55,9 +55,9 @@ export const BELL_RESTORATION_DATA: BellRestorationInfo = {
     ru: 'Восстановление колокольни и большого колокола: Просьба о поддержке',
   },
   subtitle: {
-    ja: '100年を超える祈りの響きを次世代へ',
-    en: 'Preserving over a century of sacred chimes for future generations',
-    ru: 'Сохраним вековой благовест для будущих поколений',
+    ja: '祈りを告げる鐘の響きを次世代へ',
+    en: 'Preserving the sacred call to prayer for future generations',
+    ru: 'Сохраним благовест для будущих поколений',
   },
   status: {
     ja: '工事実施中・募金受付中',

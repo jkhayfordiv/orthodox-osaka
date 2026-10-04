@@ -115,6 +115,7 @@ export async function GET(
 
       return {
         source: r.source,
+        description: r.description || '',
         book: bookName,
         display: r.display,
         reference: r.display,
@@ -122,6 +123,46 @@ export async function GET(
         fullTextEn: fullEnglishText,
       };
     });
+
+    // Separate Liturgy readings from non-Liturgy readings (Vespers, Matins)
+    const liturgyEpistles = processedReadings.filter(
+      (r) => r.source === 'Epistle' || r.source.toLowerCase().includes('apostle')
+    );
+    const liturgyGospels = processedReadings.filter(
+      (r) => r.source === 'Gospel' && !r.source.toLowerCase().includes('matins')
+    );
+    const otherReadings = processedReadings.filter(
+      (r) => !liturgyEpistles.includes(r) && !liturgyGospels.includes(r)
+    );
+
+    // On Sundays (weekday === 0), ensure the primary Sunday Liturgy reading takes precedence over secondary commemorations
+    const isSunday = data.weekday === 0;
+    let primaryEpistle = liturgyEpistles[0];
+    let primaryGospel = liturgyGospels[0];
+
+    if (isSunday) {
+      // In Orthocal, secondary/saint readings have descriptions like "Sunday after Elevation" or "St Chariton",
+      // while the regular Sunday cycle reading has an empty description or indicates the Sunday.
+      const sundayEpistle = liturgyEpistles.find(
+        (e) => !e.description || (e.description.toLowerCase().includes('sunday') && !e.description.toLowerCase().includes('after'))
+      );
+      if (sundayEpistle) primaryEpistle = sundayEpistle;
+
+      const sundayGospel = liturgyGospels.find(
+        (g) => !g.description || (g.description.toLowerCase().includes('sunday') && !g.description.toLowerCase().includes('after'))
+      );
+      if (sundayGospel) primaryGospel = sundayGospel;
+    }
+
+    const remainingEpistles = liturgyEpistles.filter((e) => e !== primaryEpistle);
+    const remainingGospels = liturgyGospels.filter((g) => g !== primaryGospel);
+
+    // Ordered readings: Primary Liturgy Epistle FIRST, Primary Liturgy Gospel SECOND,
+    // followed by any secondary feast/saint Liturgy readings, followed by Matins/Vespers.
+    const orderedReadings: typeof processedReadings = [];
+    if (primaryEpistle) orderedReadings.push(primaryEpistle);
+    if (primaryGospel) orderedReadings.push(primaryGospel);
+    orderedReadings.push(...remainingEpistles, ...remainingGospels, ...otherReadings);
 
     return NextResponse.json({
       success: true,
@@ -137,7 +178,7 @@ export async function GET(
       saints: data.saints,
       fastLevel: data.fast_level,
       fastDesc: data.fast_level_desc,
-      readings: processedReadings,
+      readings: orderedReadings,
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
