@@ -69,7 +69,7 @@ export function HomeWebsiteView() {
                 <Church className="w-4 h-4 text-orthodox-gold" />
                 <span>
                   {locale === 'ja'
-                    ? '日本ハリストス正教会 西日本主教区'
+                    ? '日本ハリストス正教会 西日本主教教区'
                     : locale === 'ru'
                     ? 'Японская Православная Церковь · Западная епархия'
                     : 'Autonomous Orthodox Church in Japan · Western Diocese'}
@@ -121,7 +121,7 @@ export function HomeWebsiteView() {
                   className="px-6 py-3 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-light text-orthodox-navy font-bold text-xs sm:text-sm transition-all shadow-md transform hover:-translate-y-0.5 flex items-center gap-2"
                 >
                   <Clock className="w-4 h-4 text-orthodox-navy" />
-                  <span>{locale === 'ja' ? '見学と礼拝時間' : locale === 'ru' ? 'Часы служб' : 'Visit & Service Hours'}</span>
+                  <span>{locale === 'ja' ? '聖堂見学・奉神礼のご案内' : locale === 'ru' ? 'Часы служб' : 'Visit & Service Hours'}</span>
                 </button>
 
                 <button
@@ -298,7 +298,7 @@ export function HomeWebsiteView() {
                 {locale === 'ja' ? '教会案内・見学' : locale === 'ru' ? 'Богослужения' : 'Visit & Worship'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 dark:text-white mt-1">
-                {locale === 'ja' ? '見学と礼拝の時間' : locale === 'ru' ? 'Часы открытых дверей и служб' : 'Visiting & Worship Hours'}
+                {locale === 'ja' ? '聖堂見学・奉神礼のご案内' : locale === 'ru' ? 'Часы открытых дверей и служб' : 'Visiting & Worship Hours'}
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-serif max-w-lg">
@@ -320,9 +320,9 @@ export function HomeWebsiteView() {
                 <Compass className="w-5 h-5 text-amber-700 dark:text-amber-300" />
               </div>
               <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white">
-                {locale === 'ja' ? '聖堂見学開放' : locale === 'ru' ? 'Осмотр храма' : 'Open Temple Viewing'}
+                {locale === 'ja' ? '聖堂見学のご案内' : locale === 'ru' ? 'Осмотр храма' : 'Open Temple Viewing'}
               </h3>
-              <div className="text-amber-900 dark:text-amber-200 font-mono text-xl font-bold">15:00 〜 16:30</div>
+              <div className="text-amber-900 dark:text-amber-200 font-mono text-xl font-bold">16:00 〜 17:00</div>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-serif">
                 {locale === 'ja'
                   ? '聖堂内部のイコノスタス（聖障）や山下りんの聖像、ロシアの伝統建築を自由にご鑑賞いただけます。'
@@ -341,7 +341,7 @@ export function HomeWebsiteView() {
                 <Clock className="w-5 h-5 text-orthodox-gold" />
               </div>
               <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white">
-                {locale === 'ja' ? '徹夜祷（晩祷）' : locale === 'ru' ? 'Всенощное бдение' : 'All-Night Vigil'}
+                {locale === 'ja' ? '徹夜祷' : locale === 'ru' ? 'Всенощное бдение' : 'All-Night Vigil'}
               </h3>
               <div className="text-slate-800 dark:text-slate-200 font-mono text-xl font-bold">17:00 〜</div>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-serif">

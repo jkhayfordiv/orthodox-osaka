@@ -26,7 +26,7 @@ export function SiteFooter() {
                 {locale === 'ja' ? (
                   <>
                     <Link href="/westjapan" className="text-orthodox-gold hover:underline font-semibold">
-                      日本ハリストス正教会 西日本主教区
+                      日本ハリストス正教会 西日本主教教区
                     </Link>{' '}
                     所属教会
                   </>
@@ -58,10 +58,10 @@ export function SiteFooter() {
               </div>
               <ul className="space-y-1.5">
                 <li><Link href="/app" className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold">{locale === 'ja' ? '今日（日課・斎・聖人）' : 'Today’s Fast & Saints'}</Link></li>
-                <li><Link href="/" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '教会案内トップ' : 'Our Parish'}</Link></li>
-                <li><Link href="/orthodoxy" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '正教会とは（入門手引）' : 'About Orthodoxy'}</Link></li>
-                <li><Link href="/history" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '教会の歴史・文化財' : 'Parish History'}</Link></li>
-                <li><Link href="/visit" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '礼拝案内・アクセス' : 'Visit & Service Times'}</Link></li>
+                <li><Link href="/" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '当教会' : 'Our Parish'}</Link></li>
+                <li><Link href="/orthodoxy" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '正教会とは' : 'About Orthodoxy'}</Link></li>
+                <li><Link href="/history" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '沿革' : 'Parish History'}</Link></li>
+                <li><Link href="/visit" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? 'アクセス・聖堂見学' : 'Visit & Service Times'}</Link></li>
                 <li><Link href="/sermons" className="hover:text-orthodox-gold transition-colors">{locale === 'ja' ? '主日説教アーカイブ' : 'Sermon Archive'}</Link></li>
               </ul>
             </div>
@@ -93,7 +93,7 @@ export function SiteFooter() {
                 <li>
                   <Link href="/westjapan" className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold flex items-center gap-1.5 pt-0.5">
                     <span>🧭</span>
-                    <span>{locale === 'ja' ? '西日本主教区（各地の聖堂）' : 'Western Diocese Parishes'}</span>
+                    <span>{locale === 'ja' ? '西日本主教教区（各地の聖堂）' : 'Western Diocese Parishes'}</span>
                     <span>→</span>
                   </Link>
                 </li>

@@ -603,7 +603,7 @@ export function ArticleReaderModal({ item, onClose }: ArticleReaderModalProps) {
         {/* Footer */}
         <div className="px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
           <div className="flex items-center gap-2">
-            <span>西日本主教区・大阪ハリストス正教会文献アーカイブ</span>
+            <span>西日本主教教区・大阪ハリストス正教会文献アーカイブ</span>
             {activeLang !== 'ja' && (
               <span className="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-2xs font-semibold">
                 AI Beta

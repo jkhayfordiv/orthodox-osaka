@@ -70,7 +70,7 @@ export function PortalNavHeader({ currentPortal }: PortalNavHeaderProps) {
       id: 'westjapan' as const,
       href: '/westjapan',
       title: { ja: '日本正教会 西日本主教教区', en: 'Western Diocese of Japan', ru: 'Западно-Японская епархия' },
-      shortTitle: { ja: '西日本主教区', en: 'Diocese', ru: 'Епархия' },
+      shortTitle: { ja: '西日本主教教区', en: 'Diocese', ru: 'Епархия' },
       icon: Compass,
       badge: { ja: '各地の聖堂案内', en: 'Parishes & Map', ru: 'Храмы епархии' },
     },

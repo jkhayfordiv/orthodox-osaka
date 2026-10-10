@@ -189,7 +189,7 @@ export function TokushohoModal({ isOpen, onClose }: TokushohoModalProps) {
 
         {/* Footer with PDF Download */}
         <div className="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <span className="text-slate-500">日本ハリストス正教会 西日本主教区 大阪ハリストス正教会</span>
+          <span className="text-slate-500">日本ハリストス正教会 西日本主教教区 大阪ハリストス正教会</span>
           <a
             href="/tokushoho.pdf"
             target="_blank"

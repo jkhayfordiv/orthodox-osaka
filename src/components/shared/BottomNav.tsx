@@ -10,7 +10,7 @@ export function BottomNav() {
   const router = useRouter();
   const { setActiveTab, locale } = useApp();
   const routes: Record<AppTab, string> = {
-    home: '/', history: '/history', orthodoxy: '/orthodoxy', access: '/visit', sermons: '/app/sermons',
+    home: '/', history: '/history', orthodoxy: '/orthodoxy', access: '/visit', sermons: '/sermons',
     today: '/app', reader: '/app/prayers', calendar: '/app/calendar', parish: '/app/schedule',
   };
 
@@ -28,7 +28,7 @@ export function BottomNav() {
     {
       id: 'calendar',
       icon: <CalendarDays className="w-5 h-5 sm:w-6 sm:h-6" />,
-      label: { ja: '日程・聖暦', en: 'Schedule', ru: 'Расписание' },
+      label: { ja: 'カレンダー', en: 'Calendar', ru: 'Календарь' },
     },
     {
       id: 'sermons',
@@ -38,7 +38,7 @@ export function BottomNav() {
     {
       id: 'home',
       icon: <Church className="w-5 h-5 sm:w-6 sm:h-6" />,
-      label: { ja: '教会案内', en: 'Our Parish', ru: 'О приходе' },
+      label: { ja: '当教会', en: 'Our Parish', ru: 'О приходе' },
     },
   ];
 
@@ -46,7 +46,11 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-30 bg-orthodox-navy border-t border-orthodox-gold/40 shadow-2xl safe-area-bottom lg:hidden">
       <div className="max-w-4xl mx-auto flex items-center justify-around h-16 sm:h-18 px-1">
         {tabs.map((tab) => {
-          const isActive = pathname === routes[tab.id] || (tab.id === 'calendar' && pathname === '/app/schedule');
+          const isPublicParishPage = ['/', '/history', '/orthodoxy', '/visit'].includes(pathname);
+          const isActive = pathname === routes[tab.id]
+            || (tab.id === 'calendar' && pathname === '/app/schedule')
+            || (tab.id === 'sermons' && pathname === '/app/sermons')
+            || (tab.id === 'home' && isPublicParishPage);
           return (
             <button
               key={tab.id}

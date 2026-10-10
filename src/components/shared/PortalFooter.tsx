@@ -19,7 +19,7 @@ export function PortalFooter() {
             </div>
             <p className="text-xs leading-relaxed text-slate-300">
               {locale === 'ja'
-                ? '日本ハリストス正教会 西日本主教区・大阪教会を拠点とする正教信仰・奉神礼・聖歌・神学の総合情報アーカイブ群です。'
+                ? '日本ハリストス正教会 西日本主教教区・大阪教会を拠点とする正教信仰・奉神礼・聖歌・神学の総合情報アーカイブ群です。'
                 : 'Comprehensive Orthodox Christian archives, liturgical texts, sacred music, and theological writings based in Osaka and the Western Japan Diocese.'}
             </p>
           </div>

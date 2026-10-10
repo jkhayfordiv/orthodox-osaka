@@ -7,14 +7,14 @@ export const PARISH_ANNOUNCEMENTS: BulletinAnnouncement[] = [
     category: 'event',
     important: true,
     title: {
-      ja: '大聖堂見学時間変更のお知らせ（15:00～16:00）',
-      en: 'Cathedral Tour Time Change (15:00–16:00) starting Jan 3',
-      ru: 'Изменено время экскурсии по собору (15:00–16:00) с 3 января',
+      ja: '聖堂見学のご案内（16:00～17:00）',
+      en: 'Temple Viewing Hours (16:00–17:00)',
+      ru: 'Часы посещения храма (16:00–17:00)',
     },
     content: {
-      ja: '1月3日から大聖堂の見学時間が午後3時から4時に変更になります。皆様のご来訪をお待ちしております。',
-      en: 'Starting January 3, the cathedral tour will be held from 3 PM to 4 PM. We look forward to your visit.',
-      ru: 'Начиная с 3 января экскурсия по собору будет проходить с 15:00 до 16:00. Ждём вас!',
+      ja: '聖堂は毎週土曜日の午後4時から5時までご見学いただけます。皆様のご来訪をお待ちしております。',
+      en: 'The temple is open for viewing every Saturday from 4 PM to 5 PM. We look forward to your visit.',
+      ru: 'Храм открыт для посещения каждую субботу с 16:00 до 17:00. Ждём вас!',
     },
   },
   {

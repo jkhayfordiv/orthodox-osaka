@@ -48,10 +48,10 @@ export function AccessVisitView() {
           </h1>
           <p className="text-slate-200 text-xs sm:text-sm lg:text-base max-w-3xl font-light leading-relaxed">
             {locale === 'ja'
-              ? '大阪府吹田市山手町。阪急千里線「豊津駅」または「関大前駅」より徒歩約8分。土曜日の見学開放と週末の礼拝にどなたでもご参加いただけます。'
+              ? '大阪府吹田市山手町。阪急千里線「豊津駅」より徒歩約5分、JR京都線「吹田駅」より徒歩約20分。聖堂見学や奉神礼へのご参祷を心より歓迎いたします。'
               : locale === 'ru'
-              ? 'Осака, Суита, Яматэтё 1-8-15. 8 минут пешком от станции Тоёцу. Приглашаем на субботние часы посещения и праздничные службы.'
-              : 'Located in Suita, Osaka. Approx. 8 minutes walk from Toyotsu or Kandai-mae Station on the Hankyu Senri Line. Inquirers and visitors are warmly welcomed.'}
+              ? 'Осака, Суита, Яматэтё 1-8-15. 5 минут пешком от станции Тоёцу или 20 минут от станции Суйта (JR). Приглашаем посетить храм и богослужения.'
+              : 'Located in Suita, Osaka. Approx. 5 minutes from Hankyu Toyotsu Station or 20 minutes from JR Suita Station. Visitors are warmly welcomed to view the temple and attend services.'}
           </p>
         </div>
       </div>
@@ -66,7 +66,7 @@ export function AccessVisitView() {
               <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                 <Clock className="w-5 h-5 text-orthodox-gold" />
                 <h2 className="font-serif font-bold text-lg sm:text-xl text-slate-900 dark:text-white">
-                  {locale === 'ja' ? '見学および礼拝時間' : locale === 'ru' ? 'Часы посещения и богослужений' : 'Visiting & Liturgical Hours'}
+                  {locale === 'ja' ? '聖堂見学・奉神礼のご案内' : locale === 'ru' ? 'Часы посещения и богослужений' : 'Visiting & Liturgical Hours'}
                 </h2>
               </div>
 
@@ -76,7 +76,7 @@ export function AccessVisitView() {
                     <div className="font-bold text-amber-900 dark:text-amber-200 text-xs">
                       {locale === 'ja' ? '毎週土曜日 聖堂見学' : locale === 'ru' ? 'Суббота: Открытые часы' : 'Saturdays: Open Viewing'}
                     </div>
-                    <div className="text-amber-800 dark:text-amber-300 font-mono text-base font-bold mt-1">15:00 〜 16:30</div>
+                    <div className="text-amber-800 dark:text-amber-300 font-mono text-base font-bold mt-1">16:00 〜 17:00</div>
                     <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-2">
                       {locale === 'ja'
                         ? '予約不要で見学いただけます。初めての方も歓迎いたします。'
@@ -90,7 +90,7 @@ export function AccessVisitView() {
                 <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1 flex flex-col justify-between">
                   <div>
                     <div className="font-bold text-slate-900 dark:text-white text-xs">
-                      {locale === 'ja' ? '夕方 徹夜祷（晩祷）' : locale === 'ru' ? 'Вечер: Всенощная' : 'Evening All-Night Vigil'}
+                      {locale === 'ja' ? '土曜日 徹夜祷' : locale === 'ru' ? 'Вечер: Всенощная' : 'Evening All-Night Vigil'}
                     </div>
                     <div className="text-slate-700 dark:text-slate-300 font-mono text-base font-bold mt-1">17:00 〜</div>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
@@ -139,11 +139,11 @@ export function AccessVisitView() {
                   <ul className="space-y-2 list-disc list-inside text-xs leading-relaxed">
                     <li>
                       <strong>{locale === 'ja' ? '阪急千里線「豊津駅」' : locale === 'ru' ? 'Станция Тоёцу' : 'Hankyu Toyotsu Station'}</strong>:{' '}
-                      {locale === 'ja' ? '東改札口より徒歩約8分。' : locale === 'ru' ? 'Восточный выход, 8 минут пешком.' : 'East exit, approx. 8 mins walk.'}
+                      {locale === 'ja' ? '徒歩約5分。' : locale === 'ru' ? 'Около 5 минут пешком.' : 'Approx. 5 mins walk.'}
                     </li>
                     <li>
-                      <strong>{locale === 'ja' ? '阪急千里線「関大前駅」' : locale === 'ru' ? 'Станция Кандай-маэ' : 'Hankyu Kandai-mae Station'}</strong>:{' '}
-                      {locale === 'ja' ? '南改札口より徒歩約8分。' : locale === 'ru' ? 'Южный выход, 8 минут пешком.' : 'South exit, approx. 8 mins walk.'}
+                      <strong>{locale === 'ja' ? 'JR京都線「吹田駅」' : locale === 'ru' ? 'Станция Суйта (JR)' : 'JR Suita Station'}</strong>:{' '}
+                      {locale === 'ja' ? '徒歩約20分。' : locale === 'ru' ? 'Около 20 минут пешком.' : 'Approx. 20 mins walk.'}
                     </li>
                     <li>
                       {locale === 'ja'

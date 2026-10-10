@@ -233,15 +233,15 @@ export const ABOUT_ORTHODOXY_DATA: OrthodoxyFaqItem[] = [
     answer: {
       ja: [
         '当教会は、キリスト教に関心をお持ちの方や、静かに祈りを捧げたいすべての方を心から歓迎いたします。',
-        '毎週土曜日の15:00〜16:30は聖堂見学時間として開放しております。また、土曜日17:00からの徹夜祷や、日曜日10:00からの聖体礼儀にもどなたでもご自由にご参祷いただけます。服装に特別な規則はありませんが、神聖な祈りの場にふさわしい落ち着いた服装をお勧めいたします。',
+        '毎週土曜日の16:00〜17:00は聖堂見学時間として開放しております。また、土曜日17:00からの徹夜祷や、日曜日10:00からの聖体礼儀にもどなたでもご自由にご参祷いただけます。服装に特別な規則はありませんが、神聖な祈りの場にふさわしい落ち着いた服装をお勧めいたします。',
       ],
       en: [
         'Our church warmly welcomes everyone seeking to learn about Christianity, architecture, or to find peace in prayer.',
-        'The temple is open for viewing every Saturday from 3:00 PM to 4:30 PM. Everyone is free to attend our Saturday 5:00 PM All-Night Vigil and Sunday 10:00 AM Divine Liturgy. Modest, respectful attire is appreciated in the sacred temple.',
+        'The temple is open for viewing every Saturday from 4:00 PM to 5:00 PM. Everyone is free to attend our Saturday 5:00 PM All-Night Vigil and Sunday 10:00 AM Divine Liturgy. Modest, respectful attire is appreciated in the sacred temple.',
       ],
       ru: [
         'Наш храм всегда открыт для всех, кто ищет духовного мира, интересуется православием или желает помолиться.',
-        'Каждую субботу с 15:00 до 16:30 двери храма открыты для посетителей. Вы можете свободно присутствовать на всенощном бдении (суббота 17:00) и Божественной Литургии (воскресенье 10:00). Просим приходить в благопристойной одежде.',
+        'Каждую субботу с 16:00 до 17:00 двери храма открыты для посетителей. Вы можете свободно присутствовать на всенощном бдении (суббота 17:00) и Божественной Литургии (воскресенье 10:00). Просим приходить в благопристойной одежде.',
       ],
     },
   },
@@ -452,9 +452,9 @@ export const CONCERT_EVENT_DATA: ConcertEventData = {
       ru: '1-8-15 Яматэ-тё, Суита, Осака',
     },
     access: {
-      ja: '阪急千里線「豊津駅」より徒歩5分 / JR京都線「吹田駅」より徒歩15分',
-      en: '5 min walk from Hankyu Toyotsu Station / 15 min walk from JR Suita Station',
-      ru: '5 минут пешком от ст. Тоёцу (линия Ханкю) / 15 минут от ст. Суита (JR)',
+      ja: '阪急千里線「豊津駅」より徒歩5分 / JR京都線「吹田駅」より徒歩20分',
+      en: '5 min walk from Hankyu Toyotsu Station / 20 min walk from JR Suita Station',
+      ru: '5 минут пешком от ст. Тоёцу (линия Ханкю) / 20 минут от ст. Суита (JR)',
     },
   },
   admission: {

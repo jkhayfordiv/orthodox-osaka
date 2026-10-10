@@ -80,11 +80,11 @@ export function Header() {
 
   // Public Website Primary Tabs
   const websiteNavItems: { id: AppTab; label: { ja: string; en: string; ru: string } }[] = [
-    { id: 'home', label: { ja: '教会案内', en: 'Our Parish', ru: 'О приходе' } },
-    { id: 'history', label: { ja: '教会の歴史', en: 'History', ru: 'История' } },
-    { id: 'orthodoxy', label: { ja: '正教会とは？', en: 'Orthodoxy', ru: 'О вере' } },
-    { id: 'access', label: { ja: '交通・見学', en: 'Visit & Access', ru: 'Визит и адрес' } },
-    { id: 'sermons', label: { ja: '説教・教会報', en: 'Sermons', ru: 'Проповеди' } },
+    { id: 'home', label: { ja: '当教会', en: 'Our Parish', ru: 'О приходе' } },
+    { id: 'history', label: { ja: '沿革', en: 'History', ru: 'История' } },
+    { id: 'orthodoxy', label: { ja: '正教会とは', en: 'Orthodoxy', ru: 'О вере' } },
+    { id: 'access', label: { ja: 'アクセス・聖堂見学', en: 'Visit & Access', ru: 'Визит и адрес' } },
+    { id: 'sermons', label: { ja: '説教', en: 'Sermons', ru: 'Проповеди' } },
   ];
 
   // Daily Liturgical App Items
@@ -93,7 +93,7 @@ export function Header() {
       id: 'today',
       icon: <Sparkles className="w-4 h-4 text-orthodox-gold" />,
       label: { ja: '今日（斎・聖人・日課）', en: 'Today’s Fast & Saints', ru: 'Сегодня: Пост и святые' },
-      desc: { ja: '本日の祭日、斎の規則、聖書通読', en: 'Daily feast, fasting rule & readings', ru: 'Праздник дня, устав поста, чтения' },
+      desc: { ja: '本日の祭日、斎の規定、聖書日課', en: 'Daily feast, fasting rule & readings', ru: 'Праздник дня, устав поста, чтения' },
     },
     {
       id: 'reader',
@@ -105,7 +105,7 @@ export function Header() {
       id: 'calendar',
       icon: <CalendarIcon className="w-4 h-4 text-indigo-400" />,
       label: { ja: '聖暦・奉事日程', en: 'Schedule & Calendar', ru: 'Расписание и календарь' },
-      desc: { ja: '吹田礼拝日程、当番表、年間聖暦', en: 'Suita services, duties & liturgical calendar', ru: 'Службы, послушания и церковный календарь' },
+      desc: { ja: '奉事日程、当番表、年間教会暦', en: 'Suita services, duties & liturgical calendar', ru: 'Службы, послушания и церковный календарь' },
     },
     {
       id: 'sermons',

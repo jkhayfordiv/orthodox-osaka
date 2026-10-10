@@ -17,9 +17,9 @@ export const PARISH_INFO = {
     ru: '1-8-15 Yamate-cho, Suita, Osaka 564-0073, Япония',
   },
   access: {
-    ja: '阪急千里線「豊津駅」または「関大前駅」より徒歩約8分',
-    en: 'Approx. 8 min walk from Toyotsu or Kandai-mae Station (Hankyu Senri Line)',
-    ru: 'Около 8 минут пешком от станций Toyotsu или Kandai-mae (линия Hankyu Senri)',
+    ja: '阪急千里線「豊津駅」より徒歩約5分、JR京都線「吹田駅」より徒歩約20分',
+    en: 'Approx. 5 min walk from Hankyu Toyotsu Station or 20 min from JR Suita Station',
+    ru: 'Около 5 минут пешком от станции Тоёцу (Ханкю) или 20 минут от станции Суйта (JR)',
   },
   phone: '06-6388-4512',
   email: 'osaka.orthodox.church@gmail.com',
