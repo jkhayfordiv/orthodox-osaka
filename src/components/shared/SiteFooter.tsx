@@ -73,26 +73,26 @@ export function SiteFooter() {
               </div>
               <ul className="space-y-1.5">
                 <li>
-                  <Link href="/george" className="hover:text-orthodox-gold transition-colors flex items-center gap-1.5">
-                    <span className="text-orthodox-gold">📖</span>
+                  <Link href="/george" className="hover:text-orthodox-gold transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold/60" />
                     <span>{locale === 'ja' ? '司祭ゲオルギイ松島雄一 神学' : 'Fr. George Archive'}</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/maria" className="hover:text-orthodox-gold transition-colors flex items-center gap-1.5">
-                    <span className="text-indigo-400">🎵</span>
+                  <Link href="/maria" className="hover:text-orthodox-gold transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold/60" />
                     <span>{locale === 'ja' ? 'マリア松島純子 聖歌ポータル' : 'Matushka Maria Music'}</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/liturgy" className="hover:text-orthodox-gold transition-colors flex items-center gap-1.5">
-                    <span className="text-rose-400">🕊️</span>
+                  <Link href="/liturgy" className="hover:text-orthodox-gold transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold/60" />
                     <span>{locale === 'ja' ? '日本正教会 奉神礼・祈祷文集' : 'Liturgical Texts'}</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/westjapan" className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold flex items-center gap-1.5 pt-0.5">
-                    <span>🧭</span>
+                  <Link href="/westjapan" className="hover:text-orthodox-gold transition-colors font-bold text-orthodox-gold flex items-center gap-2 pt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orthodox-gold" />
                     <span>{locale === 'ja' ? '西日本主教教区（各地の聖堂）' : 'Western Diocese Parishes'}</span>
                     <span>→</span>
                   </Link>
@@ -109,7 +109,7 @@ export function SiteFooter() {
                 <li>
                   <button
                     onClick={() => setIsTokushohoOpen(true)}
-                    className="inline-flex items-center gap-1.5 text-amber-700 dark:text-amber-400 hover:underline font-medium text-left"
+                    className="inline-flex items-center gap-1.5 text-amber-800 dark:text-amber-400 hover:underline font-medium text-left"
                   >
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>特定商取引法に基づく表示</span>
@@ -123,7 +123,7 @@ export function SiteFooter() {
                     className="inline-flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
                   >
                     <FileText className="w-3.5 h-3.5" />
-                    <span>特定商取引法草案 (PDF)</span>
+                    <span>特定商取引法に基づく表示 (PDF)</span>
                   </a>
                 </li>
                 <li className="text-2xs text-slate-400 pt-1">

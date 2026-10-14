@@ -37,6 +37,12 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="application-name" content="大阪正教会" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Shippori+Mincho:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="min-h-screen flex flex-col bg-orthodox-parchment dark:bg-slate-950 transition-colors">
         <AppProvider>

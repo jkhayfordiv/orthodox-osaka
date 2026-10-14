@@ -72,10 +72,10 @@ export function Header() {
     };
   }, []);
 
-  const locales: { code: Locale; label: string; flag: string }[] = [
-    { code: 'ja', label: '日本語', flag: '🇯🇵' },
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+  const locales: { code: Locale; label: string; short: string }[] = [
+    { code: 'ja', label: '日本語', short: 'JA' },
+    { code: 'en', label: 'English', short: 'EN' },
+    { code: 'ru', label: 'Русский', short: 'RU' },
   ];
 
   // Public Website Primary Tabs
@@ -299,23 +299,26 @@ export function Header() {
         </nav>
 
         {/* Right: Quick Language Switcher, Theme & Settings */}
-        <div className="flex items-center space-x-1.5 sm:space-x-2">
-          {/* Language Selector Pills */}
-          <div className="flex bg-orthodox-navy-dark/70 rounded-lg p-0.5 border border-orthodox-gold/30 text-xs">
-            {locales.map((l) => (
-              <button
-                key={l.code}
-                onClick={() => setLocale(l.code)}
-                className={`px-1.5 sm:px-2 py-1 rounded-md transition-all font-medium flex items-center space-x-1 ${
-                  locale === l.code
-                    ? 'bg-orthodox-gold text-orthodox-navy font-bold shadow-sm'
-                    : 'text-slate-300 hover:text-white'
-                }`}
-                title={l.label}
-              >
-                <span>{l.flag}</span>
-                <span className="hidden sm:inline text-[11px]">{l.code.toUpperCase()}</span>
-              </button>
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Typographic Language Switcher */}
+          <div className="flex items-center rounded-md border border-orthodox-gold/30 bg-orthodox-navy-dark/60 p-0.5 text-xs">
+            {locales.map((l, idx) => (
+              <React.Fragment key={l.code}>
+                {idx > 0 && <span className="text-white/20 text-[10px] select-none">|</span>}
+                <button
+                  type="button"
+                  onClick={() => setLocale(l.code)}
+                  className={`px-2 py-1 rounded text-[11px] font-semibold tracking-wider transition-all select-none ${
+                    locale === l.code
+                      ? 'bg-orthodox-gold text-orthodox-navy font-bold shadow-xs'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                  }`}
+                  title={l.label}
+                  aria-pressed={locale === l.code}
+                >
+                  {l.short}
+                </button>
+              </React.Fragment>
             ))}
           </div>
 

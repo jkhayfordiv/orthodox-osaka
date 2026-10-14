@@ -43,24 +43,21 @@ export function PhotoGallerySection() {
   };
 
   return (
-    <section className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 lg:p-10 shadow-sm space-y-6">
-      {/* Header and Filter Pills */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orthodox-gold/15 text-orthodox-gold text-xs font-semibold mb-2">
-            <Camera className="w-3.5 h-3.5" />
-            <span>
-              {locale === 'ja' ? '写真で見る大阪教会' : locale === 'ru' ? 'Приходская фотогалерея' : 'Parish Photo Gallery'}
-            </span>
-          </div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-slate-900 dark:text-white">
+    <section className="rounded-md border border-stone-200 dark:border-stone-800 bg-[#FAF8F5] dark:bg-slate-900 p-6 sm:p-8 lg:p-10 shadow-xs space-y-6">
+      {/* Header and Filter Buttons */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-stone-200 dark:border-stone-800 pb-5">
+        <div className="border-l-2 border-amber-800/80 pl-3">
+          <span className="text-2xs font-bold uppercase tracking-widest text-amber-900/80 dark:text-amber-300">
+            {locale === 'ja' ? '写真記録' : 'Photo Gallery'}
+          </span>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-serif font-bold text-stone-900 dark:text-white mt-0.5">
             {locale === 'ja'
-              ? '聖堂と信徒の祈りの歩み'
+              ? '写真で見る大阪教会'
               : locale === 'ru'
-              ? 'Жизнь храма и молитва общины'
-              : 'Our Temple, Worship & Community'}
+              ? 'Приходская фотогаレрея'
+              : 'Our Temple & Community'}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-xl">
+          <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-serif mt-1 max-w-xl">
             {locale === 'ja'
               ? '吹田の青空にそびえる聖堂、厳かな奉神礼、そして温かい信徒の交流の記録です。'
               : locale === 'ru'
@@ -69,17 +66,17 @@ export function PhotoGallerySection() {
           </p>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl">
+        {/* Category Filters (Clean Typographic Tabs) */}
+        <div className="flex flex-wrap items-center gap-1 bg-stone-100 dark:bg-slate-800 p-1 rounded-md border border-stone-200 dark:border-stone-700">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               aria-pressed={selectedCategory === cat.id}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all select-none ${
+              className={`px-3 py-1.5 rounded text-xs font-semibold transition-all select-none ${
                 selectedCategory === cat.id
-                  ? 'bg-white dark:bg-slate-700 text-orthodox-navy dark:text-white font-bold shadow-xs'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-white dark:bg-slate-750 text-orthodox-navy dark:text-white shadow-xs'
+                  : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
               }`}
             >
               {cat.label[locale]}
@@ -94,7 +91,7 @@ export function PhotoGallerySection() {
           <div
             key={photo.id}
             onClick={() => setActiveModalPhoto(photo)}
-            className="group relative rounded-2xl overflow-hidden cursor-pointer bg-slate-900 aspect-4/3 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
+            className="group relative rounded-md overflow-hidden cursor-pointer bg-slate-900 aspect-4/3 border border-stone-200 dark:border-stone-800 shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
           >
             <img
               src={photo.src}
