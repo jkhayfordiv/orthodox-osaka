@@ -40,9 +40,9 @@ export function SiteFooter() {
                 {PARISH_INFO.address[locale]} · {PARISH_INFO.access[locale]}
               </p>
               <div className="flex flex-wrap items-center gap-4 text-xs pt-1">
-                <a href={`tel:${PARISH_INFO.phone}`} className="flex items-center gap-1.5 hover:text-orthodox-gold transition-colors font-mono">
+                <a href="tel:0663884512" className="flex items-center gap-1.5 hover:text-orthodox-gold transition-colors font-mono">
                   <Phone className="w-3.5 h-3.5 text-orthodox-gold" />
-                  <span>{PARISH_INFO.phone}</span>
+                  <span>06-6388-4512</span>
                 </a>
                 <a href={`mailto:${PARISH_INFO.email}`} className="flex items-center gap-1.5 hover:text-orthodox-gold transition-colors font-mono">
                   <Mail className="w-3.5 h-3.5 text-orthodox-gold" />
@@ -106,15 +106,6 @@ export function SiteFooter() {
                 {locale === 'ja' ? '法的表記・コンプライアンス' : 'Compliance & Legal'}
               </div>
               <ul className="space-y-1.5">
-                <li>
-                  <button
-                    onClick={() => setIsTokushohoOpen(true)}
-                    className="inline-flex items-center gap-1.5 text-amber-800 dark:text-amber-400 hover:underline font-medium text-left"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>特定商取引法に基づく表示</span>
-                  </button>
-                </li>
                 <li>
                   <a
                     href="/tokushoho.pdf"

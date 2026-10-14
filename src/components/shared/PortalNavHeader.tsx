@@ -27,10 +27,10 @@ export function PortalNavHeader({ currentPortal }: PortalNavHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [portalsDropdownOpen, setPortalsDropdownOpen] = useState(false);
 
-  const locales: { code: Locale; label: string; flag: string }[] = [
-    { code: 'ja', label: '日本語', flag: '🇯🇵' },
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+  const locales: { code: Locale; label: string; short: string }[] = [
+    { code: 'ja', label: '日本語', short: 'JP' },
+    { code: 'en', label: 'English', short: 'EN' },
+    { code: 'ru', label: 'Русский', short: 'RU' },
   ];
 
   const portals = [
@@ -140,21 +140,24 @@ export function PortalNavHeader({ currentPortal }: PortalNavHeaderProps) {
           {/* Right Controls: Locales, Dark Mode, Mobile Menu */}
           <div className="flex items-center space-x-2">
             {/* Quick Language Switcher */}
-            <div className="flex bg-orthodox-navy-dark/70 rounded-lg p-0.5 border border-orthodox-gold/30 text-xs">
-              {locales.map((l) => (
-                <button
-                  key={l.code}
-                  onClick={() => setLocale(l.code)}
-                  className={`px-2 py-1 rounded-md transition-all font-medium flex items-center space-x-1 ${
-                    locale === l.code
-                      ? 'bg-orthodox-gold text-orthodox-navy font-bold shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-white/10'
-                  }`}
-                  title={l.label}
-                >
-                  <span className="text-xs">{l.flag}</span>
-                  <span className="hidden sm:inline text-2xs uppercase">{l.code}</span>
-                </button>
+            <div className="flex items-center rounded-md border border-orthodox-gold/40 bg-orthodox-navy-dark/90 px-1 py-0.5 text-xs shadow-xs">
+              {locales.map((l, idx) => (
+                <React.Fragment key={l.code}>
+                  {idx > 0 && <span className="text-white/40 text-[10px] px-0.5 select-none" aria-hidden="true">|</span>}
+                  <button
+                    type="button"
+                    onClick={() => setLocale(l.code)}
+                    className={`px-2 py-1 rounded text-xs font-bold tracking-wider transition-all select-none cursor-pointer ${
+                      locale === l.code
+                        ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'
+                        : 'text-stone-200 hover:text-white hover:bg-white/10'
+                    }`}
+                    title={l.label}
+                    aria-pressed={locale === l.code}
+                  >
+                    {l.short}
+                  </button>
+                </React.Fragment>
               ))}
             </div>
 

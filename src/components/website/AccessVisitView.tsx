@@ -309,11 +309,11 @@ export function AccessVisitView() {
 
               <div className="pt-2 space-y-2 text-xs">
                 <a
-                  href={`tel:${PARISH_INFO.phone}`}
+                  href="tel:0663884512"
                   className="flex items-center gap-2 p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-orthodox-gold" />
-                  <span className="font-mono font-bold">{PARISH_INFO.phone}</span>
+                  <span className="font-mono font-bold">06-6388-4512</span>
                 </a>
 
                 <a

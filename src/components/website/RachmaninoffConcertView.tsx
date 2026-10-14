@@ -283,11 +283,11 @@ export function RachmaninoffConcertView() {
                   <span>事前のお問い合わせ (メール)</span>
                 </a>
                 <a
-                  href={`tel:${PARISH_INFO.phone}`}
+                  href="tel:0663884512"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-white dark:bg-slate-800 border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-mono font-bold hover:bg-stone-50 transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 text-orthodox-gold" />
-                  <span>{PARISH_INFO.phone}</span>
+                  <span>06-6388-4512</span>
                 </a>
               </div>
             </div>

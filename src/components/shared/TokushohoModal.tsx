@@ -91,7 +91,7 @@ export function TokushohoModal({ isOpen, onClose }: TokushohoModalProps) {
                   <span>電話番号</span>
                 </dt>
                 <dd className="sm:col-span-2 font-mono text-slate-900 dark:text-white mt-1 sm:mt-0">
-                  <a href="tel:06-6388-4512" className="hover:underline">06-6388-4512</a>
+                  <a href="tel:0663884512" className="hover:underline">06-6388-4512</a>
                 </dd>
               </div>
 

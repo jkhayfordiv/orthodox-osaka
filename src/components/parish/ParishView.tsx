@@ -927,9 +927,9 @@ export function ParishView() {
                     <span>{PARISH_INFO.access[locale]}</span>
                   </div>
                   <div className="flex flex-wrap gap-x-6 gap-y-1.5 pt-1">
-                    <a href={`tel:${PARISH_INFO.phone}`} className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 hover:text-orthodox-gold-dark font-medium">
+                    <a href="tel:0663884512" className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 hover:text-orthodox-gold-dark font-medium">
                       <Phone className="w-4 h-4 text-orthodox-gold" />
-                      <span>{PARISH_INFO.phone}</span>
+                      <span>06-6388-4512</span>
                     </a>
                     <a href={`mailto:${PARISH_INFO.email}`} className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 hover:text-orthodox-gold-dark font-medium">
                       <Mail className="w-4 h-4 text-orthodox-gold" />
@@ -950,7 +950,7 @@ export function ParishView() {
                     <ExternalLink className="w-3.5 h-3.5 ml-1" />
                   </a>
                   <a
-                    href={`tel:${PARISH_INFO.phone}`}
+                    href="tel:0663884512"
                     className="inline-flex items-center space-x-1.5 py-2 px-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-xs"
                   >
                     <Phone className="w-4 h-4 text-orthodox-gold-dark" />

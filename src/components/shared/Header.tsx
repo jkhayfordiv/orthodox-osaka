@@ -73,7 +73,7 @@ export function Header() {
   }, []);
 
   const locales: { code: Locale; label: string; short: string }[] = [
-    { code: 'ja', label: '日本語', short: 'JA' },
+    { code: 'ja', label: '日本語', short: 'JP' },
     { code: 'en', label: 'English', short: 'EN' },
     { code: 'ru', label: 'Русский', short: 'RU' },
   ];
@@ -301,17 +301,17 @@ export function Header() {
         {/* Right: Quick Language Switcher, Theme & Settings */}
         <div className="flex items-center space-x-2 sm:space-x-3">
           {/* Typographic Language Switcher */}
-          <div className="flex items-center rounded-md border border-orthodox-gold/30 bg-orthodox-navy-dark/60 p-0.5 text-xs">
+          <div className="flex items-center rounded-md border border-orthodox-gold/40 bg-orthodox-navy-dark/90 px-1 py-0.5 text-xs shadow-xs">
             {locales.map((l, idx) => (
               <React.Fragment key={l.code}>
-                {idx > 0 && <span className="text-white/20 text-[10px] select-none">|</span>}
+                {idx > 0 && <span className="text-white/40 text-[10px] px-0.5 select-none" aria-hidden="true">|</span>}
                 <button
                   type="button"
                   onClick={() => setLocale(l.code)}
-                  className={`px-2 py-1 rounded text-[11px] font-semibold tracking-wider transition-all select-none ${
+                  className={`px-2 py-1 rounded text-xs font-bold tracking-wider transition-all select-none cursor-pointer ${
                     locale === l.code
-                      ? 'bg-orthodox-gold text-orthodox-navy font-bold shadow-xs'
-                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                      ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'
+                      : 'text-stone-200 hover:text-white hover:bg-white/10'
                   }`}
                   title={l.label}
                   aria-pressed={locale === l.code}
@@ -331,7 +331,6 @@ export function Header() {
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
-
 
           {/* Settings Button */}
           <button
@@ -359,6 +358,33 @@ export function Header() {
       {/* Mobile Slide-Over Drawer */}
       {mobileMenuOpen && (
         <div id="mobile-navigation" className="lg:hidden bg-orthodox-navy-dark border-t border-orthodox-gold/30 shadow-2xl px-4 py-4 space-y-4 animate-in fade-in slide-in-from-top-2">
+          {/* Mobile Language Switcher */}
+          <div className="flex items-center justify-between pb-3 border-b border-orthodox-gold/20">
+            <span className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider">
+              {locale === 'ja' ? '言語切替 (Language)' : 'Language'}
+            </span>
+            <div className="flex items-center rounded-md border border-orthodox-gold/40 bg-white/5 p-0.5 text-xs">
+              {locales.map((l, idx) => (
+                <React.Fragment key={l.code}>
+                  {idx > 0 && <span className="text-white/30 text-[10px] px-1 select-none">|</span>}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLocale(l.code);
+                    }}
+                    className={`px-3 py-1 rounded text-xs font-bold transition-all ${
+                      locale === l.code
+                        ? 'bg-orthodox-gold text-orthodox-navy font-bold shadow-xs'
+                        : 'text-stone-300 hover:text-white'
+                    }`}
+                  >
+                    {l.short}
+                  </button>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+
           {/* Website Section */}
           <div>
             <div className="text-[10px] font-bold text-orthodox-gold-light uppercase tracking-wider mb-2">

@@ -42,6 +42,13 @@ export function HomeWebsiteView() {
   const latestSermon =
     availableSermons.find((s) => s.language === locale) || availableSermons[0] || sermons[0];
 
+  // Truncated sermon excerpt for editorial preview (~160 chars)
+  const sermonExcerpt = React.useMemo(() => {
+    if (!latestSermon?.excerpt) return '';
+    const clean = latestSermon.excerpt.replace(/\s+/g, ' ').trim();
+    return clean.length > 160 ? clean.slice(0, 160).trim() + '…' : clean;
+  }, [latestSermon]);
+
   // Upcoming services
   const todayStr = now.toISOString().split('T')[0];
   const upcomingServices = parishSchedule
@@ -365,8 +372,23 @@ export function HomeWebsiteView() {
                     : 'In the Name of the Father, and of the Son, and of the Holy Spirit.'}
                 </div>
                 <p className="font-serif text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-4">
-                  {latestSermon.excerpt}
+                  {sermonExcerpt}
                 </p>
+
+                <div>
+                  <Link
+                    href="/sermons"
+                    onClick={() => {
+                      if (latestSermon) {
+                        setTargetSermonId(latestSermon.id);
+                      }
+                      setActiveTab('sermons');
+                    }}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 hover:underline"
+                  >
+                    <span>{locale === 'ja' ? '説教全文を読む →' : locale === 'ru' ? 'Читать проповедь полностью →' : 'Read full sermon →'}</span>
+                  </Link>
+                </div>
 
                 <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
                   <button
@@ -383,10 +405,10 @@ export function HomeWebsiteView() {
                     <BookOpen className="w-4 h-4 text-orthodox-gold" />
                     <span>
                       {locale === 'ja'
-                        ? '説教全文を読む（全495編）'
+                        ? '説教アーカイブを見る（全495編）'
                         : locale === 'ru'
-                        ? 'Читать полностью (Архив 495 бесед)'
-                        : 'Read Full Sermon & Archive (495)'}
+                        ? 'Архив проповедей (495 бесед)'
+                        : 'Explore Sermon Archive (495)'}
                     </span>
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -446,11 +468,11 @@ export function HomeWebsiteView() {
 
               <div className="flex items-center gap-2 justify-center">
                 <a
-                  href={`tel:${PARISH_INFO.phone}`}
+                  href="tel:0663884512"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-white/10 hover:bg-white/20 text-xs font-mono font-bold transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 text-orthodox-gold" />
-                  <span>{PARISH_INFO.phone}</span>
+                  <span>06-6388-4512</span>
                 </a>
 
                 <a
