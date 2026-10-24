@@ -85,22 +85,24 @@ export function WestJapanView() {
   }, [diocese.churches, selectedRegion, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 pb-20 font-sans">
+    <div className="min-h-screen bg-[#FAF8F5] dark:bg-slate-950 text-slate-800 dark:text-slate-100 pb-20 font-sans">
       <PortalNavHeader currentPortal="westjapan" />
 
       {/* ========================================================
           2. GRAND HERO: DIOCESE IDENTITY, METROPOLITAN & CATHEDRAL
       ======================================================== */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-orthodox-navy via-slate-900 to-orthodox-navy text-white pt-10 pb-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-orthodox-gold/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#092218] via-orthodox-navy to-slate-950 text-white pt-10 pb-16 lg:py-20 px-4 sm:px-6 lg:px-8 border-b border-emerald-900/40">
+        {/* Heritage ambient glowing orbs: liturgical pine, celestial sky-cyan, and gold */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-orthodox-pine/25 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-80 h-80 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-orthodox-gold/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left 7 Columns: Editorial Welcome & Jurisdiction Title */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold text-orthodox-gold-light">
+              {/* Badge - Diocesan Heritage Pine */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/70 backdrop-blur-md border border-emerald-500/30 text-xs font-semibold text-emerald-200">
                 <Church className="w-4 h-4 text-orthodox-gold" />
                 <span>
                   {locale === 'ja'
@@ -210,8 +212,8 @@ export function WestJapanView() {
 
             {/* Right 5 Columns: Metropolitan Card & Kyoto Cathedral Card */}
             <div className="lg:col-span-5 space-y-4">
-              {/* Metropolitan Seraphim Card */}
-              <div className="rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-orthodox-gold/30 shadow-2xl p-4 sm:p-5 flex items-center gap-4">
+              {/* Metropolitan Seraphim Card - Liturgical Pine & Gold Accents */}
+              <div className="rounded-2xl overflow-hidden bg-emerald-950/40 backdrop-blur-md border border-emerald-500/40 shadow-2xl p-4 sm:p-5 flex items-center gap-4">
                 <img
                   src={diocese.hierarch.photo}
                   alt={diocese.hierarch.name[locale]}
@@ -225,7 +227,7 @@ export function WestJapanView() {
                     {diocese.hierarch.name[locale]}
                   </h2>
                   {diocese.hierarch.note && (
-                    <div className="inline-block px-2.5 py-0.5 rounded-full bg-orthodox-gold/20 text-orthodox-gold-light text-2xs font-medium border border-orthodox-gold/40">
+                    <div className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-900/60 text-emerald-200 text-2xs font-medium border border-emerald-500/40">
                       {diocese.hierarch.note[locale]}
                     </div>
                   )}
@@ -239,8 +241,8 @@ export function WestJapanView() {
                 </div>
               </div>
 
-              {/* Cathedral Highlight Card */}
-              <div className="rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/15 shadow-xl p-4 sm:p-5">
+              {/* Cathedral Highlight Card - Marian Sapphire & Golden Accents */}
+              <div className="rounded-2xl overflow-hidden bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 hover:border-emerald-400/40 transition-all shadow-xl p-4 sm:p-5">
                 <div className="flex items-start gap-4">
                   <img
                     src={diocese.cathedral.photo}
@@ -248,7 +250,7 @@ export function WestJapanView() {
                     className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover border border-white/20 shadow-md flex-shrink-0"
                   />
                   <div className="space-y-1.5 flex-1 min-w-0">
-                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-2xs font-semibold border border-amber-500/30">
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-200 text-2xs font-semibold border border-emerald-500/30">
                       <Award className="w-3 h-3 text-orthodox-gold" />
                       <span>国指定重要文化財</span>
                     </div>
@@ -292,7 +294,7 @@ export function WestJapanView() {
       ======================================================== */}
       <section id="events-section" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl 2xl:max-w-[1440px] mx-auto">
         <div className="text-center max-w-3xl mx-auto space-y-2 mb-8">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-orthodox-burgundy dark:text-orthodox-gold">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-orthodox-pine dark:text-emerald-400">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{locale === 'ja' ? '主教区 行事・講座案内' : 'Diocese Events & Lectures'}</span>
           </div>
@@ -398,10 +400,11 @@ export function WestJapanView() {
             </div>
           ))}
 
-          {/* Right Column: Lecture Series Card */}
-          <div className="md:col-span-4 rounded-2xl bg-gradient-to-br from-orthodox-navy to-slate-900 text-white border border-orthodox-gold/30 shadow-sm p-6 flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-orthodox-gold-light font-bold text-2xs border border-white/15">
+          {/* Right Column: Lecture Series Card - Diocesan Pine & Liturgical Gold */}
+          <div className="md:col-span-4 rounded-2xl bg-gradient-to-br from-[#092218] via-orthodox-navy to-slate-950 text-white border border-emerald-500/40 shadow-sm p-6 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-44 h-44 bg-orthodox-pine/30 rounded-full blur-2xl pointer-events-none" />
+            <div className="space-y-4 relative z-10">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-200 font-bold text-2xs border border-emerald-500/40">
                 <BookOpen className="w-3 h-3 text-orthodox-gold" />
                 <span>教区連続講座</span>
               </div>
@@ -410,7 +413,7 @@ export function WestJapanView() {
                 <h3 className="font-serif text-lg sm:text-xl font-bold text-white">
                   {diocese.lecture.title}
                 </h3>
-                <div className="inline-block px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-200 border border-red-500/30 text-xs font-semibold">
+                <div className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 text-xs font-semibold">
                   {diocese.lecture.status}
                 </div>
               </div>
@@ -422,7 +425,7 @@ export function WestJapanView() {
               </p>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-white/10">
+            <div className="pt-4 mt-4 border-t border-white/10 relative z-10">
               <a
                 href={diocese.lecture.url}
                 target="_blank"
@@ -441,8 +444,8 @@ export function WestJapanView() {
       ======================================================== */}
       <section id="churches-directory" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl 2xl:max-w-[1440px] mx-auto space-y-8">
         <div className="text-center max-w-3xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-orthodox-gold-dark dark:text-orthodox-gold">
-            <Church className="w-4 h-4 text-orthodox-gold" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-orthodox-pine dark:text-emerald-400">
+            <Church className="w-4 h-4 text-orthodox-pine dark:text-emerald-400" />
             <span>西日本主教教区内教会のご案内</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
@@ -469,7 +472,7 @@ export function WestJapanView() {
                   ? '教会名、都市名、司祭名、文化財・山下りんで検索…'
                   : 'Search by church name, city, priest, or iconographer...'
               }
-              className="w-full pl-11 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orthodox-gold shadow-sm"
+              className="w-full pl-11 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orthodox-pine/50 shadow-sm"
             />
             {searchQuery && (
               <button
@@ -481,7 +484,7 @@ export function WestJapanView() {
             )}
           </div>
 
-          {/* Region Filter Buttons */}
+          {/* Region Filter Buttons - Heritage Liturgical Pine */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
             {regions.map((reg) => (
               <button
@@ -489,15 +492,15 @@ export function WestJapanView() {
                 onClick={() => setSelectedRegion(reg.id)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
                   selectedRegion === reg.id
-                    ? 'bg-orthodox-navy dark:bg-orthodox-gold text-white dark:text-orthodox-navy shadow-sm'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-orthodox-pine hover:bg-orthodox-pine-dark dark:bg-emerald-600 text-white shadow-sm'
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-emerald-50/50 dark:hover:bg-slate-800'
                 }`}
               >
                 <span>{reg.label[locale]}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
                     selectedRegion === reg.id
-                      ? 'bg-white/20 text-white dark:bg-orthodox-navy/20 dark:text-orthodox-navy'
+                      ? 'bg-white/20 text-white'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
                   }`}
                 >
@@ -535,7 +538,7 @@ export function WestJapanView() {
                     {/* Designation or Cathedral Badge */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-1">
                       {church.isCathedral && (
-                        <span className="px-2.5 py-1 rounded-lg bg-orthodox-gold text-orthodox-navy text-2xs font-extrabold shadow-sm">
+                        <span className="px-2.5 py-1 rounded-lg bg-orthodox-pine text-white text-2xs font-extrabold shadow-sm border border-emerald-400/40">
                           主教座聖堂
                         </span>
                       )}
@@ -645,7 +648,7 @@ export function WestJapanView() {
                       setSelectedChurch(church);
                       setActivePhotoIdx(0);
                     }}
-                    className="px-3.5 py-1.5 rounded-xl bg-orthodox-navy dark:bg-orthodox-gold hover:opacity-90 text-white dark:text-orthodox-navy text-xs font-bold transition-all flex items-center gap-1 shadow-sm"
+                    className="px-3.5 py-1.5 rounded-xl bg-orthodox-pine hover:bg-orthodox-pine-dark dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-sm"
                   >
                     <span>詳しく見る</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -710,11 +713,12 @@ export function WestJapanView() {
           5. DIOCESAN CHANCERY (教区宗務局) & CONTACT
       ======================================================== */}
       <section id="chancery-contact" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl 2xl:max-w-[1440px] mx-auto">
-        <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-orthodox-navy to-slate-900 text-white border border-orthodox-gold/40 shadow-xl p-8 sm:p-12 relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-orthodox-gold/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="rounded-3xl bg-gradient-to-br from-[#092218] via-orthodox-navy to-slate-950 text-white border border-emerald-500/30 shadow-xl p-8 sm:p-12 relative overflow-hidden">
+          <div className="absolute right-0 top-0 w-96 h-96 bg-orthodox-pine/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-orthodox-gold-light text-xs font-semibold border border-white/15">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-200 text-xs font-semibold border border-emerald-500/30">
               <Mail className="w-4 h-4 text-orthodox-gold" />
               <span>西日本主教教区 宗務局</span>
             </div>

@@ -22,6 +22,12 @@ const config: Config = {
           parchment: "#FBF8F2",
           "parchment-dark": "#EFE9DC",
           candle: "#FFF4D2",
+          // Western Diocese Heritage Colors (modernized from original orthodox-jp.com/westjapan)
+          pine: "#0F4D32",          // original #006633 diocesan green
+          "pine-light": "#E8F5E9",
+          "pine-dark": "#0A3321",
+          celestial: "#EBF8FA",      // modernized soft sky-cyan from original #e8fdff
+          "celestial-dark": "#0C232F",
         },
       },
     },
