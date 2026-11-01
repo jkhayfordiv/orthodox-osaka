@@ -438,14 +438,14 @@ export function ParishView() {
 
             <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
               <a
-                href="/schedule/osaka-schedule-2026-oct-dec.pdf"
+                href="/schedule/osaka-schedule-2026-2027-master.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="no-print inline-flex items-center space-x-1.5 text-xs sm:text-sm py-2 px-3.5 rounded-xl border border-orthodox-gold bg-orthodox-gold text-orthodox-navy hover:bg-orthodox-gold-dark font-bold shadow-sm transition-all"
-                title={locale === 'ja' ? '教会予定表PDF（10月・11月・12月）を開く・保存' : locale === 'ru' ? 'Скачать расписание в PDF (окт–дек)' : 'Download Schedule PDF (Oct–Dec)'}
+                title={locale === 'ja' ? '教会年間予定表PDF（2026/10/27改訂・2026年6月〜2027年5月）を開く・保存' : locale === 'ru' ? 'Скачать годовое расписание PDF (2026–2027)' : 'Download Master Schedule PDF (2026–2027)'}
               >
                 <FileText className="w-4 h-4" />
-                <span>{locale === 'ja' ? '公式予定表PDF (10〜12月)' : locale === 'ru' ? 'Расписание PDF (10–12)' : 'Schedule PDF (Oct–Dec)'}</span>
+                <span>{locale === 'ja' ? '公式予定表PDF (2026〜2027)' : locale === 'ru' ? 'Расписание PDF (2026–2027)' : 'Schedule PDF (2026–2027)'}</span>
                 <ExternalLink className="w-3.5 h-3.5 ml-0.5 opacity-80" />
               </a>
 
@@ -477,30 +477,40 @@ export function ParishView() {
               <div>
                 <h3 className="font-serif font-bold text-sm sm:text-base text-orthodox-navy dark:text-orthodox-gold-light">
                   {locale === 'ja'
-                    ? '2026年 10月・11月・12月の教会予定表（公式配布版）'
+                    ? '2026年度 教会予定表（2026/10/27改訂・公式配布版）'
                     : locale === 'ru'
-                    ? 'Расписание богослужений на октябрь, ноябрь и декабрь 2026 года'
-                    : 'Official Parish Schedule (October, November & December 2026)'}
+                    ? 'Расписание богослужений на 2026–2027 гг. (ред. от 27.10.2026)'
+                    : 'Parish Master Schedule (2026–2027, Rev. 2026/10/27)'}
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
                   {locale === 'ja'
-                    ? '堂祭BBQ、名曲喫茶くるみ割り人形コンサート、広島集会、露人墓地パニヒダの日程を含む最新版'
+                    ? '2026年6月〜2027年5月の年間祭儀・行事予定表（降誕祭・大斎・復活大祭、土曜見学時間変更 15:00〜16:00 等を含む最新版）'
                     : locale === 'ru'
-                    ? 'Престольный праздник, Рождественский пост, концерт «Щелкунчик» и панихида'
-                    : 'Includes Temple Feast BBQ, LP Record Nutcracker Concert, Hiroshima Liturgy & cemetery memorial'}
+                    ? 'Годовое расписание: Рождество Христово, Великий пост, Пасха 2027 и новое время экскурсий по субботам'
+                    : 'Master schedule: Nativity, Great Lent, Pascha 2027, and updated Saturday cathedral tour hours'}
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-2 w-full sm:w-auto">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+              <a
+                href="/schedule/osaka-schedule-2026-2027-master.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center space-x-1.5 py-2 px-3.5 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-dark text-orthodox-navy font-bold text-xs shadow-xs transition-all"
+              >
+                <FileText className="w-4 h-4" />
+                <span>{locale === 'ja' ? '年間予定表PDF' : locale === 'ru' ? 'Годовой PDF' : 'Master PDF'}</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
               <a
                 href="/schedule/osaka-schedule-2026-oct-dec.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center space-x-1.5 py-2 px-4 rounded-xl bg-orthodox-gold hover:bg-orthodox-gold-dark text-orthodox-navy font-bold text-xs shadow-xs transition-all"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center space-x-1.5 py-2 px-3 rounded-xl bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 border border-orthodox-gold/40 font-semibold text-xs transition-all"
               >
-                <FileText className="w-4 h-4" />
-                <span>{locale === 'ja' ? 'PDFを開く' : locale === 'ru' ? 'Открыть PDF' : 'Open PDF'}</span>
-                <ExternalLink className="w-3.5 h-3.5" />
+                <FileText className="w-3.5 h-3.5" />
+                <span>{locale === 'ja' ? '10〜12月PDF' : locale === 'ru' ? 'Окт–Дек PDF' : 'Oct–Dec PDF'}</span>
+                <ExternalLink className="w-3 h-3" />
               </a>
             </div>
           </div>
