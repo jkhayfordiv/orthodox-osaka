@@ -88,7 +88,9 @@ export async function GET(
     // Call Orthocal endpoint with the civil date.
     // For Julian (Old Calendar), Orthocal calculates the 13-day offset internally.
     // For Gregorian (New Calendar), Orthocal calculates based on Revised Julian Menologion.
-    const orthocalUrl = `https://orthocal.info/api/${endpoint}/${year}/${month}/${day}/`;
+    // Defaults to World English Bible (WEB / LXX2012) for modern English scripture readings.
+    const translationParam = request.nextUrl.searchParams.get('translation') || 'lxx2012-web';
+    const orthocalUrl = `https://orthocal.info/api/${endpoint}/${year}/${month}/${day}/?translation=${translationParam}`;
     const res = await fetch(orthocalUrl, {
       next: { revalidate: 86400 }, // Cache on edge for 24 hours
     });

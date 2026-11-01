@@ -93,10 +93,33 @@ export function TodayView() {
           const apiGospel = data.readings.find((r: { source: string }) => r.source === 'Gospel');
 
           const updatedReadings = prev.readings.map((r: ScriptureReading) => {
-            // If local calculation already has verified liturgical Japanese text and pericope, keep it
-            if (r.verses && r.verses.length > 0 && r.pericopeTan) return r;
-
             const apiReading = r.source === 'Gospel' ? apiGospel : apiEpistle;
+
+            // If local calculation already has verified liturgical Japanese text and pericope,
+            // preserve the Japanese and Russian liturgical text, but enrich English text with WEB from API
+            if (r.verses && r.verses.length > 0 && r.pericopeTan) {
+              if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
+                return {
+                  ...r,
+                  text: {
+                    ...r.text,
+                    en: apiReading.fullTextEn || r.text.en,
+                  },
+                  verses: r.verses.map((v) => {
+                    const match = apiReading.verses.find((av: { verse: number; content: string }) => av.verse === v.verse);
+                    return {
+                      ...v,
+                      text: {
+                        ...v.text,
+                        en: match ? match.content : v.text.en,
+                      },
+                    };
+                  }),
+                };
+              }
+              return r;
+            }
+
             if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
               return {
                 ...r,
@@ -473,7 +496,7 @@ export function TodayView() {
                           ? '日本正教会訳（1902年 亜使徒ニコライ・中井木菟麻呂訳）'
                           : locale === 'ru'
                           ? 'Синодальный перевод'
-                          : 'King James Version (KJV)'}
+                          : 'World English Bible (WEB)'}
                       </span>
                     </div>
                   </div>
