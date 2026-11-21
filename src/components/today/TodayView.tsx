@@ -44,7 +44,7 @@ export function TodayView() {
     sermons,
     setTargetSermonId,
   } = useApp();
-  const [expandedReading, setExpandedReading] = useState<'epistle' | 'gospel' | null>(null);
+  const [expandedReading, setExpandedReading] = useState<number | null>(null);
   const [copiedShare, setCopiedShare] = useState(false);
   const [fastingGuideOpen, setFastingGuideOpen] = useState(false);
 
@@ -89,58 +89,51 @@ export function TodayView() {
       .then((data) => {
         if (isCancelled || !data || !data.success || !data.readings || data.readings.length === 0) return;
         setEnrichedDayInfo((prev: DayInfo) => {
-          const apiEpistle = data.readings.find((r: { source: string }) => r.source === 'Epistle');
-          const apiGospel = data.readings.find((r: { source: string }) => r.source === 'Gospel');
+          type ApiVerse = { verse: number; content: string };
+          type ApiReading = { source: string; reference: string; book?: { ja: string; en: string; ru: string }; verses?: ApiVerse[]; fullTextEn?: string };
+          const norm = (s: string) => s.replace(/[^A-Za-z0-9]/g, '').toLowerCase();
 
-          const updatedReadings = prev.readings.map((r: ScriptureReading) => {
-            const apiReading = r.source === 'Gospel' ? apiGospel : apiEpistle;
+          // The API (Orthocal) is the source of truth for WHICH readings apply today,
+          // including multiple Liturgy readings (e.g. weekday + feast). Local data is only
+          // used to keep the authentic Japanese/Russian text when the passage matches.
+          const apiLiturgy: ApiReading[] = data.readings.filter(
+            (r: ApiReading) => (r.source === 'Epistle' || r.source === 'Gospel') && r.verses && r.verses.length > 0
+          );
+          if (apiLiturgy.length === 0) return prev;
 
-            // If local calculation already has verified liturgical Japanese text and pericope,
-            // preserve the Japanese and Russian liturgical text, but enrich English text with WEB from API
-            if (r.verses && r.verses.length > 0 && r.pericopeTan) {
-              if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
-                return {
-                  ...r,
-                  text: {
-                    ...r.text,
-                    en: apiReading.fullTextEn || r.text.en,
-                  },
-                  verses: r.verses.map((v) => {
-                    const match = apiReading.verses.find((av: { verse: number; content: string }) => av.verse === v.verse);
-                    return {
-                      ...v,
-                      text: {
-                        ...v.text,
-                        en: match ? match.content : v.text.en,
-                      },
-                    };
-                  }),
-                };
-              }
-              return r;
-            }
+          const epistles = apiLiturgy.filter((r) => r.source === 'Epistle');
+          const gospels = apiLiturgy.filter((r) => r.source === 'Gospel');
 
-            if (apiReading && apiReading.verses && apiReading.verses.length > 0) {
+          const updatedReadings: ScriptureReading[] = [...epistles, ...gospels].map((api) => {
+            const isGospel = api.source === 'Gospel';
+            const local = prev.readings.find(
+              (r: ScriptureReading) => r.source === api.source && r.verses && r.verses.length > 0 && norm(r.reference) === norm(api.reference)
+            );
+            const apiVerses = api.verses as ApiVerse[];
+            if (local && local.verses) {
               return {
-                ...r,
-                book: apiReading.book || r.book,
-                reference: apiReading.reference || r.reference,
-                text: {
-                  ja: apiReading.book?.ja ? `【${apiReading.source === 'Gospel' ? '福音経' : '使徒経'}】${apiReading.book.ja} ${apiReading.reference}` : r.text.ja,
-                  en: apiReading.fullTextEn || r.text.en,
-                  ru: apiReading.book?.ru ? `【${apiReading.source === 'Gospel' ? 'Евангелие' : 'Апостол'}】${apiReading.book.ru} ${apiReading.reference}` : r.text.ru,
-                },
-                verses: apiReading.verses.map((v: { verse: number; content: string }) => ({
-                  verse: v.verse,
-                  text: {
-                    ja: v.content,
-                    en: v.content,
-                    ru: v.content,
-                  },
-                })),
+                ...local,
+                text: { ...local.text, en: api.fullTextEn || local.text.en },
+                verses: local.verses.map((v) => {
+                  const m = apiVerses.find((av) => av.verse === v.verse);
+                  return { ...v, text: { ...v.text, en: m ? m.content : v.text.en } };
+                }),
               };
             }
-            return r;
+            return {
+              source: isGospel ? 'Gospel' : 'Epistle',
+              book: api.book || { ja: api.reference, en: api.reference, ru: api.reference },
+              reference: api.reference,
+              text: {
+                ja: api.book?.ja ? `【${isGospel ? '福音経' : '使徒経'}】${api.book.ja} ${api.reference}` : api.reference,
+                en: api.fullTextEn || api.reference,
+                ru: api.book?.ru ? `【${isGospel ? 'Евангелие' : 'Апостол'}】${api.book.ru} ${api.reference}` : api.reference,
+              },
+              verses: apiVerses.map((v) => ({
+                verse: v.verse,
+                text: { ja: v.content, en: v.content, ru: v.content },
+              })),
+            } as ScriptureReading;
           });
           return { ...prev, readings: updatedReadings };
         });
@@ -426,7 +419,7 @@ export function TodayView() {
         <div className="space-y-3.5">
           {enrichedDayInfo.readings.map((reading, idx) => {
             const isEpistle = reading.source === 'Epistle';
-            const isExpanded = expandedReading === (isEpistle ? 'epistle' : 'gospel');
+            const isExpanded = expandedReading === idx;
 
             // Find full verse passage from reading.verses or SCRIPTURE_DATABASE
             const normalizedRef = reading.reference.replace(/–/g, '-').trim();
@@ -460,7 +453,7 @@ export function TodayView() {
                   </div>
                   <button
                     onClick={() =>
-                      setExpandedReading(isExpanded ? null : isEpistle ? 'epistle' : 'gospel')
+                      setExpandedReading(isExpanded ? null : idx)
                     }
                     className="text-xs font-bold text-orthodox-burgundy dark:text-orthodox-gold hover:underline py-1 px-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"
                   >
