@@ -34,10 +34,10 @@ export function ConcertTeaserSection() {
       <div className="flex items-center gap-3 border-l-2 border-amber-800/80 pl-3">
         <div>
           <span className="text-2xs font-bold uppercase tracking-widest text-amber-900/80 dark:text-amber-300">
-            {locale === 'ja' ? '特別企画・演奏会' : 'Featured Parish Event'}
+            {locale === 'ja' ? '特別企画・演奏会' : locale === 'ru' ? 'Особое событие · Концерт' : 'Featured Parish Event'}
           </span>
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 dark:text-white">
-            {locale === 'ja' ? 'ラフマニノフと正教会の鐘' : 'Rachmaninoff & The Orthodox Bells'}
+            {locale === 'ja' ? 'ラフマニノフと正教会の鐘' : locale === 'ru' ? 'Рахманинов и православные колокола' : 'Rachmaninoff & The Orthodox Bells'}
           </h2>
         </div>
       </div>
@@ -70,7 +70,11 @@ export function ConcertTeaserSection() {
                 </span>
                 <span className="text-stone-300 dark:text-stone-700">·</span>
                 <span className="text-stone-600 dark:text-stone-400 font-serif">
-                  {locale === 'ja' ? '2026年12月1日より予約受付開始' : 'Reservations Open Dec 1, 2026'}
+                  {locale === 'ja'
+                    ? '2026年12月1日より予約受付開始'
+                    : locale === 'ru'
+                    ? 'Открытие бронирования: 1 декабря 2026 г.'
+                    : 'Reservations Open Dec 1, 2026'}
                 </span>
               </div>
 
@@ -79,12 +83,15 @@ export function ConcertTeaserSection() {
               </h3>
 
               <div className="font-serif text-sm sm:text-base text-amber-900 dark:text-amber-200">
-                {event.artist.name[locale]} <span className="text-xs text-stone-500">（ピアノ）</span>
+                {event.artist.name[locale]}{' '}
+                <span className="text-xs text-stone-500">
+                  {locale === 'ja' ? '（ピアノ）' : locale === 'ru' ? '(фортепиано)' : '(Piano)'}
+                </span>
               </div>
             </div>
 
             {/* Date, Time, Admission in one compact line */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-stone-700 dark:text-stone-300 font-serif pt-1 border-y border-stone-200/80 dark:border-stone-800 py-3">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-serif pt-1 border-y border-stone-200/80 dark:border-stone-800 py-3">
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-4 h-4 text-amber-800 dark:text-amber-400" />
                 <span className="font-bold">{event.date.fullDisplay[locale]}</span>
@@ -97,7 +104,7 @@ export function ConcertTeaserSection() {
               </div>
             </div>
 
-            <p className="font-serif text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-2">
+            <p className="font-serif text-sm text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-2">
               {event.themePoem[locale]}
             </p>
 
@@ -105,26 +112,40 @@ export function ConcertTeaserSection() {
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
                 href="/events/rachmaninoff-2027"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-orthodox-navy hover:bg-orthodox-navy/90 text-white font-bold text-xs sm:text-sm transition-colors shadow-xs"
               >
-                <span>{locale === 'ja' ? '詳細・ご予約案内を見る →' : 'View Full Details & Booking →'}</span>
+                <span>
+                  {locale === 'ja'
+                    ? '詳細・ご予約案内を見る →'
+                    : locale === 'ru'
+                    ? 'Подробнее и бронирование →'
+                    : 'View Full Details & Booking →'}
+                </span>
               </Link>
 
               <a
                 href={`mailto:${event.reservationInfo.email}?subject=${mailtoSubject}&body=${mailtoBody}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-white dark:bg-slate-800 border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold hover:bg-stone-50 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-white dark:bg-slate-800 border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs sm:text-sm font-semibold hover:bg-stone-50 transition-colors"
               >
                 <Mail className="w-3.5 h-3.5 text-amber-800 dark:text-amber-400" />
-                <span>事前のお問い合わせ (メール)</span>
+                <span>
+                  {locale === 'ja'
+                    ? '事前のお問い合わせ (メール)'
+                    : locale === 'ru'
+                    ? 'Предварительный запрос (Email)'
+                    : 'Pre-Booking Inquiry (Email)'}
+                </span>
               </a>
 
               <a
                 href={currentPdfUrl}
                 download
-                className="inline-flex items-center gap-1.5 px-3 py-2.5 text-xs text-stone-600 dark:text-stone-400 hover:text-stone-900 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-2.5 text-xs sm:text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>PDFチラシ</span>
+                <span>
+                  {locale === 'ja' ? 'PDFチラシ' : locale === 'ru' ? 'Афиша (PDF)' : 'PDF Flyer'}
+                </span>
               </a>
             </div>
           </div>

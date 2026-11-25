@@ -9,6 +9,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ["var(--font-serif)", "Shippori Mincho", "Noto Serif JP", "Times New Roman", "serif"],
+        sans: ["var(--font-sans)", "Noto Sans JP", "sans-serif"],
+      },
+      fontSize: {
+        "2xs": ["0.6875rem", { lineHeight: "1rem" }],
+        "3xs": ["0.625rem", { lineHeight: "0.875rem" }],
+      },
+      aspectRatio: {
+        "4/3": "4 / 3",
+        "3/4": "3 / 4",
+        "16/9": "16 / 9",
+      },
+      boxShadow: {
+        xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      },
       colors: {
         orthodox: {
           gold: "#D4AF37",

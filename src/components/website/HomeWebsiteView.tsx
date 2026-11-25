@@ -268,7 +268,7 @@ export function HomeWebsiteView() {
                 {locale === 'ja' ? '聖堂見学のご案内' : locale === 'ru' ? 'Осмотр храма' : 'Open Temple Viewing'}
               </h3>
               <div className="text-amber-900 dark:text-amber-200 font-mono text-xl font-bold">16:00 〜 17:00</div>
-              <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-serif">
+              <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-serif">
                 {locale === 'ja'
                   ? '聖堂内部のイコノスタス（聖障）や山下りんの聖像、ロシアの伝統建築を自由にご鑑賞いただけます。'
                   : locale === 'ru'
@@ -289,7 +289,7 @@ export function HomeWebsiteView() {
                 {locale === 'ja' ? '徹夜祷' : locale === 'ru' ? 'Всенощное бдение' : 'All-Night Vigil'}
               </h3>
               <div className="text-stone-900 dark:text-stone-100 font-mono text-xl font-bold">17:00 〜</div>
-              <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-serif">
+              <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-serif">
                 {locale === 'ja'
                   ? '夕陽の中で行われる祈りと詩編、無伴奏聖歌の響きに包まれる厳かな夕べの祈祷です。'
                   : locale === 'ru'
@@ -310,7 +310,7 @@ export function HomeWebsiteView() {
                 {locale === 'ja' ? '聖体礼儀（主日）' : locale === 'ru' ? 'Божественная Литургия' : 'Divine Liturgy'}
               </h3>
               <div className="text-orthodox-navy dark:text-amber-300 font-mono text-xl font-bold">10:00 〜</div>
-              <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-serif">
+              <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-serif">
                 {locale === 'ja'
                   ? '教会の中心となる主日の聖体礼儀。礼拝後には信徒の親睦の集い（愛餐）も行われます。'
                   : locale === 'ru'
@@ -371,7 +371,7 @@ export function HomeWebsiteView() {
                     ? 'Во имя Отца и Сына и Святого Духа.'
                     : 'In the Name of the Father, and of the Son, and of the Holy Spirit.'}
                 </div>
-                <p className="font-serif text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-4">
+                <p className="font-serif text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed line-clamp-4">
                   {sermonExcerpt}
                 </p>
 
@@ -449,7 +449,7 @@ export function HomeWebsiteView() {
               <h3 className="font-serif text-2xl sm:text-3xl font-bold">
                 {PARISH_INFO.name[locale]}
               </h3>
-              <p className="font-serif text-xs sm:text-sm text-stone-300 max-w-xl">
+              <p className="font-serif text-sm text-stone-300 max-w-xl mx-auto lg:mx-0">
                 {PARISH_INFO.address[locale]} · {PARISH_INFO.access[locale]}
               </p>
             </div>

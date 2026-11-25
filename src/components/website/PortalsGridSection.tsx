@@ -77,10 +77,10 @@ export function PortalsGridSection() {
       <div className="flex items-center gap-3 border-l-2 border-amber-800/80 pl-3">
         <div>
           <span className="text-2xs font-bold uppercase tracking-widest text-amber-900/80 dark:text-amber-300">
-            {locale === 'ja' ? '研究・専門資料' : 'Archives & Resources'}
+            {locale === 'ja' ? '研究・専門資料' : locale === 'ru' ? 'Материалы и архивы' : 'Archives & Resources'}
           </span>
           <h2 className="text-xl sm:text-2xl font-serif font-bold text-stone-900 dark:text-white">
-            {locale === 'ja' ? '正教研究ポータル・主教教区' : 'Orthodox Portals & Western Diocese'}
+            {locale === 'ja' ? '正教研究ポータル・主教教区' : locale === 'ru' ? 'Порталы и Западно-Японская епархия' : 'Orthodox Portals & Western Diocese'}
           </h2>
         </div>
       </div>
@@ -102,12 +102,12 @@ export function PortalsGridSection() {
               </span>
             </div>
 
-            <h3 className="font-serif font-bold text-sm text-stone-900 dark:text-white group-hover:text-amber-900 dark:group-hover:text-amber-300 transition-colors flex items-center justify-between">
+            <h3 className="font-serif font-bold text-base text-stone-900 dark:text-white group-hover:text-amber-900 dark:group-hover:text-amber-300 transition-colors flex items-center justify-between">
               <span>{portal.title[locale]}</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-800 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform flex-shrink-0 ml-1" />
             </h3>
 
-            <p className="font-serif text-xs text-stone-600 dark:text-stone-400 leading-relaxed mt-2 line-clamp-3">
+            <p className="font-serif text-sm text-stone-600 dark:text-stone-400 leading-relaxed mt-2 line-clamp-3">
               {portal.desc[locale]}
             </p>
           </Link>

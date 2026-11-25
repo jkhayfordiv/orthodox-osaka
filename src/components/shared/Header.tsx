@@ -171,23 +171,23 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-orthodox-navy text-white shadow-md border-b border-orthodox-gold/30">
-      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 flex items-center justify-between">
+      <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-2.5 flex items-center justify-between gap-2">
         {/* Left: Church Icon & Title */}
         <div
           onClick={() => handleNavClick('home')}
-          className="flex items-center space-x-2.5 cursor-pointer group select-none"
+          className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1 lg:flex-initial cursor-pointer group select-none"
           title={locale === 'ja' ? '教会案内トップ' : 'Parish home'}
         >
           <img
             src="/brand/church-seal-round.png"
             alt="Osaka Orthodox Church Emblem"
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-orthodox-gold shadow-sm group-hover:scale-105 transition-transform flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-orthodox-gold shadow-sm group-hover:scale-105 transition-transform flex-shrink-0"
           />
-          <div>
-            <h1 className="font-serif font-bold text-sm sm:text-base leading-tight tracking-wide text-orthodox-gold-light group-hover:text-white transition-colors">
+          <div className="min-w-0">
+            <div className="font-serif font-bold text-xs sm:text-base leading-tight tracking-wide text-orthodox-gold-light group-hover:text-white transition-colors truncate">
               {PARISH_INFO.shortName[locale]}
-            </h1>
-            <p className="text-[10px] sm:text-[11px] text-slate-300 font-sans tracking-tight">
+            </div>
+            <p className="text-[10px] sm:text-[11px] text-slate-300 font-sans tracking-tight truncate">
               {locale === 'ja'
                 ? '生神女庇護聖堂'
                 : locale === 'ru'
@@ -299,16 +299,16 @@ export function Header() {
         </nav>
 
         {/* Right: Quick Language Switcher, Theme & Settings */}
-        <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
           {/* Typographic Language Switcher */}
-          <div className="flex items-center rounded-md border border-orthodox-gold/40 bg-orthodox-navy-dark/90 px-1 py-0.5 text-xs shadow-xs">
+          <div className="flex items-center rounded-md border border-orthodox-gold/40 bg-orthodox-navy-dark/90 px-0.5 sm:px-1 py-0.5 text-xs shadow-xs">
             {locales.map((l, idx) => (
               <React.Fragment key={l.code}>
                 {idx > 0 && <span className="text-white/40 text-[10px] px-0.5 select-none" aria-hidden="true">|</span>}
                 <button
                   type="button"
                   onClick={() => setLocale(l.code)}
-                  className={`px-2 py-1 rounded text-xs font-bold tracking-wider transition-all select-none cursor-pointer ${
+                  className={`px-1.5 sm:px-2 py-1 rounded text-[11px] sm:text-xs font-bold tracking-wider transition-all select-none cursor-pointer ${
                     locale === l.code
                       ? 'bg-orthodox-gold text-orthodox-navy shadow-xs'
                       : 'text-stone-200 hover:text-white hover:bg-white/10'
